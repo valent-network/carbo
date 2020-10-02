@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username:  <%= ENV.fetch('POSTGRES_USER') { 'user' } %>
+  password: <%= ENV.fetch('POSTGRES_PASSWORD') { '' }  %>
+  host:  <%= ENV.fetch('POSTGRESQL_SERVICE_HOST') { 'localhost' } %>
+  database: <%= ENV.fetch('POSTGRES_DATABASE') { '' } %>
+  port: <%= ENV.fetch('POSTGRES_PORT') { '5432' } %>
+  pool: <%= ENV.fetch('POSTGRES_POOL') { '5' } %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

@@ -1,0 +1,5 @@
+ua:
+  api_error_messages:
+    not_authorized: Доступ запрещен
+    wrong_verification_code: Неверный код
+    missing_verification_code: Код отсутствует

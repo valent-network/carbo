@@ -1,0 +1,41 @@
+# frozen_string_literal: true
+
+git_commit = ENV.fetch('GIT_COMMIT') { %x(git rev-parse --short HEAD).strip }
+
+Rails.application.routes.draw do
+  root to: 'application#landing'
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
+
+  get :health, to: ->(_env) { [200, {}, [{ build: ENV.fetch('GIT_COMMIT') { git_commit } }.to_json]] }
+
+  get :ios, to: redirect('https://apps.apple.com/us/app/id1458212603')
+  get :android, to: redirect('https://play.google.com/store/apps/details?id=com.viktorvsk.recario')
+  get :news, to: redirect('https://t.me/reCar_io')
+  get :chat, to: redirect('https://t.me/reCar_io_chat')
+
+  resources :ads, only: %i[show]
+
+  namespace :api do
+    get :filters, to: '/application#filters'
+    namespace :v1 do
+      resource :contact_book, only: %i[update destroy]
+      resource :user, only: %i[show update]
+      resource :sessions, only: %i[create update destroy]
+
+      resources :ads, only: %i[show]
+      resources :friendly_ads, only: %i[show]
+
+      resources :user_contacts, only: %i[index]
+
+      resources :favorite_ads, only: %i[index create destroy]
+      resources :visited_ads, only: %i[index]
+      resources :my_ads, only: %i[index]
+      resources :provider_ads, only: %w[index] do
+        put :update_ad, on: :collection
+        delete :delete_ad, on: :collection
+      end
+      resources :feed_ads, only: %i[index]
+    end
+  end
+end

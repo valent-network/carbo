@@ -1,0 +1,23 @@
+ru:
+  time:
+    formats:
+      long: "%Y-%m-%d %H:%M:%S"
+  api_error_messages:
+    not_authorized: Доступ запрещен
+    wrong_verification_code: Неверный код
+    missing_verification_code: Код отсутствует
+  send_verification:
+    sms_text: Проверочный код для входа в систему - %{verification_code}
+  ad_options:
+    engine: Мотор
+    race: Пробег
+    gear: Коробка
+    wheels: Привод
+    carcass: Кузов
+    city: Город
+    color: Цвет
+    year: Год
+    no_description: Описание отсутствует
+    race_value: "%{value} тыс. км"
+    engine_value: "%{value} л %{fuel_type}"
+    horse_powers: Мощность
