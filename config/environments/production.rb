@@ -45,7 +45,7 @@ Rails.application.configure do
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
 
-  config.secret_key_base = SecureRandom.hex(256)
+  config.secret_key_base = ENV['SECRET_KEY_BASE']
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
