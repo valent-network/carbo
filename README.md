@@ -5,3 +5,5 @@ Backend application for serving requests from mobile application and ads provide
 Standard Rails project.
 
 Refer to `.env.example` to set proper ENV variables.
+
+Public Trello dashboard: https://trello.com/b/0XyMITvG/recario
