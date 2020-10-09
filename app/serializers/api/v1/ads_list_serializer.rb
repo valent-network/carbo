@@ -14,6 +14,10 @@ module Api
         "#{object.details['maker']} #{object.details['model']} #{object.details['year']}"
       end
 
+      def price
+        ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
+      end
+
       def short_description
         AdCarShortDescriptionPresenter.new.call(object.details)
       end
