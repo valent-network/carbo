@@ -13,6 +13,7 @@ class AdPricesPresenter
     # TODO: Workaround to avoid cases when last history price equals to
     # current price. Need check against different cases, whether it brakes
     # anything else
+    prices_history.shift if prices_history.present? && prices_history.first[1] == ad.price
     prices_history.pop if prices_history.present? && prices_history.last[1] == ad.price
 
     prices_history
