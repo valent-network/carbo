@@ -2,7 +2,7 @@
 module Api
   module V1
     class AdSerializer < ActiveModel::Serializer
-      attributes :id, :deleted, :price, :options, :images, :title, :description, :url, :prices
+      attributes :id, :deleted, :price, :options, :image, :images, :title, :description, :short_description, :url, :prices, :friend_name_and_total
 
       def options
         AdCarOptionsPresenter.new.call(object.details)
@@ -24,9 +24,17 @@ module Api
         "#{object.details['maker']} #{object.details['model']} #{object.details['year']}"
       end
 
+      def image
+        images.first
+      end
+
       def images
         images = object.details['images_json_array_tmp']
         images.is_a?(String) ? JSON.parse(images) : images
+      end
+
+      def short_description
+        AdCarShortDescriptionPresenter.new.call(object.details)
       end
 
       def url

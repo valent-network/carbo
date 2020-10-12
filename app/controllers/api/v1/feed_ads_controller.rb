@@ -15,7 +15,6 @@ module Api
           ads_with_friends = Ad.find_by_sql(ads_with_friends_sql)
 
           ads.each { |ad| ad.associate_friends_with(ads_with_friends) }
-
         end
 
         render(json: ads, each_serializer: Api::V1::AdsListSerializer)

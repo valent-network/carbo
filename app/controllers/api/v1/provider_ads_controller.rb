@@ -43,7 +43,7 @@ module Api
       private
 
       def ad_params
-        details_params = %i[maker model race address new_car customs_clear year images_json_array_tmp engine_capacity fuel horse_powers gear wheels carcass color description state_num]
+        details_params = %i[maker model race address new_car customs_clear year images_json_array_tmp engine_capacity fuel horse_powers gear wheels carcass color description state_num seller_name]
         details_params.push(region: [])
         to_permit = [:price, :deleted, :phone, :ad_type, :address, details: details_params]
         params.require(:ad).permit(to_permit)
