@@ -11,7 +11,11 @@ module Api
       def user
         return unless object.phone_number.user
 
-        UserSerializer.new(object.phone_number.user).as_json
+        {
+          name: object.phone_number.user.name,
+          phone_number: object.phone_number.to_s,
+          avatar: object.phone_number.user.avatar.url,
+        }
       end
     end
   end

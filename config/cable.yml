@@ -1,0 +1,11 @@
+development:
+  adapter: redis
+  url: <%= "redis://#{ENV['REDIS_SERVICE_HOST']}:6379" %>
+
+test:
+  adapter: redis
+  url: <%= "redis://#{ENV['REDIS_SERVICE_HOST']}:6379" %>
+
+production:
+  adapter: redis
+  url: <%= "redis://#{ENV['REDIS_SERVICE_HOST']}:6379" %>

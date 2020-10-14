@@ -6,6 +6,7 @@ class UploadUserContactsJob < ApplicationJob
   def perform(user_id, contacts)
     user = User.find(user_id)
     contacts = JSON.parse(contacts)
+    initial_contacts_count = user.user_contacts.count
     User.transaction do
       contacts.each do |contact|
         contact['phoneNumbers'].each do |phone|
@@ -20,6 +21,7 @@ class UploadUserContactsJob < ApplicationJob
           user_contact.save
         end
       end
+      ApplicationCable::UserChannel.broadcast_to(user, type: 'contacts') if initial_contacts_count.zero?
     end
   end
 end

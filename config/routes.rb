@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+  mount ActionCable.server, at: '/cable'
+
   get :health, to: ->(_env) { [200, {}, [{ build: ENV.fetch('GIT_COMMIT') { git_commit } }.to_json]] }
 
   get :ios, to: redirect('https://apps.apple.com/us/app/id1458212603')
