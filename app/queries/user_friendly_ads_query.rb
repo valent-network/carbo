@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class UserFriendlyAdsQuery
-  MAX_HANDS_COUNT = 7
+  MAX_HANDS_COUNT = 5
   LIMIT = 20
 
   def call(user:, offset: 0, limit: LIMIT, filters: {})
