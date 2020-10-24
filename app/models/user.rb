@@ -24,6 +24,6 @@ class User < ApplicationRecord
   end
 
   def visible_friends_count
-    User.connection.execute(UserFriendsPhoneNumbersQuery.new.call(id)).count
+    User.connection.execute(KnownNumbers.new.call(id)).count
   end
 end

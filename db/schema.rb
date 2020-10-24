@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_01_064055) do
+ActiveRecord::Schema.define(version: 2020_10_24_103951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_trgm"
@@ -62,7 +62,6 @@ ActiveRecord::Schema.define(version: 2020_10_01_064055) do
     t.bigint("ads_source_id", null: false)
     t.integer("price", null: false)
     t.boolean("deleted", default: false, null: false)
-    t.boolean("stale", default: false, null: false)
     t.jsonb("details", null: false)
     t.string("ad_type", null: false)
     t.string("address", null: false)
@@ -76,11 +75,8 @@ ActiveRecord::Schema.define(version: 2020_10_01_064055) do
     t.index("((details ->> 'wheels'::text))", name: "index_ads_on_details_wheels")
     t.index("((details ->> 'year'::text))", name: "index_ads_on_details_year")
     t.index(["address", "ads_source_id"], name: "index_ads_on_address_and_ads_source_id", unique: true)
-    t.index(["created_at"], name: "index_ads_on_created_at")
-    t.index(["phone_number_id", "created_at"], name: "feed_index")
-    t.index(["phone_number_id"], name: "index_ads_on_phone_number_id")
+    t.index(["phone_number_id", "created_at"], name: "index_ads_on_phone_number_id_and_created_at", order: { created_at: :desc }, where: "(deleted = false)")
     t.index(["price"], name: "index_ads_on_price")
-    t.index(["updated_at"], name: "index_ads_on_updated_at")
   end
 
   create_table "ads_sources", force: :cascade do |t|

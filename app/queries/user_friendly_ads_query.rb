@@ -5,27 +5,17 @@ class UserFriendlyAdsQuery
 
   def call(user:, offset: 0, limit: LIMIT, filters: {})
     user_contacts_matched_phone_numbers = user.user_contacts.where('user_contacts.name ILIKE ?', "%#{filters[:query]}%").pluck(:phone_number_id) if filters[:query].present?
+    effective_ads = EffectiveAds.new.call(filters: filters, should_search_query: user_contacts_matched_phone_numbers.blank?)
 
-    max_hands_count = filters[:contacts_mode] == 'directFriends' ? 1 : MAX_HANDS_COUNT
-    friends_phones = UserFriendsPhoneNumbersQuery.new.call(user.id, max_hands_count: max_hands_count, filtered_friends_phone_number_ids: user_contacts_matched_phone_numbers)
-    ads = Ad.where("ads.phone_number_id IN (#{friends_phones})").active
-
-    ads = ads.where('price >= ?', filters[:min_price]) if filters[:min_price].present?
-    ads = ads.where('price <= ?', filters[:max_price]) if filters[:max_price].present?
-
-    ads = ads.where("details->>'year' >= ?", filters[:min_year]) if filters[:min_year].present?
-    ads = ads.where("details->>'year' <= ?", filters[:max_year]) if filters[:max_year].present?
-
-    ads = ads.where("details->>'fuel' IN (?)", filters[:fuels]) if filters[:fuels].present?
-    ads = ads.where("details->>'gear' IN (?)", filters[:gears]) if filters[:gears].present?
-    ads = ads.where("details->>'wheels' IN (?)", filters[:wheels]) if filters[:wheels].present?
-    ads = ads.where("details->>'carcass' IN (?)", filters[:carcasses]) if filters[:carcasses].present?
-
-    if filters[:query].present?
-      unless user_contacts_matched_phone_numbers.present?
-        ads = ads.where("CONCAT(details->>'maker', ' ',details->>'model') ILIKE :q OR details->>'model' ILIKE :q", q: "#{filters[:query].strip}%")
-      end
+    known_numbers = if filters[:contacts_mode] == 'directFriends'
+      "SELECT phone_number_id FROM user_contacts WHERE user_id = #{user.id}"
+    elsif user_contacts_matched_phone_numbers.present?
+      KnownNumbersFiltered.new.call(user.id, max_hands_count: MAX_HANDS_COUNT, filtered_friends_phone_number_ids: user_contacts_matched_phone_numbers)
+    else
+      KnownNumbers.new.call(user.id)
     end
+
+    ads = Ad.from("(#{effective_ads}) AS ads").joins("JOIN (#{known_numbers}) AS known_numbers ON known_numbers.phone_number_id = ads.phone_number_id")
 
     query = ads.offset(offset).order(created_at: :desc)
     query = query.limit(limit) if limit > 0
