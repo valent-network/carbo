@@ -25,7 +25,6 @@ RSpec.describe(AdPricesPresenter) do
     ad.update(price: 200)
     ad.update(price: 300)
     ad.update(deleted: true)
-    ad.update(stale: true)
     ad.versions.each_with_index { |version, index| version.update(created_at: (index + 1).days.ago) }
     expected_prices = [
       [2.days.ago.to_date.to_s, 100],

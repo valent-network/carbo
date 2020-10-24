@@ -11,7 +11,7 @@ class Ad < ApplicationRecord
   validates :address, uniqueness: { scope: :ads_source_id }
   validates :ad_type, inclusion: { in: AD_TYPES }
   validates :details, presence: true, json: true
-  validates :stale, :deleted, inclusion: { in: [true, false] }
+  validates :deleted, inclusion: { in: [true, false] }
 
   validate :details_object
 
@@ -20,7 +20,7 @@ class Ad < ApplicationRecord
   has_many :ad_visits, dependent: :delete_all
   has_many :ad_favorites, dependent: :delete_all
 
-  scope :active, -> { where(deleted: false, stale: false) }
+  scope :active, -> { where(deleted: false) }
 
   def phone=(val)
     self.phone_number = PhoneNumber.by_full_number(val).first_or_create! if val.present?

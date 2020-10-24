@@ -8,19 +8,13 @@ FactoryBot.define do
     address { "http://example.com/ads/#{rand(1000000000)}" }
     ad_type { Ad::AD_TYPES.sample }
     deleted { [true, false].sample }
-    stale { [true, false].sample }
     details { { images_json_array_tmp: [], address: FFaker::Avatar.image } }
-
-    trait :stale do
-      stale { true }
-    end
 
     trait :deleted do
       deleted { true }
     end
 
     trait :active do
-      stale { false }
       deleted { false }
     end
 

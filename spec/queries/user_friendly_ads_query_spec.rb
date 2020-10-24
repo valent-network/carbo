@@ -43,15 +43,6 @@ RSpec.describe(UserFriendlyAdsQuery) do
       is_expected.to(match_array(expected_ads))
     end
 
-    it 'does not show stale ads' do
-      ad_hand2.update(updated_at: 33.days.ago)
-      StaleAdsMarkerJob.new.perform
-      expected_ads = [
-        ad_hand1, ad_hand3, ad_hand1_no_user
-      ]
-      is_expected.to(match_array(expected_ads))
-    end
-
     it 'applies offset' do
       expect(described_class.new.call(user: user, offset: 2).count).to(eq(2))
     end
