@@ -50,7 +50,7 @@ RSpec.describe(UserFriendlyAdsQuery) do
     it 'orders by date' do
       expect(subject.last.id).to(eq(ad_hand1_no_user.id))
       expect(subject.first.id).to(eq(ad_hand3.id))
-      expect(subject.first.updated_at).to(be > subject.last.updated_at)
+      expect(subject.first.created_at).to(be > subject.last.created_at)
     end
 
     it 'limits result' do

@@ -2,6 +2,7 @@
 class EffectiveAds
   def call(filters:, should_search_query:)
     ads = Ad.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id').where(deleted: false)
+    ads = ads.select('ads.id, ads.phone_number_id, ads.created_at')
     ads = ads.where('price >= ?', filters[:min_price]) if filters[:min_price].present?
     ads = ads.where('price <= ?', filters[:max_price]) if filters[:max_price].present?
 
