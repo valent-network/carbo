@@ -30,12 +30,15 @@ class Ad < ApplicationRecord
     associated = ads_with_friends.select { |ad_with_friends| ad_with_friends.id == id }
     return if associated.blank?
 
-    friend = associated.min_by(&:friend_hands)
+    friend = associated.detect(&:is_first_hand) || associated.first
+
+    # TODO: Fix N+1
+    associated.reject! { |f| UserContact.find(f.friend_id).phone_number_id == phone_number_id && !f.is_first_hand }
 
     @friend_name_and_total = {
       name: friend.friend_name,
-      friend_hands: friend.friend_hands,
-      count: associated.count - 1,
+      friend_hands: friend.is_first_hand ? 1 : 2,
+      count: (associated.count - 1),
     }
   end
 

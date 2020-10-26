@@ -12,8 +12,7 @@ class KnownUsers
 
         SELECT new_users.id
         FROM p
-        JOIN users AS known_users ON known_users.id = p.id
-        JOIN user_contacts ON user_contacts.user_id = known_users.id
+        JOIN user_contacts ON user_contacts.user_id = p.id
         JOIN users AS new_users ON user_contacts.phone_number_id = new_users.phone_number_id
       )
 

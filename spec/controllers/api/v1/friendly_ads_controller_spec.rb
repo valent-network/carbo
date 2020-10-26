@@ -21,7 +21,7 @@ RSpec.describe(Api::V1::FriendlyAdsController) do
     it 'hand1' do
       friend_contact = create(:user_contact, user: user, phone_number: ad.phone_number)
       expected_friends = [
-        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 1 },
+        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 1, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s },
       ]
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
@@ -32,7 +32,7 @@ RSpec.describe(Api::V1::FriendlyAdsController) do
       friend_contact = create(:user_contact, user: user, phone_number: friend.phone_number)
       create(:user_contact, user: friend, phone_number: ad.phone_number)
       expected_friends = [
-        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 2 },
+        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s },
       ]
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
@@ -44,7 +44,7 @@ RSpec.describe(Api::V1::FriendlyAdsController) do
       create(:user_contact, user: friend, phone_number: friend_of_friend.phone_number)
       create(:user_contact, user: friend_of_friend, phone_number: ad.phone_number)
       expected_friends = [
-        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 3 },
+        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s },
       ]
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
@@ -61,14 +61,11 @@ RSpec.describe(Api::V1::FriendlyAdsController) do
       create(:user_contact, user: friend_3, phone_number: friend_of_friend.phone_number)
       create(:user_contact, user: friend_of_friend, phone_number: ad.phone_number)
 
-      expected_friends = [
-        { 'id' => hand1_friend.id, 'name' => hand1_friend.name, 'idx' => 1 },
-        { 'id' => hand2_friend.id, 'name' => hand2_friend.name, 'idx' => 2 },
-        { 'id' => hand3_friend.id, 'name' => hand3_friend.name, 'idx' => 3 },
-      ]
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
-      expect(json_body).to(eq(expected_friends))
+      expect(json_body.detect { |x| x['id'] ==  hand1_friend.id }).to(eq({ 'id' => hand1_friend.id, 'name' => hand1_friend.name, 'idx' => 1, 'avatar' => nil, 'phone_number' => hand1_friend.phone_number.to_s }))
+      expect(json_body.detect { |x| x['id'] ==  hand2_friend.id }).to(eq({ 'id' => hand2_friend.id, 'name' => hand2_friend.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => hand2_friend.phone_number.to_s }))
+      expect(json_body.detect { |x| x['id'] ==  hand3_friend.id }).to(eq({ 'id' => hand3_friend.id, 'name' => hand3_friend.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => hand3_friend.phone_number.to_s }))
     end
   end
 end

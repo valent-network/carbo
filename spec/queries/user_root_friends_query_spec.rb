@@ -18,7 +18,7 @@ RSpec.describe(UserRootFriendsForAdQuery) do
     expect(result.first['id']).to(eq(hand1.id))
     expect(result.first['name']).to(eq(hand1.name))
     expect(result.first['phone_number_id']).to(eq(hand1.phone_number_id))
-    expect(result.first['idx']).to(eq(1))
+    expect(result.first['is_first_hand']).to(be_truthy)
   end
 
   it 'hand2' do
@@ -28,7 +28,7 @@ RSpec.describe(UserRootFriendsForAdQuery) do
     expect(result.first['id']).to(eq(hand1.id))
     expect(result.first['name']).to(eq(hand1.name))
     expect(result.first['phone_number_id']).to(eq(hand2.phone_number_id))
-    expect(result.first['idx']).to(eq(2))
+    expect(result.first['is_first_hand']).to(be_falsey)
   end
 
   it 'hand3' do
@@ -38,7 +38,7 @@ RSpec.describe(UserRootFriendsForAdQuery) do
     expect(result.first['id']).to(eq(hand1.id))
     expect(result.first['name']).to(eq(hand1.name))
     expect(result.first['phone_number_id']).to(eq(hand3.phone_number_id))
-    expect(result.first['idx']).to(eq(3))
+    expect(result.first['is_first_hand']).to(be_falsey)
   end
 
   it 'shows hand3 if connects throuhg both hand2 and directly' do
