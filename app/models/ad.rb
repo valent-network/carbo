@@ -32,8 +32,8 @@ class Ad < ApplicationRecord
 
     friend = associated.detect(&:is_first_hand) || associated.first
 
-    # TODO: Fix N+1
-    associated.reject! { |f| UserContact.find(f.friend_id).phone_number_id == phone_number_id && !f.is_first_hand }
+    # TODO: Fix N+1 query
+    associated.reject! { |f| !f.is_first_hand && UserContact.exists?(id: f.friend_id, phone_number_id: phone_number_id) }
 
     @friend_name_and_total = {
       name: friend.friend_name,

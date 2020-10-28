@@ -10,7 +10,6 @@ module Api
         query = UserRootFriendsForAdQuery.new.call(current_user.id, ad.phone_number_id)
         friends = UserContact.select('friends.*').from("(#{query}) friends").to_a
         original_contacts = current_user.user_contacts.includes(phone_number: :user).where(id: friends.map(&:id)).to_a
-        # friends.select!(&:is_first_hand) if friends.detect(&:is_first_hand)
 
         payload = friends.map do |uc|
           original_contact = original_contacts.detect { |oc| oc.id == uc.id }
