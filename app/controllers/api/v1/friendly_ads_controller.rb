@@ -8,12 +8,15 @@ module Api
         ad = Ad.find(params[:id])
 
         query = UserRootFriendsForAdQuery.new.call(current_user.id, ad.phone_number_id)
-        friends = UserContact.select('friends.*').from("(#{query}) friends").to_a
+        friends = UserContact.select('friends.*')
+          .from("(#{query}) friends")
+          .joins("JOIN user_contacts AS my_contacts ON my_contacts.id = friends.id AND my_contacts.phone_number_id != #{current_user.phone_number_id}")
+          .where("friends.is_first_hand = TRUE OR my_contacts.phone_number_id != #{ad.phone_number_id}")
+          .to_a
         original_contacts = current_user.user_contacts.includes(phone_number: :user).where(id: friends.map(&:id)).to_a
 
         payload = friends.map do |uc|
           original_contact = original_contacts.detect { |oc| oc.id == uc.id }
-          next if original_contact.phone_number_id == ad.phone_number_id && !uc.is_first_hand
           {
             name: uc.name,
             id: uc.id,

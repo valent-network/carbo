@@ -10,6 +10,8 @@ class AdsWithFriendsQuery
         SELECT id, phone_number_id FROM ads WHERE phone_number_id IN (#{phones})
       ) AS ads
       JOIN (#{friends_relation_sql}) friends ON ads.phone_number_id = friends.phone_number_id
+      JOIN user_contacts AS my_contacts ON my_contacts.id = friends.id AND my_contacts.phone_number_id != #{user.phone_number_id}
+      WHERE (friends.is_first_hand = TRUE OR my_contacts.phone_number_id != ads.phone_number_id)
     SQL
   end
 end
