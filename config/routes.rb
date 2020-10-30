@@ -38,6 +38,9 @@ Rails.application.routes.draw do
         delete :delete_ad, on: :collection
       end
       resources :feed_ads, only: %i[index]
+      resources :chat_rooms, only: %w[create index]
+      resources :chat_room_users, only: %w[create destroy]
+      resources :messages, only: %w[create index]
     end
   end
 end

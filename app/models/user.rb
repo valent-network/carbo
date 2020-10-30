@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :ad_visits, dependent: :delete_all
   has_many :ad_favorites, dependent: :delete_all
   has_many :ads, through: :phone_number, dependent: false
+  has_many :chat_rooms, dependent: :destroy
+  has_many :chat_room_users, dependent: :destroy
 
   mount_base64_uploader :avatar, AvatarUploader
 

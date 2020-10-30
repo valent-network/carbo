@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class UserSerializer < ActiveModel::Serializer
-  attributes :name, :avatar, :phone_number, :user_contacts_count
+  attributes :id, :name, :avatar, :phone_number, :user_contacts_count
 
   def avatar
     object.avatar.url

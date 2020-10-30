@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 2020_10_31_204555) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_trgm"
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -89,10 +90,39 @@ ActiveRecord::Schema.define(version: 2020_10_31_204555) do
     t.index(["title"], name: "index_ads_sources_on_title", unique: true)
   end
 
+  create_table "chat_room_users", force: :cascade do |t|
+    t.bigint("chat_room_id", null: false)
+    t.bigint("user_id", null: false)
+    t.datetime("created_at", precision: 6, null: false)
+    t.datetime("updated_at", precision: 6, null: false)
+    t.index(["chat_room_id", "user_id"], name: "index_chat_room_users_on_chat_room_id_and_user_id", unique: true)
+    t.index(["chat_room_id"], name: "index_chat_room_users_on_chat_room_id")
+    t.index(["user_id"], name: "index_chat_room_users_on_user_id")
+  end
+
+  create_table "chat_rooms", force: :cascade do |t|
+    t.bigint("user_id", null: false)
+    t.bigint("ad_id", null: false)
+    t.datetime("created_at", precision: 6, null: false)
+    t.datetime("updated_at", precision: 6, null: false)
+    t.index(["ad_id"], name: "index_chat_rooms_on_ad_id")
+    t.index(["user_id"], name: "index_chat_rooms_on_user_id")
+  end
+
   create_table "demo_phone_numbers", force: :cascade do |t|
     t.bigint("phone_number_id", null: false)
     t.integer("demo_code")
     t.index(["phone_number_id"], name: "index_demo_phone_numbers_on_phone_number_id")
+  end
+
+  create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string("body", null: false)
+    t.boolean("system", default: false, null: false)
+    t.bigint("user_id")
+    t.bigint("chat_room_id", null: false)
+    t.datetime("created_at", null: false)
+    t.index(["chat_room_id"], name: "index_messages_on_chat_room_id")
+    t.index(["user_id"], name: "index_messages_on_user_id")
   end
 
   create_table "phone_numbers", force: :cascade do |t|
@@ -105,6 +135,7 @@ ActiveRecord::Schema.define(version: 2020_10_31_204555) do
     t.bigint("phone_number_id", null: false)
     t.string("name", limit: 100, null: false)
     t.index(["name"], name: "index_user_contacts_on_name", using: :gist)
+    t.index(["phone_number_id", "name", "user_id"], name: "user_contacts_phone_number_id_name_user_id_idx")
     t.index(["phone_number_id", "user_id"], name: "index_user_contacts_on_phone_number_id_and_user_id", unique: true)
     t.index(["user_id"], name: "index_user_contacts_on_user_id")
   end
@@ -128,6 +159,7 @@ ActiveRecord::Schema.define(version: 2020_10_31_204555) do
     t.datetime("created_at", precision: 6, null: false)
     t.datetime("updated_at", precision: 6, null: false)
     t.json("avatar")
+    t.index(["phone_number_id", "name"], name: "users_phone_number_id_name_idx")
     t.index(["phone_number_id"], name: "index_users_on_phone_number_id", unique: true)
   end
 
