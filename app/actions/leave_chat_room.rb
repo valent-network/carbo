@@ -12,9 +12,10 @@ class LeaveChatRoom
       chat_room.messages.create!(system: true, body: "#{initiator.name || 'Безымянный'} покинул чат")
     end
 
-    payload = Api::V1::ChatRoomSerializer.new(chat_room.reload).as_json
+    chat_room.reload
 
     chat_room.users.each do |u|
+      payload = Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: u.id).as_json
       ApplicationCable::UserChannel.broadcast_to(u, type: 'chat', chat: payload)
     end
 

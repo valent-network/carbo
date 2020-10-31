@@ -7,7 +7,7 @@ module Api
 
       def index
         chat_rooms = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: current_user }).order(updated_at: :desc).offset(params[:offset]).limit(10)
-        render(json: chat_rooms)
+        render(json: chat_rooms, current_user_id: current_user.id)
       end
 
       def create

@@ -12,9 +12,10 @@ class InitiateChatRoom
       chat_room.chat_room_users.create!(user: initiator)
       chat_room.chat_room_users.create!(user: user)
       chat_room.messages.create!(system: true, body: "#{initiator.name || 'Безымянный'} поинтересовался объявлением")
-      payload = Api::V1::ChatRoomSerializer.new(chat_room).as_json
-      ApplicationCable::UserChannel.broadcast_to(initiator, type: 'initiate_chat', chat: payload)
-      ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: payload)
+      initiator_payload = Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: initiator.id).as_json
+      user_payload = Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: user.id).as_json
+      ApplicationCable::UserChannel.broadcast_to(initiator, type: 'initiate_chat', chat: initiator_payload)
+      ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: user_payload)
     end
   end
 end

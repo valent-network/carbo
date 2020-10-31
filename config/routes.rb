@@ -40,7 +40,11 @@ Rails.application.routes.draw do
       resources :feed_ads, only: %i[index]
       resources :chat_rooms, only: %w[create index]
       resources :chat_room_users, only: %w[create destroy]
-      resources :messages, only: %w[create index]
+      resources :messages, only: %w[index]
+    end
+
+    namespace :v2 do
+      resources :friendly_ads, only: %i[show]
     end
   end
 end
