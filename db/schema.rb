@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_24_103951) do
+ActiveRecord::Schema.define(version: 2020_10_31_204555) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_trgm"
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 2020_10_24_103951) do
     t.index("((details ->> 'year'::text))", name: "index_ads_on_details_year")
     t.index(["address", "ads_source_id"], name: "index_ads_on_address_and_ads_source_id", unique: true)
     t.index(["phone_number_id", "created_at"], name: "index_ads_on_phone_number_id_and_created_at", order: { created_at: :desc }, where: "(deleted = false)")
+    t.index(["phone_number_id"], name: "index_ads_on_phone_number_id")
     t.index(["price"], name: "index_ads_on_price")
   end
 
