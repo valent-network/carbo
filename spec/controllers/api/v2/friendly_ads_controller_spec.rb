@@ -21,7 +21,7 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
     it 'hand1' do
       friend_contact = create(:user_contact, user: user, phone_number: ad.phone_number)
       expected_friends = [
-        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 1, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s, 'user_id' => nil },
+        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 1, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s, 'user_id' => nil, 'user_name' => nil },
       ]
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
@@ -32,7 +32,7 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
       friend_contact = create(:user_contact, user: user, phone_number: friend.phone_number)
       create(:user_contact, user: friend, phone_number: ad.phone_number)
       expected_friends = [
-        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s, 'user_id' => friend_contact.phone_number.user.id },
+        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s, 'user_id' => friend_contact.phone_number.user.id, 'user_name' => nil },
       ]
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
@@ -44,7 +44,7 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
       create(:user_contact, user: friend, phone_number: friend_of_friend.phone_number)
       create(:user_contact, user: friend_of_friend, phone_number: ad.phone_number)
       expected_friends = [
-        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s, 'user_id' => friend_contact.phone_number.user.id },
+        { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s, 'user_id' => friend_contact.phone_number.user.id, 'user_name' => nil },
       ]
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
@@ -63,9 +63,9 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
 
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
-      expect(json_body['friends'].detect { |x| x['id'] ==  hand1_friend.id }).to(eq({ 'id' => hand1_friend.id, 'name' => hand1_friend.name, 'idx' => 1, 'avatar' => nil, 'phone_number' => hand1_friend.phone_number.to_s, 'user_id' => nil }))
-      expect(json_body['friends'].detect { |x| x['id'] ==  hand2_friend.id }).to(eq({ 'id' => hand2_friend.id, 'name' => hand2_friend.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => hand2_friend.phone_number.to_s, 'user_id' => hand2_friend.phone_number.user.id }))
-      expect(json_body['friends'].detect { |x| x['id'] ==  hand3_friend.id }).to(eq({ 'id' => hand3_friend.id, 'name' => hand3_friend.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => hand3_friend.phone_number.to_s, 'user_id' => hand3_friend.phone_number.user.id }))
+      expect(json_body['friends'].detect { |x| x['id'] ==  hand1_friend.id }).to(eq({ 'id' => hand1_friend.id, 'name' => hand1_friend.name, 'idx' => 1, 'avatar' => nil, 'phone_number' => hand1_friend.phone_number.to_s, 'user_id' => nil, 'user_name' => nil }))
+      expect(json_body['friends'].detect { |x| x['id'] ==  hand2_friend.id }).to(eq({ 'id' => hand2_friend.id, 'name' => hand2_friend.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => hand2_friend.phone_number.to_s, 'user_id' => hand2_friend.phone_number.user.id, 'user_name' => nil }))
+      expect(json_body['friends'].detect { |x| x['id'] ==  hand3_friend.id }).to(eq({ 'id' => hand3_friend.id, 'name' => hand3_friend.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => hand3_friend.phone_number.to_s, 'user_id' => hand3_friend.phone_number.user.id, 'user_name' => nil }))
     end
   end
 end

@@ -3,7 +3,7 @@
 module Api
   module V1
     class AdFriendSerializer < ActiveModel::Serializer
-      attributes :id, :name, :idx, :avatar, :phone_number, :user_id
+      attributes :id, :name, :idx, :avatar, :phone_number, :user_id, :user_name
 
       def idx
         object.is_first_hand ? 1 : 2
@@ -19,6 +19,10 @@ module Api
 
       def user_id
         object.phone_number.user&.id
+      end
+
+      def user_name
+        object.phone_number.user&.name.presence
       end
     end
   end

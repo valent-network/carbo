@@ -1,18 +1,24 @@
 # frozen_string_literal: true
 class PostMessage
   def call(sender:, message:)
-    chat_room_user = sender.chat_room_users.find_by(chat_room_id: message[:chat_room_id])
-    raise unless chat_room_user
+    sender_chat_room_user = sender.chat_room_users.find_by(chat_room_id: message[:chat_id])
+    raise unless sender_chat_room_user
 
-    message = chat_room_user.chat_room.messages.create!(body: message[:text], id: message[:_id], user: sender, chat_room: chat_room_user.chat_room)
-    chat_room_user.chat_room.touch
-    chat_room_user.touch
+    message = sender_chat_room_user.chat_room.messages.create!(body: message[:text], id: message[:_id], user: sender, chat_room: sender_chat_room_user.chat_room)
+    sender_chat_room_user.chat_room.touch
+    sender_chat_room_user.touch
 
     message.chat_room.reload
 
-    message.chat_room.users.each do |user|
+    message.chat_room.chat_room_users.includes(:user).each do |chat_room_user|
+      user = chat_room_user.user
       payload = Api::V1::ChatRoomSerializer.new(message.chat_room, current_user_id: user.id).as_json
       ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: payload)
+      ApplicationCable::UserChannel.broadcast_to(user, type: 'unread_update', count: Message.unread_messages_for(user.id).count)
+
+      if chat_room_user.user_id != sender.id
+        SendChatMessagePushNotification.new.call(message: message, chat_room_user: chat_room_user)
+      end
     end
 
     message

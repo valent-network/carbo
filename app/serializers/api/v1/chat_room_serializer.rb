@@ -8,6 +8,10 @@ module Api
         "#{object.ad.details['maker']} #{object.ad.details['model']} #{object.ad.details['year']}"
       end
 
+      def updated_at
+        object.messages.order(:created_at).last.created_at
+      end
+
       def messages
         message = object.messages.order(created_at: :desc).first
         return [] unless message

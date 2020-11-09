@@ -17,11 +17,16 @@ module Api
       end
 
       def user
-        {
+        result = {
           _id: object.user&.id,
-          name: object.user ? (object.user.name || FFaker::Name::FIRST_NAMES_MALE[object.user.id]) : nil,
           avatar: object.user&.avatar&.url,
         }
+
+        if object.user
+          result[:name] = ChatRoomUser.select(:name).find_by(chat_room: object.chat_room, user: object.user).name
+        end
+
+        result
       end
 
       def pending
