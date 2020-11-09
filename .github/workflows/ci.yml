@@ -97,5 +97,8 @@ jobs:
     - name: Update worker image for k8 cluster
       run: kubectl set image --record deployment/sidekiq sidekiq=recario/server:${{steps.vars.outputs.tag}}
 
+    - name: Update worker image for k8 cluster
+      run: kubectl set image --record deployment/rpush rpush=recario/server:${{steps.vars.outputs.tag}}
+
     - name: Verify deployment
       run: kubectl rollout status deployment/rails

@@ -28,6 +28,7 @@ gem 'phonelib'
 gem 'carrierwave', '~> 2.0'
 gem 'carrierwave-base64'
 gem 'fog-aws'
+gem 'rpush'
 
 # 3-rd party gems
 gem 'turbosms'

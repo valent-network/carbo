@@ -202,6 +202,7 @@ GEM
     has_scope (0.7.2)
       actionpack (>= 4.1)
       activesupport (>= 4.1)
+    http-2 (0.10.2)
     httpi (2.4.5)
       rack
       socksify
@@ -222,6 +223,7 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     jsonapi-renderer (0.2.2)
+    jwt (2.2.2)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -256,6 +258,10 @@ GEM
     minitest (5.14.2)
     msgpack (1.3.3)
     multi_json (1.15.0)
+    net-http-persistent (4.0.0)
+      connection_pool (~> 2.2)
+    net-http2 (0.18.3)
+      http-2 (~> 0.10.1)
     nio4r (2.5.4)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
@@ -323,6 +329,15 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.4)
+    rpush (5.2.0)
+      activesupport (>= 5.0)
+      jwt (>= 1.5.6)
+      multi_json (~> 1.0)
+      net-http-persistent
+      net-http2 (~> 0.18, >= 0.18.3)
+      railties
+      rainbow
+      thor (>= 0.18.1, < 2.0)
     rspec-core (3.9.3)
       rspec-support (~> 3.9.3)
     rspec-expectations (3.9.2)
@@ -438,6 +453,7 @@ DEPENDENCIES
   puma (~> 4)
   rack-cors
   rails (~> 6)
+  rpush
   rspec-rails (~> 4)
   rubocop (= 0.81.0)
   rubocop-performance
