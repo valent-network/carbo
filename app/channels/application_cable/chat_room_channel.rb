@@ -5,7 +5,7 @@ module ApplicationCable
       @chat_room = ChatRoom.find(params[:chat_room_id])
       @chat_room_user = @chat_room.chat_room_users.find_by(user: current_user)
       @chat_room_user.touch
-      payload = Api::V1::ChatRoomSerializer.new(@chat_room, current_user_id: current_user.id).as_json
+      payload = Api::V1::ChatRoomSerializer.new(@chat_room.reload, current_user_id: current_user.id).as_json
       ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload)
       stream_for(@chat_room)
     end
