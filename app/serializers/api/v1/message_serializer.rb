@@ -23,7 +23,9 @@ module Api
         }
 
         if object.user
-          result[:name] = ChatRoomUser.select(:name).find_by(chat_room: object.chat_room, user: object.user).name
+          # TODO: Decide what to do with Message's ChatRoomUser and its #name
+          # after User left ChatRoom
+          result[:name] = ChatRoomUser.select(:name).find_by(chat_room: object.chat_room, user: object.user)&.name
         end
 
         result
