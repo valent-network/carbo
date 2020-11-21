@@ -29,7 +29,7 @@ module Api
 
       def device_params
         return {} unless params[:device]
-        params[:device].permit(:token, :os, :push_token)
+        params[:device].permit(:token, :os, :push_token, :build_version)
       end
     end
   end

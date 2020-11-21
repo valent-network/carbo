@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_05_174234) do
+ActiveRecord::Schema.define(version: 2020_11_21_180726) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_trgm"
@@ -218,6 +218,7 @@ ActiveRecord::Schema.define(version: 2020_11_05_174234) do
     t.datetime("updated_at", precision: 6, null: false)
     t.string("os")
     t.string("push_token")
+    t.string("build_version")
     t.index(["access_token"], name: "index_user_devices_on_access_token", unique: true)
     t.index(["device_id"], name: "index_user_devices_on_device_id", unique: true)
     t.index(["user_id"], name: "index_user_devices_on_user_id")
