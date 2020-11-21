@@ -86,5 +86,10 @@ RSpec.describe(UserFriendlyAdsQuery) do
       expected_ads = described_class.new.call(user: user, filters: { query: 'John' })
       expect(expected_ads).to(match_array([ad_hand1, ad_hand2]))
     end
+
+    it 'filters by contacts_mode' do
+      expected_ads = [ad_hand1_no_user, ad_hand1]
+      expect(described_class.new.call(user: user, filters: { contacts_mode: 'directFriends' })).to(match_array(expected_ads))
+    end
   end
 end

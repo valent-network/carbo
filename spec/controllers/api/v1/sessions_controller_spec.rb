@@ -7,7 +7,7 @@ RSpec.describe(Api::V1::SessionsController) do
 
   before do
     allow(subject).to(receive(:current_user).and_return(user))
-    allow(subject).to(receive(:current_device).and_return(user.user_devices.first))
+    allow(subject).to(receive(:current_device).and_return(create(:user_device, user: user)))
   end
 
   describe '#create' do

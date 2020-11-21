@@ -1,7 +1,9 @@
 # frozen_string_literal: true
+
 FactoryBot.define do
-  factory :message do
-    body { FFaker::Lorem.sentence }
+  factory :chat_room_user do
     chat_room
+    user
+    name { FFaker::Name.name }
   end
 end

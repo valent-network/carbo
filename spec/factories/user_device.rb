@@ -6,5 +6,6 @@ FactoryBot.define do
     device_id { SecureRandom.hex }
     access_token { SecureRandom.hex }
     os { %w[android ios].sample }
+    push_token { SecureRandom.hex }
   end
 end

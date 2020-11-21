@@ -3,7 +3,7 @@ development:
   url: <%= "redis://#{ENV['REDIS_SERVICE_HOST']}:6379" %>
 
 test:
-  adapter: redis
+  adapter: test
   url: <%= "redis://#{ENV['REDIS_SERVICE_HOST']}:6379" %>
 
 production:
