@@ -6,7 +6,7 @@ module Api
       before_action :require_auth
 
       def index
-        chat_room = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: current_user }).find(params[:chat_id])
+        chat_room = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: current_user }).find(params[:chat_room_id])
         messages = chat_room.messages.includes(:user).order(created_at: :desc).offset(params[:offset]).limit(20)
 
         payload = {

@@ -2,13 +2,13 @@
 module Api
   module V1
     class MessageSerializer < ActiveModel::Serializer
-      attributes :_id, :chat_id, :text, :user, :createdAt, :system, :pending
+      attributes :_id, :chat_room_id, :text, :user, :createdAt, :system, :pending
 
       def _id
         object.id
       end
 
-      def chat_id
+      def chat_room_id
         object.chat_room_id
       end
 

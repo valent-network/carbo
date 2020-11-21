@@ -15,13 +15,13 @@ RSpec.describe(PostMessage) do
   end
 
   def post_valid_message
-    described_class.new.call(sender: user, message: { chat_id: chat_room.id, text: FFaker::Lorem.sentence, _id: SecureRandom.uuid })
+    described_class.new.call(sender: user, message: { chat_room_id: chat_room.id, text: FFaker::Lorem.sentence, _id: SecureRandom.uuid })
   end
 
   context 'Fails when' do
     it 'Sender ChatRoomUser does not exist' do
       chat_room.chat_room_users.find_by(user: user).destroy
-      expect { described_class.new.call(sender: user, message: { chat_id: chat_room.id }) }.to(raise_error)
+      expect { described_class.new.call(sender: user, message: { chat_room_id: chat_room.id }) }.to(raise_error)
     end
   end
 

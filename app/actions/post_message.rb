@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class PostMessage
   def call(sender:, message:)
-    sender_chat_room_user = sender.chat_room_users.find_by(chat_room_id: message[:chat_id])
+    sender_chat_room_user = sender.chat_room_users.find_by(chat_room_id: message[:chat_room_id])
     raise unless sender_chat_room_user
 
     message = sender_chat_room_user.chat_room.messages.create!(body: message[:text], id: message[:_id], user: sender, chat_room: sender_chat_room_user.chat_room)

@@ -19,7 +19,7 @@ RSpec.describe(Api::V1::MessagesController) do
       expected_chat = JSON.parse(Api::V1::ChatRoomSerializer.new(chat_room.reload, current_user_id: user.id).to_json)
       expected_messages = JSON.parse(Api::V1::MessageSerializer.new(message).to_json)
 
-      get :index, params: { chat_id: chat_room.id }
+      get :index, params: { chat_room_id: chat_room.id }
 
       expect(json_body['chat']).to(eq(expected_chat))
       expect(json_body['messages']).to(eq([expected_messages]))
