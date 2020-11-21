@@ -16,9 +16,10 @@ class AddUserToChatRoom
       chat_room_user.save!
       chat_room.touch
       message.save!
+      initiator_chat_room_user.touch
     end
 
-    initiator_chat_room_user.touch
+    sender = SendChatMessagePushNotification.new
 
     chat_room.chat_room_users.includes(:user).each do |cru|
       user = cru.user
@@ -26,8 +27,10 @@ class AddUserToChatRoom
       ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: payload)
 
       if cru.user_id != initiator_user_id
-        SendChatMessagePushNotification.new.call(message: message, chat_room_user: cru)
+        sender.call(message: message, chat_room_user: cru)
       end
     end
+
+    chat_room_user
   end
 end

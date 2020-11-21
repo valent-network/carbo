@@ -10,8 +10,9 @@ class SendChatMessagePushNotification
     ad = chat_room_user.chat_room.ad
     title = "#{ad.details['maker']} #{ad.details['model']} #{ad.details['year']}"
     unread_count = Message.unread_messages_for(chat_room_user.user_id).count
+    user_devices_to_receive_notification = chat_room_user.user.user_devices.where.not(push_token: ['', nil]).where(os: %w[ios android])
 
-    chat_room_user.user.user_devices.where.not(push_token: ['', nil]).where(os: %w[ios android]).each do |device|
+    user_devices_to_receive_notification.each do |device|
       app = APPS[device.os]
       next unless app
 
@@ -43,5 +44,7 @@ class SendChatMessagePushNotification
         Rpush::Gcm::Notification.create(notification_params)
       end
     end
+
+    user_devices_to_receive_notification
   end
 end

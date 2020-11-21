@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module ApplicationCable
-  class ChatRoomChannel < ApplicationCable::Channel
+  class ChatRoomChannel < ApplicationChannel
     def subscribed
       @chat_room = ChatRoom.find(params[:chat_room_id])
       @chat_room_user = @chat_room.chat_room_users.find_by(user: current_user)

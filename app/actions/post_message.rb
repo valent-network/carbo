@@ -14,7 +14,9 @@ class PostMessage
       user = chat_room_user.user
       payload = Api::V1::ChatRoomSerializer.new(message.chat_room, current_user_id: user.id).as_json
       ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: payload)
-      ApplicationCable::UserChannel.broadcast_to(user, type: 'unread_update', count: Message.unread_messages_for(user.id).count)
+      if user != sender
+        ApplicationCable::UserChannel.broadcast_to(user, type: 'unread_update', count: Message.unread_messages_for(user.id).count)
+      end
 
       if chat_room_user.user_id != sender.id
         SendChatMessagePushNotification.new.call(message: message, chat_room_user: chat_room_user)

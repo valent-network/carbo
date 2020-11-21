@@ -31,6 +31,8 @@ module Api
       end
 
       def new_messages_count
+        return 0 unless @instance_options[:current_user_id]
+
         Message.joins("JOIN chat_room_users ON chat_room_users.chat_room_id = messages.chat_room_id AND chat_room_users.user_id = #{@instance_options[:current_user_id]} AND chat_room_users.updated_at < messages.created_at AND chat_room_users.chat_room_id = #{object.id}").count
       end
     end

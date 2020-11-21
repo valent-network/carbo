@@ -30,5 +30,6 @@ class LeaveChatRoom
     end
 
     chat_room.destroy if chat_room.chat_room_users.count.zero?
+    chat_room.chat_room_users
   end
 end

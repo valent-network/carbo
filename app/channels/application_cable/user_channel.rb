@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module ApplicationCable
-  class UserChannel < ApplicationCable::Channel
+  class UserChannel < ApplicationChannel
     def subscribed
       stream_for(current_user)
     end
