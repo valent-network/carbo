@@ -18,6 +18,7 @@ class SendChatMessagePushNotification
 
       case device.os
       when 'ios'
+        next if device.build_version.to_s.split('.').last.to_i < 9
         notification_params = {
           app: app,
           device_token: device.push_token,
@@ -29,6 +30,7 @@ class SendChatMessagePushNotification
 
         Rpush::Apns::Notification.create(notification_params)
       when 'android'
+        next if device.build_version.to_i < 26
         notification_params = {
           app: app,
           registration_ids: [device.push_token],

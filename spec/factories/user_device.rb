@@ -7,5 +7,9 @@ FactoryBot.define do
     access_token { SecureRandom.hex }
     os { %w[android ios].sample }
     push_token { SecureRandom.hex }
+
+    before(:create) do |user_device|
+      user_device.build_version ||= user_device.os == 'ios' ? '1.9' : '26'
+    end
   end
 end
