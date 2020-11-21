@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(Ad) do
+  actions :index
+
   index pagination_total: false do
     column :price
     column :created_at
