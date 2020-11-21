@@ -12,15 +12,14 @@ module Api
 
       def create
         ad = Ad.find(params[:ad_id])
-        user = current_user.user_contacts.joins(phone_number: :user).find_by(users: { id: params[:user_id] }).phone_number.user
         friends = UserContact.ad_friends_for_user(ad, current_user).includes(phone_number: :user)
-        chat_rooms = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: current_user }, ad: ad)
+        ad_chat_rooms = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: current_user }, ad: ad)
 
-        chat_room = InitiateChatRoom.new.call(initiator_user_id: current_user.id, ad_id: ad.id, user_id: user.id, user_name: params[:name])
+        chat_room = InitiateChatRoom.new.call(initiator_user_id: current_user.id, ad_id: ad.id, user_id: params[:user_id], user_name: params[:name])
         payload = {
           chat_room: Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: current_user.id).as_json,
           friends: ActiveModel::SerializableResource.new(friends, each_serializer: Api::V1::AdFriendSerializer),
-          chats: ActiveModel::SerializableResource.new(chat_rooms, each_serializer: Api::V1::ChatRoomSerializer, current_user_id: current_user.id),
+          chats: ActiveModel::SerializableResource.new(ad_chat_rooms, each_serializer: Api::V1::ChatRoomSerializer, current_user_id: current_user.id),
         }
 
         render(json: payload)

@@ -28,7 +28,7 @@ RSpec.describe(Api::V1::ChatRoomsController) do
   describe '#create' do
     it 'OK' do
       intro_name = FFaker::Name.name
-      expect_any_instance_of(InitiateChatRoom).to(receive(:call).with(initiator_user_id: user.id, ad_id: ad.id, user_id: other_user.id, user_name: intro_name).and_call_original)
+      expect_any_instance_of(InitiateChatRoom).to(receive(:call).with(initiator_user_id: user.id, ad_id: ad.id, user_id: other_user.id.to_s, user_name: intro_name).and_call_original)
       create(:user_contact, user: user, phone_number: other_user.phone_number)
       expect do
         post :create, params: { ad_id: ad.id, user_id: other_user.id, name: intro_name }

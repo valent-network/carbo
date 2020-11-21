@@ -7,9 +7,8 @@ module Api
 
       def create
         chat_room = ChatRoom.find(params[:chat_room_id])
-        user = User.find(params[:user_id])
 
-        AddUserToChatRoom.new.call(current_user.id, chat_room.id, user.id, params[:name])
+        AddUserToChatRoom.new.call(current_user.id, chat_room.id, params[:user_id], params[:name])
         friends = UserContact.ad_friends_for_user(chat_room.ad, current_user).includes(phone_number: :user)
         payload = {
           friends: ActiveModel::SerializableResource.new(friends, each_serializer: Api::V1::AdFriendSerializer),
