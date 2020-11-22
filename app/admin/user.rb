@@ -5,9 +5,9 @@ ActiveAdmin.register(User) do
 
   includes :phone_number
 
-  index pagination_total: false do
-    column :phone_number
+  index do
     column :name
+    column :phone_number
     column :created_at
     column :updated_at
     actions
