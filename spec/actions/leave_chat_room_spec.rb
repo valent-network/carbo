@@ -96,6 +96,7 @@ RSpec.describe(LeaveChatRoom) do
     it 'Broadcasts #chat and #unread_update events to all ChatRoomUsers through ActionCable (except of Initiator ChatRoomUser)' do
       expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(other_user, hash_including(type: 'chat')).once)
       expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(other_user, hash_including(type: 'unread_update')).once)
+      expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(user, hash_including(type: 'unread_update')).once)
 
       leave_valid_chat_room
     end
