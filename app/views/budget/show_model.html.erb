@@ -1,0 +1,15 @@
+<h1><%= "#{@models.first.maker} #{@models.first.model}" %></h1>
+
+<% @models.each do |model| %>
+  <div class='row'>
+    <div class='col-xs-12 text-left'>
+      <h2><%= model.year %></h2>
+      <%= "от #{model.min_price} $ до #{model.max_price} $" %>
+      <br/>
+      <%= "в среднем #{model.avg_price.to_i} $" %>
+      <br/>
+      <%= link_to('Подробнее'.html_safe, show_model_year_path(maker: model.maker, model: model.model, year: model.year)) %>
+      <hr/>
+    </div>
+  </div>
+<% end %>

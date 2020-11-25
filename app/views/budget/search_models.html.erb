@@ -1,0 +1,55 @@
+
+
+      <h1>Найти автомобили по своему бюджету</h1>
+
+      <form style="padding: 12px; border: #dedede solid 1px; border-radius: 4px" action='/budget'>
+
+        <div class='row'>
+          <div class='col-xs-12'>
+              <div class='form-group' style='text-align: left'>
+                <label>Бюджет (&pm; 20%):</label>
+                <div class='input-group'>
+                  <input style='text-align: left' name=price type=number step=100 pattern="\d+"class='form-control' value="<%= params[:price] %>" />
+                  <span class="input-group-addon">$</span>
+                </div>
+              </div>
+          </div>
+          <div class='col-xs-12'>
+            <button type=submit class='form-control' style="background: #8e44ad; color: #efefef; border: none">
+                Поиск
+              </button>
+            </div>
+        </div>
+      </form>
+
+      <% if @grouped.count.positive? %>
+        <br/>
+
+
+        <p>Найдено <%= @grouped.count %> производителей и <%= @grouped.map { |maker, models| models.count }.sum %> моделей</p>
+
+      <% end %>
+
+      <% @grouped.each do |maker, models| %>
+        <h1 class='text-left'><%= maker %></h1>
+
+        <% models.each do |model, stats| %>
+          <div class='row' style='border-bottom: #efefef solid 1px; '>
+            <div class='col-xs-10 text-left'>
+              <b><%= "#{maker} #{model}" %></b>
+              <%= stats[:min_year] == stats[:max_year] ? stats[:max_year] : "#{stats[:min_year]} – #{stats[:max_year]}" %>
+              <br/>
+              <span style="color: #85bb65">
+                <% if stats[:min_price] != stats[:max_price] %>
+                  от <%= stats[:min_price] %> $ до <%= stats[:max_price] %> $
+                <% else %>
+                  <%= stats[:min_price] %> $
+                <% end %>
+              </span>
+            </div>
+            <div class='col-xs-2'>
+              <%= link_to('&rarr;'.html_safe, show_model_path(maker: maker, model: model)) %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
