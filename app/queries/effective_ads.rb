@@ -16,6 +16,7 @@ class EffectiveAds
     ads = ads.where("details->>'carcass' IN (?)", filters[:carcasses]) if filters[:carcasses].present?
 
     if filters[:query].present? && should_search_query
+      # TODO: Add search by year
       ads = ads.where("CONCAT(details->>'maker', ' ',details->>'model') ILIKE :q OR details->>'model' ILIKE :q", q: "#{filters[:query].strip}%")
     end
 
