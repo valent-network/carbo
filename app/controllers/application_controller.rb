@@ -18,6 +18,10 @@ class ApplicationController < ActionController::Base
     render(json: payload)
   end
 
+  def multibutton
+    render('/multibutton', layout: false)
+  end
+
   protected
 
   attr_reader :current_user, :current_device, :current_ads_source

@@ -1,0 +1,37 @@
+%html
+  %head
+    %title Рекарио – Указатель
+    %link{ rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css", integrity: "sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==", crossorigin: "anonymous" }
+    :css
+      body { padding: 5%; font-family: Arial; background: #121212 }
+      ul { padding: 0 }
+      ul li { font-size: 16px; list-style: none; margin-bottom: 16px }
+      button { width: 100%; padding: 8px; background: #8e44dd; border: none; border-radius: 4px; color: #fff; cursor: pointer }
+      button:active { background: #5a11aa; }
+      a { color: #fff; text-decoration: none }
+      img { border-radius: 50%; text-align: center; box-shadow: 0 5px 25px 1px #555; width: 48; height: 48 }
+  %body
+    %center
+      %img{src: '/images/logo.png'}/
+    %ul
+      %li 
+        %button
+          = link_to('О Рекарио', root_path)
+      %li
+        %button
+          = link_to('Play Store', '/android')
+      %li
+        %button
+          = link_to('AppStore', '/ios')
+      %li
+        %button
+          = link_to('Наш Instagram', 'https://www.instagram.com/recar.io/')
+      %li
+        %button
+          = link_to('Новости в Telegram', '/news')
+      %li
+        %button
+          = link_to('Найти авто по своему бюджету', '/budget')
+      %li
+        %button
+          = link_to('Разработчикам', 'https://github.com/recario/server/')
