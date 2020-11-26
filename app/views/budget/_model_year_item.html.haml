@@ -1,0 +1,15 @@
+.row.model-year-item
+  .col-10.text-left
+    %b= "#{maker} #{model}"
+    = stats[:min_year] == stats[:max_year] ? stats[:max_year] : "#{stats[:min_year]} – #{stats[:max_year]}"
+    %br/
+    %span.price
+      - if stats[:min_price] != stats[:max_price]
+        от
+        %span.price #{stats[:min_price]}&nbsp;$
+        до
+        %span.price #{stats[:max_price]}&nbsp;$
+      - else
+        %span.price #{stats[:min_price]} $
+  .col-2
+    = link_to('&rarr;'.html_safe, show_model_path(maker: maker, model: model), class: 'show-more-link')

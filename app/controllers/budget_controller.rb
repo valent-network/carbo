@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 class BudgetController < ApplicationController
   def search_models
-    min = params[:price].to_i * 0.8
-    max = params[:price].to_i * 1.2
+    price = params[:price].presence || %w[10000 20000 50000 100000].sample
+    min = price.to_i * 0.9
+    max = price.to_i * 1.2
     @grouped = AdsGroupedByMakerModelYear.by_budget(min, max)
 
-    if request.path == "/budget/#{params[:price]}" || params[:price].to_i.zero?
+    if request.path == "/budget/#{price}" || price.to_i.zero?
       render('/budget/search_models', layout: 'widgets')
     else
-      redirect_to("/budget/#{params[:price]}")
+      redirect_to("/budget/#{price}")
     end
   end
 
@@ -19,7 +20,13 @@ class BudgetController < ApplicationController
 
   def show_model_year
     @model_year = AdsGroupedByMakerModelYear.where('LOWER(maker) = :maker AND LOWER(model) = :model AND year = :year', maker: params[:maker].downcase, model: params[:model].downcase, year: params[:year]).first
-    @ads = Ad.where("details->>'maker' = ? AND details->>'model' = ? AND details->>'year' = ?", params[:maker], params[:model], params[:year])
+    raise ActiveRecord::RecordNotFound unless @model_year
+    @ads = Ad.where("LOWER(details->>'maker') = ? AND LOWER(details->>'model') = ? AND details->>'year' = ?", params[:maker].downcase, params[:model].downcase, params[:year])
+    @ads_grouped_by_region = @ads.group("details->'region'->>0").count.sort_by(&:last).reverse
     render('/budget/show_model_year', layout: 'widgets')
+  end
+
+  def show_ads
+    render('/budget/show_ads', layout: 'widgets')
   end
 end

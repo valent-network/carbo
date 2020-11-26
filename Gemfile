@@ -29,6 +29,7 @@ gem 'carrierwave', '~> 2.0'
 gem 'carrierwave-base64'
 gem 'fog-aws'
 gem 'rpush'
+gem "haml-rails", "~> 1.0.0"
 
 # 3-rd party gems
 gem 'turbosms'

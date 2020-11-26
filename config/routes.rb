@@ -11,9 +11,10 @@ Rails.application.routes.draw do
 
   get :health, to: ->(_env) { [200, {}, [{ build: ENV.fetch('GIT_COMMIT') { git_commit } }.to_json]] }
 
+  get '/budget/show_ads', to: 'budget#show_ads', as: :show_budget_ads
   get '/budget/:maker/:model', to: 'budget#show_model', as: :show_model
   get '/budget/:maker/:model/:year', to: 'budget#show_model_year', as: :show_model_year
-  get '/budget/(:price)', to: 'budget#search_models'
+  get '/budget/(:price)', to: 'budget#search_models', as: :search_models
 
   get :ios, to: redirect('https://apps.apple.com/us/app/id1458212603')
   get :android, to: redirect('https://play.google.com/store/apps/details?id=com.viktorvsk.recario')

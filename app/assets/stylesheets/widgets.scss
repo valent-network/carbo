@@ -1,0 +1,135 @@
+//= require bootstrap-4.0.0
+
+@media (min-width: 767px) {
+  .container {
+    padding-bottom: 3em;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .navs a img {
+    height: 48px;
+    margin: 0 4px;
+  }
+
+  .navs a.btn {
+    padding: 0 12px;
+    margin: 0;
+  }
+}
+
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-top: 72px;
+  margin-bottom: 96px;
+}
+
+.main-image {
+  width: 100%;
+}
+
+.navs .btn-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+.nav-wrapper {
+  background: #121212;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  box-shadow: 5px 15px 150px #000;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 5px 25px 1px #111;
+
+}
+
+.navs img {
+  height: 64px;
+  border-radius: 50%;
+  box-shadow: 0 5px 25px 1px #555;
+  margin-left: 16px;
+}
+
+.navs {
+  height: 64px;
+  display: flex;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.push-right {
+  margin-left: auto;
+  padding-right:16px;
+
+  .btn {
+    background: #8344dd;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.btn-open-app {
+  background: rgb(0,0,49);
+  color: rgb(51, 122, 183);
+  font-weight: bold;
+}
+
+.btn-open-app:hover {
+  color: #fff;
+}
+
+.breadcrumbs-back {
+  text-align: left;
+}
+
+.model-year-item {
+  border-bottom: #efefef solid 1px;
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.show-more-link {
+  font-size: 24px;
+}
+
+button[type=submit] {
+  background: #8e44ad;
+  color: #efefef;
+  border: none;
+}
+
+.price {
+  color: #85bb65;
+}
+
+.big-icon {
+  font-size: 48px;
+  margin-right: 16px;
+  color: #8344ad;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #121212;
+  padding: 16px;
+}
+

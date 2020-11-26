@@ -39,5 +39,6 @@ module Recario
     config.middleware.use(Rack::MethodOverride)
     config.middleware.use(ActionDispatch::Cookies)
     config.middleware.use(ActionDispatch::Session::CookieStore)
+    config.assets.precompile += %w(widgets.css)
   end
 end

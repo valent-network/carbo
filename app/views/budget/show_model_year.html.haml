@@ -1,0 +1,44 @@
+= link_to("&larr; #{@model_year.maker} #{@model_year.model}".html_safe, show_model_path(maker: @model_year.maker, model: @model_year.model), class: 'breadcrumbs-back')
+%h1= "#{@model_year.maker} #{@model_year.model} #{@model_year.year}"
+- if @ads_grouped_by_region.sum(&:last) == 1
+  Всего одно предложение
+  %b #{@model_year.maker} #{@model_year.model} #{@model_year.year}
+  в
+  %b #{@ads_grouped_by_region.first.first}
+  за
+  %b.price #{@model_year.min_price}&nbsp;$
+  %br
+  %br
+  = link_to('Посмотреть предложения', show_budget_ads_path, class: 'btn btn-primary btn-block')
+- else
+  %p
+    Цена на
+    %b #{@model_year.maker} #{@model_year.model} #{@model_year.year} года
+    начинается от
+    %b.price #{@model_year.min_price}&nbsp;$
+    и доходит до
+    %b.price #{@model_year.max_price}&nbsp;$
+  %p
+    В среднем
+    %b #{@model_year.maker} #{@model_year.model} #{@model_year.year} года
+    стоит
+    %b.price #{@model_year.avg_price.to_i}&nbsp;$
+  %p
+    В продаже сейчас находится
+    %b= @ads_grouped_by_region.sum(&:last)
+    %b #{@model_year.maker} #{@model_year.model} #{@model_year.year} года
+
+  %p
+    Больше всего в
+    %b= @ads_grouped_by_region.first.first
+    –
+    %b= @ads_grouped_by_region.first.last
+    предложений.
+  = link_to('Посмотреть предложения', show_budget_ads_path, class: 'btn btn-primary btn-block')
+  %br
+  %h3 Сейчас в продаже:
+  %ul
+    - @ads_grouped_by_region.each do |region, ads_count|
+      %li.text-left
+        = region
+        – #{ads_count} предложений

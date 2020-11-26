@@ -1,0 +1,292 @@
+!!!
+/[if IE 7] <html class="no-js ie7 oldie" lang="en-US">
+/[if IE 8] <html class="no-js ie8 oldie" lang="en-US">
+/ [if gt IE 8]><!
+%html{:lang => "en"}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    / TITLE OF SITE
+    %title Рекарио – Установить приложение удобной покупки и продажи вашего автомобиля
+    / Meta
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "Покупка и продажа автомобилей в Украине через друзей и знакомых", :name => "description"}/
+    %meta{:content => "автомобили, машины, купить машину, продать машину, купить авто, продать авто", :name => "keywords"}/
+    %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}/
+    / FAV AND TOUCH ICONS
+    %link{:href => "/apple-touch-icon.png", :rel => "apple-touch-icon", :sizes => "180x180"}/
+    %link{:href => "/favicon-32x32.png", :rel => "icon", :sizes => "32x32", :type => "image/png"}/
+    %link{:href => "/favicon-16x16.png", :rel => "icon", :sizes => "16x16", :type => "image/png"}/
+    %link{:href => "/site.webmanifest", :rel => "manifest"}/
+    / Social OG tags
+    %meta{:content => "Рекарио – покупка и продажа автомобилей в Украине через друзей и знакомых", :property => "og:title"}/
+    %meta{:content => "company", :property => "og:type"}/
+    %meta{:content => "https://recar.io", :property => "og:url"}/
+    %meta{:content => "https://recar.io/images/background-1.jpg", :property => "og:image"}/
+    %meta{:content => "reCar.io", :property => "og:site_name"}/
+    %meta{:content => "Покупка и продажа автомобилей в Украине через друзей и знакомых", :property => "og:description"}/
+    / BOOTSTRAP CSS
+    %link{:crossorigin => "anonymous", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :integrity => "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", :rel => "stylesheet"}/
+    %link{:crossorigin => "anonymous", :href => "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", :integrity => "sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN", :rel => "stylesheet"}/
+    / FONT ICONS
+    %link{:href => "icons/rik-icons/styles.css", :rel => "stylesheet"}/
+    / COUSTOM CSS link
+    %link{:href => "css/style.css", :rel => "stylesheet"}/
+    %link{:href => "css/responsive.css", :rel => "stylesheet"}/
+    / COLOR
+    %link#color-scheme{:href => "css/colors/color-1.css", :rel => "stylesheet", :type => "text/css"}/
+    /[if lt IE 9]
+      <script src="js/plagin-js/html5shiv.js"></script>
+      <script src="js/plagin-js/respond.min.js"></script>
+  %body
+    /
+      Start: Header Section
+      \================================
+    %section#header.header-section-1.bg-1.header-js
+      .overlay-color
+        .container
+          .row.section-separator.sp-top
+            .part-1.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+              .part-inner.text-center.mr-small
+                / Main Logo
+                %a.logo-link{:href => "/"}
+                  %img.img-responsive.logo{:alt => "", :src => "/images/logo.png"}/
+                / Header SubTitle Goes here
+                %h1.title Так будут покупать и продавать автомобили в 2021
+                / Button Area
+                .btn-form.m-t-40.btn-scroll
+                  %a.btn.btn-fill{:href => "#download"} УСТАНОВИТЬ ПРИЛОЖЕНИЕ
+                / Mobile App Image
+                .image-group
+                  /
+                    <img src="images/home-left.jpg" alt="" class="home-left img-responsive">
+                    <img src="images/home-center.jpg" alt="" class="home-center img-responsive">
+                    <img src="images/home-left.jpg" alt="" class="home-right img-responsive">
+            / End: .part-1
+          / End: .row
+        / End: .container
+      / End: .overlay-color
+    /
+      End: Header Section
+      \================================
+    /
+      Start: Features Section 1
+      \==================================
+    %section#features.features-section-1.section
+      .container
+        .row.section-separator
+          / Start: Section Heading
+          .section-header.col-md-10.col-md-offset-1
+            %h2.section-heading Спокойно, выгодно, молодёжно
+            %p.sub-title Телефонная книга – источник приятных сделок и скидок. Просто нужно использовать её полной вместе с Рекарио
+          / End: Section Heading
+          .part-1.col-xs-12
+            .row
+              .vertical-middle.col-md-4.col-sm-6.col-sm-offset-3
+                / Each Features Item
+                .feature-item.text-center
+                  .gradient-border
+                    %i.icon.features-icon.gradient-text.icon-social-myspace-circle
+                  .feature-content.text-center
+                    %h3.title Друзья уже здесь
+                    %p Объявления уже в Рекарио. Зарегистрируйся и посмотри, кто из друзей продаёт автомобиль. Пригласи друзей, чтобы увидеть общих знакомых
+                / End: .feature-item
+                / Each Features Item
+                .feature-item.text-center
+                  .gradient-border
+                    %i.icon.features-icon.gradient-text.icon-icon-currency
+                  .feature-content.text-center
+                    %h3.title Друзья уступят
+                    %p Часто мимолетная встреча на автомойке или СТО плюс пятиминутный разговор может вылиться в: «Выставил за 20,000 $, но тебе отдам за 18,000 $ и зимнюю резину в подарок», замечали?
+                / End: .feature-item
+              / End: .col-md-4
+              .vertical-middle.col-md-4
+                / Features Image
+                .features-image
+                  %img{:alt => "", :src => "images/screen-ad.jpg"}/
+                / End: .features-image
+              / End: .col-md-4
+              .vertical-middle.col-md-4.col-sm-6.col-sm-offset-3
+                / Each Features Item
+                .feature-item.text-center
+                  .gradient-border
+                    %i.icon.features-icon.gradient-text.icon-icon-like
+                  .feature-content.text-center
+                    %h3.title Друзья расскажут правду
+                    %p Так уж принято, что сват брата жены друга заслуживает знать, что на холостых гуляют обороты. Но для незнакомых – не бит, не крашен
+                / End: .feature-item
+                / Each Features Item
+                .feature-item.text-center
+                  .gradient-border
+                    %i.icon.features-icon.gradient-text.icon-icon-shield-alt
+                  .feature-content.text-center
+                    %h3.title Друзья не сдадут
+                    %p Надоел спам через 15 минут после публикации объявления? Перед продажей покупаешь новый номер? Не переживай, телефон не засветится – друзья его знают, а остальное решит Рекарио
+                / End: .feature-item
+              / End: .col-md-4
+            / End: .row
+          / End: .part-1
+        / End: .row
+      / End: .container
+    /
+      End: Features Section 1
+      \==================================
+    /
+      Start: Features Section 2
+      \==================================
+    %section#how-it-works.features-section-2.bg-2.section
+      .overlay-color
+        .container
+          .row.section-separator.light-text
+            / Start: Section Heading
+            .section-header.col-md-10.col-md-offset-1
+              %h2.section-heading Как это работает
+              %p.sub-title Помнишь, как рекомендация общих знакомых сбивала цену для покупателя и экономила нервы продавцу, а?
+            / End: Section Heading
+            .part-1.col-xs-12
+              .row
+                .features-item.text-center.col-sm-3.col-xs-12
+                  .icon-outer
+                    %i.icon.features-icon.gradient-text-full.icon-icon-house
+                  %h4.title.m-t-30 Установи приложение
+                .features-item.text-center.col-sm-3.col-xs-12
+                  .icon-outer
+                    %i.icon.features-icon.gradient-text-full.icon-icon-heart
+                  %h4.title.m-t-30 Найди объявление
+                .features-item.text-center.col-sm-3.col-xs-12
+                  .icon-outer
+                    %i.icon.features-icon.gradient-text-full.icon-icon-group
+                  %h4.title.m-t-30 Пробей через друга
+                .features-item.text-center.col-sm-3.col-xs-12
+                  .icon-outer
+                    %i.icon.features-icon.gradient-text-full.icon-icon-check-alt
+                  %h4.title.m-t-30 Купи со скидкой
+              / End: .row
+            / End: .part-1
+          / End: .row
+        / End: .container
+    /
+      End: Features Section 2
+      \==================================
+    /
+      Start: Features Section 3
+      \==================================
+    %section#describe.features-section-3.section.bg-dark
+      .container
+        .row.section-separator.v-center
+          .features-image.col-md-6.col-md-push-6
+            %img.img-responsive.pull-right{:alt => "App Picture", :height => "200", :src => "images/screen-feed.jpg"}/
+          .features-content.m-t-50.col-md-6.col-md-pull-6
+            / Start: Section Heading
+            .section-header.text-left.m-b-30
+              %h2.section-heading.gradient-text-full Друг лучше перекупа
+            / End: Section Heading
+            .detail
+              %p Любой посредник хочет заработать. На покупателе, продавце или сразу на обоих. Хорошо, когда посредник вкладывает что-то в стоимость – срочно выкупает автомобиль у хозяина, проводит ТО перед продажей, честно указывает все реальные косяки. Но мы в Украине...
+              %p По теории шести рукопожатий все мы друг друга знаем. Очень часто в реальной жизни так и происходит (особенно, когда покупаешь машину в своем городе). Но всплывает это потом, а деньги уже уплачены, нервы на торг не вернуть.
+              %p Когда между покупателем и продавцом есть общие друзья – цена обычно снижается без сожалений со стороны продавца, а покупатель перестает искать, за что бы зацепиться для торга. Все счастливы и довольны и даже в черный список не нужно добавлять покупателя.
+            / End: .detail
+            / Button Area
+            .btn-form.m-t-50.btn-scroll
+              %a.btn.btn-fill{:href => "#download"} УСТАНОВИТЬ ПРИЛОЖЕНИЕ
+              /
+                <a href="https://vimeo.com/45830194" class="btn btn-icon left-icon btn-border popup-video">
+                <i class="icon icon-arrow-triangle-right-alt2"></i>
+                <span class="btn-text">WATCH VIDEO</span>
+                </a>
+          / End: .features-content
+        / End: .row
+      / End: .container
+    /
+      End: Features Section 3
+      \==================================
+    /
+      Start: Section Separator
+      \==================================
+    %section.Section-separator
+      .container
+        %hr.section-separator-line/
+        / Separatior Two Section
+      / End: .container
+    /
+      End: Section Separator
+      \==================================
+    /
+      Start: Features Section 5
+      \==================================
+    %section#download.features-section-5.testimonials-1.bg-4.section
+      .overlay-color
+        .container
+          .row.section-separator.light-text
+            / Start: Section Heading
+            .section-header.col-md-10.col-md-offset-1
+              %h2.section-heading Установи приложение и поехали
+              %p.sub-title
+                Рекарио сейчас знает общих знакомых для
+                %b= @total_count
+                объявлений. Присоединяйся, зови друзей и будет миллион!
+            / End: Section Heading
+            .clearfix
+            / Start: Download Button
+            .btn-form.btn-scroll.text-center
+              / Button Area
+              %a.btn.btn-icon.left-icon.btn-fill{:href => "/ios"}
+                %i.icon.icon-app-store
+                %span.btn-text App Store
+              / End: .apple
+              %a.btn.btn-icon.left-icon.btn-fill{:href => "/android"}
+                %i.icon.icon-google-play
+                %span.btn-text Google Play
+              / End: .android
+            / End: Download Button
+          / End: .row
+        / End: .container
+      / End: .overlay-color-full
+    /
+      End: Features Section 5
+      \==================================
+    /
+      Start: Features Section 3
+      \==================================
+    %section#describe-2.features-section-3.section
+      .container
+        .row.section-separator.v-center
+          .features-image.col-md-6
+            %img.img-responsive.pull-left{:alt => "App Image", :src => "images/screen-chat.jpg"}/
+          .features-content.m-t-50.col-md-6
+            / Start: Section Heading
+            .section-header.text-left.m-b-30
+              %h2.section-heading.gradient-text-full Не имей 100 рублей…
+            / End: Section Heading
+            .detail
+              %p Чем больше людей присоединяется к Рекарио, тем проще найти общих друзей для покупки своей следующей машины.
+              %p Даже если ты не интересуешься автомобилями, не хочешь менять Ту Единственную или не признаешь вторичку – присоединившись к нам, ты поможешь своим друзьям в будущем!
+              %p Чем проще будет купить машину без посредников – тем чаще мы будем менять машины. Чем чаще люди меняют машины, тем новее становится автопарк страны, тем лучшую машину можно купить за ту же цену.
+              %a.btn.btn-fill{:href => "#download"} УСТАНОВИТЬ ПРИЛОЖЕНИЕ
+            / End: .detail
+          / End: .features-content
+        / End: .row
+      / End: .container
+    /
+      End: Features Section 3
+      \==================================
+    .nav-footer
+      %a{:href => "/news"}
+        %i.gradient-text-full.fa.fa-telegram
+      %a{:href => "/ios"}
+        %i.gradient-text-full.fa.fa-apple
+      %a{:href => "/android"}
+        %i.gradient-text-full.fa.fa-android
+      %a{:href => "https://github.com/recario/server/"}
+        %i.gradient-text-full.fa.fa-github
+      %a{:href => "https://www.instagram.com/recar.io/"}
+        %i.gradient-text-full.fa.fa-instagram
+    /
+      Social nav
+      
+      \==================================
+    /
+      SCRIPTS
+      \========================================
+    %script{:crossorigin => "anonymous", :integrity => "sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=", :src => "https://code.jquery.com/jquery-1.12.4.min.js"}
+    %script{:crossorigin => "anonymous", :integrity => "sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa", :src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+    %script{:src => "js/plagin-js/plagin.js"}
