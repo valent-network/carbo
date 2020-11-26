@@ -1,28 +1,31 @@
 %h1.text-center Найти автомобили по своему бюджету
-%form{:action => "/budget", :style => "padding: 12px; border: #dedede solid 1px; border-radius: 4px"}
-  .row
-    .col-12
-      .form-group
-        %label Бюджет (&pm; 20%):
-        .input-group.mb-3
-          %input.form-control{:name => "price", :pattern => '\d+', :step => "100", :type => "number", :value => "#{params[:price]}"}/
-          .input-group-append
-            %span.input-group-text $
-    .col-12
-      %button.form-control{:type => "submit"} Поиск
-- if @grouped.count.positive?
-  %p.text-left
-    Найдено
-    %b #{@grouped.count}
-    производителей и
-    %b #{@grouped.map { |maker, models| models.count }.sum}
-    моделей. Показаны результаты в диапазоне цен от
-    %span.price #{(params[:price].to_i * 0.9).to_i}&nbsp;$
-    &nbsp;до&nbsp;
-    %span.price #{(params[:price].to_i * 1.2).to_i}&nbsp;$
+.col-md-6.offset-md-3
+  %form.budget-form{:action => "/budget"}
+    .row
+      .col-12
+        .form-group
+          %label Бюджет (&pm; 20%):
+          .input-group.mb-3
+            %input.form-control{:name => "price", :pattern => '\d+', :step => "100", :type => "number", :value => "#{params[:price]}"}/
+            .input-group-append
+              %span.input-group-text $
+      .col-12
+        %button.form-control{:type => "submit"} Поиск
+  - if @grouped.count.positive?
+    %p
+      Найдено
+      %b #{@grouped.count}
+      производителей и
+      %b #{@grouped.map { |maker, models| models.count }.sum}
+      моделей. Показаны результаты в диапазоне цен от
+      %span.price #{(params[:price].to_i * 0.9).to_i}&nbsp;$
+      &nbsp;до&nbsp;
+      %span.price #{(params[:price].to_i * 1.2).to_i}&nbsp;$
 
-- @grouped.each do |maker, models|
-  %h1.text-left= maker
-  - models.each do |model, stats|
-    = render(partial: 'model_year_item', locals: { maker: maker, model: model, stats: stats } )
-  %br/
+.row
+  .col-md-6.offset-md-3.col-xs-12
+    - @grouped.each do |maker, models|
+      %h1= maker
+      - models.each do |model, stats|
+        = render(partial: 'model_year_item', locals: { maker: maker, model: model, stats: stats } )
+      %br/

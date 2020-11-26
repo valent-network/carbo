@@ -2,27 +2,26 @@
 %html
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-    / TITLE OF SITE
-    %title Рекарио – Установить приложение удобной покупки и продажи вашего автомобиля
-    / Meta
+
+    %title= @meta_title
+
     %meta{:charset => "utf-8"}/
-    %meta{:content => "Покупка и продажа автомобилей в Украине через друзей и знакомых", :name => "description"}/
-    %meta{:content => "автомобили, машины, купить машину, продать машину, купить авто, продать авто", :name => "keywords"}/
+    %meta{:content => @meta_description, :name => "description"}/
+    %meta{:content => @meta_keywords, :name => "keywords"}/
     %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}/
-    / FAV AND TOUCH ICONS
+
     %link{href: "/apple-touch-icon.png", :rel => "apple-touch-icon", :sizes => "180x180"}/
     %link{href: "/favicon-32x32.png", :rel => "icon", :sizes => "32x32", :type => "image/png"}/
     %link{href: "/favicon-16x16.png", :rel => "icon", :sizes => "16x16", :type => "image/png"}/
     %link{href: "/site.webmanifest", :rel => "manifest"}/
     %link{:crossorigin => "anonymous", :href => "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", :integrity => "sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN", :rel => "stylesheet"}
 
-    / Social OG tags
-    %meta{:content => "Рекарио – покупка и продажа автомобилей в Украине через друзей и знакомых", :property => "og:title"}/
+    %meta{:content => @meta_og_title, :property => "og:title"}/
     %meta{:content => "company", :property => "og:type"}/
     %meta{:content => "https://recar.io", :property => "og:url"}/
     %meta{:content => "https://recar.io/images/background-1.jpg", :property => "og:image"}/
     %meta{:content => "reCar.io", :property => "og:site_name"}/
-    %meta{:content => "Покупка и продажа автомобилей в Украине через друзей и знакомых", :property => "og:description"}/
+    %meta{:content => @meta_og_description, :property => "og:description"}/
     = stylesheet_link_tag('widgets')
   %body
     .nav-wrapper
@@ -39,8 +38,7 @@
             %i.fa.fa-android
             &nbsp;
             %span.btn-text Play Store
-    .container
-      = yield
+    .container-fluid= yield
     .footer
       %a{href: "/news"}
         %i.fa.fa-telegram.big-icon

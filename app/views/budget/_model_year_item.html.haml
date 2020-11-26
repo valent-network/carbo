@@ -11,5 +11,5 @@
         %span.price #{stats[:max_price]}&nbsp;$
       - else
         %span.price #{stats[:min_price]} $
-  .col-2
+  .col-2.text-right
     = link_to('&rarr;'.html_safe, show_model_path(maker: maker, model: model), class: 'show-more-link')

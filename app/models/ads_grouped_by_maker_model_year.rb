@@ -4,7 +4,7 @@ class AdsGroupedByMakerModelYear < ApplicationRecord
   self.table_name = 'ads_grouped_by_maker_model_year'
 
   def self.by_budget(min, max)
-    where('min_price >= ? AND max_price <= ?', min, max)
+    where('? BETWEEN min_price AND max_price OR ? BETWEEN min_price AND max_price', min, max)
       .group_by(&:maker)
       .transform_values do |all_maker_models|
         all_maker_models.group_by(&:model).transform_values do |models|
