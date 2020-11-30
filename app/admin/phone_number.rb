@@ -3,10 +3,11 @@
 ActiveAdmin.register(PhoneNumber) do
   actions :index
 
-  scope :having_one_ad
-  scope :having_two_or_three_ads
-  scope :having_four_to_ten_ads
-  scope :having_more_ten_ads
+  scope :all, default: true, show_count: false
+  scope :having_one_ad,  show_count: false
+  scope :having_two_or_three_ads,  show_count: false
+  scope :having_four_to_ten_ads,  show_count: false
+  scope :having_more_ten_ads,  show_count: false
 
   index do
     column :full_number
