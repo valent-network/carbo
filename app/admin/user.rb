@@ -5,7 +5,11 @@ ActiveAdmin.register(User) do
 
   includes :phone_number
 
+  scope :all, default: true
+  scope :no_contacts, -> () { joins(:user_contacts).where(user_contacts: { id: nil }) }
+
   index do
+    column :id
     column :name
     column :phone_number
     column :created_at

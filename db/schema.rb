@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_26_214710) do
+ActiveRecord::Schema.define(version: 2020_11_30_223551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_trgm"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2020_11_26_214710) do
     t.string("address", null: false)
     t.datetime("created_at", precision: 6, null: false)
     t.datetime("updated_at", precision: 6, null: false)
+    t.index("(((details -> 'region'::text) ->> 0)), ((details ->> 'year'::text)), ((details ->> 'maker'::text)), ((details ->> 'model'::text))", name: "details_region_year_maker_model_index")
     t.index("((details ->> 'carcass'::text))", name: "index_ads_on_details_carcass")
     t.index("((details ->> 'fuel'::text))", name: "index_ads_on_details_fuel")
     t.index("((details ->> 'gear'::text))", name: "index_ads_on_details_gear")

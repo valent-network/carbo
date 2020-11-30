@@ -14,7 +14,24 @@ class PhoneNumber < ApplicationRecord
 
   delegate :demo, :demo=, to: :demo_phone_number, allow_nil: true
 
+  scope :having_one_ad, -> { joins(:ads).group('phone_numbers.id').having('COUNT(ads.*) = 1') }
+  scope :having_two_or_three_ads, -> { joins(:ads).group('phone_numbers.id').having('COUNT(ads.*) BETWEEN 2 AND 3') }
+  scope :having_four_to_ten_ads, -> { joins(:ads).group('phone_numbers.id').having('COUNT(ads.*) BETWEEN 4 AND 10') }
+  scope :having_more_ten_ads, -> { joins(:ads).group('phone_numbers.id').having('COUNT(ads.*) >= 10') }
+
   scope :by_full_number, ->(phone_number) { where(full_number: Phonelib.parse(phone_number).national.to_s.gsub(/\s/, '').to_i) }
+
+  def self.by_region(region_name)
+    joins(:ads).where("ads.details->'region'->>0 = ?", region_name)
+  end
+
+  def self.not_registered_only(_value)
+    where.not(id: User.select(:phone_number_id))
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+    [:by_region, :not_registered_only]
+  end
 
   def to_s
     "+380#{full_number}"

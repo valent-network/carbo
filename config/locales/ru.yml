@@ -2,6 +2,7 @@ ru:
   time:
     formats:
       long: "%Y-%m-%d %H:%M:%S"
+      default: "%e %B"
   api_error_messages:
     not_authorized: Доступ запрещен
     wrong_verification_code: Неверный код

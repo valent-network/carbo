@@ -18,6 +18,8 @@ class User < ApplicationRecord
 
   mount_base64_uploader :avatar, AvatarUploader
 
+  scope :no_contacts, -> () { left_joins(:user_contacts).where(user_contacts: { id: nil }) }
+
   def contacts_count
     user_contacts.count
   end
