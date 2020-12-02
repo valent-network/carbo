@@ -22,6 +22,7 @@ ActiveAdmin.register_page('Dashboard') do
         tr do
           td { 'Effective Ads' }
           td { Ad.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id').count }
+          td
         end
 
         tr do
@@ -39,11 +40,13 @@ ActiveAdmin.register_page('Dashboard') do
         tr do
           td { 'Phone Numbers' }
           td { PhoneNumber.count }
+          td
         end
 
         tr do
           td { 'User Contacts' }
           td { UserContact.count }
+          td
         end
       end
     end
