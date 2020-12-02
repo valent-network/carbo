@@ -54,4 +54,6 @@ Rails.application.routes.draw do
       resources :friendly_ads, only: %i[show]
     end
   end
+
+  get '*path', to: 'application#static_page'
 end

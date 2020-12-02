@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_223551) do
+ActiveRecord::Schema.define(version: 2020_12_02_195700) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_trgm"
@@ -199,6 +199,16 @@ ActiveRecord::Schema.define(version: 2020_11_30_223551) do
     t.boolean("dry_run", default: false, null: false)
     t.boolean("sound_is_json", default: false)
     t.index(["delivered", "failed", "processing", "deliver_after", "created_at"], name: "index_rpush_notifications_multi", where: "((NOT delivered) AND (NOT failed))")
+  end
+
+  create_table "static_pages", force: :cascade do |t|
+    t.string("title", null: false)
+    t.string("slug", null: false)
+    t.text("body")
+    t.jsonb("meta")
+    t.datetime("created_at", precision: 6, null: false)
+    t.datetime("updated_at", precision: 6, null: false)
+    t.index(["slug"], name: "index_static_pages_on_slug", unique: true)
   end
 
   create_table "user_contacts", force: :cascade do |t|
