@@ -14,15 +14,14 @@ class SendChatMessagePushNotification
 
     user_devices_to_receive_notification.each do |device|
       app = APPS[device.os]
-      next unless app
 
       case device.os
       when 'ios'
-        next if device.build_version.to_s.split('.').last.to_i < 9
+        alert = device.build_version.to_s.split('.').last.to_i >= 9 ? "#{title}\n#{message_body}" : "Новое сообщение\nЧтобы прочитать нужно обновить приложение"
         notification_params = {
           app: app,
           device_token: device.push_token,
-          alert: "#{title}\n#{message_body}",
+          alert: alert,
           sound: 'default',
           badge: unread_count,
           data: { chat_room_id: chat_room_user.chat_room_id },
@@ -30,7 +29,6 @@ class SendChatMessagePushNotification
 
         Rpush::Apns::Notification.create(notification_params)
       when 'android'
-        next if device.build_version.to_i < 26
         notification_params = {
           app: app,
           registration_ids: [device.push_token],
@@ -38,8 +36,8 @@ class SendChatMessagePushNotification
           data: {
             chat_room_id: chat_room_user.chat_room_id,
             unread_count: unread_count,
-            title: title,
-            message: message_body,
+            title: device.build_version.to_i >= 26 ? title : 'Новое соощение',
+            message: device.build_version.to_i >= 26 ? message_body : 'Чтобы прочитать нужно обновить приложение',
           },
         }
 
