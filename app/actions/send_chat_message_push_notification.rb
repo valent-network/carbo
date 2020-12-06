@@ -17,7 +17,7 @@ class SendChatMessagePushNotification
 
       case device.os
       when 'ios'
-        alert = device.build_version.to_s.split('.').last.to_i >= 9 ? "#{title}\n#{message_body}" : "Новое сообщение\nЧтобы прочитать нужно обновить приложение"
+        alert = device.build_version.to_s.split('.').last.to_i >= 9 ? "#{title}\n#{message_body}" : "Новое сообщение\nЧтобы прочитать, нужно обновить приложение"
         notification_params = {
           app: app,
           device_token: device.push_token,
@@ -36,8 +36,8 @@ class SendChatMessagePushNotification
           data: {
             chat_room_id: chat_room_user.chat_room_id,
             unread_count: unread_count,
-            title: device.build_version.to_i >= 26 ? title : 'Новое соощение',
-            message: device.build_version.to_i >= 26 ? message_body : 'Чтобы прочитать нужно обновить приложение',
+            title: device.build_version.to_i >= 26 ? title : 'Новое сообщение',
+            message: device.build_version.to_i >= 26 ? message_body : 'Чтобы прочитать, нужно обновить приложение',
           },
         }
 
