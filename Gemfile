@@ -31,6 +31,7 @@ gem 'fog-aws'
 gem 'rpush'
 gem 'haml-rails', '~> 1.0.0'
 gem 'kramdown'
+gem 'aws-sdk-s3', '~> 1'
 
 # 3-rd party gems
 gem 'turbosms'
