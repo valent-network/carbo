@@ -48,6 +48,12 @@ ActiveAdmin.register_page('Dashboard') do
           td { UserContact.count }
           td
         end
+
+        tr do
+          td { 'User Devices' }
+          td { UserDevice.count }
+          td { I18n.l(UserDevice.most_recent_updated_at) }
+        end
       end
     end
   end

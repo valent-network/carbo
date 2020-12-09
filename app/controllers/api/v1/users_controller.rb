@@ -13,6 +13,7 @@ module Api
         current_device.assign_attributes(device_params) if device_params.present?
 
         if current_user.save && current_device.save
+          current_device.touch
           render(json: current_user)
         else
           errors = [current_user.errors.to_a, current_device.errors.to_a].flatten

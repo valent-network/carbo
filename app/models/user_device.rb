@@ -7,6 +7,13 @@ class UserDevice < ApplicationRecord
 
   belongs_to :user
 
+  def self.most_recent_updated_at
+    rel = order(updated_at: :desc).joins(:user)
+    # Here we manually exclude first User because he logs in too often
+    rel = rel.where.not(users: { id: 1 })
+    rel.first&.updated_at
+  end
+
   def generate_access_token
     self.access_token = new_token
   end
