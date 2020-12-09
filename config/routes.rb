@@ -18,11 +18,6 @@ Rails.application.routes.draw do
 
   get :go, to: 'application#multibutton'
 
-  get :ios, to: redirect('https://apps.apple.com/us/app/id1458212603')
-  get :android, to: redirect('https://play.google.com/store/apps/details?id=com.viktorvsk.recario')
-  get :news, to: redirect('https://t.me/reCar_io')
-  get :chat, to: redirect('https://t.me/reCar_io_chat')
-
   resources :ads, only: %i[show]
 
   namespace :api do
