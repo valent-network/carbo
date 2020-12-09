@@ -80,7 +80,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
-        build_args: BUILDKIT_INLINE_CACHE=1
+        build_args: BUILDKIT_INLINE_CACHE=1 GIT_COMMIT=${{steps.vars.outputs.tag}}
         cache_froms: recario/server:latest
         repository: recario/server
         tags: latest,${{steps.vars.outputs.tag}}
