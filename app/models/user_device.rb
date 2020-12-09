@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class UserDevice < ApplicationRecord
   validates :access_token, :device_id, uniqueness: true, presence: true
-  validates :os, inclusion: { in: [nil, '', 'android', 'ios'] }
+  # validates :os, inclusion: { in: [nil, '', 'android', 'ios'] }
 
   before_validation :generate_access_token, on: :create
 
