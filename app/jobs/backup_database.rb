@@ -25,10 +25,13 @@ class BackupDatabase < ApplicationJob
       backups << object.key if object.key =~ /.+\.dump\.sql\Z/
     end
 
-    to_delete = backups.sort.reverse[BACKUPS_NUMBER_TO_PERSIST..-1]
+    if backups.size > BACKUPS_NUMBER_TO_PERSIST
 
-    to_delete.each do |backup|
-      S3_CLIENT.delete_object(key: backup, bucket: ENV['DO_SPACE_NAME'])
+      to_delete = backups.sort.reverse[BACKUPS_NUMBER_TO_PERSIST..-1]
+
+      to_delete.each do |backup|
+        S3_CLIENT.delete_object(key: backup, bucket: ENV['DO_SPACE_NAME'])
+      end
     end
   end
 end
