@@ -56,5 +56,15 @@ ActiveAdmin.register_page('Dashboard') do
         end
       end
     end
+
+    panel 'User Activity (using UserDevice#updated_at information' do
+      line_chart UserDeviceStat.order(:created_at).all.map { |item|
+        [item.created_at.strftime("%F"), item.user_devices_appeared_count]
+      }
+    end
+
+    panel 'User Registrations' do
+      line_chart User.group('date(created_at)').count.map { |u| [u.first.strftime("%F"), u.last] }
+    end
   end
 end

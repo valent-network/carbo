@@ -32,6 +32,7 @@ gem 'rpush'
 gem 'haml-rails'
 gem 'kramdown'
 gem 'aws-sdk-s3'
+gem 'chartkick'
 
 # 3-rd party gems
 gem 'turbosms'

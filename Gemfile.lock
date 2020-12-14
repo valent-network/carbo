@@ -121,6 +121,7 @@ GEM
       mimemagic (~> 0.3.2)
     case_transform (0.2)
       activesupport
+    chartkick (3.4.2)
     clockwork (2.0.4)
       activesupport
       tzinfo
@@ -477,6 +478,7 @@ DEPENDENCIES
   byebug
   carrierwave
   carrierwave-base64
+  chartkick
   clockwork
   database_cleaner
   devise
