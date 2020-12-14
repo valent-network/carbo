@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_02_195700) do
+ActiveRecord::Schema.define(version: 2020_12_14_222348) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_trgm"
@@ -219,6 +219,12 @@ ActiveRecord::Schema.define(version: 2020_12_02_195700) do
     t.index(["phone_number_id", "name", "user_id"], name: "user_contacts_phone_number_id_name_user_id_idx")
     t.index(["phone_number_id", "user_id"], name: "index_user_contacts_on_phone_number_id_and_user_id", unique: true)
     t.index(["user_id"], name: "index_user_contacts_on_user_id")
+  end
+
+  create_table "user_device_stats", force: :cascade do |t|
+    t.integer("user_devices_appeared_count", null: false)
+    t.datetime("created_at", precision: 6, null: false)
+    t.datetime("updated_at", precision: 6, null: false)
   end
 
   create_table "user_devices", force: :cascade do |t|
