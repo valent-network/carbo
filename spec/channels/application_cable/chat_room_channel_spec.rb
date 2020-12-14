@@ -40,7 +40,7 @@ RSpec.describe(ApplicationCable::ChatRoomChannel, type: :channel) do
     expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(user, hash_including(type: 'read_update')).once)
     expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(user, hash_including(type: 'unread_update')).once)
 
-    expect { perform :read }.to(change { ChatRoomUser.find_by(user: user, chat_room: chat_room).updated_at })
+    expect { perform(:read) }.to(change { ChatRoomUser.find_by(user: user, chat_room: chat_room).updated_at })
   end
 
   describe 'Performing #destroy' do
@@ -48,7 +48,7 @@ RSpec.describe(ApplicationCable::ChatRoomChannel, type: :channel) do
       subscribe(chat_room_id: chat_room.id)
       message = create(:message, chat_room: chat_room, user: user)
 
-      expect { perform :destroy, message: { id: message.id } }.to(change { Message.exists?(id: message.id) }.from(true).to(false))
+      expect { perform(:destroy, message: { id: message.id }) }.to(change { Message.exists?(id: message.id) }.from(true).to(false))
     end
 
     it 'broadcasts events to UserChannel' do

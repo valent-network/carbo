@@ -11,8 +11,10 @@ AllCops:
   TargetRubyVersion: 2.7
   DisplayCopNames: true
   DisplayStyleGuide: true
+  SuggestExtensions: false
   Exclude:
     - 'vendor/bundle/**/*'
+    - 'db/migrate/**/*'
 
 Layout/LineLength:
   Enabled: false

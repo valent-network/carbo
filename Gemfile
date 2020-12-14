@@ -14,7 +14,7 @@ gem 'sassc-rails', '~> 2.1', '>= 2.1.1'
 # Main gems
 gem 'pg'
 gem 'puma', '~> 4'
-gem 'rails', '~> 6'
+gem 'rails', '6.0.3.4'
 gem 'sidekiq'
 gem 'clockwork'
 
@@ -55,7 +55,7 @@ end
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'rubocop', '0.81.0', require: false
+  gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rspec', require: false
   gem 'rubocop-shopify', require: false

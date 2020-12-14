@@ -17,7 +17,7 @@ RSpec.describe(Api::V1::UsersController) do
       it 'OK' do
         old_name = user.name
         new_name = FFaker::Name.name
-        expect { put :update, params: { user: { name: new_name }, device: { os: 'android' } } }.to(change { user.reload.name }.from(old_name).to(new_name))
+        expect { put(:update, params: { user: { name: new_name }, device: { os: 'android' } }) }.to(change { user.reload.name }.from(old_name).to(new_name))
         expect(response).to(be_ok)
       end
     end
@@ -25,7 +25,7 @@ RSpec.describe(Api::V1::UsersController) do
     context 'With invalid params' do
       it 'does not save user and returns error' do
         invalid_name = 'a' * 10000
-        expect { put :update, params: { user: { name: invalid_name } } }.to_not(change { user.reload.name })
+        expect { put(:update, params: { user: { name: invalid_name } }) }.to_not(change { user.reload.name })
         expect(response).to(be_unprocessable)
         expect(json_body['message']).to(eq('error'))
       end
