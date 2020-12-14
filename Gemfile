@@ -9,11 +9,11 @@ ruby '2.7.2'
 gem 'activeadmin'
 gem 'arctic_admin'
 gem 'devise'
-gem 'sassc-rails', '~> 2.1', '>= 2.1.1'
+gem 'sassc-rails'
 
 # Main gems
 gem 'pg'
-gem 'puma', '~> 4'
+gem 'puma'
 gem 'rails', '6.0.3.4'
 gem 'sidekiq'
 gem 'clockwork'
@@ -25,13 +25,13 @@ gem 'active_model_serializers'
 gem 'paper_trail'
 gem 'dry-validation'
 gem 'phonelib'
-gem 'carrierwave', '~> 2.0'
+gem 'carrierwave'
 gem 'carrierwave-base64'
 gem 'fog-aws'
 gem 'rpush'
-gem 'haml-rails', '~> 1.0.0'
+gem 'haml-rails'
 gem 'kramdown'
-gem 'aws-sdk-s3', '~> 1'
+gem 'aws-sdk-s3'
 
 # 3-rd party gems
 gem 'turbosms'
@@ -43,7 +43,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'ffaker'
-  gem 'rspec-rails', '~> 4'
+  gem 'rspec-rails'
   gem 'dotenv-rails'
   gem 'spring'
 end
@@ -54,7 +54,7 @@ group :test do
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rspec', require: false

@@ -217,12 +217,12 @@ GEM
     haml (5.2.1)
       temple (>= 0.8.0)
       tilt
-    haml-rails (1.0.0)
-      actionpack (>= 4.0.1)
-      activesupport (>= 4.0.1)
+    haml-rails (2.0.1)
+      actionpack (>= 5.1)
+      activesupport (>= 5.1)
       haml (>= 4.0.6, < 6.0)
       html2haml (>= 1.0.1)
-      railties (>= 4.0.1)
+      railties (>= 5.1)
     has_scope (0.7.2)
       actionpack (>= 4.1)
       activesupport (>= 4.1)
@@ -267,10 +267,9 @@ GEM
     kaminari-core (1.2.1)
     kramdown (2.3.0)
       rexml
-    listen (3.1.5)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-      ruby_dep (~> 1.2)
+    listen (3.3.3)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.8.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -307,7 +306,7 @@ GEM
     pg (1.2.3)
     phonelib (0.6.46)
     public_suffix (4.0.6)
-    puma (4.3.7)
+    puma (5.1.1)
       nio4r (~> 2.0)
     rack (2.2.3)
     rack-cors (1.1.1)
@@ -407,7 +406,6 @@ GEM
     ruby-vips (2.0.17)
       ffi (~> 1.9)
     ruby2_keywords (0.0.2)
-    ruby_dep (1.5.0)
     ruby_parser (3.15.0)
       sexp_processor (~> 4.9)
     sassc (2.4.0)
@@ -474,10 +472,10 @@ DEPENDENCIES
   activeadmin
   airbrake
   arctic_admin
-  aws-sdk-s3 (~> 1)
+  aws-sdk-s3
   bootsnap (>= 1.1.0)
   byebug
-  carrierwave (~> 2.0)
+  carrierwave
   carrierwave-base64
   clockwork
   database_cleaner
@@ -487,22 +485,22 @@ DEPENDENCIES
   factory_bot_rails
   ffaker
   fog-aws
-  haml-rails (~> 1.0.0)
+  haml-rails
   kramdown
-  listen (>= 3.0.5, < 3.2)
+  listen
   paper_trail
   pg
   phonelib
-  puma (~> 4)
+  puma
   rack-cors
   rails (= 6.0.3.4)
   rpush
-  rspec-rails (~> 4)
+  rspec-rails
   rubocop
   rubocop-performance
   rubocop-rspec
   rubocop-shopify
-  sassc-rails (~> 2.1, >= 2.1.1)
+  sassc-rails
   sidekiq
   simplecov
   spring
