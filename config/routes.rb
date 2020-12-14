@@ -11,6 +11,11 @@ Rails.application.routes.draw do
 
   get :health, to: ->(_env) { [200, {}, [{ build: ENV.fetch('GIT_COMMIT') { git_commit } }.to_json]] }
 
+  # TODO: temporary hardcode static pages links here to let serve static content
+  # via Rails (instead of nginx)
+  get '/tos', to: 'application#static_page', slug: :tos
+  get '/privacy', to: 'application#static_page', slug: :privacy
+
   get '/budget/show_ads', to: 'budget#show_ads', as: :show_budget_ads
   get '/budget/:maker/:model', to: 'budget#show_model', as: :show_model
   get '/budget/:maker/:model/:year', to: 'budget#show_model_year', as: :show_model_year
@@ -49,6 +54,4 @@ Rails.application.routes.draw do
       resources :friendly_ads, only: %i[show]
     end
   end
-
-  get '*path', to: 'application#static_page'
 end

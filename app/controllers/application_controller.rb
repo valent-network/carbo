@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def static_page
-    @page = StaticPage.find_by(slug: params[:path])
+    @page = StaticPage.find_by(slug: params[:slug])
     raise ActiveRecord::RecordNotFound unless @page
 
     @meta_title = JSON.parse(@page.meta)['title']
