@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.2'
+ruby '3.0.0'
 
 # Active Admin gems
 gem 'activeadmin'
@@ -14,7 +14,7 @@ gem 'sassc-rails'
 # Main gems
 gem 'pg'
 gem 'puma'
-gem 'rails', '6.0.3.4'
+gem 'rails', '~> 6'
 gem 'sidekiq'
 gem 'clockwork'
 
@@ -50,7 +50,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'database_cleaner'
   gem 'simplecov', require: false
 end
 
