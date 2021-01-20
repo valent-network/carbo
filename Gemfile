@@ -7,6 +7,10 @@ ruby '3.0.0'
 
 # Active Admin gems
 gem 'activeadmin'
+# TODO: https://github.com/formtastic/formtastic/issues/1325
+# Ruby 3
+gem 'formtastic', '4.0.0.rc1'
+
 gem 'arctic_admin'
 gem 'devise'
 gem 'sassc-rails'
