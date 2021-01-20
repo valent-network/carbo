@@ -8,7 +8,6 @@ SimpleCov.start('rails') do
   add_filter '/app/services/push_service.rb'
 end
 
-require 'database_cleaner'
 ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
@@ -48,17 +47,14 @@ RSpec.configure do |config|
   config.include(FactoryBot::Syntax::Methods)
   config.include(JSONHelpers)
 
+  config.use_transactional_fixtures = true
+
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 
   config.run_all_when_everything_filtered = true
   config.filter_run(:focus) unless ENV['CI']
 
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
   config.after(:each) do
     if Rails.env.test?
       FileUtils.rm_rf(Dir[Rails.root.join('public/uploads')])
