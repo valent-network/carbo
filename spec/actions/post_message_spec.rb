@@ -21,7 +21,7 @@ RSpec.describe(PostMessage) do
   context 'Fails when' do
     it 'Sender ChatRoomUser does not exist' do
       chat_room.chat_room_users.find_by(user: user).destroy
-      expect { described_class.new.call(sender: user, message: { chat_room_id: chat_room.id }) }.to(raise_error)
+      expect { described_class.new.call(sender: user, message: { chat_room_id: chat_room.id }) }.to(raise_error(StandardError))
     end
   end
 

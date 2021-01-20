@@ -28,7 +28,7 @@ RSpec.describe(LeaveChatRoom) do
 
     it 'Initiator does not have ChatRoomUser for this ChatRoom' do
       chat_room.chat_room_users.find_by(user: user).destroy
-      expect { described_class.new.call(user.id, chat_room.id) }.to(raise_error)
+      expect { described_class.new.call(user.id, chat_room.id) }.to(raise_error(StandardError))
     end
 
     it 'Message was not saved for some reason' do
@@ -36,38 +36,38 @@ RSpec.describe(LeaveChatRoom) do
 
       expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
       expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
-      expect { initiate_valid_chat_room }.to(raise_error
+      expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(change { ChatRoom.count }.by(0)
           .and(change { ChatRoomUser.count }.by(0)
           .and(change { Message.count }.by(0)))))
 
-      expect { leave_valid_chat_room }.to(raise_error)
+      expect { leave_valid_chat_room }.to(raise_error(StandardError))
     end
 
     it 'ChatRoom#touch didnt work for some reason' do
-      expect_any_instance_of(ChatRoom).to(receive(:touch).and_raise)
+      expect_any_instance_of(ChatRoom).to(receive(:touch).and_raise(StandardError))
 
       expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
       expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
-      expect { initiate_valid_chat_room }.to(raise_error
+      expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(change { ChatRoom.count }.by(0)
           .and(change { ChatRoomUser.count }.by(0)
           .and(change { Message.count }.by(0)))))
 
-      expect { leave_valid_chat_room }.to(raise_error)
+      expect { leave_valid_chat_room }.to(raise_error(StandardError))
     end
 
     it 'Initiator ChatRoomUser is not destroyed for some reason' do
-      expect_any_instance_of(ChatRoomUser).to(receive(:destroy).and_raise)
+      expect_any_instance_of(ChatRoomUser).to(receive(:destroy).and_raise(StandardError))
 
       expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
       expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
-      expect { initiate_valid_chat_room }.to(raise_error
+      expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(change { ChatRoom.count }.by(0)
           .and(change { ChatRoomUser.count }.by(0)
           .and(change { Message.count }.by(0)))))
 
-      expect { leave_valid_chat_room }.to(raise_error)
+      expect { leave_valid_chat_room }.to(raise_error(StandardError))
     end
   end
 

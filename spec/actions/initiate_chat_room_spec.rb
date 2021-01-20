@@ -54,7 +54,7 @@ RSpec.describe(InitiateChatRoom) do
 
         expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
         expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
-        expect { initiate_valid_chat_room }.to(raise_error
+        expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(change { ChatRoom.count }.by(0)
           .and(change { ChatRoomUser.count }.by(0)
           .and(change { Message.count }.by(0)))))
@@ -65,7 +65,7 @@ RSpec.describe(InitiateChatRoom) do
 
         expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
         expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
-        expect { initiate_valid_chat_room }.to(raise_error
+        expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(change { ChatRoom.count }.by(0)
           .and(change { ChatRoomUser.count }.by(0)
           .and(change { Message.count }.by(0)))))
@@ -76,7 +76,7 @@ RSpec.describe(InitiateChatRoom) do
 
         expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
         expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
-        expect { initiate_valid_chat_room }.to(raise_error
+        expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(change { ChatRoom.count }.by(0)
           .and(change { ChatRoomUser.count }.by(0)
           .and(change { Message.count }.by(0)))))
