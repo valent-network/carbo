@@ -42,9 +42,6 @@ class Ad < ApplicationRecord
   private
 
   def details_object
-    parsed_json = details.is_a?(String) ? JSON.parse(details) : details
-    errors.add(:details, 'must be a Hash') unless parsed_json.is_a?(Hash)
-  rescue JSON::ParserError
-    errors.add(:details, 'is invalid')
+    errors.add(:details, 'must be a Hash') unless details.is_a?(Hash)
   end
 end
