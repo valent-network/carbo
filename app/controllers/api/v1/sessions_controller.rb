@@ -12,7 +12,7 @@ module Api
           SendUserVerificationJob.perform_later(phone_number.id) unless phone_number.demo?
           render(json: { message: :ok })
         else
-          render(json: { message: :error, errors: phone_number.errors.to_h }, status: 422)
+          render(json: { message: :error, errors: phone_number.errors.to_hash }, status: 422)
         end
       end
 

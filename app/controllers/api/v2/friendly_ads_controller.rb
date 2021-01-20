@@ -10,8 +10,8 @@ module Api
         chat_rooms = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: current_user }, ad: ad)
 
         payload = {
-          friends: ActiveModel::SerializableResource.new(friends, each_serializer: Api::V1::AdFriendSerializer),
-          chats: ActiveModel::SerializableResource.new(chat_rooms, each_serializer: Api::V1::ChatRoomSerializer, current_user_id: current_user.id),
+          friends: ActiveModelSerializers::SerializableResource.new(friends, each_serializer: Api::V1::AdFriendSerializer),
+          chats: ActiveModelSerializers::SerializableResource.new(chat_rooms, each_serializer: Api::V1::ChatRoomSerializer, current_user_id: current_user.id),
         }
 
         render(json: payload)

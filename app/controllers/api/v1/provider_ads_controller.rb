@@ -8,7 +8,7 @@ module Api
       def index
         ads = Ad.where(ads_source_id: current_ads_source.id).where('updated_at < ?', 12.hours.ago)
         ads = ads.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id')
-        ads = ads.limit(10).order("deleted = 'f' DESC, updated_at").pluck(:address)
+        ads = ads.limit(10).order(Arel.sql("deleted = 'f' DESC, updated_at")).pluck(:address)
 
         render(json: ads)
       end
@@ -24,7 +24,7 @@ module Api
           render(json: { ad: ad })
           ad.touch
         else
-          render(json: { errors: ad.errors.to_h }, status: :unprocessable_entity)
+          render(json: { errors: ad.errors.to_hash }, status: :unprocessable_entity)
         end
       end
 

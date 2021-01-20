@@ -27,7 +27,7 @@ module Api
       end
 
       def chat_room_users
-        ActiveModel::SerializableResource.new(object.chat_room_users.order(:id), each_serializer: Api::V1::ChatRoomUserSerializer).as_json
+        ActiveModelSerializers::SerializableResource.new(object.chat_room_users.order(:id), each_serializer: Api::V1::ChatRoomUserSerializer).as_json
       end
 
       def new_messages_count

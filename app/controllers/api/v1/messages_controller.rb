@@ -11,7 +11,7 @@ module Api
 
         payload = {
           chat: Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: current_user.id).as_json,
-          messages: ActiveModel::SerializableResource.new(messages, each_serializer: Api::V1::MessageSerializer).as_json,
+          messages: ActiveModelSerializers::SerializableResource.new(messages, each_serializer: Api::V1::MessageSerializer).as_json,
         }
 
         render(json: payload)

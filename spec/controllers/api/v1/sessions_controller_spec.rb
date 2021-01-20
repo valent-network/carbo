@@ -21,14 +21,14 @@ RSpec.describe(Api::V1::SessionsController) do
         post :create, params: { phone_number: '' }
         expect(response).to(be_unprocessable)
         expect(json_body['message']).to(eq('error'))
-        expect(json_body['errors']).to(match({ 'full_number' => 'is invalid' }))
+        expect(json_body['errors']).to(match({ 'full_number' => ['is invalid'] }))
       end
 
       it 'invalid format' do
         post :create, params: { phone_number: '+1123456789' }
         expect(response).to(be_unprocessable)
         expect(json_body['message']).to(eq('error'))
-        expect(json_body['errors']).to(match({ 'full_number' => 'is invalid' }))
+        expect(json_body['errors']).to(match({ 'full_number' => ['is invalid'] }))
       end
     end
   end
