@@ -12,6 +12,7 @@ module Api
         return unless object.phone_number.user
 
         {
+          id: object.phone_number.user.id,
           name: object.phone_number.user.name,
           phone_number: object.phone_number.to_s,
           avatar: object.phone_number.user.avatar.url,

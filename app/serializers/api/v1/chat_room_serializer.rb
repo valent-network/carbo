@@ -27,7 +27,14 @@ module Api
       end
 
       def chat_room_users
-        ActiveModelSerializers::SerializableResource.new(object.chat_room_users.order(:id), each_serializer: Api::V1::ChatRoomUserSerializer).as_json
+        # TODO: This must be cover with tests carefully
+        # so that real numbers of chat members could not leak to unknown users
+        relation = object.chat_room_users.order(:id).to_a
+        known = UserContact.where(user_id: @instance_options[:current_user_id], phone_number_id: relation.map(&:user).map(&:phone_number_id)).map(&:phone_number).map(&:to_s)
+
+        result = ActiveModelSerializers::SerializableResource.new(relation, each_serializer: Api::V1::ChatRoomUserSerializer).as_json
+        result.each { |r| r.delete(:phone_number) unless r[:phone_number].in?(known) }
+        result
       end
 
       def new_messages_count
