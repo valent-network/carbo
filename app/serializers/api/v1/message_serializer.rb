@@ -26,6 +26,9 @@ module Api
           # TODO: Decide what to do with Message's ChatRoomUser and its #name
           # after User left ChatRoom
           result[:name] = ChatRoomUser.select(:name).find_by(chat_room: object.chat_room, user: object.user)&.name
+        elsif object.chat_room.system?
+          # Here we should have system notification chat
+          result[:name] = I18n.t('recario')
         end
 
         result

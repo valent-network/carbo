@@ -2,9 +2,10 @@
 module Api
   module V1
     class ChatRoomSerializer < ActiveModel::Serializer
-      attributes :id, :updated_at, :title, :messages, :photo, :ad_id, :chat_room_users, :new_messages_count
+      attributes :id, :updated_at, :title, :system, :messages, :photo, :ad_id, :chat_room_users, :new_messages_count
 
       def title
+        return nil if object.system?
         "#{object.ad.details['maker']} #{object.ad.details['model']} #{object.ad.details['year']}"
       end
 
@@ -23,7 +24,7 @@ module Api
       def photo
         images = object.ad.details['images_json_array_tmp']
         images = images.is_a?(String) ? JSON.parse(images) : images
-        images.first
+        images&.first
       end
 
       def chat_room_users

@@ -1,4 +1,5 @@
 en:
+  recario: Recario
   api_error_messages:
     not_authorized: Authorization required
     wrong_verification_code: Wrong verification code

@@ -3,15 +3,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_14_222348) do
+ActiveRecord::Schema.define(version: 2021_02_06_130842) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_trgm"
@@ -107,8 +107,10 @@ ActiveRecord::Schema.define(version: 2020_12_14_222348) do
     t.bigint("ad_id", null: false)
     t.datetime("created_at", precision: 6, null: false)
     t.datetime("updated_at", precision: 6, null: false)
+    t.boolean("system", default: false, null: false)
     t.index(["ad_id"], name: "index_chat_rooms_on_ad_id")
     t.index(["user_id"], name: "index_chat_rooms_on_user_id")
+    t.index(["user_id"], name: "index_on_chat_rooms_user_id_where_system_true", unique: true, where: "(system = true)")
   end
 
   create_table "demo_phone_numbers", force: :cascade do |t|
