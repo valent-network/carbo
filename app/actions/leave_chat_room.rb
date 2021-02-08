@@ -8,12 +8,12 @@ class LeaveChatRoom
 
     initiator_user = chat_room.chat_room_users.find_by(user: initiator)
 
-    message = chat_room.messages.new(system: true, body: "#{initiator_user.name} покинул чат")
+    message = chat_room.messages.new(system: true, body: "#{initiator_user.name} покинул чат") unless chat_room.system?
 
     ChatRoom.transaction do
       initiator_user.destroy
       chat_room.touch
-      message.save!
+      message.save! unless chat_room.system?
     end
 
     chat_room.reload

@@ -48,6 +48,7 @@ Rails.application.routes.draw do
       resources :chat_rooms, only: %w[create index]
       resources :chat_room_users, only: %w[create destroy]
       resources :messages, only: %w[index]
+      resource :system_chat_room, only: %w[show]
     end
 
     namespace :v2 do
