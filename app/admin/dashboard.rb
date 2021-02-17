@@ -26,6 +26,18 @@ ActiveAdmin.register_page('Dashboard') do
         end
 
         tr do
+          td { 'Actual Effective Ads' }
+          td { Ad.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id').where(deleted: false).where('updated_at > ?', 3.months.ago).count }
+          td
+        end
+
+        tr do
+          td { 'Syncing Ads' }
+          td { Ad.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id').where(deleted: false).where('updated_at < ?', 12.hours.ago).count }
+          td
+        end
+
+        tr do
           td { 'Messages' }
           td { Message.count }
           td { I18n.l(Message.order(created_at: :desc).first.created_at) }
