@@ -37,7 +37,7 @@ class BudgetController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @model_year
 
     @ads = Ad.where("LOWER(details->>'maker') = ? AND LOWER(details->>'model') = ? AND details->>'year' = ?", params[:maker].downcase, params[:model].downcase, params[:year])
-    @ads = Ad.where(deleted: false)
+    @ads = @ads.where(deleted: false)
     @ads_grouped_by_region = @ads.group("details->'region'->>0").count.sort_by(&:last).reverse
 
     @meta_title = "Рекарио – минимальная, средняя и максимальная стоимость #{@model_year.maker} #{@model_year.model} #{@model_year.year} года"
