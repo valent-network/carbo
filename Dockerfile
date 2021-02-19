@@ -11,7 +11,7 @@ ENV GIT_COMMIT $GIT_COMMIT
 
 WORKDIR /tmp
 
-RUN gem install bundler -v 2.1.4 && bundle install -j 4 --full-index --without development test
+RUN gem install bundler -v 2.2.11 && bundle install -j 4 --full-index --without development test
 
 WORKDIR /app
 
