@@ -3,3 +3,4 @@ ua:
     not_authorized: Доступ запрещен
     wrong_verification_code: Неверный код
     missing_verification_code: Код отсутствует
+    phone_number_not_mobile: Необходимо использовать номер мобильного телефона

@@ -8,6 +8,7 @@ ru:
     not_authorized: Доступ запрещен
     wrong_verification_code: Неверный код
     missing_verification_code: Код отсутствует
+    phone_number_not_mobile: Необходимо использовать номер мобильного телефона
   send_verification:
     sms_text: Проверочный код для входа в систему - %{verification_code}
   ad_options:

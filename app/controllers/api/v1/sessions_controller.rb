@@ -9,7 +9,13 @@ module Api
         phone_number = PhoneNumber.by_full_number(params[:phone_number]).first_or_create
 
         if phone_number.persisted?
-          SendUserVerificationJob.perform_later(phone_number.id) unless phone_number.demo?
+          unless phone_number.demo?
+            if Phonelib.valid?(phone_number.full_number)
+              SendUserVerificationJob.perform_later(phone_number.id)
+            else
+              return error!('PHONE_NUMBER_NOT_MOBILE')
+            end
+          end
           render(json: { message: :ok })
         else
           render(json: { message: :error, errors: phone_number.errors.to_hash }, status: 422)
