@@ -12,8 +12,8 @@ class KnownUsers
 
         SELECT new_users.id
         FROM p
-        JOIN user_contacts ON user_contacts.user_id = p.id
-        JOIN users AS new_users ON user_contacts.phone_number_id = new_users.phone_number_id
+        JOIN effective_user_contacts ON effective_user_contacts.user_id = p.id
+        JOIN users AS new_users ON effective_user_contacts.phone_number_id = new_users.phone_number_id
       )
 
       SELECT DISTINCT id FROM p

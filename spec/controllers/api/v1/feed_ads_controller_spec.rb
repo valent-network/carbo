@@ -19,6 +19,7 @@ RSpec.describe(Api::V1::FeedAdsController) do
     end
 
     it 'returns friend_name_and_total in serialzier' do
+      EffectiveAd.refresh
       get :index
       ads = json_body
       ad = ads.first

@@ -60,4 +60,9 @@ RSpec.configure do |config|
       FileUtils.rm_rf(Dir[Rails.root.join('public/uploads')])
     end
   end
+
+  config.before(:all) do
+    EffectiveUserContact.refresh
+    EffectiveAd.refresh
+  end
 end
