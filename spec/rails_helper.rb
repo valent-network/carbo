@@ -62,7 +62,7 @@ RSpec.configure do |config|
   end
 
   config.before(:all) do
-    EffectiveUserContact.refresh
-    EffectiveAd.refresh
+    EffectiveUserContact.refresh(concurrently: false)
+    EffectiveAd.refresh(concurrently: false)
   end
 end
