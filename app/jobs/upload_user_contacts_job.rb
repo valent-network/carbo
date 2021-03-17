@@ -21,7 +21,15 @@ class UploadUserContactsJob < ApplicationJob
           user_contact.save
         end
       end
-      ApplicationCable::UserChannel.broadcast_to(user, type: 'contacts') if initial_contacts_count.zero?
+
+      if initial_contacts_count.zero?
+        EffectiveAdsRefreshMaterializedView.perform_now
+        EffectiveUserContactsRefreshMaterializedView.perform_now
+        ApplicationCable::UserChannel.broadcast_to(user, type: 'contacts')
+      else
+        EffectiveAdsRefreshMaterializedView.perform_later
+        EffectiveUserContactsRefreshMaterializedView.perform_later
+      end
     end
   end
 end

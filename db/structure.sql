@@ -9,9 +9,51 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: btree_gist; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION btree_gist; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiST';
+
+
+--
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
+
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -
@@ -25,8 +67,8 @@ CREATE TABLE public.active_admin_comments (
     resource_id bigint,
     author_type character varying,
     author_id bigint,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -50,22 +92,23 @@ ALTER SEQUENCE public.active_admin_comments_id_seq OWNED BY public.active_admin_
 
 
 --
--- Name: ad_descriptions; Type: TABLE; Schema: public; Owner: -
+-- Name: ad_favorites; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.ad_descriptions (
+CREATE TABLE public.ad_favorites (
     id bigint NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    body text
+    ad_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
 --
--- Name: ad_descriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: ad_favorites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.ad_descriptions_id_seq
+CREATE SEQUENCE public.ad_favorites_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -74,10 +117,40 @@ CREATE SEQUENCE public.ad_descriptions_id_seq
 
 
 --
--- Name: ad_descriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: ad_favorites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.ad_descriptions_id_seq OWNED BY public.ad_descriptions.id;
+ALTER SEQUENCE public.ad_favorites_id_seq OWNED BY public.ad_favorites.id;
+
+
+--
+-- Name: ad_visits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_visits (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    ad_id bigint NOT NULL
+);
+
+
+--
+-- Name: ad_visits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_visits_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_visits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_visits_id_seq OWNED BY public.ad_visits.id;
 
 
 --
@@ -90,9 +163,7 @@ CREATE TABLE public.admin_users (
     encrypted_password character varying DEFAULT ''::character varying NOT NULL,
     reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
-    remember_created_at timestamp without time zone,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    remember_created_at timestamp without time zone
 );
 
 
@@ -121,32 +192,35 @@ ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
 
 CREATE TABLE public.ads (
     id bigint NOT NULL,
-    url_id bigint,
-    car_maker_id bigint,
-    car_gear_type_id bigint,
-    car_fuel_type_id bigint,
-    car_wheels_type_id bigint,
-    car_carcass_type_id bigint,
-    car_details_id bigint,
-    car_color_id bigint,
+    phone_number_id bigint NOT NULL,
+    ads_source_id bigint NOT NULL,
     price integer NOT NULL,
-    year integer NOT NULL,
-    race bigint,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    car_model_id integer,
-    active boolean DEFAULT true NOT NULL,
-    city_id integer,
-    customs_clear boolean,
-    new_car boolean,
-    ad_updated_at timestamp without time zone,
-    phone_number_id integer,
-    images_json_array_tmp text,
-    deleted boolean,
-    engine_capacity integer,
-    ad_description_id integer,
-    ads_source_id integer
+    deleted boolean DEFAULT false NOT NULL,
+    details jsonb NOT NULL,
+    ad_type character varying NOT NULL,
+    address character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: ads_grouped_by_maker_model_year; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
+ SELECT (ads.details ->> 'maker'::text) AS maker,
+    (ads.details ->> 'model'::text) AS model,
+    (ads.details ->> 'year'::text) AS year,
+    min(ads.price) AS min_price,
+    (round((avg(ads.price) / (100)::numeric)) * (100)::numeric) AS avg_price,
+    max(ads.price) AS max_price
+   FROM public.ads
+  WHERE ((ads.deleted = false) AND (ads.updated_at >= (now() - '2 mons'::interval)) AND (ads.price < 200000))
+  GROUP BY (ads.details ->> 'maker'::text), (ads.details ->> 'model'::text), (ads.details ->> 'year'::text)
+ HAVING (count(ads.*) >= 5)
+  ORDER BY (ads.details ->> 'maker'::text), (ads.details ->> 'model'::text), (ads.details ->> 'year'::text)
+  WITH NO DATA;
 
 
 --
@@ -174,9 +248,10 @@ ALTER SEQUENCE public.ads_id_seq OWNED BY public.ads.id;
 
 CREATE TABLE public.ads_sources (
     id bigint NOT NULL,
-    title character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    title character varying NOT NULL,
+    api_token character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -206,29 +281,30 @@ ALTER SEQUENCE public.ads_sources_id_seq OWNED BY public.ads_sources.id;
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
 --
--- Name: car_carcass_types; Type: TABLE; Schema: public; Owner: -
+-- Name: chat_room_users; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.car_carcass_types (
+CREATE TABLE public.chat_room_users (
     id bigint NOT NULL,
-    title character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    filter_union_id integer
+    chat_room_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    name character varying NOT NULL
 );
 
 
 --
--- Name: car_carcass_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: chat_room_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.car_carcass_types_id_seq
+CREATE SEQUENCE public.chat_room_users_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -237,29 +313,31 @@ CREATE SEQUENCE public.car_carcass_types_id_seq
 
 
 --
--- Name: car_carcass_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: chat_room_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.car_carcass_types_id_seq OWNED BY public.car_carcass_types.id;
+ALTER SEQUENCE public.chat_room_users_id_seq OWNED BY public.chat_room_users.id;
 
 
 --
--- Name: car_colors; Type: TABLE; Schema: public; Owner: -
+-- Name: chat_rooms; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.car_colors (
+CREATE TABLE public.chat_rooms (
     id bigint NOT NULL,
-    title character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    user_id bigint NOT NULL,
+    ad_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    system boolean DEFAULT false NOT NULL
 );
 
 
 --
--- Name: car_colors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: chat_rooms_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.car_colors_id_seq
+CREATE SEQUENCE public.chat_rooms_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -268,30 +346,28 @@ CREATE SEQUENCE public.car_colors_id_seq
 
 
 --
--- Name: car_colors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: chat_rooms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.car_colors_id_seq OWNED BY public.car_colors.id;
+ALTER SEQUENCE public.chat_rooms_id_seq OWNED BY public.chat_rooms.id;
 
 
 --
--- Name: car_fuel_types; Type: TABLE; Schema: public; Owner: -
+-- Name: demo_phone_numbers; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.car_fuel_types (
+CREATE TABLE public.demo_phone_numbers (
     id bigint NOT NULL,
-    title character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    filter_union_id integer
+    phone_number_id bigint NOT NULL,
+    demo_code integer
 );
 
 
 --
--- Name: car_fuel_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: demo_phone_numbers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.car_fuel_types_id_seq
+CREATE SEQUENCE public.demo_phone_numbers_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -300,360 +376,82 @@ CREATE SEQUENCE public.car_fuel_types_id_seq
 
 
 --
--- Name: car_fuel_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: demo_phone_numbers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.car_fuel_types_id_seq OWNED BY public.car_fuel_types.id;
+ALTER SEQUENCE public.demo_phone_numbers_id_seq OWNED BY public.demo_phone_numbers.id;
 
 
 --
--- Name: car_gear_types; Type: TABLE; Schema: public; Owner: -
+-- Name: user_contacts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.car_gear_types (
+CREATE TABLE public.user_contacts (
     id bigint NOT NULL,
-    title character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    filter_union_id integer
+    user_id bigint NOT NULL,
+    phone_number_id bigint NOT NULL,
+    name character varying(100) NOT NULL
 );
 
 
 --
--- Name: car_gear_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: effective_ads; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.car_gear_types_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: car_gear_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.car_gear_types_id_seq OWNED BY public.car_gear_types.id;
-
-
---
--- Name: car_maker_aliases; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.car_maker_aliases (
-    id bigint NOT NULL,
-    car_maker_id bigint NOT NULL,
-    title character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: car_maker_aliases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.car_maker_aliases_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: car_maker_aliases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.car_maker_aliases_id_seq OWNED BY public.car_maker_aliases.id;
-
-
---
--- Name: car_makers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.car_makers (
-    id bigint NOT NULL,
-    title character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    display_name character varying
-);
-
-
---
--- Name: car_makers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.car_makers_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: car_makers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.car_makers_id_seq OWNED BY public.car_makers.id;
-
-
---
--- Name: car_model_aliases; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.car_model_aliases (
-    id bigint NOT NULL,
-    car_model_id bigint NOT NULL,
-    car_maker_id bigint NOT NULL,
-    title character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: car_model_aliases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.car_model_aliases_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: car_model_aliases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.car_model_aliases_id_seq OWNED BY public.car_model_aliases.id;
-
-
---
--- Name: car_models; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.car_models (
-    id bigint NOT NULL,
-    title character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    car_maker_id integer,
-    active boolean DEFAULT true NOT NULL,
-    display_name character varying
-);
-
-
---
--- Name: car_models_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.car_models_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: car_models_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.car_models_id_seq OWNED BY public.car_models.id;
-
-
---
--- Name: car_registrations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.car_registrations (
-    id bigint NOT NULL,
-    number character varying NOT NULL,
-    car_model_id bigint NOT NULL,
-    registered_at timestamp without time zone NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    extra_data jsonb
-);
-
-
---
--- Name: car_registrations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.car_registrations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: car_registrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.car_registrations_id_seq OWNED BY public.car_registrations.id;
-
-
---
--- Name: car_wheels_types; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.car_wheels_types (
-    id bigint NOT NULL,
-    title character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    filter_union_id integer
-);
-
-
---
--- Name: car_wheels_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.car_wheels_types_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: car_wheels_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.car_wheels_types_id_seq OWNED BY public.car_wheels_types.id;
-
-
---
--- Name: cities; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cities (
-    id bigint NOT NULL,
-    region_id bigint,
-    title character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    display_name character varying
-);
-
-
---
--- Name: cities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.cities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: cities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.cities_id_seq OWNED BY public.cities.id;
-
-
---
--- Name: filter_unions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.filter_unions (
-    id bigint NOT NULL,
-    title character varying,
-    key character varying,
-    ids character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: filter_unions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.filter_unions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: filter_unions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.filter_unions_id_seq OWNED BY public.filter_unions.id;
-
-
---
--- Name: images; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.images (
-    id bigint NOT NULL,
-    attachment character varying,
-    car_model_id bigint,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.images_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.images_id_seq OWNED BY public.images.id;
-
-
---
--- Name: models_aggregated_matview; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.models_aggregated_matview AS
- SELECT max((car_makers.display_name)::text) AS maker,
-    max((car_models.display_name)::text) AS model,
-    ads.year,
-    min(ads.price) AS min_price,
-    (avg(ads.price))::integer AS avg_price,
-    max(ads.price) AS max_price,
-    count(*) AS ads_count,
-    max(car_makers.id) AS maker_id,
-    max(car_models.id) AS model_id
-   FROM ((public.ads
-     JOIN public.car_models ON ((car_models.id = ads.car_model_id)))
-     JOIN public.car_makers ON ((car_makers.id = car_models.car_maker_id)))
-  WHERE ((ads.deleted = false) AND (ads.ads_source_id = 1) AND (ads.updated_at >= (now() - '2 mons'::interval)))
-  GROUP BY ads.car_model_id, ads.year
-  ORDER BY ads.car_model_id, ads.year
+CREATE MATERIALIZED VIEW public.effective_ads AS
+ SELECT DISTINCT ads.id,
+    ads.phone_number_id,
+    ads.price,
+    ads.details
+   FROM (public.ads
+     JOIN public.user_contacts ON ((user_contacts.phone_number_id = ads.phone_number_id)))
+  WHERE ((ads.deleted = false) AND (ads.updated_at >= (now() - '2 mons'::interval)))
   WITH NO DATA;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    phone_number_id bigint NOT NULL,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    avatar json
+);
+
+
+--
+-- Name: effective_user_contacts; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.effective_user_contacts AS
+ SELECT user_contacts.user_id,
+    user_contacts.phone_number_id
+   FROM (public.user_contacts
+     JOIN public.users ON ((users.phone_number_id = user_contacts.phone_number_id)))
+UNION
+ SELECT user_contacts.user_id,
+    user_contacts.phone_number_id
+   FROM (public.user_contacts
+     JOIN public.ads ON ((ads.phone_number_id = user_contacts.phone_number_id)))
+  WITH NO DATA;
+
+
+--
+-- Name: messages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.messages (
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    body character varying NOT NULL,
+    system boolean DEFAULT false NOT NULL,
+    user_id bigint,
+    chat_room_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
 
 
 --
@@ -662,9 +460,7 @@ CREATE MATERIALIZED VIEW public.models_aggregated_matview AS
 
 CREATE TABLE public.phone_numbers (
     id bigint NOT NULL,
-    full_number character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    full_number character varying(9) NOT NULL
 );
 
 
@@ -688,23 +484,37 @@ ALTER SEQUENCE public.phone_numbers_id_seq OWNED BY public.phone_numbers.id;
 
 
 --
--- Name: regions; Type: TABLE; Schema: public; Owner: -
+-- Name: rpush_apps; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.regions (
+CREATE TABLE public.rpush_apps (
     id bigint NOT NULL,
-    title character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    display_name character varying
+    name character varying NOT NULL,
+    environment character varying,
+    certificate text,
+    password character varying,
+    connections integer DEFAULT 1 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    type character varying NOT NULL,
+    auth_key character varying,
+    client_id character varying,
+    client_secret character varying,
+    access_token character varying,
+    access_token_expiration timestamp without time zone,
+    apn_key text,
+    apn_key_id character varying,
+    team_id character varying,
+    bundle_id character varying,
+    feedback_enabled boolean DEFAULT true
 );
 
 
 --
--- Name: regions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: rpush_apps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.regions_id_seq
+CREATE SEQUENCE public.rpush_apps_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -713,10 +523,106 @@ CREATE SEQUENCE public.regions_id_seq
 
 
 --
--- Name: regions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: rpush_apps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.regions_id_seq OWNED BY public.regions.id;
+ALTER SEQUENCE public.rpush_apps_id_seq OWNED BY public.rpush_apps.id;
+
+
+--
+-- Name: rpush_feedback; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rpush_feedback (
+    id bigint NOT NULL,
+    device_token character varying,
+    failed_at timestamp without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    app_id integer
+);
+
+
+--
+-- Name: rpush_feedback_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rpush_feedback_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: rpush_feedback_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.rpush_feedback_id_seq OWNED BY public.rpush_feedback.id;
+
+
+--
+-- Name: rpush_notifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rpush_notifications (
+    id bigint NOT NULL,
+    badge integer,
+    device_token character varying,
+    sound character varying,
+    alert text,
+    data text,
+    expiry integer DEFAULT 86400,
+    delivered boolean DEFAULT false NOT NULL,
+    delivered_at timestamp without time zone,
+    failed boolean DEFAULT false NOT NULL,
+    failed_at timestamp without time zone,
+    error_code integer,
+    error_description text,
+    deliver_after timestamp without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    alert_is_json boolean DEFAULT false NOT NULL,
+    type character varying NOT NULL,
+    collapse_key character varying,
+    delay_while_idle boolean DEFAULT false NOT NULL,
+    registration_ids text,
+    app_id integer NOT NULL,
+    retries integer DEFAULT 0,
+    uri character varying,
+    fail_after timestamp without time zone,
+    processing boolean DEFAULT false NOT NULL,
+    priority integer,
+    url_args text,
+    category character varying,
+    content_available boolean DEFAULT false NOT NULL,
+    notification text,
+    mutable_content boolean DEFAULT false NOT NULL,
+    external_device_id character varying,
+    thread_id character varying,
+    dry_run boolean DEFAULT false NOT NULL,
+    sound_is_json boolean DEFAULT false
+);
+
+
+--
+-- Name: rpush_notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rpush_notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: rpush_notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.rpush_notifications_id_seq OWNED BY public.rpush_notifications.id;
 
 
 --
@@ -729,24 +635,25 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: urls; Type: TABLE; Schema: public; Owner: -
+-- Name: static_pages; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.urls (
+CREATE TABLE public.static_pages (
     id bigint NOT NULL,
-    address text NOT NULL,
-    ads_source_id bigint NOT NULL,
-    status character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    title character varying NOT NULL,
+    slug character varying NOT NULL,
+    body text,
+    meta jsonb,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
 --
--- Name: urls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: static_pages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.urls_id_seq
+CREATE SEQUENCE public.static_pages_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -755,24 +662,10 @@ CREATE SEQUENCE public.urls_id_seq
 
 
 --
--- Name: urls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: static_pages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.urls_id_seq OWNED BY public.urls.id;
-
-
---
--- Name: user_contacts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.user_contacts (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    name character varying,
-    phone_number_id bigint NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
+ALTER SEQUENCE public.static_pages_id_seq OWNED BY public.static_pages.id;
 
 
 --
@@ -795,16 +688,70 @@ ALTER SEQUENCE public.user_contacts_id_seq OWNED BY public.user_contacts.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -
+-- Name: user_device_stats; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.users (
+CREATE TABLE public.user_device_stats (
     id bigint NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    access_token character varying,
-    phone_number_id integer
+    user_devices_appeared_count integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: user_device_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_device_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_device_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_device_stats_id_seq OWNED BY public.user_device_stats.id;
+
+
+--
+-- Name: user_devices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_devices (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    device_id character varying NOT NULL,
+    access_token character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    os character varying,
+    push_token character varying,
+    build_version character varying
+);
+
+
+--
+-- Name: user_devices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_devices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_devices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_devices_id_seq OWNED BY public.user_devices.id;
 
 
 --
@@ -832,10 +779,10 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 CREATE TABLE public.verification_requests (
     id bigint NOT NULL,
-    verification_code integer NOT NULL,
     phone_number_id bigint NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    verification_code integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -865,7 +812,7 @@ ALTER SEQUENCE public.verification_requests_id_seq OWNED BY public.verification_
 CREATE TABLE public.versions (
     id bigint NOT NULL,
     item_type character varying NOT NULL,
-    item_id integer NOT NULL,
+    item_id bigint NOT NULL,
     event character varying NOT NULL,
     whodunnit character varying,
     object text,
@@ -900,10 +847,17 @@ ALTER TABLE ONLY public.active_admin_comments ALTER COLUMN id SET DEFAULT nextva
 
 
 --
--- Name: ad_descriptions id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: ad_favorites id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.ad_descriptions ALTER COLUMN id SET DEFAULT nextval('public.ad_descriptions_id_seq'::regclass);
+ALTER TABLE ONLY public.ad_favorites ALTER COLUMN id SET DEFAULT nextval('public.ad_favorites_id_seq'::regclass);
+
+
+--
+-- Name: ad_visits id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_visits ALTER COLUMN id SET DEFAULT nextval('public.ad_visits_id_seq'::regclass);
 
 
 --
@@ -928,94 +882,24 @@ ALTER TABLE ONLY public.ads_sources ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- Name: car_carcass_types id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: chat_room_users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.car_carcass_types ALTER COLUMN id SET DEFAULT nextval('public.car_carcass_types_id_seq'::regclass);
-
-
---
--- Name: car_colors id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_colors ALTER COLUMN id SET DEFAULT nextval('public.car_colors_id_seq'::regclass);
+ALTER TABLE ONLY public.chat_room_users ALTER COLUMN id SET DEFAULT nextval('public.chat_room_users_id_seq'::regclass);
 
 
 --
--- Name: car_fuel_types id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: chat_rooms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.car_fuel_types ALTER COLUMN id SET DEFAULT nextval('public.car_fuel_types_id_seq'::regclass);
-
-
---
--- Name: car_gear_types id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_gear_types ALTER COLUMN id SET DEFAULT nextval('public.car_gear_types_id_seq'::regclass);
+ALTER TABLE ONLY public.chat_rooms ALTER COLUMN id SET DEFAULT nextval('public.chat_rooms_id_seq'::regclass);
 
 
 --
--- Name: car_maker_aliases id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: demo_phone_numbers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.car_maker_aliases ALTER COLUMN id SET DEFAULT nextval('public.car_maker_aliases_id_seq'::regclass);
-
-
---
--- Name: car_makers id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_makers ALTER COLUMN id SET DEFAULT nextval('public.car_makers_id_seq'::regclass);
-
-
---
--- Name: car_model_aliases id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_model_aliases ALTER COLUMN id SET DEFAULT nextval('public.car_model_aliases_id_seq'::regclass);
-
-
---
--- Name: car_models id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_models ALTER COLUMN id SET DEFAULT nextval('public.car_models_id_seq'::regclass);
-
-
---
--- Name: car_registrations id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_registrations ALTER COLUMN id SET DEFAULT nextval('public.car_registrations_id_seq'::regclass);
-
-
---
--- Name: car_wheels_types id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_wheels_types ALTER COLUMN id SET DEFAULT nextval('public.car_wheels_types_id_seq'::regclass);
-
-
---
--- Name: cities id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cities ALTER COLUMN id SET DEFAULT nextval('public.cities_id_seq'::regclass);
-
-
---
--- Name: filter_unions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.filter_unions ALTER COLUMN id SET DEFAULT nextval('public.filter_unions_id_seq'::regclass);
-
-
---
--- Name: images id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.images ALTER COLUMN id SET DEFAULT nextval('public.images_id_seq'::regclass);
+ALTER TABLE ONLY public.demo_phone_numbers ALTER COLUMN id SET DEFAULT nextval('public.demo_phone_numbers_id_seq'::regclass);
 
 
 --
@@ -1026,17 +910,31 @@ ALTER TABLE ONLY public.phone_numbers ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- Name: regions id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: rpush_apps id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.regions ALTER COLUMN id SET DEFAULT nextval('public.regions_id_seq'::regclass);
+ALTER TABLE ONLY public.rpush_apps ALTER COLUMN id SET DEFAULT nextval('public.rpush_apps_id_seq'::regclass);
 
 
 --
--- Name: urls id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: rpush_feedback id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.urls ALTER COLUMN id SET DEFAULT nextval('public.urls_id_seq'::regclass);
+ALTER TABLE ONLY public.rpush_feedback ALTER COLUMN id SET DEFAULT nextval('public.rpush_feedback_id_seq'::regclass);
+
+
+--
+-- Name: rpush_notifications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rpush_notifications ALTER COLUMN id SET DEFAULT nextval('public.rpush_notifications_id_seq'::regclass);
+
+
+--
+-- Name: static_pages id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.static_pages ALTER COLUMN id SET DEFAULT nextval('public.static_pages_id_seq'::regclass);
 
 
 --
@@ -1044,6 +942,20 @@ ALTER TABLE ONLY public.urls ALTER COLUMN id SET DEFAULT nextval('public.urls_id
 --
 
 ALTER TABLE ONLY public.user_contacts ALTER COLUMN id SET DEFAULT nextval('public.user_contacts_id_seq'::regclass);
+
+
+--
+-- Name: user_device_stats id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_device_stats ALTER COLUMN id SET DEFAULT nextval('public.user_device_stats_id_seq'::regclass);
+
+
+--
+-- Name: user_devices id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_devices ALTER COLUMN id SET DEFAULT nextval('public.user_devices_id_seq'::regclass);
 
 
 --
@@ -1076,11 +988,19 @@ ALTER TABLE ONLY public.active_admin_comments
 
 
 --
--- Name: ad_descriptions ad_descriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ad_favorites ad_favorites_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.ad_descriptions
-    ADD CONSTRAINT ad_descriptions_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.ad_favorites
+    ADD CONSTRAINT ad_favorites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_visits ad_visits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_visits
+    ADD CONSTRAINT ad_visits_pkey PRIMARY KEY (id);
 
 
 --
@@ -1116,107 +1036,35 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: car_carcass_types car_carcass_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chat_room_users chat_room_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.car_carcass_types
-    ADD CONSTRAINT car_carcass_types_pkey PRIMARY KEY (id);
-
-
---
--- Name: car_colors car_colors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_colors
-    ADD CONSTRAINT car_colors_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.chat_room_users
+    ADD CONSTRAINT chat_room_users_pkey PRIMARY KEY (id);
 
 
 --
--- Name: car_fuel_types car_fuel_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chat_rooms chat_rooms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.car_fuel_types
-    ADD CONSTRAINT car_fuel_types_pkey PRIMARY KEY (id);
-
-
---
--- Name: car_gear_types car_gear_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_gear_types
-    ADD CONSTRAINT car_gear_types_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.chat_rooms
+    ADD CONSTRAINT chat_rooms_pkey PRIMARY KEY (id);
 
 
 --
--- Name: car_maker_aliases car_maker_aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: demo_phone_numbers demo_phone_numbers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.car_maker_aliases
-    ADD CONSTRAINT car_maker_aliases_pkey PRIMARY KEY (id);
-
-
---
--- Name: car_makers car_makers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_makers
-    ADD CONSTRAINT car_makers_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.demo_phone_numbers
+    ADD CONSTRAINT demo_phone_numbers_pkey PRIMARY KEY (id);
 
 
 --
--- Name: car_model_aliases car_model_aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.car_model_aliases
-    ADD CONSTRAINT car_model_aliases_pkey PRIMARY KEY (id);
-
-
---
--- Name: car_models car_models_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_models
-    ADD CONSTRAINT car_models_pkey PRIMARY KEY (id);
-
-
---
--- Name: car_registrations car_registrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_registrations
-    ADD CONSTRAINT car_registrations_pkey PRIMARY KEY (id);
-
-
---
--- Name: car_wheels_types car_wheels_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.car_wheels_types
-    ADD CONSTRAINT car_wheels_types_pkey PRIMARY KEY (id);
-
-
---
--- Name: cities cities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cities
-    ADD CONSTRAINT cities_pkey PRIMARY KEY (id);
-
-
---
--- Name: filter_unions filter_unions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.filter_unions
-    ADD CONSTRAINT filter_unions_pkey PRIMARY KEY (id);
-
-
---
--- Name: images images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.images
-    ADD CONSTRAINT images_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
 
 
 --
@@ -1228,11 +1076,27 @@ ALTER TABLE ONLY public.phone_numbers
 
 
 --
--- Name: regions regions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: rpush_apps rpush_apps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.regions
-    ADD CONSTRAINT regions_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.rpush_apps
+    ADD CONSTRAINT rpush_apps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: rpush_feedback rpush_feedback_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rpush_feedback
+    ADD CONSTRAINT rpush_feedback_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: rpush_notifications rpush_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rpush_notifications
+    ADD CONSTRAINT rpush_notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -1244,11 +1108,11 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: urls urls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: static_pages static_pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.urls
-    ADD CONSTRAINT urls_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.static_pages
+    ADD CONSTRAINT static_pages_pkey PRIMARY KEY (id);
 
 
 --
@@ -1257,6 +1121,22 @@ ALTER TABLE ONLY public.urls
 
 ALTER TABLE ONLY public.user_contacts
     ADD CONSTRAINT user_contacts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_device_stats user_device_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_device_stats
+    ADD CONSTRAINT user_device_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_devices user_devices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_devices
+    ADD CONSTRAINT user_devices_pkey PRIMARY KEY (id);
 
 
 --
@@ -1284,10 +1164,10 @@ ALTER TABLE ONLY public.versions
 
 
 --
--- Name: ads_search_index; Type: INDEX; Schema: public; Owner: -
+-- Name: details_region_year_maker_model_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ads_search_index ON public.ads USING btree (price, year, updated_at, car_model_id, car_maker_id, deleted, ads_source_id);
+CREATE INDEX details_region_year_maker_model_index ON public.ads USING btree ((((details -> 'region'::text) ->> 0)), ((details ->> 'year'::text)), ((details ->> 'maker'::text)), ((details ->> 'model'::text)));
 
 
 --
@@ -1312,6 +1192,34 @@ CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON pub
 
 
 --
+-- Name: index_ad_favorites_on_ad_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ad_favorites_on_ad_id_and_user_id ON public.ad_favorites USING btree (ad_id, user_id);
+
+
+--
+-- Name: index_ad_favorites_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_favorites_on_user_id ON public.ad_favorites USING btree (user_id);
+
+
+--
+-- Name: index_ad_visits_on_ad_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ad_visits_on_ad_id_and_user_id ON public.ad_visits USING btree (ad_id, user_id);
+
+
+--
+-- Name: index_ad_visits_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_visits_on_user_id ON public.ad_visits USING btree (user_id);
+
+
+--
 -- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1326,87 +1234,59 @@ CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_us
 
 
 --
--- Name: index_ads_on_car_carcass_type_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_address_and_ads_source_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_car_carcass_type_id ON public.ads USING btree (car_carcass_type_id);
-
-
---
--- Name: index_ads_on_car_color_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_car_color_id ON public.ads USING btree (car_color_id);
+CREATE UNIQUE INDEX index_ads_on_address_and_ads_source_id ON public.ads USING btree (address, ads_source_id);
 
 
 --
--- Name: index_ads_on_car_details_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_details_carcass; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_car_details_id ON public.ads USING btree (car_details_id);
-
-
---
--- Name: index_ads_on_car_fuel_type_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_car_fuel_type_id ON public.ads USING btree (car_fuel_type_id);
+CREATE INDEX index_ads_on_details_carcass ON public.ads USING btree (((details ->> 'carcass'::text)));
 
 
 --
--- Name: index_ads_on_car_gear_type_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_details_fuel; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_car_gear_type_id ON public.ads USING btree (car_gear_type_id);
-
-
---
--- Name: index_ads_on_car_maker_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_car_maker_id ON public.ads USING btree (car_maker_id);
+CREATE INDEX index_ads_on_details_fuel ON public.ads USING btree (((details ->> 'fuel'::text)));
 
 
 --
--- Name: index_ads_on_car_model_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_details_gear; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_car_model_id ON public.ads USING btree (car_model_id);
-
-
---
--- Name: index_ads_on_car_model_id_and_car_maker_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_car_model_id_and_car_maker_id ON public.ads USING btree (car_model_id, car_maker_id);
+CREATE INDEX index_ads_on_details_gear ON public.ads USING btree (((details ->> 'gear'::text)));
 
 
 --
--- Name: index_ads_on_car_wheels_type_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_details_maker; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_car_wheels_type_id ON public.ads USING btree (car_wheels_type_id);
-
-
---
--- Name: index_ads_on_city_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_city_id ON public.ads USING btree (city_id);
+CREATE INDEX index_ads_on_details_maker ON public.ads USING gist (((details ->> 'maker'::text)));
 
 
 --
--- Name: index_ads_on_created_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_details_model; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_created_at ON public.ads USING btree (created_at);
+CREATE INDEX index_ads_on_details_model ON public.ads USING gist (((details ->> 'model'::text)));
 
 
 --
--- Name: index_ads_on_gear_fuel_wheels_carcass_types_ids; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_details_wheels; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_gear_fuel_wheels_carcass_types_ids ON public.ads USING btree (car_gear_type_id, car_fuel_type_id, car_wheels_type_id, car_carcass_type_id);
+CREATE INDEX index_ads_on_details_wheels ON public.ads USING btree (((details ->> 'wheels'::text)));
+
+
+--
+-- Name: index_ads_on_details_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_details_year ON public.ads USING btree (((details ->> 'year'::text)));
 
 
 --
@@ -1417,6 +1297,13 @@ CREATE INDEX index_ads_on_phone_number_id ON public.ads USING btree (phone_numbe
 
 
 --
+-- Name: index_ads_on_phone_number_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_phone_number_id_and_created_at ON public.ads USING btree (phone_number_id, created_at DESC) WHERE (deleted = false);
+
+
+--
 -- Name: index_ads_on_price; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1424,122 +1311,115 @@ CREATE INDEX index_ads_on_price ON public.ads USING btree (price);
 
 
 --
--- Name: index_ads_on_url_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_sources_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_url_id ON public.ads USING btree (url_id);
-
-
---
--- Name: index_ads_on_year; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_year ON public.ads USING btree (year);
+CREATE UNIQUE INDEX index_ads_sources_on_api_token ON public.ads_sources USING btree (api_token);
 
 
 --
--- Name: index_car_carcass_types_on_filter_union_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_sources_on_title; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_car_carcass_types_on_filter_union_id ON public.car_carcass_types USING btree (filter_union_id);
-
-
---
--- Name: index_car_fuel_types_on_filter_union_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_car_fuel_types_on_filter_union_id ON public.car_fuel_types USING btree (filter_union_id);
+CREATE UNIQUE INDEX index_ads_sources_on_title ON public.ads_sources USING btree (title);
 
 
 --
--- Name: index_car_gear_types_on_filter_union_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chat_room_users_on_chat_room_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_car_gear_types_on_filter_union_id ON public.car_gear_types USING btree (filter_union_id);
-
-
---
--- Name: index_car_maker_aliases_on_car_maker_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_car_maker_aliases_on_car_maker_id ON public.car_maker_aliases USING btree (car_maker_id);
+CREATE INDEX index_chat_room_users_on_chat_room_id ON public.chat_room_users USING btree (chat_room_id);
 
 
 --
--- Name: index_car_maker_aliases_on_title; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chat_room_users_on_chat_room_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_car_maker_aliases_on_title ON public.car_maker_aliases USING btree (title);
-
-
---
--- Name: index_car_model_aliases_on_car_maker_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_car_model_aliases_on_car_maker_id ON public.car_model_aliases USING btree (car_maker_id);
+CREATE UNIQUE INDEX index_chat_room_users_on_chat_room_id_and_user_id ON public.chat_room_users USING btree (chat_room_id, user_id);
 
 
 --
--- Name: index_car_model_aliases_on_car_model_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chat_room_users_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_car_model_aliases_on_car_model_id ON public.car_model_aliases USING btree (car_model_id);
-
-
---
--- Name: index_car_model_aliases_on_title_and_car_maker_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_car_model_aliases_on_title_and_car_maker_id ON public.car_model_aliases USING btree (title, car_maker_id);
+CREATE INDEX index_chat_room_users_on_user_id ON public.chat_room_users USING btree (user_id);
 
 
 --
--- Name: index_car_models_on_car_maker_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chat_rooms_on_ad_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_car_models_on_car_maker_id ON public.car_models USING btree (car_maker_id);
-
-
---
--- Name: index_car_models_on_display_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_car_models_on_display_name ON public.car_models USING btree (display_name);
+CREATE INDEX index_chat_rooms_on_ad_id ON public.chat_rooms USING btree (ad_id);
 
 
 --
--- Name: index_car_registrations_on_car_model_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chat_rooms_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_car_registrations_on_car_model_id ON public.car_registrations USING btree (car_model_id);
-
-
---
--- Name: index_car_registrations_on_number; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_car_registrations_on_number ON public.car_registrations USING btree (number);
+CREATE INDEX index_chat_rooms_on_user_id ON public.chat_rooms USING btree (user_id);
 
 
 --
--- Name: index_car_wheels_types_on_filter_union_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_demo_phone_numbers_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_car_wheels_types_on_filter_union_id ON public.car_wheels_types USING btree (filter_union_id);
-
-
---
--- Name: index_cities_on_region_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cities_on_region_id ON public.cities USING btree (region_id);
+CREATE INDEX index_demo_phone_numbers_on_phone_number_id ON public.demo_phone_numbers USING btree (phone_number_id);
 
 
 --
--- Name: index_images_on_car_model_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_effective_ads_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_images_on_car_model_id ON public.images USING btree (car_model_id);
+CREATE UNIQUE INDEX index_effective_ads_on_id ON public.effective_ads USING btree (id DESC);
+
+
+--
+-- Name: index_effective_ads_on_phone_number_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_effective_ads_on_phone_number_id_and_id ON public.effective_ads USING btree (phone_number_id, id DESC);
+
+
+--
+-- Name: index_effective_ads_on_price; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_effective_ads_on_price ON public.effective_ads USING btree (price);
+
+
+--
+-- Name: index_effective_user_contacts_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_effective_user_contacts_on_phone_number_id ON public.effective_user_contacts USING btree (phone_number_id);
+
+
+--
+-- Name: index_effective_user_contacts_on_phone_number_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_effective_user_contacts_on_phone_number_id_and_user_id ON public.effective_user_contacts USING btree (phone_number_id, user_id);
+
+
+--
+-- Name: index_messages_on_chat_room_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_messages_on_chat_room_id ON public.messages USING btree (chat_room_id);
+
+
+--
+-- Name: index_messages_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_messages_on_user_id ON public.messages USING btree (user_id);
+
+
+--
+-- Name: index_on_chat_rooms_user_id_where_system_true; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_on_chat_rooms_user_id_where_system_true ON public.chat_rooms USING btree (user_id) WHERE (system = true);
 
 
 --
@@ -1550,17 +1430,38 @@ CREATE UNIQUE INDEX index_phone_numbers_on_full_number ON public.phone_numbers U
 
 
 --
--- Name: index_urls_on_ads_source_id_and_updated_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_rpush_feedback_on_device_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_urls_on_ads_source_id_and_updated_at ON public.urls USING btree (ads_source_id, updated_at);
+CREATE INDEX index_rpush_feedback_on_device_token ON public.rpush_feedback USING btree (device_token);
 
 
 --
--- Name: index_user_contacts_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_rpush_notifications_multi; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_user_contacts_on_phone_number_id ON public.user_contacts USING btree (phone_number_id);
+CREATE INDEX index_rpush_notifications_multi ON public.rpush_notifications USING btree (delivered, failed, processing, deliver_after, created_at) WHERE ((NOT delivered) AND (NOT failed));
+
+
+--
+-- Name: index_static_pages_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_static_pages_on_slug ON public.static_pages USING btree (slug);
+
+
+--
+-- Name: index_user_contacts_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_contacts_on_name ON public.user_contacts USING gist (name);
+
+
+--
+-- Name: index_user_contacts_on_phone_number_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_contacts_on_phone_number_id_and_user_id ON public.user_contacts USING btree (phone_number_id, user_id);
 
 
 --
@@ -1568,6 +1469,27 @@ CREATE INDEX index_user_contacts_on_phone_number_id ON public.user_contacts USIN
 --
 
 CREATE INDEX index_user_contacts_on_user_id ON public.user_contacts USING btree (user_id);
+
+
+--
+-- Name: index_user_devices_on_access_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_devices_on_access_token ON public.user_devices USING btree (access_token);
+
+
+--
+-- Name: index_user_devices_on_device_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_devices_on_device_id ON public.user_devices USING btree (device_id);
+
+
+--
+-- Name: index_user_devices_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_devices_on_user_id ON public.user_devices USING btree (user_id);
 
 
 --
@@ -1592,17 +1514,104 @@ CREATE INDEX index_versions_on_item_type_and_item_id ON public.versions USING bt
 
 
 --
--- Name: models_aggregated_matview_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: search_budget_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX models_aggregated_matview_idx ON public.models_aggregated_matview USING btree (year, min_price, max_price, ads_count, maker_id, model_id, maker, model);
+CREATE INDEX search_budget_index ON public.ads_grouped_by_maker_model_year USING btree (min_price, max_price);
 
 
 --
--- Name: tst; Type: INDEX; Schema: public; Owner: -
+-- Name: user_contacts_phone_number_id_name_user_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX tst ON public.urls USING btree (address);
+CREATE INDEX user_contacts_phone_number_id_name_user_id_idx ON public.user_contacts USING btree (phone_number_id, name, user_id);
+
+
+--
+-- Name: users_phone_number_id_name_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX users_phone_number_id_name_idx ON public.users USING btree (phone_number_id, name);
+
+
+--
+-- Name: users fk_rails_0af1806ed1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_0af1806ed1 FOREIGN KEY (phone_number_id) REFERENCES public.phone_numbers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ads fk_rails_1957b7156c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ads
+    ADD CONSTRAINT fk_rails_1957b7156c FOREIGN KEY (ads_source_id) REFERENCES public.ads_sources(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_favorites fk_rails_433c6ffc89; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_favorites
+    ADD CONSTRAINT fk_rails_433c6ffc89 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_favorites fk_rails_bd23ea336e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_favorites
+    ADD CONSTRAINT fk_rails_bd23ea336e FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_visits fk_rails_bdda06f5d6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_visits
+    ADD CONSTRAINT fk_rails_bdda06f5d6 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_contacts fk_rails_be7bbd25f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_contacts
+    ADD CONSTRAINT fk_rails_be7bbd25f6 FOREIGN KEY (phone_number_id) REFERENCES public.phone_numbers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_contacts fk_rails_cfeb7cc2a1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_contacts
+    ADD CONSTRAINT fk_rails_cfeb7cc2a1 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_visits fk_rails_d152f844d2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_visits
+    ADD CONSTRAINT fk_rails_d152f844d2 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_devices fk_rails_e700a96826; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_devices
+    ADD CONSTRAINT fk_rails_e700a96826 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ads fk_rails_f7e6a33a41; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ads
+    ADD CONSTRAINT fk_rails_f7e6a33a41 FOREIGN KEY (phone_number_id) REFERENCES public.phone_numbers(id) ON DELETE CASCADE;
 
 
 --
@@ -1612,62 +1621,57 @@ CREATE INDEX tst ON public.urls USING btree (address);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20180808094353'),
-('20180808094405'),
-('20180808094410'),
-('20180808094447'),
-('20180808094517'),
-('20180808094534'),
-('20180808094717'),
-('20180808094819'),
-('20180808194407'),
-('20180811155007'),
-('20180811155112'),
-('20180816184444'),
-('20180816194652'),
-('20181230190908'),
-('20181230191255'),
-('20190105133219'),
-('20190105164354'),
-('20190105164356'),
-('20190105164758'),
-('20190105181653'),
-('20190105184604'),
-('20190105193900'),
-('20190106135947'),
-('20190216101932'),
-('20190216101951'),
-('20190216102440'),
-('20190216145041'),
-('20190217172908'),
-('20190217182933'),
-('20190218150752'),
-('20190219100449'),
-('20190219100931'),
-('20190220084408'),
-('20190220085042'),
-('20190220085104'),
-('20190221080219'),
-('20190221112916'),
-('20190227084338'),
-('20190304155141'),
-('20190304160124'),
-('20190304163717'),
-('20190320131021'),
-('20190320131540'),
-('20190320135348'),
-('20190320142711'),
-('20190321085426'),
-('20190324170322'),
-('20190325152643'),
-('20190331202900'),
-('20191208082917'),
-('20191208083710'),
-('20191216230938'),
-('20191216231849'),
-('20191217000219'),
-('20191217000226'),
-('20191218084519'),
-('20191218142657');
+('20200707171001'),
+('20200707171003'),
+('20200707171004'),
+('20200707172000'),
+('20200707172006'),
+('20200707172007'),
+('20200707172023'),
+('20200707172025'),
+('20200707172029'),
+('20200708153418'),
+('20200708154421'),
+('20200709181647'),
+('20200729185825'),
+('20200806133228'),
+('20200816193450'),
+('20200831115130'),
+('20201001061800'),
+('20201001064055'),
+('20201007101246'),
+('20201007101247'),
+('20201007101254'),
+('20201007101315'),
+('20201024103631'),
+('20201024103951'),
+('20201030192732'),
+('20201031204555'),
+('20201103114215'),
+('20201105174219'),
+('20201105174220'),
+('20201105174221'),
+('20201105174222'),
+('20201105174223'),
+('20201105174224'),
+('20201105174225'),
+('20201105174226'),
+('20201105174227'),
+('20201105174228'),
+('20201105174229'),
+('20201105174230'),
+('20201105174231'),
+('20201105174232'),
+('20201105174233'),
+('20201105174234'),
+('20201121180726'),
+('20201124155628'),
+('20201126214710'),
+('20201130223551'),
+('20201202195700'),
+('20201214222348'),
+('20210206130842'),
+('20210317140913'),
+('20210317140918');
 
 
