@@ -1167,7 +1167,7 @@ ALTER TABLE ONLY public.versions
 -- Name: details_region_year_maker_model_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX details_region_year_maker_model_index ON public.ads USING btree ((((details -> 'region'::text) ->> 0)), ((details ->> 'year'::text)), ((details ->> 'maker'::text)), ((details ->> 'model'::text)));
+CREATE INDEX details_region_year_maker_model_index ON public.ads USING btree ((((details -> 'region'::text) ->> 0)), ((details ->> 'year'::text)), ((details ->> 'maker'::text)), ((details ->> 'model'::text))) WHERE (deleted = false);
 
 
 --
@@ -1241,55 +1241,6 @@ CREATE UNIQUE INDEX index_ads_on_address_and_ads_source_id ON public.ads USING b
 
 
 --
--- Name: index_ads_on_details_carcass; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_details_carcass ON public.ads USING btree (((details ->> 'carcass'::text)));
-
-
---
--- Name: index_ads_on_details_fuel; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_details_fuel ON public.ads USING btree (((details ->> 'fuel'::text)));
-
-
---
--- Name: index_ads_on_details_gear; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_details_gear ON public.ads USING btree (((details ->> 'gear'::text)));
-
-
---
--- Name: index_ads_on_details_maker; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_details_maker ON public.ads USING gist (((details ->> 'maker'::text)));
-
-
---
--- Name: index_ads_on_details_model; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_details_model ON public.ads USING gist (((details ->> 'model'::text)));
-
-
---
--- Name: index_ads_on_details_wheels; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_details_wheels ON public.ads USING btree (((details ->> 'wheels'::text)));
-
-
---
--- Name: index_ads_on_details_year; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_details_year ON public.ads USING btree (((details ->> 'year'::text)));
-
-
---
 -- Name: index_ads_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1297,17 +1248,10 @@ CREATE INDEX index_ads_on_phone_number_id ON public.ads USING btree (phone_numbe
 
 
 --
--- Name: index_ads_on_phone_number_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_phone_number_id_and_updated_at_and_price; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_phone_number_id_and_created_at ON public.ads USING btree (phone_number_id, created_at DESC) WHERE (deleted = false);
-
-
---
--- Name: index_ads_on_price; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_price ON public.ads USING btree (price);
+CREATE INDEX index_ads_on_phone_number_id_and_updated_at_and_price ON public.ads USING btree (phone_number_id, updated_at DESC, price) WHERE (deleted = false);
 
 
 --
@@ -1672,6 +1616,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201214222348'),
 ('20210206130842'),
 ('20210317140913'),
-('20210317140918');
+('20210317140918'),
+('20210323200730');
 
 
