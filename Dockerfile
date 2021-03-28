@@ -1,6 +1,6 @@
 FROM ruby:3.0.0-alpine
 
-RUN apk update && apk --no-cache add build-base postgresql-dev tzdata git bash nodejs postgresql-client
+RUN apk update && apk --no-cache add build-base postgresql-dev tzdata git bash nodejs postgresql-client shared-mime-info
 
 RUN mkdir -p /app/tmp/pids
 
