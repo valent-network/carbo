@@ -5,6 +5,8 @@ class Ad < ApplicationRecord
 
   attr_reader :friend_name_and_total
 
+  before_update :prepare_ad_price
+
   has_paper_trail
 
   validates :price, presence: true, numericality: { greater_than: 0, only_integer: true }
@@ -19,6 +21,7 @@ class Ad < ApplicationRecord
   belongs_to :phone_number
   has_many :ad_visits, dependent: :delete_all
   has_many :ad_favorites, dependent: :delete_all
+  has_many :ad_prices, dependent: :delete_all
 
   scope :active, -> { where(deleted: false) }
 
@@ -43,5 +46,9 @@ class Ad < ApplicationRecord
 
   def details_object
     errors.add(:details, 'must be a Hash') unless details.is_a?(Hash)
+  end
+
+  def prepare_ad_price
+    ad_prices.new(price: price) if price_changed?
   end
 end

@@ -124,6 +124,37 @@ ALTER SEQUENCE public.ad_favorites_id_seq OWNED BY public.ad_favorites.id;
 
 
 --
+-- Name: ad_prices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_prices (
+    id bigint NOT NULL,
+    ad_id bigint NOT NULL,
+    price integer NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: ad_prices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_prices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_prices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_prices_id_seq OWNED BY public.ad_prices.id;
+
+
+--
 -- Name: ad_visits; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -849,6 +880,13 @@ ALTER TABLE ONLY public.ad_favorites ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: ad_prices id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_prices ALTER COLUMN id SET DEFAULT nextval('public.ad_prices_id_seq'::regclass);
+
+
+--
 -- Name: ad_visits id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -988,6 +1026,14 @@ ALTER TABLE ONLY public.active_admin_comments
 
 ALTER TABLE ONLY public.ad_favorites
     ADD CONSTRAINT ad_favorites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_prices ad_prices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_prices
+    ADD CONSTRAINT ad_prices_pkey PRIMARY KEY (id);
 
 
 --
@@ -1198,6 +1244,13 @@ CREATE UNIQUE INDEX index_ad_favorites_on_ad_id_and_user_id ON public.ad_favorit
 --
 
 CREATE INDEX index_ad_favorites_on_user_id ON public.ad_favorites USING btree (user_id);
+
+
+--
+-- Name: index_ad_prices_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_prices_on_ad_id ON public.ad_prices USING btree (ad_id);
 
 
 --
@@ -1600,6 +1653,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210317140918'),
 ('20210323200730'),
 ('20210328171747'),
-('20210328174228');
+('20210328174228'),
+('20210328180036');
 
 

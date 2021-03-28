@@ -41,4 +41,18 @@ RSpec.describe(Ad, type: :model) do
       expect(ad.errors.to_hash[:details]).to(eq(['is invalid', 'must be a Hash']))
     end
   end
+
+  describe '#ad_prices' do
+    it 'creates AdPrice record on price update' do
+      expect { ad.update(price: ad.price + 1000) }.to(change { ad.reload.ad_prices.count }.from(0).to(1))
+    end
+
+    it 'does not create AdPrice record when Ad was updated but not price' do
+      expect { ad.update(deleted: true) }.to_not(change { ad.reload.ad_prices.count })
+    end
+
+    it 'does not create AdPrice record when Ad was created' do
+      expect { create(:ad, :active) }.to_not(change { AdPrice.count })
+    end
+  end
 end
