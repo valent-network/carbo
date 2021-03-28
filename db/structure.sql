@@ -463,6 +463,12 @@ CREATE MATERIALIZED VIEW public.effective_user_contacts AS
     user_contacts.phone_number_id
    FROM (public.user_contacts
      JOIN public.users ON ((users.phone_number_id = user_contacts.phone_number_id)))
+UNION
+ SELECT user_contacts.user_id,
+    user_contacts.phone_number_id
+   FROM public.user_contacts
+  WHERE (user_contacts.phone_number_id IN ( SELECT DISTINCT effective_ads.phone_number_id
+           FROM public.effective_ads))
   WITH NO DATA;
 
 
@@ -1654,6 +1660,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210323200730'),
 ('20210328171747'),
 ('20210328174228'),
-('20210328180036');
+('20210328180036'),
+('20210328200259'),
+('20210328204025');
 
 
