@@ -432,11 +432,6 @@ CREATE MATERIALIZED VIEW public.effective_user_contacts AS
     user_contacts.phone_number_id
    FROM (public.user_contacts
      JOIN public.users ON ((users.phone_number_id = user_contacts.phone_number_id)))
-UNION
- SELECT user_contacts.user_id,
-    user_contacts.phone_number_id
-   FROM (public.user_contacts
-     JOIN public.ads ON ((ads.phone_number_id = user_contacts.phone_number_id)))
   WITH NO DATA;
 
 
@@ -1465,20 +1460,6 @@ CREATE INDEX search_budget_index ON public.ads_grouped_by_maker_model_year USING
 
 
 --
--- Name: user_contacts_phone_number_id_name_user_id_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX user_contacts_phone_number_id_name_user_id_idx ON public.user_contacts USING btree (phone_number_id, name, user_id);
-
-
---
--- Name: users_phone_number_id_name_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX users_phone_number_id_name_idx ON public.users USING btree (phone_number_id, name);
-
-
---
 -- Name: users fk_rails_0af1806ed1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1617,6 +1598,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210206130842'),
 ('20210317140913'),
 ('20210317140918'),
-('20210323200730');
+('20210323200730'),
+('20210328171747'),
+('20210328174228');
 
 
