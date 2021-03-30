@@ -3,6 +3,7 @@ require './config/boot'
 require './config/environment'
 
 module Clockwork
+  every(5.seconds, 'Normalize Ad Details') { NormalizeAdDetails.perform_later }
   every(1.minute, 'Refresh Effective Ads Materialized View') { EffectiveAdsRefreshMaterializedView.perform_later }
   every(1.minute, 'Refresh Effective UserContacts Materialized View') { EffectiveUserContactsRefreshMaterializedView.perform_later }
   every(1.day, 'Vacuum Postgresql', at: '05:00', tz: 'UTC') { VacuumDatabase.perform_later }
