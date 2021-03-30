@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class CreateAdsSources < ActiveRecord::Migration[6.0]
   def change
-    create_table :ads_sources do |t|
+    create_table(:ads_sources) do |t|
       t.string(:title, null: false)
       t.string(:api_token, null: false)
 

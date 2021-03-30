@@ -2,7 +2,7 @@
 
 class CreateAdminUsers < ActiveRecord::Migration[6.0]
   def self.up
-    create_table :admin_users do |t|
+    create_table(:admin_users) do |t|
       ## Database authenticatable
       t.string(:email,              null: false, default: "")
       t.string(:encrypted_password, null: false, default: "")

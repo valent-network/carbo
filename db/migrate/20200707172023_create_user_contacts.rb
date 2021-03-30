@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class CreateUserContacts < ActiveRecord::Migration[6.0]
   def change
-    create_table :user_contacts do |t|
+    create_table(:user_contacts) do |t|
       t.belongs_to(:user, null: false)
       t.belongs_to(:phone_number, null: false, index: false)
 

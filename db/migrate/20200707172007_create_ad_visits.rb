@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class CreateAdVisits < ActiveRecord::Migration[6.0]
   def change
-    create_table :ad_visits do |t|
+    create_table(:ad_visits) do |t|
       t.belongs_to(:user, null: false)
       t.belongs_to(:ad, null: false, index: false)
     end

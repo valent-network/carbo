@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class CreateActiveAdminComments < ActiveRecord::Migration[6.0]
   def self.up
-    create_table :active_admin_comments do |t|
+    create_table(:active_admin_comments) do |t|
       t.string(:namespace)
       t.text(:body)
       t.references(:resource, polymorphic: true)

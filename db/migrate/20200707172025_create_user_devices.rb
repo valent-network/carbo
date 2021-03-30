@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class CreateUserDevices < ActiveRecord::Migration[6.0]
   def change
-    create_table :user_devices do |t|
+    create_table(:user_devices) do |t|
       t.belongs_to(:user, null: false)
 
       t.string(:device_id, null: false)

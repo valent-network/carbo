@@ -42,7 +42,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
 
   class CreateRapnsNotifications < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     def self.up
-      create_table :rapns_notifications do |t|
+      create_table(:rapns_notifications) do |t|
         t.integer(:badge, null: true)
         t.string(:device_token,          null: false, limit: 64)
         t.string(:sound,                 null: true,  default: "1.aiff")
@@ -79,7 +79,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
 
   class CreateRapnsFeedback < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     def self.up
-      create_table :rapns_feedback do |t|
+      create_table(:rapns_feedback) do |t|
         t.string(:device_token, null: false, limit: 64)
         t.timestamp(:failed_at, null: false)
         t.timestamps
@@ -127,7 +127,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
 
   class CreateRapnsApps < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     def self.up
-      create_table :rapns_apps do |t|
+      create_table(:rapns_apps) do |t|
         t.string(:key,             null: false)
         t.string(:environment,     null: false)
         t.text(:certificate, null: false)

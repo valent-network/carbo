@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class CreateAds < ActiveRecord::Migration[6.0]
   def change
-    create_table :ads do |t|
+    create_table(:ads) do |t|
       t.belongs_to(:phone_number, null: false)
       t.belongs_to(:ads_source, null: false)
 
