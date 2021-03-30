@@ -92,6 +92,36 @@ ALTER SEQUENCE public.active_admin_comments_id_seq OWNED BY public.active_admin_
 
 
 --
+-- Name: ad_descriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_descriptions (
+    id bigint NOT NULL,
+    ad_id bigint NOT NULL,
+    body text
+);
+
+
+--
+-- Name: ad_descriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_descriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_descriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_descriptions_id_seq OWNED BY public.ad_descriptions.id;
+
+
+--
 -- Name: ad_favorites; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -121,6 +151,125 @@ CREATE SEQUENCE public.ad_favorites_id_seq
 --
 
 ALTER SEQUENCE public.ad_favorites_id_seq OWNED BY public.ad_favorites.id;
+
+
+--
+-- Name: ad_image_links_sets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_image_links_sets (
+    id bigint NOT NULL,
+    ad_id bigint NOT NULL,
+    value character varying[] DEFAULT '{}'::character varying[]
+);
+
+
+--
+-- Name: ad_image_links_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_image_links_sets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_image_links_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_image_links_sets_id_seq OWNED BY public.ad_image_links_sets.id;
+
+
+--
+-- Name: ad_option_types; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_option_types (
+    id bigint NOT NULL,
+    name character varying NOT NULL
+);
+
+
+--
+-- Name: ad_option_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_option_types_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_option_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_option_types_id_seq OWNED BY public.ad_option_types.id;
+
+
+--
+-- Name: ad_option_values; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_option_values (
+    id bigint NOT NULL,
+    value character varying NOT NULL
+);
+
+
+--
+-- Name: ad_option_values_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_option_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_option_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_option_values_id_seq OWNED BY public.ad_option_values.id;
+
+
+--
+-- Name: ad_options; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_options (
+    id bigint NOT NULL,
+    ad_id bigint NOT NULL,
+    ad_option_type_id bigint NOT NULL,
+    ad_option_value_id bigint NOT NULL
+);
+
+
+--
+-- Name: ad_options_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_options_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_options_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_options_id_seq OWNED BY public.ad_options.id;
 
 
 --
@@ -879,10 +1028,45 @@ ALTER TABLE ONLY public.active_admin_comments ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: ad_descriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_descriptions ALTER COLUMN id SET DEFAULT nextval('public.ad_descriptions_id_seq'::regclass);
+
+
+--
 -- Name: ad_favorites id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ad_favorites ALTER COLUMN id SET DEFAULT nextval('public.ad_favorites_id_seq'::regclass);
+
+
+--
+-- Name: ad_image_links_sets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_image_links_sets ALTER COLUMN id SET DEFAULT nextval('public.ad_image_links_sets_id_seq'::regclass);
+
+
+--
+-- Name: ad_option_types id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_option_types ALTER COLUMN id SET DEFAULT nextval('public.ad_option_types_id_seq'::regclass);
+
+
+--
+-- Name: ad_option_values id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_option_values ALTER COLUMN id SET DEFAULT nextval('public.ad_option_values_id_seq'::regclass);
+
+
+--
+-- Name: ad_options id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_options ALTER COLUMN id SET DEFAULT nextval('public.ad_options_id_seq'::regclass);
 
 
 --
@@ -1027,11 +1211,51 @@ ALTER TABLE ONLY public.active_admin_comments
 
 
 --
+-- Name: ad_descriptions ad_descriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_descriptions
+    ADD CONSTRAINT ad_descriptions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ad_favorites ad_favorites_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ad_favorites
     ADD CONSTRAINT ad_favorites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_image_links_sets ad_image_links_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_image_links_sets
+    ADD CONSTRAINT ad_image_links_sets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_option_types ad_option_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_option_types
+    ADD CONSTRAINT ad_option_types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_option_values ad_option_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_option_values
+    ADD CONSTRAINT ad_option_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_options ad_options_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_options
+    ADD CONSTRAINT ad_options_pkey PRIMARY KEY (id);
 
 
 --
@@ -1239,6 +1463,13 @@ CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON pub
 
 
 --
+-- Name: index_ad_descriptions_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_descriptions_on_ad_id ON public.ad_descriptions USING btree (ad_id);
+
+
+--
 -- Name: index_ad_favorites_on_ad_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1250,6 +1481,55 @@ CREATE UNIQUE INDEX index_ad_favorites_on_ad_id_and_user_id ON public.ad_favorit
 --
 
 CREATE INDEX index_ad_favorites_on_user_id ON public.ad_favorites USING btree (user_id);
+
+
+--
+-- Name: index_ad_image_links_sets_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_image_links_sets_on_ad_id ON public.ad_image_links_sets USING btree (ad_id);
+
+
+--
+-- Name: index_ad_option_types_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ad_option_types_on_name ON public.ad_option_types USING btree (name);
+
+
+--
+-- Name: index_ad_option_values_on_value; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ad_option_values_on_value ON public.ad_option_values USING btree (value);
+
+
+--
+-- Name: index_ad_options_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_options_on_ad_id ON public.ad_options USING btree (ad_id);
+
+
+--
+-- Name: index_ad_options_on_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_options_on_ad_option_type_id ON public.ad_options USING btree (ad_option_type_id);
+
+
+--
+-- Name: index_ad_options_on_ad_option_type_id_and_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ad_options_on_ad_option_type_id_and_ad_id ON public.ad_options USING btree (ad_option_type_id, ad_id);
+
+
+--
+-- Name: index_ad_options_on_ad_option_value_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_options_on_ad_option_value_id ON public.ad_options USING btree (ad_option_value_id);
 
 
 --
@@ -1662,6 +1942,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210328174228'),
 ('20210328180036'),
 ('20210328200259'),
-('20210328204025');
+('20210328204025'),
+('20210328211421'),
+('20210328211424'),
+('20210328211426'),
+('20210329194349'),
+('20210330081722');
 
 
