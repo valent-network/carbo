@@ -20,6 +20,8 @@ module Api
 
         return render(json: { errors: ad_contract.errors.to_h }, status: :unprocessable_entity) if ad_contract.failure?
 
+        PrepareAdOptions.new.call(ad, ad_params[:details])
+
         if ad.update(ad_params)
           render(json: { ad: ad })
           ad.touch
