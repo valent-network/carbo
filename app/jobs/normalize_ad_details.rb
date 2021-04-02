@@ -3,7 +3,7 @@
 class NormalizeAdDetails < ApplicationJob
   queue_as(:default)
 
-  def perform(ads_id)
+  def perform(ads_ids)
     ads = Ad.where(id: ads_ids)
 
     ads.each do |ad|
