@@ -52,6 +52,6 @@ class Ad < ApplicationRecord
   end
 
   def prepare_ad_price
-    ad_prices.new(price: price) if price_changed?
+    ad_prices.new(price: price_was) if price_changed?
   end
 end
