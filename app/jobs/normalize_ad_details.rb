@@ -3,8 +3,9 @@
 class NormalizeAdDetails < ApplicationJob
   queue_as(:default)
 
-  def perform(ads_ids)
-    ads = Ad.where(id: ads_ids)
+  def perform(ads_ids = nil)
+    return if ads_ids.blank?
+    ads = Ad.where(id: JSON.parse(ads_ids))
 
     ads.each do |ad|
       PrepareAdOptions.new.call(ad, ad.details)
