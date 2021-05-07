@@ -80,6 +80,7 @@ RSpec.describe(UserFriendlyAdsQuery) do
       ad = create(:ad, :active, phone: friend.phone_number)
       ad.details['maker'] = 'BMW'
       ad.details['model'] = 'X6'
+      PrepareAdOptions.new.call(ad, ad.details)
       ad.save
 
       EffectiveAd.refresh

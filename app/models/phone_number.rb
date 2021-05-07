@@ -22,7 +22,7 @@ class PhoneNumber < ApplicationRecord
   scope :by_full_number, ->(phone_number) { where(full_number: Phonelib.parse(phone_number).national.to_s.gsub(/\s/, '').to_i) }
 
   def self.by_region(region_name)
-    joins(:ads).where("ads.details->'region'->>0 = ?", region_name)
+    joins(ads: [ad_options: [:ad_option_type, :ad_option_value]]).where(ad_option_types: { name: 'city' }, ad_option_values: { value: region_name })
   end
 
   def self.not_registered_only(_value)

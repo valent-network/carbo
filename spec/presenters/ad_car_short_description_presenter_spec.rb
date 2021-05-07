@@ -13,8 +13,14 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
       horse_powers: 333,
     }
   end
-  let(:ad) { create(:ad, :active, details: ad_details) }
-  subject { described_class.new.call(ad.details) }
+  let(:ad) do
+    a = build(:ad, :active)
+    a.details = ad_details
+    PrepareAdOptions.new.call(a, a.details)
+    a.save
+    a
+  end
+  subject { described_class.new.call(ad.new_details) }
 
   it { is_expected.to(be_a(String)) }
 

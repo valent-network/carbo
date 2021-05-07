@@ -28,6 +28,11 @@ class Ad < ApplicationRecord
 
   scope :active, -> { where(deleted: false) }
 
+  def self.by_options(opt_name, opt_id, val_ids)
+    val_ids = Array.wrap(val_ids).map(&:to_i).join(',')
+    joins("JOIN ad_options AS opt_#{opt_name} ON ads.id = opt_#{opt_name}.ad_id AND opt_#{opt_name}.ad_option_type_id = #{opt_id} AND opt_#{opt_name}.ad_option_value_id IN (#{val_ids})")
+  end
+
   def phone=(val)
     self.phone_number = PhoneNumber.by_full_number(val).first_or_create! if val.present?
   end
@@ -43,6 +48,25 @@ class Ad < ApplicationRecord
       friend_hands: friend.is_first_hand ? 1 : 2,
       count: (associated.count - 1),
     }
+  end
+
+  def new_details
+    return @new_details if @new_details
+
+    rel = ad_options.loaded? ? ad_options : ad_options.includes(:ad_option_type, :ad_option_value)
+
+    opts_array = rel.map do |opt|
+      [opt.ad_option_type.name, opt.ad_option_value.value]
+    end
+
+    @new_details = Hash[opts_array].merge('description' => ad_description&.body, 'images_json_array_tmp' => ad_image_links_set&.value)
+  end
+
+  # Override
+
+  def reload
+    @new_details = nil
+    super
   end
 
   private

@@ -2,9 +2,20 @@
 class AdsController < ApplicationController
   def show
     @ad = Ad.find(params[:id])
-    @options = AdCarOptionsPresenter.new.call(@ad.details)
-    @main_image = @ad.details['images_json_array_tmp'].is_a?(Array) ? @ad.details['images_json_array_tmp'].first : JSON.parse(@ad.details['images_json_array_tmp']).first
-    @meta_title = "#{@ad.details['maker']} #{@ad.details['model']} #{@ad.details['year']}"
+    @options = AdCarOptionsPresenter.new.call(@ad.new_details)
+    @main_image = case @ad.new_details['images_json_array_tmp']
+    when Array
+      @ad.new_details['images_json_array_tmp'].first
+    when String
+      begin JSON.parse(@ad.new_details['images_json_array_tmp']).first
+      rescue
+        ''
+      end
+    else
+      ''
+    end
+
+    @meta_title = "#{@ad.new_details['maker']} #{@ad.new_details['model']} #{@ad.new_details['year']}"
     render('ads/show', layout: false)
   end
 end

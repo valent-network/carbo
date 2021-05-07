@@ -6,7 +6,7 @@ module Api
       before_action :require_auth
 
       def show
-        ad = Ad.find(params[:id])
+        ad = Ad.where(id: params[:id]).includes(ad_options: [:ad_option_type, :ad_option_value]).first
         AdVisitedJob.perform_later(current_user.id, ad.id)
 
         ads_with_friends_sql = AdsWithFriendsQuery.new.call(current_user, [ad.phone_number_id])

@@ -27,7 +27,7 @@ FactoryBot.define do
           address: FFaker::Image.url,
           race: rand(1..3000),
           year: FFaker::Vehicle.year,
-          images_json_array_tmp: [FFaker::Avatar.image],
+          images_json_array_tmp: [FFaker::Avatar.image].to_json,
           engine_capacity: (FFaker::Vehicle.engine_displacement.to_f * 1000),
           fuel: FFaker::Vehicle.fuel_type,
           gear: FFaker::Vehicle.transmission,

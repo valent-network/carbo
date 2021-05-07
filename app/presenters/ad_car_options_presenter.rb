@@ -14,7 +14,7 @@ class AdCarOptionsPresenter
     res[:gear] = [I18n.t('ad_options.gear'), ad_details['gear']]
     res[:wheels] = [I18n.t('ad_options.wheels'), ad_details['wheels']]
     res[:carcass] = [I18n.t('ad_options.carcass'), ad_details['carcass']]
-    res[:city] = [I18n.t('ad_options.city'), ad_details['region'].try(:last)]
+    res[:city] = [I18n.t('ad_options.city'), ad_details['city']]
     res[:color] = [I18n.t('ad_options.color'), ad_details['color']]
     res[:year] = [I18n.t('ad_options.year'), ad_details['year']]
     res[:horse_powers] = [I18n.t('ad_options.horse_powers'), "#{ad_details['horse_powers']} л.с"] if ad_details['horse_powers'].to_i.positive?

@@ -6,12 +6,12 @@ module Api
       attributes :id, :image, :title, :price, :short_description, :friend_name_and_total
 
       def image
-        images = object.details['images_json_array_tmp']
-        images.is_a?(String) ? JSON.parse(images).first : images.first
+        images = object.new_details['images_json_array_tmp']
+        images.is_a?(String) ? JSON.parse(images).first : Array.wrap(images).first
       end
 
       def title
-        "#{object.details['maker']} #{object.details['model']} #{object.details['year']}"
+        "#{object.new_details['maker']} #{object.new_details['model']} #{object.new_details['year']}"
       end
 
       def price
@@ -19,7 +19,7 @@ module Api
       end
 
       def short_description
-        AdCarShortDescriptionPresenter.new.call(object.details)
+        AdCarShortDescriptionPresenter.new.call(object.new_details)
       end
     end
   end

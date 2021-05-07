@@ -25,10 +25,10 @@ RSpec.describe(AdPricesPresenter) do
     ad.update(price: 200)
     ad.update(price: 300)
     ad.update(deleted: true)
-    ad.versions.each_with_index { |version, index| version.update(created_at: (index + 1).days.ago) }
+    ad.ad_prices.each_with_index { |ad_price, index| ad_price.update(created_at: (index + 1).days.ago) }
     expected_prices = [
-      [2.days.ago.to_date.to_s, 100],
-      [3.days.ago.to_date.to_s, 200],
+      [1.days.ago.to_date.to_s, 100],
+      [2.days.ago.to_date.to_s, 200],
     ]
     is_expected.to(eq(expected_prices))
   end
