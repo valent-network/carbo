@@ -13,13 +13,13 @@ class UserRootFriendsForAdQuery
 
             SELECT user_contacts.id, user_contacts.name, users.id AS user_id
             FROM users
-            JOIN user_contacts ON user_contacts.phone_number_id = users.phone_number_id AND user_contacts.user_id = #{user_id}
+            JOIN effective_user_contacts AS user_contacts ON user_contacts.phone_number_id = users.phone_number_id AND user_contacts.user_id = #{user_id}
 
             UNION
 
             SELECT p.id, p.name, new_users.id AS user_id
             FROM p
-            JOIN user_contacts ON user_contacts.user_id = p.user_id
+            JOIN effective_user_contacts AS user_contacts ON user_contacts.user_id = p.user_id
             JOIN users AS new_users ON user_contacts.phone_number_id = new_users.phone_number_id AND new_users.id != #{user_id}
             LEFT JOIN my_contacts ON my_contacts.phone_number_id = new_users.phone_number_id
             WHERE my_contacts.phone_number_id IS NULL
@@ -35,7 +35,7 @@ class UserRootFriendsForAdQuery
 
       SELECT user_contacts.id, user_contacts.name, user_contacts.phone_number_id, TRUE AS is_first_hand
       FROM users
-      JOIN user_contacts ON user_contacts.phone_number_id IN (#{phone_numbers_string}) AND user_contacts.user_id = #{user_id}
+      JOIN effective_user_contacts AS user_contacts ON user_contacts.phone_number_id IN (#{phone_numbers_string}) AND user_contacts.user_id = #{user_id}
 
       UNION
 

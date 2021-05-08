@@ -4,7 +4,7 @@ class UserFriendlyAdsQuery
   LIMIT = 20
 
   def call(user:, offset: 0, limit: LIMIT, filters: {})
-    user_contacts_matched_phone_numbers = user.user_contacts.where('user_contacts.name ILIKE ?', "%#{filters[:query]}%").pluck(:phone_number_id) if filters[:query].present?
+    user_contacts_matched_phone_numbers = user.user_contacts.from('effective_user_contacts AS user_contacts').where('user_contacts.name ILIKE ?', "%#{filters[:query]}%").pluck(:phone_number_id) if filters[:query].present?
     effective_ads = EffectiveAds.new.call(filters: filters, should_search_query: user_contacts_matched_phone_numbers.blank?)
 
     known_numbers = if filters[:contacts_mode] == 'directFriends'

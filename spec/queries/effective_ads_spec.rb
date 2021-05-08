@@ -110,6 +110,17 @@ RSpec.describe(EffectiveAds) do
       end
     end
 
+    context 'with filter for carcasses with multiple values' do
+      let(:filters) { { carcasses: ['C', 'A'], fuel: ['B'] } }
+
+      it 'returns only expected records' do
+        expect(subject.count).to(eq(2))
+        subject.each do |ad|
+          expect(ad.new_details['carcass']).to(eq('C'))
+        end
+      end
+    end
+
     context 'with filter for min_price' do
       let(:filters) { { min_price: 119_700 } }
 

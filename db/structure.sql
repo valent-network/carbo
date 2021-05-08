@@ -608,13 +608,17 @@ CREATE TABLE public.users (
 --
 
 CREATE MATERIALIZED VIEW public.effective_user_contacts AS
- SELECT user_contacts.user_id,
-    user_contacts.phone_number_id
+ SELECT user_contacts.id,
+    user_contacts.user_id,
+    user_contacts.phone_number_id,
+    user_contacts.name
    FROM (public.user_contacts
      JOIN public.users ON ((users.phone_number_id = user_contacts.phone_number_id)))
 UNION
- SELECT user_contacts.user_id,
-    user_contacts.phone_number_id
+ SELECT user_contacts.id,
+    user_contacts.user_id,
+    user_contacts.phone_number_id,
+    user_contacts.name
    FROM public.user_contacts
   WHERE (user_contacts.phone_number_id IN ( SELECT DISTINCT effective_ads.phone_number_id
            FROM public.effective_ads))
@@ -992,7 +996,8 @@ ALTER SEQUENCE public.verification_requests_id_seq OWNED BY public.verification_
 
 CREATE TABLE public.versions (
     id bigint NOT NULL,
-    item_type character varying NOT NULL,
+    item_type character varying,
+    "{:null=>false}" character varying,
     item_id bigint NOT NULL,
     event character varying NOT NULL,
     whodunnit character varying,
@@ -1466,7 +1471,7 @@ CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON pub
 -- Name: index_ad_descriptions_on_ad_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ad_descriptions_on_ad_id ON public.ad_descriptions USING btree (ad_id);
+CREATE UNIQUE INDEX index_ad_descriptions_on_ad_id ON public.ad_descriptions USING btree (ad_id);
 
 
 --
@@ -1732,7 +1737,7 @@ CREATE UNIQUE INDEX index_static_pages_on_slug ON public.static_pages USING btre
 -- Name: index_user_contacts_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_user_contacts_on_name ON public.user_contacts USING gist (name);
+CREATE INDEX index_user_contacts_on_name ON public.user_contacts USING gist (name public.gist_trgm_ops);
 
 
 --
@@ -1938,15 +1943,14 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210317140913'),
 ('20210317140918'),
 ('20210323200730'),
-('20210328171747'),
-('20210328174228'),
 ('20210328180036'),
-('20210328200259'),
 ('20210328204025'),
 ('20210328211421'),
 ('20210328211424'),
 ('20210328211426'),
 ('20210329194349'),
-('20210330081722');
+('20210330081722'),
+('20210508102119'),
+('20210508114138');
 
 

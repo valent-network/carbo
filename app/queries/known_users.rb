@@ -6,7 +6,7 @@ class KnownUsers
 
         SELECT users.id
         FROM users
-        JOIN user_contacts ON user_contacts.phone_number_id = users.phone_number_id AND user_contacts.user_id = #{user_id}
+        JOIN effective_user_contacts AS user_contacts ON user_contacts.phone_number_id = users.phone_number_id AND user_contacts.user_id = #{user_id}
 
         UNION
 

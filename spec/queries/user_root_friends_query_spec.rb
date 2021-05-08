@@ -11,6 +11,11 @@ RSpec.describe(UserRootFriendsForAdQuery) do
   let!(:hand2) { create(:user_contact, user: friend, phone_number: friend_of_friend.phone_number) }
   let!(:hand3) { create(:user_contact, user: friend_of_friend, phone_number: hand1_of_friend_of_friend.phone_number) }
 
+  before(:each) do
+    EffectiveAd.refresh
+    EffectiveUserContact.refresh
+  end
+
   it 'hand1' do
     query = subject.call(user.id, hand1.phone_number_id)
     result = ActiveRecord::Base.connection.select_all(query).to_a
@@ -55,7 +60,8 @@ RSpec.describe(UserRootFriendsForAdQuery) do
     dima.user_contacts.create({ name: 'Author', phone_number: ad_author.phone_number })
     vlad.user_contacts.create([{ name: 'Max', phone_number: max.phone_number }, { name: 'Dima', phone_number: dima.phone_number }, { name: 'Me', phone_number: user.phone_number }, { name: 'Author', phone_number: ad_author.phone_number }])
     user.user_contacts.create([{ name: 'Max', phone_number: max.phone_number }, { name: 'Dima', phone_number: dima.phone_number }, { name: 'Vlad', phone_number: vlad.phone_number }, { name: 'Sergey', phone_number: sergey.phone_number }])
-
+    EffectiveAd.refresh
+    EffectiveUserContact.refresh
     query = subject.call(user.id, ad_author.phone_number_id)
     result = ActiveRecord::Base.connection.select_all(query).to_a
 

@@ -41,7 +41,7 @@ class EffectiveAds
 
   def option_values_ids_for(filters)
     accepted_filters = filters.slice(:fuels, :gears, :wheels, :carcasses)
-    values = accepted_filters.select { |_k, v| v.present? }.values
+    values = accepted_filters.select { |_k, v| v.present? }.values.flatten
 
     ids = Hash[AdOptionValue.where(value: values).pluck(:value, :id)]
 
