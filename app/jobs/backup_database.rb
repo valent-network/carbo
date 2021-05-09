@@ -12,16 +12,21 @@ class BackupDatabase < ApplicationJob
     # AWS Ruby SDK) to order by date
     backups = []
 
+    response = S3_CLIENT.list_objects(bucket: ENV['DO_SPACE_NAME'], prefix: 'backups/')
+    contents = response.contents
+    done_today = contents.map(&:last_modified).detect { |last_modified| (last_modified + 1.day) > Time.now }
+
+    return if done_today
+
     # Here we depend on pg_dump executable present in the system (Docker image)
-    %x(pg_dump --exclude-table-data versions -Fc -h $POSTGRESQL_SERVICE_HOST -U $POSTGRES_USER -d $POSTGRES_DATABASE > #{BACKUP_TEMP_LOCATION})
+    %x(pg_dump -Fc -h $POSTGRESQL_SERVICE_HOST -U $POSTGRES_USER -d $POSTGRES_DATABASE > #{BACKUP_TEMP_LOCATION})
 
     backup_file_name = "backups/#{Time.now.to_i}-recario-#{Date.today.strftime('%y-%m-%d')}.dump.sql"
     S3_CLIENT.put_object(bucket: ENV['DO_SPACE_NAME'], key: backup_file_name, body: File.new(BACKUP_TEMP_LOCATION))
 
     FileUtils.rm(BACKUP_TEMP_LOCATION)
-    response = S3_CLIENT.list_objects(bucket: ENV['DO_SPACE_NAME'], prefix: 'backups/')
 
-    response.contents.each do |object|
+    contents.each do |object|
       backups << object.key if object.key =~ /.+\.dump\.sql\Z/
     end
 
