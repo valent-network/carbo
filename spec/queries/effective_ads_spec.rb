@@ -6,11 +6,13 @@ RSpec.describe(EffectiveAds) do
   let!(:other_ads) do
     o_ads = create_list(:ad, 5, :car, :active)
     o_ads.each do |ad|
-      ad.details['maker'] = 'Mercedes-Benz' if ad.details['maker'] == 'BMW'
-      ad.details['model'] = 'GLE Coupe' if ad.details['model'] == 'X6'
-      ad.details['year'] = (1970..1990).to_a.sample
+      updated_details = {}
+      updated_details['maker'] = 'Mercedes-Benz' if ad.details['maker'] == 'BMW'
+      updated_details['model'] = 'GLE Coupe' if ad.details['model'] == 'X6'
+      updated_details['year'] = (1970..1990).to_a.sample
+
       ad.price = (19_700..29_900).to_a.sample
-      PrepareAdOptions.new.call(ad, ad.details)
+      ad.details = ad.details.merge(updated_details)
       ad.save
     end
 
@@ -20,15 +22,18 @@ RSpec.describe(EffectiveAds) do
   let!(:expected_ads) do
     e_ads = create_list(:ad, 2, :car, :active)
     e_ads.each do |ad|
-      ad.details['year'] = 2016
-      ad.details['maker'] = 'BMW'
-      ad.details['model'] = 'X6'
-      ad.details['wheels'] = '4x4'
-      ad.details['gear'] = 'A'
-      ad.details['fuel'] = 'B'
-      ad.details['carcass'] = 'C'
+      updated_details = {
+        'year' => 2016,
+        'maker' => 'BMW',
+        'model' => 'X6',
+        'wheels' => '4x4',
+        'gear' => 'A',
+        'fuel' => 'B',
+        'carcass' => 'C',
+      }
+
       ad.price = (119_700..129_900).to_a.sample
-      PrepareAdOptions.new.call(ad, ad.details)
+      ad.details = ad.details.merge(updated_details)
       ad.save
     end
 
@@ -72,7 +77,7 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['fuel']).to(eq('B'))
+          expect(ad.details['fuel']).to(eq('B'))
         end
       end
     end
@@ -83,7 +88,7 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['gear']).to(eq('A'))
+          expect(ad.details['gear']).to(eq('A'))
         end
       end
     end
@@ -94,7 +99,7 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['wheels']).to(eq('4x4'))
+          expect(ad.details['wheels']).to(eq('4x4'))
         end
       end
     end
@@ -105,7 +110,7 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['carcass']).to(eq('C'))
+          expect(ad.details['carcass']).to(eq('C'))
         end
       end
     end
@@ -116,7 +121,7 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['carcass']).to(eq('C'))
+          expect(ad.details['carcass']).to(eq('C'))
         end
       end
     end
@@ -160,7 +165,7 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['year'].to_i).to(be >= 2010)
+          expect(ad.details['year'].to_i).to(be >= 2010)
         end
       end
     end
@@ -171,7 +176,7 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(5))
         subject.each do |ad|
-          expect(ad.new_details['year'].to_i).to(be <= 2010)
+          expect(ad.details['year'].to_i).to(be <= 2010)
         end
       end
     end
@@ -182,7 +187,7 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['year'].to_i).to(be >= 2010)
+          expect(ad.details['year'].to_i).to(be >= 2010)
         end
       end
     end
@@ -197,8 +202,8 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['maker']).to(eq('BMW'))
-          expect(ad.new_details['model']).to(eq('X6'))
+          expect(ad.details['maker']).to(eq('BMW'))
+          expect(ad.details['model']).to(eq('X6'))
         end
       end
     end
@@ -209,8 +214,8 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['maker']).to(eq('BMW'))
-          expect(ad.new_details['model']).to(eq('X6'))
+          expect(ad.details['maker']).to(eq('BMW'))
+          expect(ad.details['model']).to(eq('X6'))
         end
       end
     end
@@ -221,8 +226,8 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['maker']).to(eq('BMW'))
-          expect(ad.new_details['model']).to(eq('X6'))
+          expect(ad.details['maker']).to(eq('BMW'))
+          expect(ad.details['model']).to(eq('X6'))
         end
       end
     end
@@ -233,8 +238,8 @@ RSpec.describe(EffectiveAds) do
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|
-          expect(ad.new_details['maker']).to(eq('BMW'))
-          expect(ad.new_details['model']).to(eq('X6'))
+          expect(ad.details['maker']).to(eq('BMW'))
+          expect(ad.details['model']).to(eq('X6'))
         end
       end
     end

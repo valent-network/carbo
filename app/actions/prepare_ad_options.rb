@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 class PrepareAdOptions
   def call(ad, details)
-    details = details.dup
+    details = details.dup.stringify_keys
+
     details['region'], details['city'] = details['region']
     description_body = details.delete('description')
     images_links = details.delete('images_json_array_tmp')
 
-    keys = details.stringify_keys.keys.uniq
-    values = details.values.uniq
+    keys = details.keys.uniq
+    values = details.values.select(&:present?).uniq
 
     ad_option_types = AdOptionType.where(name: keys).to_a
     ad_option_values = AdOptionValue.where(value: values).to_a
@@ -22,7 +23,15 @@ class PrepareAdOptions
 
     if images_links.present?
       ad_image_links_set = ad.ad_image_links_set || ad.build_ad_image_links_set
-      ad_image_links_set.value = JSON.parse(images_links)
+      ad_image_links_set.value = case images_links
+      when String
+        JSON.parse(images_links)
+      when Array
+        images_links
+      else
+        Rails.logger.error(images_links)
+        []
+      end
     else
       ad.ad_image_links_set&.mark_for_destruction
     end

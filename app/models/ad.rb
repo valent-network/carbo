@@ -12,10 +12,7 @@ class Ad < ApplicationRecord
   validates :price, presence: true, numericality: { greater_than: 0, only_integer: true }
   validates :address, uniqueness: { scope: :ads_source_id }
   validates :ad_type, inclusion: { in: AD_TYPES }
-  validates :details, presence: true, json: true
   validates :deleted, inclusion: { in: [true, false] }
-
-  validate :details_object
 
   belongs_to :ads_source
   belongs_to :phone_number
@@ -50,30 +47,34 @@ class Ad < ApplicationRecord
     }
   end
 
-  def new_details
-    return @new_details if @new_details
+  def details
+    return @details if @details
 
     rel = ad_options.loaded? ? ad_options : ad_options.includes(:ad_option_type, :ad_option_value)
 
     opts_array = rel.map do |opt|
-      [opt.ad_option_type.name, opt.ad_option_value.value]
+      [opt.ad_option_type.name, opt.ad_option_value&.value]
     end
 
-    @new_details = Hash[opts_array].merge('description' => ad_description&.body, 'images_json_array_tmp' => ad_image_links_set&.value)
+    @details = Hash[opts_array].merge('description' => ad_description&.body, 'images_json_array_tmp' => ad_image_links_set&.value)
+  end
+
+  def details=(new_details)
+    @details = nil
+
+    raise unless new_details.is_a?(Hash)
+
+    PrepareAdOptions.new.call(self, new_details)
   end
 
   # Override
 
   def reload
-    @new_details = nil
+    @details = nil
     super
   end
 
   private
-
-  def details_object
-    errors.add(:details, 'must be a Hash') unless details.is_a?(Hash)
-  end
 
   def prepare_ad_price
     ad_prices.new(price: price_was) if price_changed?

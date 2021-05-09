@@ -11,7 +11,7 @@ RSpec.describe(PrepareAdOptions) do
       ad.save
     end.to(change { AdOptionType.where(name: 'ad_type').count }.from(0).to(1)
       .and(change { AdOptionValue.where(value: 'car').count }.from(0).to(1)
-      .and(change { ad.reload.ad_options.count }.from(0).to(2))))
+      .and(change { ad.reload.ad_options.count }.from(1).to(2))))
   end
 
   it 'creates records on create' do

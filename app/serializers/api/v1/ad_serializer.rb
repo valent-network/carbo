@@ -5,11 +5,11 @@ module Api
       attributes :id, :deleted, :price, :options, :image, :images, :title, :description, :short_description, :url, :prices, :friend_name_and_total
 
       def options
-        AdCarOptionsPresenter.new.call(object.new_details)
+        AdCarOptionsPresenter.new.call(object.details)
       end
 
       def description
-        object.new_details['description'].presence || I18n.t('ad_options.no_description')
+        object.details['description'].presence || I18n.t('ad_options.no_description')
       end
 
       def prices
@@ -21,7 +21,7 @@ module Api
       end
 
       def title
-        "#{object.new_details['maker']} #{object.new_details['model']} #{object.new_details['year']}"
+        "#{object.details['maker']} #{object.details['model']} #{object.details['year']}"
       end
 
       def image
@@ -29,12 +29,12 @@ module Api
       end
 
       def images
-        images = object.new_details['images_json_array_tmp']
+        images = object.details['images_json_array_tmp']
         images.is_a?(String) ? JSON.parse(images) : Array.wrap(images)
       end
 
       def short_description
-        AdCarShortDescriptionPresenter.new.call(object.new_details)
+        AdCarShortDescriptionPresenter.new.call(object.details)
       end
 
       def url

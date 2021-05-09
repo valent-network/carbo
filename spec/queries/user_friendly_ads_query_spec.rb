@@ -23,11 +23,6 @@ RSpec.describe(UserFriendlyAdsQuery) do
   end
 
   context 'With successful result' do
-    before(:each) do
-      EffectiveAd.refresh
-      EffectiveUserContact.refresh
-    end
-
     subject { described_class.new.call(user: user) }
 
     it 'matches expected friendly ads' do
@@ -54,6 +49,8 @@ RSpec.describe(UserFriendlyAdsQuery) do
     end
 
     it 'applies offset' do
+      EffectiveAd.refresh
+      EffectiveUserContact.refresh
       expect(described_class.new.call(user: user, offset: 2).count).to(eq(2))
     end
 
@@ -69,23 +66,17 @@ RSpec.describe(UserFriendlyAdsQuery) do
       UserFriendlyAdsQuery::LIMIT.times do
         create(:user_contact, user: user, phone_number: create(:ad, :active).phone_number)
       end
-
       EffectiveAd.refresh
       EffectiveUserContact.refresh
-
       expect(described_class.new.call(user: user).count).to(eq(UserFriendlyAdsQuery::LIMIT))
     end
 
     it 'filters by maker and model if not match user contacts' do
       ad = create(:ad, :active, phone: friend.phone_number)
-      ad.details['maker'] = 'BMW'
-      ad.details['model'] = 'X6'
-      PrepareAdOptions.new.call(ad, ad.details)
+      ad.details = ad.details.merge('maker' => 'BMW', 'model' => 'X6')
       ad.save
-
       EffectiveAd.refresh
       EffectiveUserContact.refresh
-
       expect(described_class.new.call(user: user, filters: { query: 'BMW X6' })).to(match_array([ad]))
       expect(described_class.new.call(user: user, filters: { query: 'BMW' })).to(match_array([ad]))
       expect(described_class.new.call(user: user, filters: { query: 'X6' })).to(match_array([ad]))
@@ -112,6 +103,8 @@ RSpec.describe(UserFriendlyAdsQuery) do
     end
 
     it 'filters by contacts_mode' do
+      EffectiveAd.refresh
+      EffectiveUserContact.refresh
       expected_ads = [ad_hand1_no_user, ad_hand1]
       expect(described_class.new.call(user: user, filters: { contacts_mode: 'directFriends' })).to(match_array(expected_ads))
     end

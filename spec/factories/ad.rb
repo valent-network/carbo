@@ -36,7 +36,6 @@ FactoryBot.define do
           region: [FFaker::AddressRU.province, FFaker::AddressRU.city],
           color: FFaker::Vehicle.mfg_color(0),
           description: FFaker::Lorem.sentences(5),
-
         }
       end
     end

@@ -33,20 +33,22 @@ class BudgetController < ApplicationController
   end
 
   def show_model_year
-    @model_year = AdsGroupedByMakerModelYear.where('LOWER(maker) = :maker AND LOWER(model) = :model AND year = :year', maker: params[:maker].downcase, model: params[:model].downcase, year: params[:year]).first
-    raise ActiveRecord::RecordNotFound unless @model_year
+    redirect_to(root_path)
+    # TODO: Doesn't work good with EAV options
+    # @model_year = AdsGroupedByMakerModelYear.where('LOWER(maker) = :maker AND LOWER(model) = :model AND year = :year', maker: params[:maker].downcase, model: params[:model].downcase, year: params[:year]).first
+    # raise ActiveRecord::RecordNotFound unless @model_year
 
-    @ads = Ad.where("LOWER(details->>'maker') = ? AND LOWER(details->>'model') = ? AND details->>'year' = ?", params[:maker].downcase, params[:model].downcase, params[:year])
-    @ads = @ads.where(deleted: false)
-    @ads_grouped_by_region = @ads.group("details->'region'->>0").count.sort_by(&:last).reverse
+    # @ads = Ad.where("LOWER(details->>'maker') = ? AND LOWER(details->>'model') = ? AND details->>'year' = ?", params[:maker].downcase, params[:model].downcase, params[:year])
+    # @ads = @ads.where(deleted: false)
+    # @ads_grouped_by_region = @ads.group("details->'region'->>0").count.sort_by(&:last).reverse
 
-    @meta_title = "Рекарио – минимальная, средняя и максимальная стоимость #{@model_year.maker} #{@model_year.model} #{@model_year.year} года"
-    @meta_description = "Все цены на #{@model_year.maker} #{@model_year.model} #{@model_year.year} года и количество объявлений по городам"
-    @meta_keywords = "Цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, минимальная цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, средняя цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, сколько стоит #{@model_year.maker} #{@model_year.model} #{@model_year.year}"
-    @meta_og_title = @meta_title
-    @meta_og_description = @meta_description
+    # @meta_title = "Рекарио – минимальная, средняя и максимальная стоимость #{@model_year.maker} #{@model_year.model} #{@model_year.year} года"
+    # @meta_description = "Все цены на #{@model_year.maker} #{@model_year.model} #{@model_year.year} года и количество объявлений по городам"
+    # @meta_keywords = "Цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, минимальная цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, средняя цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, сколько стоит #{@model_year.maker} #{@model_year.model} #{@model_year.year}"
+    # @meta_og_title = @meta_title
+    # @meta_og_description = @meta_description
 
-    render('/budget/show_model_year', layout: 'widgets')
+    # render('/budget/show_model_year', layout: 'widgets')
   end
 
   def show_ads

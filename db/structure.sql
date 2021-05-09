@@ -376,31 +376,11 @@ CREATE TABLE public.ads (
     ads_source_id bigint NOT NULL,
     price integer NOT NULL,
     deleted boolean DEFAULT false NOT NULL,
-    details jsonb NOT NULL,
     ad_type character varying NOT NULL,
     address character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
---
--- Name: ads_grouped_by_maker_model_year; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
- SELECT (ads.details ->> 'maker'::text) AS maker,
-    (ads.details ->> 'model'::text) AS model,
-    (ads.details ->> 'year'::text) AS year,
-    min(ads.price) AS min_price,
-    (round((avg(ads.price) / (100)::numeric)) * (100)::numeric) AS avg_price,
-    max(ads.price) AS max_price
-   FROM public.ads
-  WHERE ((ads.deleted = false) AND (ads.updated_at >= (now() - '2 mons'::interval)) AND (ads.price < 200000))
-  GROUP BY (ads.details ->> 'maker'::text), (ads.details ->> 'model'::text), (ads.details ->> 'year'::text)
- HAVING (count(ads.*) >= 5)
-  ORDER BY (ads.details ->> 'maker'::text), (ads.details ->> 'model'::text), (ads.details ->> 'year'::text)
-  WITH NO DATA;
 
 
 --
@@ -581,11 +561,10 @@ CREATE TABLE public.user_contacts (
 CREATE MATERIALIZED VIEW public.effective_ads AS
  SELECT DISTINCT ads.id,
     ads.phone_number_id,
-    ads.price,
-    ads.details
+    ads.price
    FROM (public.ads
      JOIN public.user_contacts ON ((user_contacts.phone_number_id = ads.phone_number_id)))
-  WHERE ((ads.deleted = false) AND (ads.updated_at >= (now() - '2 mons'::interval)))
+  WHERE (ads.deleted = false)
   WITH NO DATA;
 
 
@@ -1208,6 +1187,41 @@ ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.ver
 
 
 --
+-- Name: ads ads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ads
+    ADD CONSTRAINT ads_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ads_grouped_by_maker_model_year; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
+ SELECT ads.maker,
+    ads.model,
+    ads.year,
+    min(ads.price) AS min_price,
+    (round((avg(ads.price) / (100)::numeric)) * (100)::numeric) AS avg_price,
+    max(ads.price) AS max_price
+   FROM ( SELECT ads_1.id,
+            ads_1.price,
+            max((ad_option_values.value)::text) FILTER (WHERE (ad_options.ad_option_type_id = 6)) AS maker,
+            max((ad_option_values.value)::text) FILTER (WHERE (ad_options.ad_option_type_id = 7)) AS model,
+            max((ad_option_values.value)::text) FILTER (WHERE (ad_options.ad_option_type_id = 4)) AS year
+           FROM ((public.ads ads_1
+             JOIN public.ad_options ON (((ads_1.id = ad_options.ad_id) AND (ad_options.ad_option_type_id = ANY (ARRAY[(4)::bigint, (6)::bigint, (7)::bigint])))))
+             JOIN public.ad_option_values ON ((ad_option_values.id = ad_options.ad_option_value_id)))
+          WHERE (ads_1.deleted = false)
+          GROUP BY ads_1.id) ads
+  GROUP BY ads.maker, ads.model, ads.year
+ HAVING (count(ads.*) >= 5)
+  ORDER BY ads.maker, ads.model, ads.year
+  WITH NO DATA;
+
+
+--
 -- Name: active_admin_comments active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1285,14 +1299,6 @@ ALTER TABLE ONLY public.ad_visits
 
 ALTER TABLE ONLY public.admin_users
     ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
-
-
---
--- Name: ads ads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ads
-    ADD CONSTRAINT ads_pkey PRIMARY KEY (id);
 
 
 --
@@ -1440,13 +1446,6 @@ ALTER TABLE ONLY public.versions
 
 
 --
--- Name: details_region_year_maker_model_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX details_region_year_maker_model_index ON public.ads USING btree ((((details -> 'region'::text) ->> 0)), ((details ->> 'year'::text)), ((details ->> 'maker'::text)), ((details ->> 'model'::text))) WHERE (deleted = false);
-
-
---
 -- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1510,31 +1509,10 @@ CREATE UNIQUE INDEX index_ad_option_values_on_value ON public.ad_option_values U
 
 
 --
--- Name: index_ad_options_on_ad_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ad_options_on_ad_id_and_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ad_options_on_ad_id ON public.ad_options USING btree (ad_id);
-
-
---
--- Name: index_ad_options_on_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ad_options_on_ad_option_type_id ON public.ad_options USING btree (ad_option_type_id);
-
-
---
--- Name: index_ad_options_on_ad_option_type_id_and_ad_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_ad_options_on_ad_option_type_id_and_ad_id ON public.ad_options USING btree (ad_option_type_id, ad_id);
-
-
---
--- Name: index_ad_options_on_ad_option_value_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ad_options_on_ad_option_value_id ON public.ad_options USING btree (ad_option_value_id);
+CREATE UNIQUE INDEX index_ad_options_on_ad_id_and_ad_option_type_id ON public.ad_options USING btree (ad_id, ad_option_type_id);
 
 
 --
@@ -1951,6 +1929,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210329194349'),
 ('20210330081722'),
 ('20210508102119'),
-('20210508114138');
+('20210508114138'),
+('20210508122655'),
+('20210508135012'),
+('20210508141659'),
+('20210508191744');
 
 

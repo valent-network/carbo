@@ -14,13 +14,12 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
     }
   end
   let(:ad) do
-    a = build(:ad, :active)
+    a = create(:ad, :active)
     a.details = ad_details
-    PrepareAdOptions.new.call(a, a.details)
     a.save
     a
   end
-  subject { described_class.new.call(ad.new_details) }
+  subject { described_class.new.call(ad.details) }
 
   it { is_expected.to(be_a(String)) }
 

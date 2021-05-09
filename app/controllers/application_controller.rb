@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, raise: false
 
   def landing
-    @total_count = Ad.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id').count
+    @total_count = EffectiveAd.count
     render('/landing', layout: false)
   end
 

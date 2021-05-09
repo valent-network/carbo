@@ -6,7 +6,7 @@ module Api
 
       def title
         return nil if object.system?
-        "#{object.ad.new_details['maker']} #{object.ad.new_details['model']} #{object.ad.new_details['year']}"
+        "#{object.ad.details['maker']} #{object.ad.details['model']} #{object.ad.details['year']}"
       end
 
       def updated_at
@@ -24,7 +24,7 @@ module Api
       def photo
         return '' unless object.ad
 
-        images = object.ad.new_details['images_json_array_tmp']
+        images = object.ad.details['images_json_array_tmp']
         images = images.is_a?(String) ? JSON.parse(images) : images
         images&.first
       end
