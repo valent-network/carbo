@@ -7,8 +7,6 @@ class Ad < ApplicationRecord
 
   before_update :prepare_ad_price
 
-  has_paper_trail
-
   validates :price, presence: true, numericality: { greater_than: 0, only_integer: true }
   validates :address, uniqueness: { scope: :ads_source_id }
   validates :ad_type, inclusion: { in: AD_TYPES }

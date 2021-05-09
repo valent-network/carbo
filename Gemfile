@@ -26,7 +26,6 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'active_model_serializers'
 
 # Secondary gems
-gem 'paper_trail'
 gem 'dry-validation'
 gem 'phonelib'
 gem 'carrierwave'
