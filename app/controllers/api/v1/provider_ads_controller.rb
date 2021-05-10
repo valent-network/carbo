@@ -7,7 +7,15 @@ module Api
 
       def index
         ads = Ad.where(ads_source_id: current_ads_source.id).where('updated_at < ?', 12.hours.ago)
-        ads = ads.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id')
+
+        effective_ads = ads.joins('JOIN effective_ads ON effective_ads.id = ads.id')
+
+        ads = if effective_ads.exists?
+          effective_ads
+        else
+          ads.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id')
+        end
+
         ads = ads.limit(10).order(Arel.sql("deleted = 'f' DESC, updated_at")).pluck(:address)
 
         render(json: ads)
