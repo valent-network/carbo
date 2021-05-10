@@ -28,10 +28,10 @@ module Api
 
         return render(json: { errors: ad_contract.errors.to_h }, status: :unprocessable_entity) if ad_contract.failure?
 
-        PrepareAdOptions.new.call(ad, ad_params[:details])
-
         if ad.update(ad_params)
           render(json: { ad: ad })
+          PrepareAdOptions.new.call(ad, ad_params[:details])
+          ad.save
           ad.touch
         else
           render(json: { errors: ad.errors.to_hash }, status: :unprocessable_entity)
