@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ChangeEffectiveAdsMatview < ActiveRecord::Migration[6.1]
   def up
     execute('DROP MATERIALIZED VIEW effective_ads CASCADE')

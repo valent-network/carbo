@@ -1508,17 +1508,10 @@ CREATE UNIQUE INDEX index_ads_on_address_and_ads_source_id ON public.ads USING b
 
 
 --
--- Name: index_ads_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_phone_number_id_where_deleted_false_include_price; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_phone_number_id ON public.ads USING btree (phone_number_id);
-
-
---
--- Name: index_ads_on_phone_number_id_and_updated_at_and_price; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_phone_number_id_and_updated_at_and_price ON public.ads USING btree (phone_number_id, updated_at DESC, price) WHERE (deleted = false);
+CREATE INDEX index_ads_on_phone_number_id_where_deleted_false_include_price ON public.ads USING btree (phone_number_id) INCLUDE (price) WHERE (deleted = false);
 
 
 --
@@ -1877,6 +1870,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210508135012'),
 ('20210508141659'),
 ('20210508191744'),
-('20210509084235');
+('20210509084235'),
+('20210511050910');
 
 
