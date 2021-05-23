@@ -1228,14 +1228,6 @@ ALTER TABLE ONLY public.ad_option_values
 
 
 --
--- Name: ad_options ad_options_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_options
-    ADD CONSTRAINT ad_options_pkey PRIMARY KEY (id);
-
-
---
 -- Name: ad_prices ad_prices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1871,6 +1863,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210508141659'),
 ('20210508191744'),
 ('20210509084235'),
-('20210511050910');
+('20210511050910'),
+('20210523204018');
 
 
