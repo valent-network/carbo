@@ -96,8 +96,8 @@ ALTER SEQUENCE public.active_admin_comments_id_seq OWNED BY public.active_admin_
 --
 
 CREATE TABLE public.ad_descriptions (
-    id bigint NOT NULL,
-    ad_id bigint NOT NULL,
+    id integer NOT NULL,
+    ad_id integer NOT NULL,
     body text
 );
 
@@ -158,8 +158,8 @@ ALTER SEQUENCE public.ad_favorites_id_seq OWNED BY public.ad_favorites.id;
 --
 
 CREATE TABLE public.ad_image_links_sets (
-    id bigint NOT NULL,
-    ad_id bigint NOT NULL,
+    id integer NOT NULL,
+    ad_id integer NOT NULL,
     value character varying[] DEFAULT '{}'::character varying[]
 );
 
@@ -188,7 +188,7 @@ ALTER SEQUENCE public.ad_image_links_sets_id_seq OWNED BY public.ad_image_links_
 --
 
 CREATE TABLE public.ad_option_types (
-    id bigint NOT NULL,
+    id smallint NOT NULL,
     name character varying NOT NULL
 );
 
@@ -246,7 +246,7 @@ ALTER SEQUENCE public.ad_option_values_id_seq OWNED BY public.ad_option_values.i
 --
 
 CREATE TABLE public.ad_options (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     ad_id bigint NOT NULL,
     ad_option_type_id bigint NOT NULL,
     ad_option_value_id bigint NOT NULL
@@ -277,8 +277,8 @@ ALTER SEQUENCE public.ad_options_id_seq OWNED BY public.ad_options.id;
 --
 
 CREATE TABLE public.ad_prices (
-    id bigint NOT NULL,
-    ad_id bigint NOT NULL,
+    id integer NOT NULL,
+    ad_id integer NOT NULL,
     price integer NOT NULL,
     created_at timestamp without time zone NOT NULL
 );
@@ -373,7 +373,7 @@ ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
 CREATE TABLE public.ads (
     id bigint NOT NULL,
     phone_number_id bigint NOT NULL,
-    ads_source_id bigint NOT NULL,
+    ads_source_id smallint NOT NULL,
     price integer NOT NULL,
     deleted boolean DEFAULT false NOT NULL,
     ad_type character varying NOT NULL,
@@ -623,7 +623,7 @@ CREATE TABLE public.messages (
 --
 
 CREATE TABLE public.phone_numbers (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     full_number character varying(9) NOT NULL
 );
 
@@ -1864,6 +1864,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210508191744'),
 ('20210509084235'),
 ('20210511050910'),
-('20210523204018');
+('20210523204018'),
+('20210523230607');
 
 
