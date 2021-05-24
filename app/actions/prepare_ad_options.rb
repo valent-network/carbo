@@ -3,6 +3,8 @@ class PrepareAdOptions
   def call(ad, details)
     details = details.dup.stringify_keys
 
+    details.delete('address')
+
     details['region'], details['city'] = details['region']
     description_body = details.delete('description')
     images_links = details.delete('images_json_array_tmp')
