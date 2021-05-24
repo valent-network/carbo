@@ -799,6 +799,38 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: seller_names; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.seller_names (
+    id bigint NOT NULL,
+    ad_id integer NOT NULL,
+    value character varying(255) NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: seller_names_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.seller_names_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: seller_names_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.seller_names_id_seq OWNED BY public.seller_names.id;
+
+
+--
 -- Name: state_nums; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1113,6 +1145,13 @@ ALTER TABLE ONLY public.rpush_notifications ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: seller_names id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.seller_names ALTER COLUMN id SET DEFAULT nextval('public.seller_names_id_seq'::regclass);
+
+
+--
 -- Name: static_pages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1347,6 +1386,14 @@ ALTER TABLE ONLY public.rpush_notifications
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: seller_names seller_names_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.seller_names
+    ADD CONSTRAINT seller_names_pkey PRIMARY KEY (id);
 
 
 --
@@ -1650,6 +1697,13 @@ CREATE INDEX index_rpush_notifications_multi ON public.rpush_notifications USING
 
 
 --
+-- Name: index_seller_names_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_seller_names_on_ad_id ON public.seller_names USING btree (ad_id);
+
+
+--
 -- Name: index_state_nums_on_ad_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1887,6 +1941,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210523204018'),
 ('20210523230607'),
 ('20210523231446'),
-('20210524093908');
+('20210524093908'),
+('20210524103240');
 
 

@@ -9,6 +9,7 @@ class PrepareAdOptions
     description_body = details.delete('description')
     images_links = details.delete('images_json_array_tmp')
     state_num = details.delete('state_num').to_s.strip
+    seller_name = details.delete('seller_name').to_s.strip
 
     keys = details.keys.uniq
     values = details.values.select(&:present?).uniq
@@ -26,6 +27,10 @@ class PrepareAdOptions
 
     if state_num.present?
       ad.state_nums.where(value: state_num).first_or_create
+    end
+
+    if seller_name.present?
+      ad.seller_names.where(value: seller_name).first_or_create
     end
 
     if images_links.present?
