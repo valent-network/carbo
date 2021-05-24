@@ -805,9 +805,7 @@ CREATE TABLE public.schema_migrations (
 CREATE TABLE public.seller_names (
     id bigint NOT NULL,
     ad_id integer NOT NULL,
-    value character varying(255) NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    value character varying(255) NOT NULL
 );
 
 
@@ -1942,6 +1940,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210523230607'),
 ('20210523231446'),
 ('20210524093908'),
-('20210524103240');
+('20210524103240'),
+('20210524104800');
 
 
