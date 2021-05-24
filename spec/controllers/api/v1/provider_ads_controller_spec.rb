@@ -35,7 +35,7 @@ RSpec.describe(Api::V1::ProviderAdsController) do
 
     context 'With not successful ad#update' do
       it 'responds with error' do
-        expect_any_instance_of(Ad).to(receive(:update).and_return(false))
+        expect_any_instance_of(Ad).to(receive(:save).and_return(false))
         put :update_ad, params: { ad: ad_params }
         expect(response).to(be_unprocessable)
       end

@@ -22,30 +22,33 @@ module Api
       end
 
       def update_ad
-        ad = Ad.where(address: ad_params[:details].delete(:address), ads_source_id: current_ads_source.id).first_or_initialize
+        address = params[:ad][:details][:address]
+        ad = Ad.where(address: address, ads_source_id: current_ads_source.id).first_or_initialize
 
         ad_contract = AdCarContract.new.call(params.permit!.to_h[:ad])
 
         return render(json: { errors: ad_contract.errors.to_h }, status: :unprocessable_entity) if ad_contract.failure?
 
-        if ad.update(ad_params)
-          render(json: { ad: ad })
-          PrepareAdOptions.new.call(ad, ad_params[:details])
-          ad.save
+        ad.assign_attributes(ad_params)
+        PrepareAdOptions.new.call(ad, ad_details_params)
+
+        if ad.save
           ad.touch
+          render(json: { id: ad.id, address: address })
         else
           render(json: { errors: ad.errors.to_hash }, status: :unprocessable_entity)
         end
       end
 
       def delete_ad
-        ad = Ad.where(address: ad_params[:details][:address], ads_source_id: current_ads_source.id).first
+        address = params[:ad][:details][:address]
+        ad = Ad.where(address: address, ads_source_id: current_ads_source.id).first
         if ad
           ad.update!(deleted: true)
           ad.touch
-          render(json: { ad: ad })
+          render(json: { id: ad.id, address: address })
         else
-          # Airbrake.notify(ad_params[:details][:address])
+          # Airbrake.notify(address)
           render(json: { error: 'invalid URL' }, status: :unprocessable_entity)
         end
       end
@@ -53,10 +56,11 @@ module Api
       private
 
       def ad_params
-        details_params = %i[maker model race address year images_json_array_tmp engine_capacity fuel horse_powers gear wheels carcass color description state_num seller_name]
-        details_params.push(region: [])
-        to_permit = [:price, :deleted, :phone, :ad_type, :address, details: details_params]
-        params.require(:ad).permit(to_permit)
+        params.require(:ad).permit([:price, :phone, :ad_type])
+      end
+
+      def ad_details_params
+        params.require(:ad).require(:details).permit(%i[maker model race year images_json_array_tmp engine_capacity fuel horse_powers gear wheels carcass color description state_num seller_name].push(region: []))
       end
     end
   end
