@@ -8,6 +8,7 @@ class PrepareAdOptions
     details['region'], details['city'] = details['region']
     description_body = details.delete('description')
     images_links = details.delete('images_json_array_tmp')
+    state_num = details.delete('state_num').to_s.strip
 
     keys = details.keys.uniq
     values = details.values.select(&:present?).uniq
@@ -21,6 +22,10 @@ class PrepareAdOptions
       ad_description.body = description_body
     else
       ad.ad_description&.mark_for_destruction
+    end
+
+    if state_num.present?
+      ad.state_nums.where(value: state_num).first_or_create
     end
 
     if images_links.present?

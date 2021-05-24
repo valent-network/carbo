@@ -18,6 +18,7 @@ class Ad < ApplicationRecord
   has_many :ad_favorites, dependent: :delete_all
   has_many :ad_prices, dependent: :delete_all
   has_many :ad_options, dependent: :delete_all, autosave: true
+  has_many :state_nums, dependent: :delete_all
   has_one :ad_description, dependent: :delete
   has_one :ad_image_links_set, dependent: :delete
 

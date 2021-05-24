@@ -799,6 +799,16 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: state_nums; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.state_nums (
+    ad_id integer NOT NULL,
+    value character varying(20) NOT NULL
+);
+
+
+--
 -- Name: static_pages; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1640,6 +1650,13 @@ CREATE INDEX index_rpush_notifications_multi ON public.rpush_notifications USING
 
 
 --
+-- Name: index_state_nums_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_state_nums_on_ad_id ON public.state_nums USING btree (ad_id);
+
+
+--
 -- Name: index_static_pages_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1650,7 +1667,7 @@ CREATE UNIQUE INDEX index_static_pages_on_slug ON public.static_pages USING btre
 -- Name: index_user_contacts_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_user_contacts_on_name ON public.user_contacts USING gist (name public.gist_trgm_ops);
+CREATE INDEX index_user_contacts_on_name ON public.user_contacts USING gist (name);
 
 
 --
@@ -1849,7 +1866,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210317140913'),
 ('20210317140918'),
 ('20210323200730'),
+('20210328171747'),
 ('20210328180036'),
+('20210328200259'),
 ('20210328204025'),
 ('20210328211421'),
 ('20210328211424'),
@@ -1864,8 +1883,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210508191744'),
 ('20210509084235'),
 ('20210511050910'),
+('20210523200235'),
 ('20210523204018'),
 ('20210523230607'),
-('20210523231446');
+('20210523231446'),
+('20210524093908');
 
 
