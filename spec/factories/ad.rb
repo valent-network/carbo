@@ -24,7 +24,6 @@ FactoryBot.define do
         {
           maker: FFaker::Vehicle.make,
           model: FFaker::Vehicle.model,
-          address: FFaker::Image.url,
           race: rand(1..3000),
           year: FFaker::Vehicle.year,
           images_json_array_tmp: [FFaker::Avatar.image].to_json,
