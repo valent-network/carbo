@@ -217,7 +217,7 @@ ALTER SEQUENCE public.ad_option_types_id_seq OWNED BY public.ad_option_types.id;
 --
 
 CREATE TABLE public.ad_option_values (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     value character varying NOT NULL
 );
 
@@ -247,9 +247,9 @@ ALTER SEQUENCE public.ad_option_values_id_seq OWNED BY public.ad_option_values.i
 
 CREATE TABLE public.ad_options (
     id integer NOT NULL,
-    ad_id bigint NOT NULL,
-    ad_option_type_id bigint NOT NULL,
-    ad_option_value_id bigint NOT NULL
+    ad_id integer NOT NULL,
+    ad_option_type_id smallint NOT NULL,
+    ad_option_value_id integer NOT NULL
 );
 
 
@@ -371,8 +371,8 @@ ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
 --
 
 CREATE TABLE public.ads (
-    id bigint NOT NULL,
-    phone_number_id bigint NOT NULL,
+    id integer NOT NULL,
+    phone_number_id integer NOT NULL,
     ads_source_id smallint NOT NULL,
     price integer NOT NULL,
     deleted boolean DEFAULT false NOT NULL,
@@ -547,9 +547,9 @@ ALTER SEQUENCE public.demo_phone_numbers_id_seq OWNED BY public.demo_phone_numbe
 --
 
 CREATE TABLE public.user_contacts (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    phone_number_id bigint NOT NULL,
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    phone_number_id integer NOT NULL,
     name character varying(100) NOT NULL
 );
 
@@ -1169,7 +1169,7 @@ CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
             max((ad_option_values.value)::text) FILTER (WHERE (ad_options.ad_option_type_id = 7)) AS model,
             max((ad_option_values.value)::text) FILTER (WHERE (ad_options.ad_option_type_id = 4)) AS year
            FROM ((public.ads ads_1
-             JOIN public.ad_options ON (((ads_1.id = ad_options.ad_id) AND (ad_options.ad_option_type_id = ANY (ARRAY[(4)::bigint, (6)::bigint, (7)::bigint])))))
+             JOIN public.ad_options ON (((ads_1.id = ad_options.ad_id) AND (ad_options.ad_option_type_id = ANY (ARRAY[4, 6, 7])))))
              JOIN public.ad_option_values ON ((ad_option_values.id = ad_options.ad_option_value_id)))
           WHERE (ads_1.deleted = false)
           GROUP BY ads_1.id) ads
@@ -1865,6 +1865,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210509084235'),
 ('20210511050910'),
 ('20210523204018'),
-('20210523230607');
+('20210523230607'),
+('20210523231446');
 
 

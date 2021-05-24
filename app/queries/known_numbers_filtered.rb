@@ -3,7 +3,7 @@ class KnownNumbersFiltered
   def call(user_id, filtered_friends_phone_number_ids: [])
     <<~SQL
       WITH RECURSIVE p AS (
-        SELECT id::bigint AS phone_number_id FROM phone_numbers WHERE id IN (#{filtered_friends_phone_number_ids.join(',')})
+        SELECT id AS phone_number_id FROM phone_numbers WHERE id IN (#{filtered_friends_phone_number_ids.join(',')})
 
         UNION
 
