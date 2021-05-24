@@ -34,7 +34,7 @@ module Api
 
         if ad.save
           ad.touch
-          render(json: { id: ad.id, address: address })
+          render(json: { id: ad.id, address: address, deleted: ad.deleted })
         else
           render(json: { errors: ad.errors.to_hash }, status: :unprocessable_entity)
         end
@@ -46,7 +46,7 @@ module Api
         if ad
           ad.update!(deleted: true)
           ad.touch
-          render(json: { id: ad.id, address: address })
+          render(json: { id: ad.id, address: address, deleted: ad.deleted })
         else
           # Airbrake.notify(address)
           render(json: { error: 'invalid URL' }, status: :unprocessable_entity)
