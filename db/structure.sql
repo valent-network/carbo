@@ -803,29 +803,9 @@ CREATE TABLE public.schema_migrations (
 --
 
 CREATE TABLE public.seller_names (
-    id bigint NOT NULL,
     ad_id integer NOT NULL,
     value character varying(255) NOT NULL
 );
-
-
---
--- Name: seller_names_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.seller_names_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: seller_names_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.seller_names_id_seq OWNED BY public.seller_names.id;
 
 
 --
@@ -1143,13 +1123,6 @@ ALTER TABLE ONLY public.rpush_notifications ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
--- Name: seller_names id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.seller_names ALTER COLUMN id SET DEFAULT nextval('public.seller_names_id_seq'::regclass);
-
-
---
 -- Name: static_pages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1384,14 +1357,6 @@ ALTER TABLE ONLY public.rpush_notifications
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: seller_names seller_names_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.seller_names
-    ADD CONSTRAINT seller_names_pkey PRIMARY KEY (id);
 
 
 --
@@ -1941,6 +1906,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210523231446'),
 ('20210524093908'),
 ('20210524103240'),
-('20210524104800');
+('20210524104800'),
+('20210524111522');
 
 
