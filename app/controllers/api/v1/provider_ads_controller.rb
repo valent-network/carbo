@@ -22,7 +22,7 @@ module Api
       end
 
       def update_ad
-        ad = Ad.where(address: ad_params[:details][:address], ads_source_id: current_ads_source.id).first_or_initialize
+        ad = Ad.where(address: ad_params[:details].delete(:address), ads_source_id: current_ads_source.id).first_or_initialize
 
         ad_contract = AdCarContract.new.call(params.permit!.to_h[:ad])
 
@@ -30,7 +30,7 @@ module Api
 
         if ad.update(ad_params)
           render(json: { ad: ad })
-          PrepareAdOptions.new.call(ad, ad_params[:details].except(:address))
+          PrepareAdOptions.new.call(ad, ad_params[:details])
           ad.save
           ad.touch
         else
