@@ -10,6 +10,14 @@ class PrepareAdOptions
     images_links = details.delete('images_json_array_tmp')
     state_num = details.delete('state_num').to_s.strip
     seller_name = details.delete('seller_name').to_s.strip
+    region = details.delete('region').to_s.strip
+    city = details.delete('city').to_s.strip
+
+    if region.present? && city.present?
+      region = Region.where(name: region).first_or_create
+      city = City.where(name: city, region: region).first_or_create
+      ad.city = city
+    end
 
     keys = details.keys.uniq
     values = details.values.select(&:present?).uniq

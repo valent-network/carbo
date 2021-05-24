@@ -14,6 +14,7 @@ class Ad < ApplicationRecord
 
   belongs_to :ads_source
   belongs_to :phone_number
+  belongs_to :city, optional: true
   has_many :ad_visits, dependent: :delete_all
   has_many :ad_favorites, dependent: :delete_all
   has_many :ad_prices, dependent: :delete_all
@@ -56,7 +57,13 @@ class Ad < ApplicationRecord
       [opt.ad_option_type.name, opt.ad_option_value&.value]
     end
 
-    @details = Hash[opts_array].merge('description' => ad_description&.body, 'images_json_array_tmp' => ad_image_links_set&.value)
+    other_details = {
+      'description' => ad_description&.body,
+      'images_json_array_tmp' => ad_image_links_set&.value,
+      'city' => city&.name,
+    }
+
+    @details = Hash[opts_array].merge(other_details)
   end
 
   def details=(new_details)
