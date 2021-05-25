@@ -20,8 +20,7 @@ module Api
         rel.touch_all
         addresses = rel.pluck(:address)
 
-
-        render(json: ads)
+        render(json: addresses)
       end
 
       def update_ad
