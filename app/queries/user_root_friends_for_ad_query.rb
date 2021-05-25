@@ -9,7 +9,7 @@ class UserRootFriendsForAdQuery
       WITH user_connections AS (
         WITH known_users AS (
           WITH RECURSIVE p AS (
-            WITH my_contacts AS (SELECT phone_number_id FROM user_contacts WHERE user_id = #{user_id})
+            WITH my_contacts AS (SELECT phone_number_id FROM effective_user_contacts WHERE user_id = #{user_id})
 
             SELECT user_contacts.id, user_contacts.name, users.id AS user_id
             FROM users
