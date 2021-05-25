@@ -18,7 +18,7 @@ class User < ApplicationRecord
 
   mount_base64_uploader :avatar, AvatarUploader
 
-  scope :no_contacts, -> () { left_joins(:user_contacts).where(user_contacts: { id: nil }) }
+  scope :no_contacts, -> () { where.not('EXISTS (SELECT * FROM user_contacts WHERE user_contacts.user_id = users.id)') }
 
   def contacts_count
     user_contacts.count
