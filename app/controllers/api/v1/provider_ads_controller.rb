@@ -16,7 +16,10 @@ module Api
           ads.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id')
         end
 
-        ads = ads.limit(10).order(Arel.sql("deleted = 'f' DESC, updated_at")).pluck(:address)
+        rel = ads.limit(10).order(Arel.sql("deleted = 'f' DESC, updated_at"))
+        rel.touch_all
+        addresses = rel.pluck(:address)
+
 
         render(json: ads)
       end
