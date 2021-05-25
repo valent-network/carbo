@@ -19,6 +19,16 @@ class PrepareAdOptions
       ad.city = city
     end
 
+    images_links = case images_links
+    when String
+      JSON.parse(images_links)
+    when Array
+      images_links
+    else
+      Rails.logger.error(images_links)
+      []
+    end
+
     keys = details.keys.uniq
     values = details.values.select(&:present?).uniq
 
@@ -34,24 +44,16 @@ class PrepareAdOptions
     end
 
     if state_num.present?
-      ad.state_nums.where(value: state_num).first_or_create
+      ad.state_nums.where(value: state_num).first_or_initialize
     end
 
     if seller_name.present?
-      ad.seller_names.where(value: seller_name).first_or_create
+      ad.seller_names.where(value: seller_name).first_or_initialize
     end
 
     if images_links.present?
       ad_image_links_set = ad.ad_image_links_set || ad.build_ad_image_links_set
-      ad_image_links_set.value = case images_links
-      when String
-        JSON.parse(images_links)
-      when Array
-        images_links
-      else
-        Rails.logger.error(images_links)
-        []
-      end
+      ad_image_links_set.value = images_links
     else
       ad.ad_image_links_set&.mark_for_destruction
     end
