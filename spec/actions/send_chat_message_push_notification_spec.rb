@@ -35,7 +35,7 @@ RSpec.describe(SendChatMessagePushNotification) do
 
   context 'When success' do
     it 'Creates system Message without ChatRoomUser name when' do
-      title = '  '
+      title = chat_room.ad.details.slice('maker', 'model', 'year').values.join(' ')
       expect(Rpush::Gcm::Notification).to(receive(:create).with(hash_including(data: hash_including(message: message_body_text))))
       expect(Rpush::Apns::Notification).to(receive(:create).with(hash_including(alert: "#{title}\n#{message_body_text}")))
 
@@ -56,7 +56,7 @@ RSpec.describe(SendChatMessagePushNotification) do
         send_valid_message
       end
       it 'sent with alert containing chat title and message body' do
-        title = '  '
+        title = chat_room.ad.details.slice('maker', 'model', 'year').values.join(' ')
         message_body = "#{chat_room.chat_room_users.find_by(user: other_user).name}: #{message_body_text}"
 
         expect(Rpush::Apns::Notification).to(receive(:create).with(hash_including(alert: "#{title}\n#{message_body}")))
@@ -90,7 +90,8 @@ RSpec.describe(SendChatMessagePushNotification) do
         send_valid_message
       end
       it 'sent with data containing title' do
-        expect(Rpush::Gcm::Notification).to(receive(:create).with(hash_including(data: hash_including(title: "  "))))
+        title = chat_room.ad.details.slice('maker', 'model', 'year').values.join(' ')
+        expect(Rpush::Gcm::Notification).to(receive(:create).with(hash_including(data: hash_including(title: title))))
         send_valid_message
       end
       it 'sent with data containing message body' do

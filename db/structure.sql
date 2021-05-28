@@ -590,12 +590,29 @@ CREATE TABLE public.user_contacts (
 --
 
 CREATE MATERIALIZED VIEW public.effective_ads AS
- SELECT DISTINCT ads.id,
+ SELECT ads.id,
     ads.phone_number_id,
-    ads.price
-   FROM (public.ads
-     JOIN public.user_contacts ON ((user_contacts.phone_number_id = ads.phone_number_id)))
-  WHERE (ads.deleted = false)
+    ads.price,
+    ((ads.options ->> 'year'::text))::smallint AS year,
+    (((((ads.options ->> 'maker'::text) || ' '::text) || (ads.options ->> 'model'::text)) || ' '::text) || (ads.options ->> 'year'::text)) AS search_query,
+    (ads.options ->> 'fuel'::text) AS fuel,
+    (ads.options ->> 'wheels'::text) AS wheels,
+    (ads.options ->> 'gear'::text) AS gear,
+    (ads.options ->> 'carcass'::text) AS carcass
+   FROM ( SELECT ads_1.id,
+            ads_1.phone_number_id,
+            ads_1.price,
+            json_object((array_agg(ARRAY[ad_option_types.name, ad_option_values.value]))::text[]) AS options
+           FROM (((( SELECT DISTINCT ads_2.id,
+                    ads_2.phone_number_id,
+                    ads_2.price
+                   FROM (public.ads ads_2
+                     JOIN public.user_contacts ON ((user_contacts.phone_number_id = ads_2.phone_number_id)))
+                  WHERE (ads_2.deleted = false)) ads_1
+             JOIN public.ad_options ON ((ad_options.ad_id = ads_1.id)))
+             JOIN public.ad_option_types ON ((ad_options.ad_option_type_id = ad_option_types.id)))
+             JOIN public.ad_option_values ON ((ad_options.ad_option_value_id = ad_option_values.id)))
+          GROUP BY ads_1.id, ads_1.phone_number_id, ads_1.price) ads
   WITH NO DATA;
 
 
@@ -1543,7 +1560,7 @@ CREATE INDEX index_ad_favorites_on_user_id ON public.ad_favorites USING btree (u
 -- Name: index_ad_image_links_sets_on_ad_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ad_image_links_sets_on_ad_id ON public.ad_image_links_sets USING btree (ad_id);
+CREATE UNIQUE INDEX index_ad_image_links_sets_on_ad_id ON public.ad_image_links_sets USING btree (ad_id);
 
 
 --
@@ -1701,17 +1718,10 @@ CREATE INDEX index_effective_ads_on_phone_number_id_and_id ON public.effective_a
 
 
 --
--- Name: index_effective_ads_on_price; Type: INDEX; Schema: public; Owner: -
+-- Name: index_effective_ads_on_search_query; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_effective_ads_on_price ON public.effective_ads USING btree (price);
-
-
---
--- Name: index_effective_user_contacts_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_effective_user_contacts_on_phone_number_id ON public.effective_user_contacts USING btree (phone_number_id);
+CREATE INDEX index_effective_ads_on_search_query ON public.effective_ads USING gin (search_query public.gin_trgm_ops);
 
 
 --
@@ -2014,6 +2024,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210524111522'),
 ('20210524124950'),
 ('20210524124954'),
-('20210524125620');
+('20210524125620'),
+('20210528104250'),
+('20210528133750');
 
 

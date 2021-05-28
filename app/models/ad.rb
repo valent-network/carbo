@@ -26,11 +26,6 @@ class Ad < ApplicationRecord
 
   scope :active, -> { where(deleted: false) }
 
-  def self.by_options(opt_name, opt_id, val_ids)
-    val_ids = Array.wrap(val_ids).map(&:to_i).join(',')
-    joins("JOIN ad_options AS opt_#{opt_name} ON ads.id = opt_#{opt_name}.ad_id AND opt_#{opt_name}.ad_option_type_id = #{opt_id} AND opt_#{opt_name}.ad_option_value_id IN (#{val_ids})")
-  end
-
   def phone=(val)
     self.phone_number = PhoneNumber.by_full_number(val).first_or_create! if val.present?
   end

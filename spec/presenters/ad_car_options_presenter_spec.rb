@@ -19,14 +19,6 @@ RSpec.describe(AdCarOptionsPresenter) do
     ))
   end
 
-  it 'returns region' do
-    ad.details = { region: ['Region', 'City'] }
-    ad.save
-    is_expected.to(eq(
-      city: [I18n.t('ad_options.city'), 'City']
-    ))
-  end
-
   it 'transforms engine_capacity + fuel => engine' do
     ad.details = { engine_capacity: '1400', fuel: 'Diesel' }
     ad.save

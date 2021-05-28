@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe(EffectiveAds) do
   let!(:other_ads) do
-    o_ads = create_list(:ad, 5, :car, :active)
+    o_ads = create_list(:ad, 5, :active)
     o_ads.each do |ad|
       updated_details = {}
       updated_details['maker'] = 'Mercedes-Benz' if ad.details['maker'] == 'BMW'
@@ -20,7 +20,7 @@ RSpec.describe(EffectiveAds) do
   end
 
   let!(:expected_ads) do
-    e_ads = create_list(:ad, 2, :car, :active)
+    e_ads = create_list(:ad, 2, :active)
     e_ads.each do |ad|
       updated_details = {
         'year' => 2016,

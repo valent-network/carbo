@@ -30,4 +30,10 @@ RSpec.describe(Ad, type: :model) do
       expect { create(:ad, :active) }.to_not(change { AdPrice.count })
     end
   end
+
+  describe '#details' do
+    it '.city'
+    it '.images_json_array_tmp'
+    it 'description'
+  end
 end
