@@ -41,13 +41,22 @@ class UploadUserContactsJob < ApplicationJob
     contacts.each do |contact|
       contact['name'] = contact['name'].to_s.strip.gsub(/^(.{97,}?).*$/m, '\1...')
       contact['phoneNumbers'].reject! { |phone| Phonelib.parse(phone).invalid_for_country?('UA') }
-      contact['phoneNumbers'].map! { |phone| Phonelib.parse(phone).national.to_s.gsub(/\s/, '').to_i }
+      contact['phoneNumbers'].map! { |phone| Phonelib.parse(phone).national.to_s.gsub(/\s/, '').to_i.to_s }
     end
   end
 
   def process_phone_numbers(full_phone_numbers)
     existing_full_phone_numbers = PhoneNumber.where(full_number: full_phone_numbers).pluck(:full_number)
     full_phone_numbers_to_create = full_phone_numbers - existing_full_phone_numbers
+
+    full_phone_numbers_to_create.each do |phone|
+      if phone.to_s.size != 9
+        Airbrake.notify(phone)
+      end
+    end
+
+    full_phone_numbers_to_create.reject! { |phone| phone.to_s.size != 9 }
+
     PhoneNumber.insert_all(full_phone_numbers_to_create.map { |phone| { full_number: phone } }) if full_phone_numbers_to_create.present?
 
     Hash[PhoneNumber.where(full_number: full_phone_numbers).pluck(:full_number, :id)]
