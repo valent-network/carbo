@@ -1858,6 +1858,14 @@ CREATE INDEX search_budget_index ON public.ads_grouped_by_maker_model_year USING
 
 
 --
+-- Name: messages fk_rails_00aac238e8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT fk_rails_00aac238e8 FOREIGN KEY (chat_room_id) REFERENCES public.chat_rooms(id) ON DELETE CASCADE;
+
+
+--
 -- Name: users fk_rails_0af1806ed1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1874,11 +1882,75 @@ ALTER TABLE ONLY public.ads
 
 
 --
+-- Name: messages fk_rails_273a25a7a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT fk_rails_273a25a7a6 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: chat_room_users fk_rails_28e7f29a4f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.chat_room_users
+    ADD CONSTRAINT fk_rails_28e7f29a4f FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: seller_names fk_rails_35cf035f87; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.seller_names
+    ADD CONSTRAINT fk_rails_35cf035f87 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
 -- Name: ad_favorites fk_rails_433c6ffc89; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ad_favorites
     ADD CONSTRAINT fk_rails_433c6ffc89 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_descriptions fk_rails_55111271fa; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_descriptions
+    ADD CONSTRAINT fk_rails_55111271fa FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_options fk_rails_60c6ef7709; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_options
+    ADD CONSTRAINT fk_rails_60c6ef7709 FOREIGN KEY (ad_option_type_id) REFERENCES public.ad_option_types(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_image_links_sets fk_rails_73a21eede7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_image_links_sets
+    ADD CONSTRAINT fk_rails_73a21eede7 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: verification_requests fk_rails_98c15d8b5e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.verification_requests
+    ADD CONSTRAINT fk_rails_98c15d8b5e FOREIGN KEY (phone_number_id) REFERENCES public.phone_numbers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: chat_room_users fk_rails_bc998301ae; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.chat_room_users
+    ADD CONSTRAINT fk_rails_bc998301ae FOREIGN KEY (chat_room_id) REFERENCES public.chat_rooms(id) ON DELETE CASCADE;
 
 
 --
@@ -1906,6 +1978,30 @@ ALTER TABLE ONLY public.user_contacts
 
 
 --
+-- Name: chat_rooms fk_rails_c4bd9c10f3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.chat_rooms
+    ADD CONSTRAINT fk_rails_c4bd9c10f3 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: demo_phone_numbers fk_rails_c6152da324; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.demo_phone_numbers
+    ADD CONSTRAINT fk_rails_c6152da324 FOREIGN KEY (phone_number_id) REFERENCES public.phone_numbers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_prices fk_rails_cd4c7aebef; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_prices
+    ADD CONSTRAINT fk_rails_cd4c7aebef FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
 -- Name: user_contacts fk_rails_cfeb7cc2a1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1922,6 +2018,30 @@ ALTER TABLE ONLY public.ad_visits
 
 
 --
+-- Name: ad_options fk_rails_d6a9533e31; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_options
+    ADD CONSTRAINT fk_rails_d6a9533e31 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_options fk_rails_df36140a4c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_options
+    ADD CONSTRAINT fk_rails_df36140a4c FOREIGN KEY (ad_option_value_id) REFERENCES public.ad_option_values(id) ON DELETE CASCADE;
+
+
+--
+-- Name: cities fk_rails_e0ef2914ca; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cities
+    ADD CONSTRAINT fk_rails_e0ef2914ca FOREIGN KEY (region_id) REFERENCES public.regions(id) ON DELETE CASCADE;
+
+
+--
 -- Name: user_devices fk_rails_e700a96826; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1935,6 +2055,14 @@ ALTER TABLE ONLY public.user_devices
 
 ALTER TABLE ONLY public.ads
     ADD CONSTRAINT fk_rails_f7e6a33a41 FOREIGN KEY (phone_number_id) REFERENCES public.phone_numbers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: chat_rooms fk_rails_fb091736d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.chat_rooms
+    ADD CONSTRAINT fk_rails_fb091736d8 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -2026,6 +2154,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210524124954'),
 ('20210524125620'),
 ('20210528104250'),
-('20210528133750');
+('20210528133750'),
+('20210529092800');
 
 
