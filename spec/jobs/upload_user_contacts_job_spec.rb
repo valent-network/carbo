@@ -13,6 +13,11 @@ RSpec.describe(UploadUserContactsJob) do
     expect { subject.perform(user.id, user_contacts) }.to(change { UserContact.count }.from(0).to(1))
   end
 
+  it 'ignores semi-invalid numbers (non-9-digits)' do
+    user_contacts = [{ 'phoneNumbers' => ['08005010150'], 'name' => 'Universal' }].to_json
+    expect { subject.perform(user.id, user_contacts) }.to_not(change { UserContact.count })
+  end
+
   it 'truncates long names' do
     user_contacts = [{ 'phoneNumbers' => ['+380931234567'], 'name' => 'Alice' * 100 }].to_json
     expect { subject.perform(user.id, user_contacts) }.to(change { UserContact.count }.from(0).to(1))
@@ -22,5 +27,11 @@ RSpec.describe(UploadUserContactsJob) do
 
   it 'does not create records for invalid numbers' do
     expect { subject.perform(user.id, no_valid_numbers_contacts) }.to_not(change { UserContact.count })
+  end
+
+  it 'changes existing contacts names' do
+    user_contact = create(:user_contact, user: user)
+    new_user_contacts = [{ 'phoneNumbers' => [user_contact.phone_number.to_s], name: 'New Name' }].to_json
+    expect { subject.perform(user.id, new_user_contacts) }.to(change { user_contact.reload.name }.from(user_contact.name).to('New Name'))
   end
 end
