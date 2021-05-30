@@ -34,4 +34,12 @@ RSpec.describe(UploadUserContactsJob) do
     new_user_contacts = [{ 'phoneNumbers' => [user_contact.phone_number.to_s], name: 'New Name' }].to_json
     expect { subject.perform(user.id, new_user_contacts) }.to(change { user_contact.reload.name }.from(user_contact.name).to('New Name'))
   end
+
+  it 'works for duplicate numbers' do
+    user_contacts = [
+      { 'phoneNumbers' => ['+380931234567'], 'name' => 'Alice' },
+      { 'phoneNumbers' => ['+380931234567'], 'name' => 'Bob' },
+    ].to_json
+    expect { subject.perform(user.id, user_contacts) }.to(change { UserContact.count }.from(0).to(1))
+  end
 end
