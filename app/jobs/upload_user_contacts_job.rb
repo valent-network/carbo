@@ -12,6 +12,15 @@ class UploadUserContactsJob < ApplicationJob
     full_phone_numbers = contacts.map { |contact| contact['phoneNumbers'] }.flatten.uniq
     return if full_phone_numbers.blank?
 
+    full_phone_numbers.select! do |phone|
+      if phone.size == 9
+        true
+      else
+        Airbrake.notify(phone)
+        false
+      end
+    end
+
     PhoneNumber.insert_all(full_phone_numbers.map { |phone| { full_number: phone } }, unique_by: [:full_number])
 
     phone_numbers_mapping = Hash[PhoneNumber.where(full_number: full_phone_numbers).pluck(:full_number, :id)]
