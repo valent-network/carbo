@@ -27,6 +27,8 @@ class UploadUserContactsJob < ApplicationJob
       end
     end
 
+    user_contacts_to_upsert.uniq! { |x| [x[:user_id], x[:phone_number_id]] }
+
     UserContact.upsert_all(user_contacts_to_upsert, unique_by: [:phone_number_id, :user_id]) if user_contacts_to_upsert.present?
 
     if initial_contacts_count.zero?
