@@ -5,38 +5,37 @@ class AddAdOptionsDetailsToEffectiveAds < ActiveRecord::Migration[6.1]
     execute('DROP MATERIALIZED VIEW effective_ads')
 
     execute(<<~SQL)
-            CREATE MATERIALIZED VIEW effective_ads AS (
-              SELECT ads.id,
-                    ads.phone_number_id,
-                    ads.price,
-                    (options->>'year')::smallint AS year,
-                    (
-                      (options->>'maker') || ' ' || (options->>'model') || ' ' || (options->>'year')
-                    ) AS search_query,
-                    options->>'fuel' AS fuel,
-                    options->>'wheels' AS wheels,
-                    options->>'gear' AS gear,
-                    options->>'carcass' AS carcass
-      #{'              '}
-              FROM (
-                SELECT ads.id,
-                       ads.phone_number_id,
-                       ads.price,
-                       JSON_OBJECT(ARRAY_AGG(array[ad_option_types.name, ad_option_values.value])) AS options
-                FROM (
-                  SELECT DISTINCT ads.id,
-                                  ads.phone_number_id,
-                                  ads.price
-                  FROM ads
-                  JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id
-                  WHERE ads.deleted = 'F'
-                ) AS ads
-                JOIN ad_options on ad_options.ad_id = ads.id
-                JOIN ad_option_types on ad_options.ad_option_type_id = ad_option_types.id
-                JOIN ad_option_values on ad_options.ad_option_value_id = ad_option_values.id
-                GROUP BY ads.id, ads.phone_number_id, ads.price
-              ) AS ads
-            )
+      CREATE MATERIALIZED VIEW effective_ads AS (
+        SELECT ads.id,
+              ads.phone_number_id,
+              ads.price,
+              (options->>'year')::smallint AS year,
+              (
+                (options->>'maker') || ' ' || (options->>'model') || ' ' || (options->>'year')
+              ) AS search_query,
+              options->>'fuel' AS fuel,
+              options->>'wheels' AS wheels,
+              options->>'gear' AS gear,
+              options->>'carcass' AS carcass
+        FROM (
+          SELECT ads.id,
+                 ads.phone_number_id,
+                 ads.price,
+                 JSON_OBJECT(ARRAY_AGG(array[ad_option_types.name, ad_option_values.value])) AS options
+          FROM (
+            SELECT DISTINCT ads.id,
+                            ads.phone_number_id,
+                            ads.price
+            FROM ads
+            JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id
+            WHERE ads.deleted = 'F'
+          ) AS ads
+          JOIN ad_options on ad_options.ad_id = ads.id
+          JOIN ad_option_types on ad_options.ad_option_type_id = ad_option_types.id
+          JOIN ad_option_values on ad_options.ad_option_value_id = ad_option_values.id
+          GROUP BY ads.id, ads.phone_number_id, ads.price
+        ) AS ads
+      )
     SQL
 
     add_index(:effective_ads, :id, unique: true, order: { id: :desc })
