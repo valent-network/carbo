@@ -42,4 +42,14 @@ RSpec.describe(UploadUserContactsJob) do
     ].to_json
     expect { subject.perform(user.id, user_contacts) }.to(change { UserContact.count }.from(0).to(1))
   end
+
+  it 'does not process invalid phone numbers' do
+    invalid_phone_number = '1022240504'
+    user_id = user.id
+    user_contacts = [
+      { 'phoneNumbers' => [invalid_phone_number], 'name' => 'Alice' },
+    ].to_json
+
+    expect { subject.perform(user_id, user_contacts) }.to_not(change { PhoneNumber.count })
+  end
 end
