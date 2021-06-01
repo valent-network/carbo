@@ -26,6 +26,10 @@ class Ad < ApplicationRecord
 
   scope :active, -> { where(deleted: false) }
 
+  def self.by_options(opt_name, opt_id, val_id)
+    joins("JOIN ad_options AS ad_option_#{opt_name} ON ad_option_#{opt_name}.ad_id = ads.id AND ad_option_#{opt_name}.ad_option_type_id = #{opt_id} AND ad_option_#{opt_name}.ad_option_value_id = #{val_id}")
+  end
+
   def phone=(val)
     self.phone_number = PhoneNumber.by_full_number(val).first_or_create! if val.present?
   end

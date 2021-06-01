@@ -21,6 +21,7 @@ class BudgetController < ApplicationController
 
   def show_model
     @models = AdsGroupedByMakerModelYear.where('LOWER(maker) = :maker AND LOWER(model) = :model', maker: params[:maker].downcase, model: params[:model].downcase)
+    @models = @models.where.not(year: nil) # TODO: Defensive query
     raise ActiveRecord::RecordNotFound if @models.blank?
 
     @meta_title = "Рекарио – стоимость #{@models.first.maker} #{@models.first.model} по годам"
@@ -33,22 +34,31 @@ class BudgetController < ApplicationController
   end
 
   def show_model_year
-    redirect_to(root_path)
-    # TODO: Doesn't work good with EAV options
-    # @model_year = AdsGroupedByMakerModelYear.where('LOWER(maker) = :maker AND LOWER(model) = :model AND year = :year', maker: params[:maker].downcase, model: params[:model].downcase, year: params[:year]).first
-    # raise ActiveRecord::RecordNotFound unless @model_year
+    @model_year = AdsGroupedByMakerModelYear.where('LOWER(maker) = :maker AND LOWER(model) = :model AND year = :year', maker: params[:maker].downcase, model: params[:model].downcase, year: params[:year]).first
+    raise ActiveRecord::RecordNotFound unless @model_year
 
-    # @ads = Ad.where("LOWER(details->>'maker') = ? AND LOWER(details->>'model') = ? AND details->>'year' = ?", params[:maker].downcase, params[:model].downcase, params[:year])
-    # @ads = @ads.where(deleted: false)
-    # @ads_grouped_by_region = @ads.group("details->'region'->>0").count.sort_by(&:last).reverse
+    opts_types_ids = Hash[AdOptionType.where(name: %w[maker model year]).pluck(:name, :id)]
+    opts_values_ids = Hash[AdOptionValue.where(value: [
+      params[:maker],
+      params[:model],
+      params[:year],
+    ]).pluck(:value, :id)]
 
-    # @meta_title = "Рекарио – минимальная, средняя и максимальная стоимость #{@model_year.maker} #{@model_year.model} #{@model_year.year} года"
-    # @meta_description = "Все цены на #{@model_year.maker} #{@model_year.model} #{@model_year.year} года и количество объявлений по городам"
-    # @meta_keywords = "Цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, минимальная цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, средняя цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, сколько стоит #{@model_year.maker} #{@model_year.model} #{@model_year.year}"
-    # @meta_og_title = @meta_title
-    # @meta_og_description = @meta_description
+    @ads = Ad.where(deleted: false).by_options('maker', opts_types_ids['maker'], opts_values_ids[params[:maker]])
+    @ads = @ads.by_options('model', opts_types_ids['model'], opts_values_ids[params[:model]])
+    @ads = @ads.by_options('year', opts_types_ids['year'], opts_values_ids[params[:year]])
 
-    # render('/budget/show_model_year', layout: 'widgets')
+    @ads_grouped_by_region = @ads.group(:city_id).count.sort_by(&:last).reverse
+    cities = Hash[City.where(id: @ads_grouped_by_region.map(&:first)).joins(:region).pluck('cities.id, regions.name')]
+    @ads_grouped_by_region = Hash[@ads_grouped_by_region].transform_keys { |city_id| cities[city_id] }.to_a
+
+    @meta_title = "Рекарио – минимальная, средняя и максимальная стоимость #{@model_year.maker} #{@model_year.model} #{@model_year.year} года"
+    @meta_description = "Все цены на #{@model_year.maker} #{@model_year.model} #{@model_year.year} года и количество объявлений по городам"
+    @meta_keywords = "Цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, минимальная цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, средняя цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, сколько стоит #{@model_year.maker} #{@model_year.model} #{@model_year.year}"
+    @meta_og_title = @meta_title
+    @meta_og_description = @meta_description
+
+    render('/budget/show_model_year', layout: 'widgets')
   end
 
   def show_ads

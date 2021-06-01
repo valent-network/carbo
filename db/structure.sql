@@ -385,6 +385,37 @@ CREATE TABLE public.ads (
 
 
 --
+-- Name: ads_grouped_by_maker_model_year; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
+ SELECT ads.maker,
+    ads.model,
+    ads.year,
+    min(ads.price) AS min_price,
+    (round((avg(ads.price) / (100)::numeric)) * (100)::numeric) AS avg_price,
+    max(ads.price) AS max_price
+   FROM ( SELECT ads_1.price,
+            (ads_1.options ->> 'maker'::text) AS maker,
+            (ads_1.options ->> 'model'::text) AS model,
+            (ads_1.options ->> 'year'::text) AS year
+           FROM ( SELECT ads_2.id,
+                    ads_2.price,
+                    json_object((array_agg(ARRAY[ad_option_types.name, ad_option_values.value]))::text[]) AS options
+                   FROM (((public.ads ads_2
+                     LEFT JOIN public.ad_options ON (((ad_options.ad_id = ads_2.id) AND (ad_options.ad_option_type_id IN ( SELECT ad_option_types_1.id
+                           FROM public.ad_option_types ad_option_types_1
+                          WHERE ((ad_option_types_1.name)::text = ANY ((ARRAY['maker'::character varying, 'model'::character varying, 'year'::character varying])::text[])))))))
+                     JOIN public.ad_option_types ON ((ad_options.ad_option_type_id = ad_option_types.id)))
+                     JOIN public.ad_option_values ON ((ad_options.ad_option_value_id = ad_option_values.id)))
+                  GROUP BY ads_2.id, ads_2.price) ads_1) ads
+  GROUP BY ads.maker, ads.model, ads.year
+ HAVING (count(ads.*) >= 5)
+  ORDER BY ads.maker, ads.model, ads.year
+  WITH NO DATA;
+
+
+--
 -- Name: ads_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1256,41 +1287,6 @@ ALTER TABLE ONLY public.verification_requests ALTER COLUMN id SET DEFAULT nextva
 
 
 --
--- Name: ads ads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ads
-    ADD CONSTRAINT ads_pkey PRIMARY KEY (id);
-
-
---
--- Name: ads_grouped_by_maker_model_year; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
- SELECT ads.maker,
-    ads.model,
-    ads.year,
-    min(ads.price) AS min_price,
-    (round((avg(ads.price) / (100)::numeric)) * (100)::numeric) AS avg_price,
-    max(ads.price) AS max_price
-   FROM ( SELECT ads_1.id,
-            ads_1.price,
-            max((ad_option_values.value)::text) FILTER (WHERE (ad_options.ad_option_type_id = 6)) AS maker,
-            max((ad_option_values.value)::text) FILTER (WHERE (ad_options.ad_option_type_id = 7)) AS model,
-            max((ad_option_values.value)::text) FILTER (WHERE (ad_options.ad_option_type_id = 4)) AS year
-           FROM ((public.ads ads_1
-             JOIN public.ad_options ON (((ads_1.id = ad_options.ad_id) AND (ad_options.ad_option_type_id = ANY (ARRAY[4, 6, 7])))))
-             JOIN public.ad_option_values ON ((ad_option_values.id = ad_options.ad_option_value_id)))
-          WHERE (ads_1.deleted = false)
-          GROUP BY ads_1.id) ads
-  GROUP BY ads.maker, ads.model, ads.year
- HAVING (count(ads.*) >= 5)
-  ORDER BY ads.maker, ads.model, ads.year
-  WITH NO DATA;
-
-
---
 -- Name: active_admin_comments active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1360,6 +1356,14 @@ ALTER TABLE ONLY public.ad_visits
 
 ALTER TABLE ONLY public.admin_users
     ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ads ads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ads
+    ADD CONSTRAINT ads_pkey PRIMARY KEY (id);
 
 
 --
@@ -1582,6 +1586,13 @@ CREATE UNIQUE INDEX index_ad_option_values_on_value ON public.ad_option_values U
 --
 
 CREATE UNIQUE INDEX index_ad_options_on_ad_id_and_ad_option_type_id ON public.ad_options USING btree (ad_id, ad_option_type_id);
+
+
+--
+-- Name: index_ad_options_on_ad_option_value_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_options_on_ad_option_value_id ON public.ad_options USING btree (ad_option_value_id) WHERE (ad_option_type_id = ANY (ARRAY[4, 6, 7]));
 
 
 --
@@ -2142,7 +2153,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210508191744'),
 ('20210509084235'),
 ('20210511050910'),
-('20210523200235'),
 ('20210523204018'),
 ('20210523230607'),
 ('20210523231446'),
@@ -2155,6 +2165,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210524125620'),
 ('20210528104250'),
 ('20210528133750'),
-('20210529092800');
+('20210529092800'),
+('20210601174519'),
+('20210601204622');
 
 
