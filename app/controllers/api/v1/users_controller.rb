@@ -21,11 +21,25 @@ module Api
         end
       end
 
+      def set_referrer
+        if current_user.referrer.present?
+          raise
+        else
+          referrer = User.where(refcode: params[:refcode].to_s.strip.upcase).first
+          if referrer.blank?
+            raise
+          else
+            current_user.update(referrer: referrer)
+            render(json: current_user)
+          end
+        end
+      end
+
       private
 
       def user_params
         return {} unless params[:user]
-        params[:user].permit(:name, :avatar, :remove_avatar)
+        params[:user].permit(:name, :avatar, :remove_avatar, :referrer_from_code)
       end
 
       def device_params

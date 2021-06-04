@@ -657,7 +657,9 @@ CREATE TABLE public.users (
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    avatar json
+    avatar json,
+    referrer_id integer,
+    refcode character varying
 );
 
 
@@ -1855,6 +1857,20 @@ CREATE UNIQUE INDEX index_users_on_phone_number_id ON public.users USING btree (
 
 
 --
+-- Name: index_users_on_refcode; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_refcode ON public.users USING btree (refcode);
+
+
+--
+-- Name: index_users_on_referrer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_referrer_id ON public.users USING btree (referrer_id);
+
+
+--
 -- Name: index_verification_requests_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1946,6 +1962,14 @@ ALTER TABLE ONLY public.ad_options
 
 ALTER TABLE ONLY public.ad_image_links_sets
     ADD CONSTRAINT fk_rails_73a21eede7 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: users fk_rails_92c9bd2db4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_92c9bd2db4 FOREIGN KEY (referrer_id) REFERENCES public.users(id) ON DELETE RESTRICT;
 
 
 --
@@ -2167,6 +2191,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210528133750'),
 ('20210529092800'),
 ('20210601174519'),
-('20210601204622');
+('20210601204622'),
+('20210603210605'),
+('20210604162647');
 
 

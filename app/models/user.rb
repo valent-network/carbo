@@ -2,10 +2,11 @@
 
 class User < ApplicationRecord
   validates_associated :phone_number
-  validates :phone_number, uniqueness: true
+  validates :phone_number, :refcode, uniqueness: true
   validates :name, length: { maximum: 50 }, if: proc { |user| user.name.present? }
 
   belongs_to :phone_number
+  belongs_to :referrer, foreign_key: :referrer_id, class_name: 'User', optional: true
 
   has_many :user_contacts, dependent: :delete_all
   has_many :user_devices, dependent: :delete_all

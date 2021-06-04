@@ -29,7 +29,9 @@ Rails.application.routes.draw do
     get :filters, to: '/application#filters'
     namespace :v1 do
       resource :contact_book, only: %i[update destroy]
-      resource :user, only: %i[show update]
+      resource :user, only: %i[show update] do
+        post :set_referrer, on: :collection
+      end
       resource :sessions, only: %i[create update destroy]
 
       resources :ads, only: %i[show]
@@ -40,15 +42,16 @@ Rails.application.routes.draw do
       resources :favorite_ads, only: %i[index create destroy]
       resources :visited_ads, only: %i[index]
       resources :my_ads, only: %i[index]
-      resources :provider_ads, only: %w[index] do
+      resources :provider_ads, only: %i[index] do
         put :update_ad, on: :collection
         delete :delete_ad, on: :collection
       end
       resources :feed_ads, only: %i[index]
-      resources :chat_rooms, only: %w[create index]
-      resources :chat_room_users, only: %w[create destroy]
-      resources :messages, only: %w[index]
-      resource :system_chat_room, only: %w[show]
+      resources :chat_rooms, only: %i[create index]
+      resources :chat_room_users, only: %i[create destroy]
+      resources :messages, only: %i[index]
+      resources :referrers, only: %i[show]
+      resource :system_chat_room, only: %i[show]
     end
 
     namespace :v2 do
