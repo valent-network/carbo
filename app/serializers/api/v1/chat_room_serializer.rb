@@ -10,11 +10,11 @@ module Api
       end
 
       def updated_at
-        object.messages.order(:created_at).last.created_at
+        object.messages.sort_by(&:created_at).last.created_at
       end
 
       def messages
-        message = object.messages.order(created_at: :desc).first
+        message = object.messages.sort_by(&:created_at).first
         return [] unless message
         [
           Api::V1::MessageSerializer.new(message).as_json,
@@ -32,7 +32,7 @@ module Api
       def chat_room_users
         # TODO: This must be cover with tests carefully
         # so that real numbers of chat members could not leak to unknown users
-        relation = object.chat_room_users.order(:id).to_a
+        relation = object.chat_room_users.to_a.sort_by(&:id)
         known = UserContact.where(user_id: @instance_options[:current_user_id], phone_number_id: relation.map(&:user).map(&:phone_number_id)).map(&:phone_number).map(&:to_s)
 
         result = ActiveModelSerializers::SerializableResource.new(relation, each_serializer: Api::V1::ChatRoomUserSerializer).as_json

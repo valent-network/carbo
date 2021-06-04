@@ -6,7 +6,7 @@ module Api
       before_action :require_auth
 
       def index
-        chat_rooms = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: current_user }).order(updated_at: :desc).offset(params[:offset]).limit(10)
+        chat_rooms = ChatRoom.includes(:messages, chat_room_users: [user: [:phone_number]], ad: [:ad_description, :ad_image_links_set, city: [:region], ad_options: [:ad_option_type, :ad_option_value]]).joins(:chat_room_users).where(chat_room_users: { user: current_user }).order(updated_at: :desc).offset(params[:offset]).limit(10)
         render(json: chat_rooms, current_user_id: current_user.id)
       end
 
