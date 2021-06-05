@@ -5,7 +5,7 @@ module Api
       before_action :require_auth
 
       def show
-        user = User.where(refcode: params[:id].to_s.upcase.strip).first
+        user = User.where(refcode: params[:id].to_s.upcase.strip).where.not(id: current_user.id).first
 
         if user
           render(json: { name: user.name, avatar: user.avatar.url, refcode: user.refcode })

@@ -25,7 +25,7 @@ module Api
         if current_user.referrer.present?
           raise
         else
-          referrer = User.where(refcode: params[:refcode].to_s.strip.upcase).first
+          referrer = User.where(refcode: params[:refcode].to_s.strip.upcase).where.not(id: current_user.id).first
           if referrer.blank?
             raise
           else
