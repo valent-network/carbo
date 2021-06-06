@@ -14,7 +14,7 @@ module Api
       end
 
       def messages
-        message = object.messages.sort_by(&:created_at).first
+        message = object.messages.sort_by(&:created_at).last
         return [] unless message
         [
           Api::V1::MessageSerializer.new(message).as_json,
