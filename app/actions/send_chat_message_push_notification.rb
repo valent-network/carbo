@@ -8,7 +8,7 @@ class SendChatMessagePushNotification
   def call(message:, chat_room_user:)
     message_body = message.user ? "#{message.chat_room.chat_room_users.find_by(user: message.user).name}: #{message.body}" : message.body
     ad = chat_room_user.chat_room.ad
-    title = "#{ad.details['maker']} #{ad.details['model']} #{ad.details['year']}"
+    title = chat_room_user.chat_room.system? ? 'Рекарио 🌀' : "#{ad.details['maker']} #{ad.details['model']} #{ad.details['year']}"
     unread_count = Message.unread_messages_for(chat_room_user.user_id).count
     user_devices_to_receive_notification = chat_room_user.user.user_devices.where.not(push_token: ['', nil]).where(os: %w[ios android])
 
