@@ -8,7 +8,6 @@ module Api
       def index
         to_include = [
           :messages,
-          :chat_room_users,
           chat_room_users: [user: [:phone_number]],
           ad: [
             :ad_description,
@@ -18,6 +17,7 @@ module Api
           ],
         ]
         chat_rooms = ChatRoom.includes(to_include)
+          .joins(:chat_room_users)
           .where(chat_room_users: { user: current_user })
           .order(updated_at: :desc)
           .offset(params[:offset])
