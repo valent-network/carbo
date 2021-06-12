@@ -55,6 +55,8 @@ module Api
           verification_request.destroy! unless phone_number.demo?
         end
 
+        CreateEvent.call(:sign_in, user: user, data: { os: device.os, build_version: device.build_version })
+
         render(json: { access_token: device.access_token })
       end
 
