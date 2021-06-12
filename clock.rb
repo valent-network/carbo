@@ -5,6 +5,7 @@ require './config/environment'
 module Clockwork
   every(1.minute, 'Refresh Effective Ads Materialized View') { EffectiveAdsRefreshMaterializedView.perform_later }
   every(1.minute, 'Refresh Effective UserContacts Materialized View') { EffectiveUserContactsRefreshMaterializedView.perform_later }
+  every(1.minute, 'Refresh Promo Events Materialized View') { PromoEventsRefreshMaterializedView.perform_later }
   every(1.day, 'Vacuum Postgresql', at: '05:00', tz: 'UTC') { VacuumDatabase.perform_later }
   every(1.hour, 'Refresh Budget Widget Materialized View') { BudgetWidgetRefreshMaterializedView.perform_later }
   every(1.day, 'Backup Database', at: '03:00', tz: 'UTC', skip_first_run: true) { BackupDatabase.perform_later }

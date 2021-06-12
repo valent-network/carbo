@@ -761,6 +761,22 @@ ALTER SEQUENCE public.phone_numbers_id_seq OWNED BY public.phone_numbers.id;
 
 
 --
+-- Name: promo_events_matview; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.promo_events_matview AS
+ SELECT row_number() OVER (ORDER BY events.created_at) AS id,
+    events.user_id,
+    events.name,
+    events.data,
+    events.created_at
+   FROM public.events
+  WHERE ((events.name)::text = ANY ((ARRAY['sign_up'::character varying, 'set_referrer'::character varying, 'invited_user'::character varying])::text[]))
+  ORDER BY events.created_at
+  WITH NO DATA;
+
+
+--
 -- Name: regions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1827,6 +1843,13 @@ CREATE UNIQUE INDEX index_phone_numbers_on_full_number ON public.phone_numbers U
 
 
 --
+-- Name: index_promo_events_matview_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_promo_events_matview_on_id ON public.promo_events_matview USING btree (id);
+
+
+--
 -- Name: index_rpush_feedback_on_device_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1936,6 +1959,20 @@ CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.ver
 --
 
 CREATE INDEX search_budget_index ON public.ads_grouped_by_maker_model_year USING btree (min_price, max_price);
+
+
+--
+-- Name: uniq_set_referrer_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX uniq_set_referrer_index ON public.events USING btree (user_id) WHERE ((name)::text = 'set_referrer'::text);
+
+
+--
+-- Name: uniq_sign_up_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX uniq_sign_up_index ON public.events USING btree (user_id) WHERE ((name)::text = 'sign_up'::text);
 
 
 --
@@ -2248,6 +2285,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210601204622'),
 ('20210603210605'),
 ('20210604162647'),
-('20210612140908');
+('20210612140908'),
+('20210612182750'),
+('20210612183516');
 
 
