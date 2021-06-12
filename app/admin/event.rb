@@ -8,7 +8,7 @@ ActiveAdmin.register(Event) do
   index do
     column :id
     column :name
-    column :user
+    column :user_id
     column :created_at
     actions
   end
@@ -17,7 +17,7 @@ ActiveAdmin.register(Event) do
     attributes_table do
       row :id
       row :name
-      row :user
+      row :user_id
       row :created_at
       row :data
     end
