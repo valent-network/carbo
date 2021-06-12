@@ -29,6 +29,10 @@ class ApplicationController < ActionController::Base
     @meta_title = JSON.parse(@page.meta)['title']
   end
 
+  def network
+    render('/network', layout: false)
+  end
+
   protected
 
   attr_reader :current_user, :current_device, :current_ads_source
