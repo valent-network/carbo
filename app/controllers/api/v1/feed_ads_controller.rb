@@ -17,6 +17,8 @@ module Api
           ads.each { |ad| ad.associate_friends_with(ads_with_friends) }
         end
 
+        CreateEvent.call(:get_feed, user: current_user, data: { params: params })
+
         render(json: ads, each_serializer: Api::V1::AdsListSerializer)
       end
 

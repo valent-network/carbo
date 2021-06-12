@@ -21,6 +21,7 @@ module Api
       def create
         ad_favorite = current_user.ad_favorites.where(ad_id: params[:id]).first_or_initialize
         if ad_favorite.save
+          CreateEvent.call(:favorited_ad, user: current_user, data: { ad_id: params[:id] })
           render(json: { message: :ok })
         else
           render(json: { message: :error, errors: ad_favorite.errors.to_a }, status: 422)
@@ -32,6 +33,7 @@ module Api
 
         return render(json: { message: :error, errors: ['Ad must exist'] }, status: 422) unless ad_favorite
         ad_favorite.destroy
+        CreateEvent.call(:unfavorited_ad, user: current_user, data: { ad_id: params[:id] })
         render(json: { message: :ok })
       end
     end

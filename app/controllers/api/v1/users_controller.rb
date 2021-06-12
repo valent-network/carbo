@@ -29,6 +29,8 @@ module Api
           if referrer.blank?
             raise
           else
+            CreateEvent.call(:set_referrer, user: current_user, data: { referrer_id: referrer.id })
+            CreateEvent.call(:invited_user, user: referrer, data: { user_id: current_user.id })
             current_user.update(referrer: referrer)
             render(json: current_user)
           end

@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_many :chat_rooms, dependent: :destroy
   has_many :chat_room_users, dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :events, dependent: :delete_all
 
   mount_base64_uploader :avatar, AvatarUploader
 

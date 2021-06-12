@@ -686,6 +686,38 @@ UNION
 
 
 --
+-- Name: events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events (
+    id bigint NOT NULL,
+    name character varying,
+    user_id bigint,
+    data jsonb,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
+
+
+--
 -- Name: messages; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1212,6 +1244,13 @@ ALTER TABLE ONLY public.demo_phone_numbers ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+
+
+--
 -- Name: phone_numbers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1414,6 +1453,14 @@ ALTER TABLE ONLY public.cities
 
 ALTER TABLE ONLY public.demo_phone_numbers
     ADD CONSTRAINT demo_phone_numbers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
 
 
 --
@@ -1742,6 +1789,13 @@ CREATE INDEX index_effective_ads_on_search_query ON public.effective_ads USING g
 --
 
 CREATE UNIQUE INDEX index_effective_user_contacts_on_phone_number_id_and_user_id ON public.effective_user_contacts USING btree (phone_number_id, user_id);
+
+
+--
+-- Name: index_events_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
 
 
 --
@@ -2193,6 +2247,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210601174519'),
 ('20210601204622'),
 ('20210603210605'),
-('20210604162647');
+('20210604162647'),
+('20210612140908');
 
 

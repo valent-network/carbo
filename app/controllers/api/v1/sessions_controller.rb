@@ -31,6 +31,7 @@ module Api
           begin
             user.refcode = RefcodeGenerator.new.call
             user.save
+            CreateEvent.call(:sign_up, user: user)
           rescue
             retry
           end
@@ -59,6 +60,7 @@ module Api
 
       def destroy
         params[:all] ? current_user.user_devices.destroy_all : current_device.destroy
+        CreateEvent.call(:sign_out, user: current_user)
         render(json: { message: :ok })
       end
     end
