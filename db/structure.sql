@@ -766,11 +766,13 @@ ALTER SEQUENCE public.phone_numbers_id_seq OWNED BY public.phone_numbers.id;
 
 CREATE MATERIALIZED VIEW public.promo_events_matview AS
  SELECT row_number() OVER (ORDER BY events.created_at) AS id,
-    events.user_id,
+    users.refcode,
+    regexp_replace((phone_numbers.full_number)::text, '^(d{2})(d{3})(d{4})$'::text, '+38 0 -**-**'::text, 'g'::text) AS regexp_replace,
     events.name,
-    events.data,
     events.created_at
-   FROM public.events
+   FROM ((public.events
+     JOIN public.users ON ((events.user_id = users.id)))
+     JOIN public.phone_numbers ON ((users.phone_number_id = phone_numbers.id)))
   WHERE ((events.name)::text = ANY ((ARRAY['sign_up'::character varying, 'set_referrer'::character varying, 'invited_user'::character varying])::text[]))
   ORDER BY events.created_at
   WITH NO DATA;
@@ -2287,6 +2289,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210604162647'),
 ('20210612140908'),
 ('20210612182750'),
-('20210612183516');
+('20210612183516'),
+('20210613115227');
 
 
