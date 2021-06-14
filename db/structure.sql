@@ -767,7 +767,7 @@ ALTER SEQUENCE public.phone_numbers_id_seq OWNED BY public.phone_numbers.id;
 CREATE MATERIALIZED VIEW public.promo_events_matview AS
  SELECT row_number() OVER (ORDER BY events.created_at) AS id,
     users.refcode,
-    regexp_replace((phone_numbers.full_number)::text, '^(d{2})(d{3})(d{4})$'::text, '+38 0 -**-**'::text, 'g'::text) AS regexp_replace,
+    regexp_replace((phone_numbers.full_number)::text, '^(d{2})(d{3})(d{4})$'::text, '+38 0 -**-**'::text, 'g'::text) AS full_phone_number,
     events.name,
     events.created_at
    FROM ((public.events
@@ -1852,6 +1852,13 @@ CREATE UNIQUE INDEX index_promo_events_matview_on_id ON public.promo_events_matv
 
 
 --
+-- Name: index_promo_events_matview_on_refcode; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_promo_events_matview_on_refcode ON public.promo_events_matview USING btree (refcode);
+
+
+--
 -- Name: index_rpush_feedback_on_device_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2290,6 +2297,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210612140908'),
 ('20210612182750'),
 ('20210612183516'),
-('20210613115227');
+('20210613115227'),
+('20210614185805');
 
 
