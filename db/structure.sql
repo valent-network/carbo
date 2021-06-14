@@ -767,7 +767,7 @@ ALTER SEQUENCE public.phone_numbers_id_seq OWNED BY public.phone_numbers.id;
 CREATE MATERIALIZED VIEW public.promo_events_matview AS
  SELECT row_number() OVER (ORDER BY events.created_at) AS id,
     users.refcode,
-    regexp_replace((phone_numbers.full_number)::text, '^(d{2})(d{3})(d{4})$'::text, '+38 0 -**-**'::text, 'g'::text) AS full_phone_number,
+    regexp_replace((phone_numbers.full_number)::text, '^(\d{2})(\d{3})(\d{4})$'::text, '+38 0\1 \2-**-**'::text, 'g'::text) AS full_phone_number,
     events.name,
     events.created_at
    FROM ((public.events
