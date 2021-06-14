@@ -1,0 +1,90 @@
+%h1 Dreamcar и Рекарио дарят Honda&nbsp;S2000 и три&nbsp;iPhone&nbsp;11
+#intro= image_tag('/intro.png', class: 'img-fluid')
+%h2 Как принять участие? Пошаговая инструкция
+.container-fluid
+  .row
+    .col-lg-3.col-xs-12
+      .d-flex.justify-content-center
+        .step-num.align-items-center.d-flex.justify-content-center 0
+      %p.text-center Если еще не вкурсе про розыгрыш от Dreamcar, переходи по #{link_to('ссылке', 'https://www.instagram.com/p/CPbOyn8BnLi/', target: :blank)}
+    .col-lg-3.col-xs-12
+      .d-flex.justify-content-center
+        .step-num.align-items-center.d-flex.justify-content-center 1
+      %p.text-center
+        Установить приложение Рекарио по 
+        = link_to 'ссылке', 'https://recar.io/get', target: :blank
+        (iOS и Android)
+    .col-lg-3.col-xs-12
+      .d-flex.justify-content-center
+        .step-num.align-items-center.d-flex.justify-content-center 2
+      %p.text-center Зайти в приложение, используя свой личный номер телефона. Именно по этому номеру мы будем звонить победителю
+    .col-lg-3.col-xs-12
+      .d-flex.justify-content-center
+        .step-num.align-items-center.d-flex.justify-content-center 3
+      %p.text-center Перейти в настройки и запомнить свой <i>Пригласительный код</i>. Всё, ты участвуешь в розыгрыше!
+%h2 Хочешь увеличить свои шансы на выигрыш?
+.container-fluid
+  .row
+    .col-lg-4.col-xs-12
+      .d-flex.justify-content-center
+        .step-num.align-items-center.d-flex.justify-content-center &times;2
+      %p.text-center Укажи, кто пригласил тебя в Рекарио и увеличшь шансы <b>ВДВОЕ</b>!
+    .col-lg-4.col-xs-12
+      .d-flex.justify-content-center
+        .step-num.align-items-center.d-flex.justify-content-center &times;10
+      %p.text-center Пригласи 10 друзей в Рекарио и увеличь свои шансы <b>в десять раз</b>!
+    .col-lg-4.col-xs-12
+      .d-flex.justify-content-center
+        .step-num.align-items-center.d-flex.justify-content-center &times;1000
+      %p.text-center Ты можешь иметь <b>в тысячу раз больше шансов на победу</b>, если пригласишь 1000 друзей!
+%h2 Как это работает?
+.container-fluid
+  .row
+    .col-lg-4.col-md-12
+      %p Мы проведём розыгрыш так же, как и Dreamcar проводил все свои предыдущие розыгрыши, чтобы все было максимально честно и понятно.
+    .col-lg-4.col-md-12
+      %p Сначала составим таблицу участников, где каждая строчка будет давать шанс на выигрыш. То есть, каждая строчка может быть выбрана генератором случайных чисел #{link_to('random.org', 'https://www.random.org', target: :blank)}.
+    .col-lg-4.col-md-12
+      %p И самое главное — у каждого человека, установившего приложение, может быть БОЛЕЕ одной строчки в итоговом файле!
+%h2 Что это значит на практике?
+.container-fluid
+  %ul
+    %li Ты получишь одну строчку за то, что просто установил приложение;
+    %li Ты получишь одну строчку за то, что указал, кто тебя пригласил;
+    %li Ты получишь по строчке за <b>КАЖДОГО</b> друга, которого приведешь в Рекарио!
+.container-fluid
+  .row
+    .col-lg-12
+      %p Таким образом, если ты установил приложение, указал, кто тебя пригласил и сам пригласил 10 друзей — у тебя будет <b>в 11 раз больше шансов на выигрыш</b>, чем у того, кто просто установил приложение!
+      %p P.S. Кстати, в розыгрыше участвуют все — как те, кто только планирует установить приложение, так и те, кто уже давно с нами.
+%h2 Проверить свои шансы
+.container-fluid
+  .row#verify
+    .col-lg-6
+      %p Для того, чтобы все было максимально честно, мы будем публиковать изменения каждые 5-10 минут.
+      %p Таблица будет доступна в течении всего розыгрыша для того, чтобы каждый мог в любой момент проверить честность.
+      %p Введи свой пригласительный код и посмотри, сколько у тебя шансов.
+    .col-lg-6
+      %form{  action: '/network#verify' }
+        .input-group 
+          %input.form-control{ placeholder: 'Пригласительный код...', name: 'refcode', value: params[:refcode] }
+          %button.btn.btn-dark Проверить
+      %br
+      .table-responsive
+        %table.table.table-striped
+          %thead.table-dark
+            %th Код
+            %th Телефон
+            %th Действие
+            %th Дата
+          = render @events
+      .col-lg-12
+        .d-flex.justify-content-center= paginate @events
+%h2 Остались вопросы?
+.container-fluid
+  .row
+  .col-lg-12
+    %p
+      Больше подробностей в нашем
+      = link_to 'Инстаграме', 'https://www.instagram.com/recar.io/', target: :blank
+      Пиши в директ — мы ответим на все вопросы.

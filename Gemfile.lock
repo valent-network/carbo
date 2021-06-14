@@ -130,7 +130,7 @@ GEM
     clockwork (2.0.4)
       activesupport
       tzinfo
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     connection_pool (2.2.3)
     crass (1.0.6)
     devise (4.7.3)
@@ -237,7 +237,7 @@ GEM
     httpi (2.4.5)
       rack
       socksify
-    i18n (1.8.9)
+    i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.1)
       mini_magick (>= 4.9.5, < 5)
@@ -272,7 +272,7 @@ GEM
     listen (3.5.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.9.0)
+    loofah (2.10.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -287,7 +287,7 @@ GEM
       rake
     mini_magick (4.11.0)
     mini_mime (1.0.3)
-    mini_portile2 (2.5.0)
+    mini_portile2 (2.5.3)
     minitest (5.14.4)
     msgpack (1.4.2)
     multi_json (1.15.0)
@@ -296,14 +296,11 @@ GEM
     net-http2 (0.18.4)
       http-2 (~> 0.11)
     nio4r (2.5.7)
-    nokogiri (1.11.2)
+    nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     nori (2.6.0)
     orm_adapter (0.5.0)
-    paper_trail (11.1.0)
-      activerecord (>= 5.2)
-      request_store (~> 1.1)
     parallel (1.20.1)
     parser (3.0.0.0)
       ast (~> 2.4.1)
@@ -356,8 +353,6 @@ GEM
     rbtree3 (0.6.0)
     redis (4.2.5)
     regexp_parser (2.1.1)
-    request_store (1.5.0)
-      rack (>= 1.4)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -496,9 +491,9 @@ DEPENDENCIES
   fog-aws
   formtastic (= 4.0.0.rc1)
   haml-rails
+  kaminari
   kramdown
   listen
-  paper_trail
   pg
   phonelib
   puma

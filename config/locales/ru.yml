@@ -24,3 +24,10 @@ ru:
     race_value: "%{value} тыс. км"
     engine_value: "%{value} л %{fuel_type}"
     horse_powers: Мощность
+  views:
+    pagination:
+      first: '<<'
+      last: '>>'
+      next: '>'
+      previous: '<'
+      truncate: '...'

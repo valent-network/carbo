@@ -36,6 +36,7 @@ gem 'haml-rails'
 gem 'kramdown'
 gem 'aws-sdk-s3'
 gem 'chartkick'
+gem 'kaminari'
 
 # 3-rd party gems
 gem 'turbosms'
