@@ -41,5 +41,6 @@ module Recario
     config.middleware.use(ActionDispatch::Cookies)
     config.middleware.use(ActionDispatch::Session::CookieStore)
     config.assets.precompile += %w(widgets.css)
+    config.time_zone = 'Europe/Kiev'
   end
 end
