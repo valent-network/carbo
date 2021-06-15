@@ -22,7 +22,7 @@
                 %th Дата
               = render @events
           .card-footer
-            = paginate @events, remote: true
+            = paginate @events, params: { anchor: :verify }
 
 .container-fluid.mt-3
   %h2 Как принять участие и повысить свои шансы на победу?
