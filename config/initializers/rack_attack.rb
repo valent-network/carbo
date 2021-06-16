@@ -26,7 +26,7 @@ module Rack
     #
     # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
     throttle('req/ip', limit: 1000, period: 5.minutes) do |req|
-      req.ip unless req.path.start_with?('/assets')
+      req.ip if !req.path.start_with?('/assets') && !req.path.start_with?('/api/v1/provider_ads')
     end
 
     ### Prevent Brute-Force Login Attacks ###
