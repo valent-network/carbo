@@ -15,13 +15,14 @@
               .input-group
                 %input.form-control{ placeholder: 'Пригласительный код', name: 'refcode', value: params[:refcode] }
                 %button.btn Проверить
-            %table.table.table-striped.table-bordered.table-hover.table-sm
-              %thead
-                %th Код
-                %th Телефон
-                %th Действие
-                %th Дата
-              = render @events
+            .table-responsive
+              %table.table.table-striped.table-bordered.table-hover.table-sm
+                %thead
+                  %th Код
+                  %th Телефон
+                  %th Действие
+                  %th Дата
+                = render @events
           .card-footer
             = paginate @events, params: { anchor: :verify }
 

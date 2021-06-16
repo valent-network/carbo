@@ -766,15 +766,17 @@ ALTER SEQUENCE public.phone_numbers_id_seq OWNED BY public.phone_numbers.id;
 
 CREATE MATERIALIZED VIEW public.promo_events_matview AS
  SELECT row_number() OVER (ORDER BY events.created_at) AS id,
+    events.id AS event_id,
     users.refcode,
-    regexp_replace((phone_numbers.full_number)::text, '^(\d{2})(\d{3})(\d{4})$'::text, '+38 0\1 \2-**-**'::text, 'g'::text) AS full_phone_number,
+    regexp_replace((phone_numbers.full_number)::text, '^(\d{2})(\d{3})(\d{4})$'::text, '+380\1\2****'::text, 'g'::text) AS full_phone_number_masked,
     events.name,
     events.created_at
    FROM ((public.events
      JOIN public.users ON ((events.user_id = users.id)))
      JOIN public.phone_numbers ON ((users.phone_number_id = phone_numbers.id)))
-  WHERE ((events.name)::text = ANY ((ARRAY['sign_up'::character varying, 'set_referrer'::character varying, 'invited_user'::character varying])::text[]))
-  ORDER BY events.created_at
+  WHERE (((events.name)::text = ANY ((ARRAY['sign_up'::character varying, 'set_referrer'::character varying, 'invited_user'::character varying])::text[])) AND (NOT (users.phone_number_id IN ( SELECT demo_phone_numbers.phone_number_id
+           FROM public.demo_phone_numbers))))
+  ORDER BY events.created_at DESC
   WITH NO DATA;
 
 
@@ -2298,6 +2300,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210612182750'),
 ('20210612183516'),
 ('20210613115227'),
-('20210614185805');
+('20210614185805'),
+('20210616211101');
 
 
