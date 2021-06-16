@@ -38,6 +38,7 @@ gem 'aws-sdk-s3'
 gem 'chartkick'
 gem 'kaminari'
 gem 'active_analytics'
+gem 'lograge'
 
 # 3-rd party gems
 gem 'turbosms'
