@@ -39,6 +39,7 @@ gem 'chartkick'
 gem 'kaminari'
 gem 'active_analytics'
 gem 'lograge'
+gem 'rack-attack'
 
 # 3-rd party gems
 gem 'turbosms'
