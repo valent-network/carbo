@@ -92,6 +92,42 @@ ALTER SEQUENCE public.active_admin_comments_id_seq OWNED BY public.active_admin_
 
 
 --
+-- Name: active_analytics_views_per_days; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.active_analytics_views_per_days (
+    id bigint NOT NULL,
+    site character varying NOT NULL,
+    page character varying NOT NULL,
+    date date NOT NULL,
+    total bigint DEFAULT 1 NOT NULL,
+    referrer_host character varying,
+    referrer_path character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: active_analytics_views_per_days_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.active_analytics_views_per_days_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: active_analytics_views_per_days_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.active_analytics_views_per_days_id_seq OWNED BY public.active_analytics_views_per_days.id;
+
+
+--
 -- Name: ad_descriptions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1159,6 +1195,13 @@ ALTER TABLE ONLY public.active_admin_comments ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: active_analytics_views_per_days id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_analytics_views_per_days ALTER COLUMN id SET DEFAULT nextval('public.active_analytics_views_per_days_id_seq'::regclass);
+
+
+--
 -- Name: ad_descriptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1353,6 +1396,14 @@ ALTER TABLE ONLY public.verification_requests ALTER COLUMN id SET DEFAULT nextva
 
 ALTER TABLE ONLY public.active_admin_comments
     ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: active_analytics_views_per_days active_analytics_views_per_days_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_analytics_views_per_days
+    ADD CONSTRAINT active_analytics_views_per_days_pkey PRIMARY KEY (id);
 
 
 --
@@ -1606,6 +1657,27 @@ CREATE INDEX index_active_admin_comments_on_namespace ON public.active_admin_com
 --
 
 CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON public.active_admin_comments USING btree (resource_type, resource_id);
+
+
+--
+-- Name: index_active_analytics_views_per_days_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_active_analytics_views_per_days_on_date ON public.active_analytics_views_per_days USING btree (date);
+
+
+--
+-- Name: index_active_analytics_views_per_days_on_referrer_and_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_active_analytics_views_per_days_on_referrer_and_date ON public.active_analytics_views_per_days USING btree (referrer_host, referrer_path, date);
+
+
+--
+-- Name: index_active_analytics_views_per_days_on_site_and_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_active_analytics_views_per_days_on_site_and_date ON public.active_analytics_views_per_days USING btree (site, page, date);
 
 
 --
@@ -2301,6 +2373,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210612183516'),
 ('20210613115227'),
 ('20210614185805'),
-('20210616211101');
+('20210616211101'),
+('20210616215226');
 
 

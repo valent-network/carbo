@@ -37,6 +37,7 @@ gem 'kramdown'
 gem 'aws-sdk-s3'
 gem 'chartkick'
 gem 'kaminari'
+gem 'active_analytics'
 
 # 3-rd party gems
 gem 'turbosms'

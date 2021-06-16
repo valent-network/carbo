@@ -9,6 +9,10 @@ Rails.application.routes.draw do
 
   mount ActionCable.server, at: '/cable'
 
+  authenticate :admin_user do
+    mount ActiveAnalytics::Engine, at: 'analytics'
+  end
+
   get :health, to: ->(_env) { [200, {}, [{ build: ENV.fetch('GIT_COMMIT') { git_commit } }.to_json]] }
 
   # TODO: temporary hardcode static pages links here to let serve static content
