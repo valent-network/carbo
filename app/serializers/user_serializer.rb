@@ -25,9 +25,13 @@ class UserSerializer < ActiveModel::Serializer
   def referrer
     return {} unless object.referrer
 
+    contact = object.user_contacts.find_by(phone_number: object.referrer.phone_number)
+
     {
       refcode: object.referrer.refcode,
       name: object.referrer.name,
+      contact_name: contact&.name,
+      phone: contact&.phone_number&.to_s,
     }
   end
 end
