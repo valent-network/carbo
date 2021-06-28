@@ -16,7 +16,7 @@ class UploadUserContactsJob < ApplicationJob
       if phone.size == 9
         true
       else
-        Airbrake.notify(phone)
+        # Airbrake.notify(phone)
         false
       end
     end
