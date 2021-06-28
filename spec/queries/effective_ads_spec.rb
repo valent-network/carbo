@@ -211,6 +211,7 @@ RSpec.describe(EffectiveAds) do
     context 'with filter for query (model)' do
       let(:filters) { { query: 'X6' } }
 
+      # TODO: Fails sometimes
       it 'returns only expected records' do
         expect(subject.count).to(eq(2))
         subject.each do |ad|

@@ -60,6 +60,7 @@ RSpec.describe(InitiateChatRoom) do
           .and(change { Message.count }.by(0)))))
       end
 
+      # TODO: Failed once
       it 'ChatRoom is not saved for some reason' do
         expect_any_instance_of(ChatRoom).to(receive(:save!).and_raise)
 
