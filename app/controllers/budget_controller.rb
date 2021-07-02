@@ -45,6 +45,7 @@ class BudgetController < ApplicationController
     ]).pluck(:value, :id)]
 
     @ads = Ad.where(deleted: false).by_options('maker', opts_types_ids['maker'], opts_values_ids[params[:maker]])
+    @ads = @ads.joins(:city)
     @ads = @ads.by_options('model', opts_types_ids['model'], opts_values_ids[params[:model]])
     @ads = @ads.by_options('year', opts_types_ids['year'], opts_values_ids[params[:year]])
 
