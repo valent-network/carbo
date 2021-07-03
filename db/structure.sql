@@ -438,7 +438,11 @@ CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
            FROM ( SELECT ads_2.id,
                     ads_2.price,
                     json_object((array_agg(ARRAY[ad_option_types.name, ad_option_values.value]))::text[]) AS options
-                   FROM (((public.ads ads_2
+                   FROM (((( SELECT ads_3.id,
+                            ads_3.phone_number_id,
+                            ads_3.price
+                           FROM public.ads ads_3
+                          WHERE (ads_3.deleted = false)) ads_2
                      LEFT JOIN public.ad_options ON (((ad_options.ad_id = ads_2.id) AND (ad_options.ad_option_type_id IN ( SELECT ad_option_types_1.id
                            FROM public.ad_option_types ad_option_types_1
                           WHERE ((ad_option_types_1.name)::text = ANY ((ARRAY['maker'::character varying, 'model'::character varying, 'year'::character varying])::text[])))))))
@@ -2374,6 +2378,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210613115227'),
 ('20210614185805'),
 ('20210616211101'),
-('20210616215226');
+('20210616215226'),
+('20210703111050');
 
 
