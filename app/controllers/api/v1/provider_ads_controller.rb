@@ -18,7 +18,7 @@ module Api
 
         rel = ads.limit(10).order(Arel.sql("deleted = 'f' DESC, updated_at"))
         rel.touch_all
-        addresses = rel.pluck(:address)
+        addresses = rel.pluck(:address).uniq
 
         render(json: addresses)
       end
