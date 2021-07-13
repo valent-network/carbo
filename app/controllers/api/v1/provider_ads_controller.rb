@@ -13,12 +13,12 @@ module Api
         ads = if effective_ads.exists?
           effective_ads
         else
-          ads.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id')
+          ads.where('ads.phone_number_id IN (SELECT phone_number_id IN user_contacts)')
         end
 
-        rel = ads.limit(10).order(Arel.sql("deleted = 'f' DESC, updated_at"))
+        rel = ads.distinct('ads.id').limit(10)
         rel.touch_all
-        addresses = rel.pluck(:address).uniq
+        addresses = rel.pluck(:address)
 
         render(json: addresses)
       end
