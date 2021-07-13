@@ -13,7 +13,7 @@ module Api
         ads = if effective_ads.exists?
           effective_ads
         else
-          ads.where('ads.phone_number_id IN (SELECT phone_number_id IN user_contacts)')
+          ads.where('ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts)')
         end
 
         rel = ads.distinct('ads.id').limit(10)
