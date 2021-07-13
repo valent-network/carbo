@@ -83,13 +83,13 @@ ActiveAdmin.register_page('Dashboard') do
 
         tr do
           td { 'Known Ads' }
-          td { Ad.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id').count }
+          td { Ad.where('ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts)').count }
           td
         end
 
         tr do
           td { 'Syncing Ads' }
-          td { Ad.joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id').where(deleted: false).where('updated_at < ?', 12.hours.ago).count }
+          td { Ad.where('ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts)').where('updated_at < ?', 12.hours.ago).count }
           td
         end
       end
