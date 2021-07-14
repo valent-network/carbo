@@ -6,6 +6,8 @@ module Api
       before_action :require_provider
 
       def index
+        return render(json: [])
+
         ads = Ad.where(ads_source_id: current_ads_source.id).where('updated_at < ?', 12.hours.ago)
 
         effective_ads = ads.joins('JOIN effective_ads ON effective_ads.id = ads.id')
