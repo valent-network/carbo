@@ -6,23 +6,21 @@ module Api
       before_action :require_provider
 
       def index
-        render(json: [])
+        ads = Ad.where(ads_source_id: current_ads_source.id).where('updated_at < ?', 12.hours.ago)
 
-        # ads = Ad.where(ads_source_id: current_ads_source.id).where('updated_at < ?', 12.hours.ago)
+        effective_ads = ads.joins('JOIN effective_ads ON effective_ads.id = ads.id')
 
-        # effective_ads = ads.joins('JOIN effective_ads ON effective_ads.id = ads.id')
+        ads = if effective_ads.exists?
+          effective_ads
+        else
+          ads.where('ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts)')
+        end
 
-        # ads = if effective_ads.exists?
-        #   effective_ads
-        # else
-        #   ads.where('ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts)')
-        # end
+        rel = ads.distinct('ads.id').limit(10)
+        rel.touch_all
+        addresses = rel.pluck(:address)
 
-        # rel = ads.distinct('ads.id').limit(10)
-        # rel.touch_all
-        # addresses = rel.pluck(:address)
-
-        # render(json: addresses)
+        render(json: addresses)
       end
 
       def update_ad
