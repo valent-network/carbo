@@ -89,7 +89,7 @@ ActiveAdmin.register_page('Dashboard') do
 
         tr do
           td { 'Syncing Ads' }
-          td { Ad.where('ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts)').where('updated_at < ?', 12.hours.ago).count }
+          td { Ad.where('ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts)').where('updated_at < ?', 24.hours.ago).count }
           td
         end
       end
