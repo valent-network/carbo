@@ -16,7 +16,7 @@ module Api
           ads.where('ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts)')
         end
 
-        addresses = ads.select(:address).limit(10).map(&:address)
+        addresses = ads.select(:address).limit(100).map(&:address)
         Ad.where(address: addresses).touch_all
 
         render(json: addresses.uniq)

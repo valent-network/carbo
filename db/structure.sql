@@ -1776,10 +1776,17 @@ CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_us
 
 
 --
--- Name: index_ads_on_address_and_ads_source_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_address; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_ads_on_address_and_ads_source_id ON public.ads USING btree (address, ads_source_id);
+CREATE UNIQUE INDEX index_ads_on_address ON public.ads USING btree (address);
+
+
+--
+-- Name: index_ads_on_phone_number_id_and_updated_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_phone_number_id_and_updated_at ON public.ads USING btree (phone_number_id, updated_at) WHERE (ads_source_id = 1);
 
 
 --
@@ -2379,6 +2386,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210614185805'),
 ('20210616211101'),
 ('20210616215226'),
-('20210703111050');
+('20210703111050'),
+('20210715203008');
 
 
