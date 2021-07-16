@@ -33,12 +33,8 @@ class UploadUserContactsJob < ApplicationJob
     CreateEvent.call(:uploaded_contatcts, user: user, data: { contacts_count: full_phone_numbers.count })
 
     if initial_contacts_count.zero?
-      EffectiveAdsRefreshMaterializedView.perform_now
-      EffectiveUserContactsRefreshMaterializedView.perform_now
+      wait_for_refresh
       ApplicationCable::UserChannel.broadcast_to(user, type: 'contacts')
-    else
-      EffectiveAdsRefreshMaterializedView.perform_later
-      EffectiveUserContactsRefreshMaterializedView.perform_later
     end
   end
 
@@ -52,6 +48,22 @@ class UploadUserContactsJob < ApplicationJob
         parsed.valid_for_country?(:UA) && parsed.types.include?(:mobile)
       end
       contact['phoneNumbers'].map! { |phone| Phonelib.parse(phone).national.to_s.gsub(/\s/, '').to_i.to_s }
+    end
+  end
+
+  def wait_for_refresh
+    iterations = 0
+    init_time = Time.zone.now
+    loop do
+      ads_last_refreshed_at = REDIS.get('server.effective_ads.last_refreshed_at')
+      contacts_last_refreshed_at = REDIS.get('server.effective_user_contacts.last_refreshed_at')
+
+      break if ads_last_refreshed_at.present? && contacts_last_refreshed_at.present? && Time.zone.parse(ads_last_refreshed_at).after?(init_time) && Time.zone.parse(contacts_last_refreshed_at).after?(init_time)
+
+      iterations += 1
+      break if iterations == 10
+      Rails.logger.warn("[UploadUserContactsJob][InitialContactsZero][Waiting][#{iterations}]")
+      sleep(1)
     end
   end
 end
