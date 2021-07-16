@@ -21,7 +21,7 @@ class BackupDatabase < ApplicationJob
     # Here we depend on pg_dump executable present in the system (Docker image)
     %x(pg_dump -Fc -h $POSTGRESQL_SERVICE_HOST -U $POSTGRES_USER -d $POSTGRES_DATABASE > #{BACKUP_TEMP_LOCATION})
 
-    backup_file_name = "backups/#{Time.now.to_i}-recario-#{Date.today.strftime('%y-%m-%d')}.dump.sql"
+    backup_file_name = "backups/#{Time.zone.now.to_i}-recario-#{Date.today.strftime('%y-%m-%d')}.dump.sql"
     S3_CLIENT.put_object(bucket: ENV['DO_SPACE_NAME'], key: backup_file_name, body: File.new(BACKUP_TEMP_LOCATION))
 
     FileUtils.rm(BACKUP_TEMP_LOCATION)
