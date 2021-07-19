@@ -5,6 +5,24 @@ ActiveAdmin.register_page('Dashboard') do
 
   content do
     @counts = ApproximateCount.for_tables(%w[users ads effective_ads messages chat_rooms user_devices user_contacts effective_user_contacts phone_numbers])
+    @referrers_top = User.where.not(referrer_id: nil).group(:referrer_id).having('COUNT(referrer_id) > 5').count.sort_by(&:last)
+
+    h1 'Топ приглашающих'
+    table do
+      tbody do
+        tr do
+          th { 'Пригласительный код' }
+          th { 'Количество приглашённых' }
+        end
+        @referrers_top.each do |ref_top|
+          tr do
+            th { User.find(ref_top.first).refcode }
+            th { ref_top.last }
+          end
+        end
+      end
+    end
+
     h1 'Статистика'
     table do
       tbody do
