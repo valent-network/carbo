@@ -3,7 +3,7 @@ class UpdatePromoCsv < ApplicationJob
   PROMO_CSV_LOCAL_TEMP_LOCATION = '/tmp/promo.csv'
   PROMO_CSV_DO_SPACE_LOCATION = 'honda-s2000-iphone-11-results.csv'
 
-  queue_as :default
+  queue_as(:default)
 
   def perform
     promo_events_sql = <<~SQL

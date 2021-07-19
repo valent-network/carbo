@@ -3,7 +3,7 @@ class BackupDatabase < ApplicationJob
   BACKUPS_NUMBER_TO_PERSIST = 5
   BACKUP_TEMP_LOCATION = '/tmp/dump.sql'
 
-  queue_as :default
+  queue_as(:default)
 
   def perform
     # TODO: Here we first load all objects from backups folder. We assume, there

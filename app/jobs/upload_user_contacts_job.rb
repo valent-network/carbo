@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UploadUserContactsJob < ApplicationJob
-  queue_as :contacts
+  queue_as(:contacts)
 
   def perform(user_id, contacts)
     user = User.find(user_id)
