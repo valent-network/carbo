@@ -11,6 +11,11 @@ class SendUserVerificationJob < ApplicationJob
     request.verification_code = verification_code
     request.save!
     body = I18n.t('send_verification.sms_text', verification_code: verification_code)
-    TurboSMS.send_sms(phone_number_for_sms, body)
+    begin
+      TurboSMS.send_sms(phone_number_for_sms, body)
+    rescue StandardError
+      TurboSMS.send(:authorize)
+      TurboSMS.send_sms(phone_number_for_sms, body)
+    end
   end
 end
