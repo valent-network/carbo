@@ -5,7 +5,17 @@ module Api
       before_action :require_auth
 
       def show
-        render(json: current_user)
+        select_columns = [
+          "(SELECT count(*) FROM user_contacts WHERE user_id = #{current_user.id}) AS user_contacts_count",
+          "(#{Message.select('COUNT(*)').unread_messages_for(current_user.id).reorder('').to_sql}) AS unread_messages_count",
+          'users.*',
+          'referrers_users.phone_number_id AS referrer_phone_number_id',
+          'referrers_users.refcode AS referrer_refcode',
+          'referrers_users.name AS referrer_name',
+        ]
+        u = User.select(select_columns).eager_load(:phone_number, :referrer, referrer_contact: :phone_number).find(current_user.id)
+
+        render(json: u, serializer: ProfileUserSerializer)
       end
 
       def update

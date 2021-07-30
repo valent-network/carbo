@@ -8,6 +8,9 @@ class User < ApplicationRecord
   belongs_to :phone_number
   belongs_to :referrer, foreign_key: :referrer_id, class_name: 'User', optional: true
 
+  has_one :ref_c, class_name: 'UserContact', foreign_key: :phone_number_id, primary_key: :phone_number_id
+  has_one :referrer_contact, through: :referrer, source: :ref_c, primary_key: :phone_number_id, foreign_key: :phone_number_id
+
   has_many :user_contacts, dependent: :delete_all
   has_many :user_devices, dependent: :delete_all
   has_many :ad_visits, dependent: :delete_all

@@ -50,7 +50,7 @@ class Ad < ApplicationRecord
   def details
     return @details if @details
 
-    rel = ad_options.loaded? ? ad_options : ad_options.includes(:ad_option_type, :ad_option_value)
+    rel = ad_options.loaded? ? ad_options : ad_options.eager_load(:ad_option_type, :ad_option_value)
 
     opts_array = rel.map do |opt|
       [opt.ad_option_type.name, opt.ad_option_value&.value]

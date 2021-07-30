@@ -6,7 +6,7 @@ module Api
       before_action :require_auth
 
       def show
-        ad = Ad.where(id: params[:id]).includes(ad_options: [:ad_option_type, :ad_option_value]).first
+        ad = Ad.where(id: params[:id]).eager_load(:ad_description, :city, :ad_image_links_set, :ad_prices, ad_options: [:ad_option_type, :ad_option_value]).first
         AdVisitedJob.perform_later(current_user.id, ad.id)
         CreateEvent.call(:visited_ad, user: current_user, data: { ad_id: ad.id })
 

@@ -6,7 +6,7 @@ module Api
       before_action :require_auth
 
       def index
-        ads = Ad.includes(:ad_description, :ad_image_links_set, city: [:region], ad_options: [:ad_option_type, :ad_option_value]).joins(:ad_visits).where(ad_visits: { user_id: current_user.id }).order('ads.created_at DESC').limit(20).offset(params[:offset])
+        ads = Ad.eager_load(:ad_description, :ad_image_links_set, city: [:region], ad_options: [:ad_option_type, :ad_option_value]).joins(:ad_visits).where(ad_visits: { user_id: current_user.id }).order('ads.created_at DESC').limit(20).offset(params[:offset])
 
         if ads.present?
           ads_with_friends_sql = AdsWithFriendsQuery.new.call(current_user, ads.pluck(:phone_number_id))
