@@ -61,6 +61,13 @@ RSpec.configure do |config|
     end
   end
 
+  retry_limit = ENV['RSPEC_RETRY_LIMIT'].to_i
+  if retry_limit > 0
+    config.around do |ex|
+      ex.run_with_retry(retry: retry_limit)
+    end
+  end
+
   config.before(:all) do
     EffectiveAd.refresh(concurrently: false)
     EffectiveUserContact.refresh(concurrently: false)
