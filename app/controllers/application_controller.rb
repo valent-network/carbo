@@ -42,7 +42,6 @@ class ApplicationController < ActionController::Base
   end
 
   def require_auth
-    # TODO: Fix [object Object] and "undefined"
     access_token = request.headers['X-User-Access-Token'] || params[:access_token]
 
     @current_device = UserDevice.find_by(access_token: access_token) if access_token.present?
