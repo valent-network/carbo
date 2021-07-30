@@ -10,11 +10,11 @@ module Api
       end
 
       def updated_at
-        object.messages.sort_by(&:created_at).last.created_at
+        object.messages.to_a.sort_by(&:created_at).last.created_at
       end
 
       def messages
-        message = object.messages.sort_by(&:created_at).last
+        message = object.messages.to_a.sort_by(&:created_at).last
         return [] unless message
         [
           Api::V1::MessageSerializer.new(message).as_json,
@@ -24,7 +24,7 @@ module Api
       def photo
         return '' unless object.ad
 
-        images = object.ad.details['images_json_array_tmp']
+        images = object.ad.ad_image_links_set&.value
         images = images.is_a?(String) ? JSON.parse(images) : images
         images&.first
       end

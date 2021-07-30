@@ -16,22 +16,16 @@ module Api
         object.body
       end
 
+      # TODO: Decide what to do with Message's ChatRoomUser and its #name after User left ChatRoom
+      # System notification chat if user_id is nil
       def user
-        result = {
-          _id: object.user&.id,
+        user_name = object.user_id ? ChatRoomUser.select(:name).find_by(chat_room: object.chat_room, user: object.user)&.name : I18n.t('recario')
+
+        {
+          _id: object.user_id,
           avatar: object.user&.avatar&.url,
+          name: user_name,
         }
-
-        if object.user
-          # TODO: Decide what to do with Message's ChatRoomUser and its #name
-          # after User left ChatRoom
-          result[:name] = ChatRoomUser.select(:name).find_by(chat_room: object.chat_room, user: object.user)&.name
-        elsif object.chat_room.system?
-          # Here we should have system notification chat
-          result[:name] = I18n.t('recario')
-        end
-
-        result
       end
 
       def pending
