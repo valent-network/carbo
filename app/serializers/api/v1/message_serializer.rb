@@ -19,7 +19,11 @@ module Api
       # TODO: Decide what to do with Message's ChatRoomUser and its #name after User left ChatRoom
       # System notification chat if user_id is nil
       def user
-        user_name = object.user_id ? ChatRoomUser.select(:name).find_by(chat_room: object.chat_room, user: object.user)&.name : I18n.t('recario')
+        user_name = if object.user_id.blank?
+          I18n.t('recario')
+        elsif @instance_options[:chat_room_users_names]
+          @instance_options[:chat_room_users_names][object.chat_room_id][object.user_id]
+        end
 
         {
           _id: object.user_id,

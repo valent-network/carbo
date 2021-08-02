@@ -17,7 +17,7 @@ module Api
             current_user.chat_room_users.create(name: current_user.name.presence || 'system', chat_room: system_chat_room)
           end
 
-          user_payload = Api::V1::ChatRoomSerializer.new(system_chat_room, current_user_id: current_user.id).as_json
+          user_payload = Api::V1::ChatRoomListSerializer.new(current_user, system_chat_room).first
           ApplicationCable::UserChannel.broadcast_to(current_user, type: 'chat', chat: user_payload)
           ApplicationCable::UserChannel.broadcast_to(current_user, type: 'unread_update', count: Message.unread_messages_for(current_user.id).count)
         else

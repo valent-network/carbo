@@ -18,7 +18,7 @@ class SendSystemMessageToChatRoom
       message.save!
     end
 
-    user_payload = Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: user.id).as_json
+    user_payload = Api::V1::ChatRoomListSerializer.new(user, chat_room).first
     ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: user_payload)
     ApplicationCable::UserChannel.broadcast_to(user, type: 'unread_update', count: Message.unread_messages_for(user.id).count)
     SendChatMessagePushNotification.new.call(message: message, chat_room_user: target_user)

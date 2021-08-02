@@ -20,7 +20,8 @@ RSpec.describe(Api::V1::ChatRoomsController) do
       create(:message, system: true, body: 'Initiated Chat Room', chat_room: chat_room)
 
       get :index
-      expected_chat_rooms = JSON.parse(Api::V1::ChatRoomSerializer.new(chat_room.reload, current_user_id: user.id).to_json)
+      expected_chat_rooms = JSON.parse(Api::V1::ChatRoomListSerializer.new(user, chat_room.reload).first.to_json)
+      expect(json_body.first['chat_room_users']).to(match_array(expected_chat_rooms['chat_room_users']))
       expect(json_body).to(match_array([expected_chat_rooms]))
     end
   end
@@ -36,7 +37,7 @@ RSpec.describe(Api::V1::ChatRoomsController) do
       end.to(change { ChatRoom.count }.by(1))
 
       chat_room = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: user }, ad: ad).first
-      expected_chat_room = JSON.parse(Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: user.id).to_json)
+      expected_chat_room = JSON.parse(Api::V1::ChatRoomListSerializer.new(user, chat_room).first.to_json)
 
       expect(json_body['chat_room']).to(eq(expected_chat_room))
       expect(json_body['friends']).to(eq([]))

@@ -8,7 +8,7 @@ module ApplicationCable
       # TODO: user can't receive this from UserChannel if ChatRoomChannel
       # subscription fired before UserChannel subscription
       @chat_room_user.touch
-      payload = Api::V1::ChatRoomSerializer.new(@chat_room.reload, current_user_id: current_user.id).as_json
+      payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
       ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload)
 
       stream_for(@chat_room)
@@ -16,7 +16,7 @@ module ApplicationCable
 
     def read(_data)
       @chat_room_user.touch
-      payload = Api::V1::ChatRoomSerializer.new(@chat_room, current_user_id: current_user.id).as_json
+      payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
       ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload)
     end
 
@@ -28,7 +28,7 @@ module ApplicationCable
       updated_at = @chat_room.messages.order(:created_at).last.created_at
       @chat_room.reload
       @chat_room.users.each do |u|
-        payload = Api::V1::ChatRoomSerializer.new(@chat_room, current_user_id: u.id).as_json
+        payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
         ApplicationCable::UserChannel.broadcast_to(u, type: 'chat', chat: payload)
         ApplicationCable::UserChannel.broadcast_to(u, type: 'unread_update', count: Message.unread_messages_for(u.id).count)
         ApplicationCable::UserChannel.broadcast_to(u, type: 'delete_message', id: id, chat_room_id: message.chat_room_id, updated_at: updated_at)

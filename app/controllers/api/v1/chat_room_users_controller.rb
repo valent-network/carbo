@@ -12,7 +12,7 @@ module Api
         friends = UserContact.ad_friends_for_user(chat_room.ad, current_user).includes(phone_number: :user)
         payload = {
           friends: ActiveModelSerializers::SerializableResource.new(friends, each_serializer: Api::V1::AdFriendSerializer),
-          chat_room: Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: current_user.id).as_json,
+          chat_room: Api::V1::ChatRoomListSerializer.new(current_user, chat_room).first,
         }
 
         render(json: payload)

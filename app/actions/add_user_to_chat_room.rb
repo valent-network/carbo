@@ -23,7 +23,7 @@ class AddUserToChatRoom
 
     chat_room.chat_room_users.includes(:user).each do |cru|
       user = cru.user
-      payload = Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: user.id).as_json
+      payload = Api::V1::ChatRoomListSerializer.new(user, chat_room).first
       ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: payload)
 
       if cru.user_id != initiator_user_id

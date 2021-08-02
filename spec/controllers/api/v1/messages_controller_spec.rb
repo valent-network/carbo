@@ -16,7 +16,7 @@ RSpec.describe(Api::V1::MessagesController) do
       create(:chat_room_user, user: user, chat_room: chat_room)
       create(:chat_room_user, user: other_user, chat_room: chat_room)
       message = create(:message, system: true, body: 'System Message', chat_room: chat_room)
-      expected_chat = JSON.parse(Api::V1::ChatRoomSerializer.new(chat_room.reload, current_user_id: user.id).to_json)
+      expected_chat = JSON.parse(Api::V1::ChatRoomListSerializer.new(user, chat_room.reload).first.to_json)
       expected_messages = JSON.parse(Api::V1::MessageSerializer.new(message).to_json)
 
       get :index, params: { chat_room_id: chat_room.id }

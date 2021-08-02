@@ -12,7 +12,7 @@ class PostMessage
 
     message.chat_room.chat_room_users.includes(:user).each do |chat_room_user|
       user = chat_room_user.user
-      payload = Api::V1::ChatRoomSerializer.new(message.chat_room, current_user_id: user.id).as_json
+      payload = Api::V1::ChatRoomListSerializer.new(user, message.chat_room).first
       ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: payload)
       if user != sender
         ApplicationCable::UserChannel.broadcast_to(user, type: 'unread_update', count: Message.unread_messages_for(user.id).count)

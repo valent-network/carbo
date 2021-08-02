@@ -29,7 +29,7 @@ RSpec.describe(Api::V1::ChatRoomUsersController) do
     it 'OK' do
       expect_any_instance_of(AddUserToChatRoom).to(receive(:call).with(user.id, chat_room.id, third_user.id.to_s, 'John Doe').and_call_original)
       post :create, params: { chat_room_id: chat_room.id, user_id: third_user.id, name: 'John Doe' }
-      expected_chat = JSON.parse(Api::V1::ChatRoomSerializer.new(chat_room.reload, current_user_id: user.id).to_json)
+      expected_chat = JSON.parse(Api::V1::ChatRoomListSerializer.new(user, chat_room.reload).first.to_json)
       expect(json_body['chat_room']).to(eq(expected_chat))
       expect(json_body['friends']).to(eq([]))
     end

@@ -20,8 +20,8 @@ class InitiateChatRoom
       message.save!
     end
 
-    initiator_payload = Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: initiator.id).as_json
-    user_payload = Api::V1::ChatRoomSerializer.new(chat_room, current_user_id: user.id).as_json
+    initiator_payload = Api::V1::ChatRoomListSerializer.new(initiator, chat_room).first
+    user_payload = Api::V1::ChatRoomListSerializer.new(user, chat_room).first
     ApplicationCable::UserChannel.broadcast_to(initiator, type: 'initiate_chat', chat: initiator_payload)
     ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: user_payload)
     ApplicationCable::UserChannel.broadcast_to(initiator, type: 'unread_update', count: Message.unread_messages_for(initiator.id).count)
