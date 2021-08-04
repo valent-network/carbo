@@ -3,20 +3,27 @@
 ActiveAdmin.register(ChatRoom) do
   scope :system, default: true
   actions :index, :show
+  includes :messages, :user
 
   index pagination_total: false do
-    column :user
-    column :created_at
-    column(:messages_count) { |chat_room| chat_room.messages.count }
+    column(:user) { |chat_room| link_to((chat_room.user.name.presence || chat_room.user.id), admin_user_path(chat_room.user)) }
+    column(:created_at)
+    column(:last_message) do |chat_room|
+      last_message = chat_room.messages.sort_by(&:created_at).last
+      last_message.user_id ? last_message.body : 'System'
+    end
+    column(:messages_count) { |chat_room| chat_room.messages.size }
     actions
   end
 
   show do
     attributes_table do
-      row :user
+      row :user do |chat_room|
+        link_to((chat_room.user.name.presence || chat_room.user.id), admin_user_path(chat_room.user))
+      end
       row :messages do |chat_room|
-        chat_room.messages.includes(:user).map do |m|
-          "<b>#{m.user ? m.user.name : 'System'}</b>: #{m.body} <small style='float: right'>(#{m.created_at.strftime("%b, %d — %X")})</small>"
+        chat_room.messages.includes(:user).order(:created_at).map do |m|
+          "<b>#{m.user ? (m.user.name.presence || m.user.id) : 'System'}</b><br/>#{m.body}<small style='float: right'>(#{m.created_at.strftime("%b, %d — %X")})</small><hr/>"
         end.join("\n<br>").html_safe
       end
     end

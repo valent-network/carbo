@@ -2,6 +2,7 @@
 
 ActiveAdmin.register(DemoPhoneNumber) do
   permit_params :phone, :demo_code
+  includes :phone_number
 
   index do
     column :phone

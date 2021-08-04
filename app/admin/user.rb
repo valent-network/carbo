@@ -6,7 +6,8 @@ ActiveAdmin.register(User) do
   includes :phone_number
 
   scope :all, default: true
-  scope :no_contacts, -> () { joins(:user_contacts).where(user_contacts: { id: nil }) }
+  scope :no_contacts
+  scope :with_referrer
 
   index do
     column :id

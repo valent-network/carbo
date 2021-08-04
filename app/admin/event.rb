@@ -25,4 +25,5 @@ ActiveAdmin.register(Event) do
   end
 
   filter :created_at
+  filter :name, as: :select, collection: Event::EVENT_TYPES
 end
