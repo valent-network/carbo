@@ -143,6 +143,10 @@ ActiveAdmin.register_page('Dashboard') do
       line_chart Event.where(name: "invited_user").where('created_at > ?', 1.month.ago).order('date(created_at)').group('date(created_at)').count.map { |u| [u.first.strftime("%F"), u.last] }
     end
 
+    panel 'Активность просмотров объявлений' do
+      line_chart Event.where(name: "visited_ad").where('created_at > ?', 1.month.ago).order('date(created_at)').group('date(created_at)').count.map { |u| [u.first.strftime("%F"), u.last] }
+    end
+
     panel 'Регистрации пользователей' do
       line_chart User.where('created_at > ?', 1.month.ago).group('date(created_at)').count.map { |u| [u.first.strftime("%F"), u.last] }
     end
