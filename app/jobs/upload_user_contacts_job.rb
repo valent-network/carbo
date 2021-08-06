@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class UploadUserContactsJob < ApplicationJob
-  queue_as(:contacts)
+class UploadUserContactsJob
+  include Sidekiq::Worker
+
+  sidekiq_options queue: 'contacts', retry: true, backtrace: false
 
   def perform(user_id, contacts)
     user = User.find(user_id)

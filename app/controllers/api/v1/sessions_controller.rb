@@ -11,7 +11,7 @@ module Api
         if phone_number.persisted?
           unless phone_number.demo?
             if Phonelib.valid?(phone_number.full_number)
-              SendUserVerificationJob.perform_later(phone_number.id)
+              SendUserVerificationJob.perform_async(phone_number.id)
             else
               return error!('PHONE_NUMBER_NOT_MOBILE')
             end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
-class SnapshotUserDevices < ApplicationJob
-  queue_as(:default)
+class SnapshotUserDevices
+  include Sidekiq::Worker
+
+  sidekiq_options queue: 'default', retry: true, backtrace: false
 
   def perform
     count = UserDevice.where("updated_at >= NOW() - INTERVAL '1 day'").count

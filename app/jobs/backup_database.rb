@@ -1,9 +1,11 @@
 # frozen_string_literal: true
-class BackupDatabase < ApplicationJob
+class BackupDatabase
+  include Sidekiq::Worker
+
+  sidekiq_options queue: 'default', retry: true, backtrace: false
+
   BACKUPS_NUMBER_TO_PERSIST = 5
   BACKUP_TEMP_LOCATION = '/tmp/dump.sql'
-
-  queue_as(:default)
 
   def perform
     # TODO: Here we first load all objects from backups folder. We assume, there

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class SendUserVerificationJob < ApplicationJob
-  queue_as(:sms)
+class SendUserVerificationJob
+  include Sidekiq::Worker
+
+  sidekiq_options queue: 'sms', retry: true, backtrace: false
 
   def perform(phone_number_id)
     phone_number = PhoneNumber.find(phone_number_id)

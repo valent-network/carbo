@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class EffectiveUserContactsRefreshMaterializedView < ApplicationJob
-  queue_as(:default)
+class EffectiveUserContactsRefreshMaterializedView
+  include Sidekiq::Worker
+
+  sidekiq_options queue: 'default', retry: true, backtrace: false
 
   def perform
     last_refreshed_at = REDIS.get('server.effective_user_contacts.last_refreshed_at')

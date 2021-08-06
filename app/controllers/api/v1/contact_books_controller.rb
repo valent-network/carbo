@@ -6,7 +6,7 @@ module Api
       before_action :require_auth
 
       def update
-        UploadUserContactsJob.perform_later(current_user.id, params[:contacts].to_json)
+        UploadUserContactsJob.perform_async(current_user.id, params[:contacts].to_json)
         render(json: { message: :ok })
       end
 
