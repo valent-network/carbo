@@ -2,7 +2,7 @@
 class DeleteAd
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'provider.ads.delete', retry: true, backtrace: false
+  sidekiq_options queue: 'provider-ads-delete', retry: true, backtrace: false
 
   STATUSES = { deleted: 'deleted', failed: 'failed' }
 

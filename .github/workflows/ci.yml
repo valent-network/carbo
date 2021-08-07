@@ -94,6 +94,18 @@ jobs:
     - name: Update web image for k8 cluster
       run: kubectl set image --record deployment/rails rails=recario/server:${{steps.vars.outputs.tag}}
 
+    - name: Update critical-worker image for k8 cluster
+      run: kubectl set image --record deployment/critical-worker critical-worker=recario/server:${{steps.vars.outputs.tag}}
+
+    - name: Update main-worker image for k8 cluster
+      run: kubectl set image --record deployment/main-worker main-worker=recario/server:${{steps.vars.outputs.tag}}
+
+    - name: Update matviews-worker image for k8 cluster
+      run: kubectl set image --record deployment/matviews-worker matviews-worker=recario/server:${{steps.vars.outputs.tag}}
+
+    - name: Update provider-worker image for k8 cluster
+      run: kubectl set image --record deployment/provider-worker provider-worker=recario/server:${{steps.vars.outputs.tag}}
+
     - name: Update Sidekiq image for k8 cluster
       run: kubectl set image --record deployment/sidekiq sidekiq=recario/server:${{steps.vars.outputs.tag}}
 
