@@ -65,4 +65,5 @@ group :development do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rspec', require: false
   gem 'rubocop-shopify', require: false
+  gem 'foreman', require: false
 end

@@ -129,9 +129,6 @@ GEM
     case_transform (0.2)
       activesupport
     chartkick (3.4.2)
-    clockwork (2.0.4)
-      activesupport
-      tzinfo
     concurrent-ruby (1.1.9)
     connection_pool (2.2.3)
     crass (1.0.6)
@@ -209,6 +206,7 @@ GEM
       nokogiri (>= 1.5.11, < 2.0.0)
     font-awesome-sass (5.15.1)
       sassc (>= 1.11)
+    foreman (0.87.2)
     formatador (0.2.5)
     formtastic (4.0.0.rc1)
       actionpack (>= 5.2.0)
@@ -494,13 +492,13 @@ DEPENDENCIES
   carrierwave
   carrierwave-base64
   chartkick
-  clockwork
   devise
   dotenv-rails
   dry-validation
   factory_bot_rails
   ffaker
   fog-aws
+  foreman
   formtastic (= 4.0.0.rc1)
   haml-rails
   kaminari
