@@ -76,6 +76,5 @@ class PutAd
       'retry' => true,
       'backtrace' => false,
     )
-    end
   end
 end
