@@ -2,7 +2,7 @@
 class PutAd
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'provider-ads-new', retry: true, backtrace: false
+  sidekiq_options queue: 'provider.ads.new', retry: true, backtrace: false
 
   AD_DETAILS_PARAMS = %i[
     maker
