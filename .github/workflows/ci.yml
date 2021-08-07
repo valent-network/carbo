@@ -106,9 +106,6 @@ jobs:
     - name: Update provider-worker image for k8 cluster
       run: kubectl set image --record deployment/provider-worker provider-worker=recario/server:${{steps.vars.outputs.tag}}
 
-    - name: Update Sidekiq image for k8 cluster
-      run: kubectl set image --record deployment/sidekiq sidekiq=recario/server:${{steps.vars.outputs.tag}}
-
     - name: Update RPush image for k8 cluster
       run: kubectl set image --record deployment/rpush rpush=recario/server:${{steps.vars.outputs.tag}}
 
