@@ -3,7 +3,7 @@
 class EffectiveUserContactsRefreshMaterializedView
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'default', retry: true, backtrace: false
+  sidekiq_options queue: 'refresh-matviews', retry: true, backtrace: false
 
   def perform
     last_refreshed_at = REDIS.get('server.effective_user_contacts.last_refreshed_at')

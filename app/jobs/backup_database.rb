@@ -2,7 +2,7 @@
 class BackupDatabase
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'default', retry: true, backtrace: false
+  sidekiq_options queue: 'system', retry: true, backtrace: false
 
   BACKUPS_NUMBER_TO_PERSIST = 5
   BACKUP_TEMP_LOCATION = '/tmp/dump.sql'

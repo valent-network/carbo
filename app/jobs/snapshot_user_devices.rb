@@ -2,7 +2,7 @@
 class SnapshotUserDevices
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'default', retry: true, backtrace: false
+  sidekiq_options queue: 'analytics', retry: true, backtrace: false
 
   def perform
     count = UserDevice.where("updated_at >= NOW() - INTERVAL '1 day'").count

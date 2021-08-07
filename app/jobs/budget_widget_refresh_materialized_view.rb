@@ -3,7 +3,7 @@
 class BudgetWidgetRefreshMaterializedView
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'default', retry: true, backtrace: false
+  sidekiq_options queue: 'refresh-matviews', retry: true, backtrace: false
 
   def perform
     %x(psql -h $POSTGRESQL_SERVICE_HOST -U $POSTGRES_USER -d $POSTGRES_DATABASE -c "REFRESH MATERIALIZED VIEW ads_grouped_by_maker_model_year")

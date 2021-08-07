@@ -2,7 +2,7 @@
 class UpdatePromoCsv
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'default', retry: true, backtrace: false
+  sidekiq_options queue: 'promo', retry: true, backtrace: false
 
   PROMO_CSV_LOCAL_TEMP_LOCATION = '/tmp/promo.csv'
   PROMO_CSV_DO_SPACE_LOCATION = 'honda-s2000-iphone-11-results.csv'
