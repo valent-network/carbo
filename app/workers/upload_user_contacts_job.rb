@@ -12,7 +12,11 @@ class UploadUserContactsJob
     user_contacts_to_upsert = []
 
     full_phone_numbers = contacts.map { |contact| contact['phoneNumbers'] }.flatten.uniq
-    ApplicationCable::UserChannel.broadcast_to(user, type: 'contacts') && return if full_phone_numbers.blank?
+
+    if full_phone_numbers.blank?
+      ApplicationCable::UserChannel.broadcast_to(user, type: 'contacts')
+      return
+    end
 
     PhoneNumber.insert_all(full_phone_numbers.map { |phone| { full_number: phone } }, unique_by: [:full_number])
 
