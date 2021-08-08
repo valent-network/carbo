@@ -47,7 +47,7 @@ class PutAd
     else
       ad.assign_attributes(ad_params.slice(:price, :phone, :ad_type))
       ad.updated_at = Time.zone.now
-      PrepareAdOptions.new.call(ad, ad_params.slice(*AD_DETAILS_PARAMS))
+      PrepareAdOptions.new.call(ad, ad_params[:details].slice(*AD_DETAILS_PARAMS))
 
       begin
         retries ||= 0
