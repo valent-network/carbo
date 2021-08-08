@@ -32,22 +32,22 @@ class PutAd
 
   MAX_RETRIES_ON_DEADLOCK = 3
 
-  def perform(ad)
-    ad = JSON.parse(ad).with_indifferent_access
+  def perform(ad_params)
+    ad_params = JSON.parse(ad_params).with_indifferent_access
 
-    address = ad[:details][:address]
+    address = ad_params[:details][:address]
     ad = Ad.where(address: address).first_or_initialize
     ad.ads_source_id = 1 # TODO: remove AdSource completely
 
-    ad_contract = AdCarContract.new.call(ad)
+    ad_contract = AdCarContract.new.call(ad_params)
 
     if ad_contract.failure?
       callback(errors: ad_contract.errors.to_h, address: address, status: STATUSES[:failed])
       logger.info("[PutAd][ValidationErrors] #{address}")
     else
-      ad.assign_attributes(ad.slice(:price, :phone, :ad_type))
+      ad.assign_attributes(ad_params.slice(:price, :phone, :ad_type))
       ad.updated_at = Time.zone.now
-      PrepareAdOptions.new.call(ad, ad.slice(*AD_DETAILS_PARAMS))
+      PrepareAdOptions.new.call(ad, ad_params.slice(*AD_DETAILS_PARAMS))
 
       begin
         retries ||= 0
