@@ -25,7 +25,7 @@ class PrepareAdOptions
     when Array
       images_links
     else
-      Rails.logger.error(images_links)
+      Rails.logger.error("[PrepareAdOptions][NoImages]#{images_links}")
       []
     end
 
