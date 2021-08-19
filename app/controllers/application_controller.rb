@@ -34,13 +34,6 @@ class ApplicationController < ActionController::Base
 
   attr_reader :current_user, :current_device, :current_ads_source
 
-  def require_provider
-    token = request.headers['Authorization'].gsub(/^Bearer /, '')
-    return error!('NOT_AUTHORIZED', 401) if request.headers['Authorization'].blank?
-    @current_ads_source = AdsSource.find_by(api_token: token)
-    return error!('NOT_AUTHORIZED', 401) unless @current_ads_source
-  end
-
   def require_auth
     access_token = request.headers['X-User-Access-Token'] || params[:access_token]
 

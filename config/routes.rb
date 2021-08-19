@@ -48,10 +48,6 @@ Rails.application.routes.draw do
       resources :favorite_ads, only: %i[index create destroy]
       resources :visited_ads, only: %i[index]
       resources :my_ads, only: %i[index]
-      resources :provider_ads, only: %i[index] do
-        put :update_ad, on: :collection
-        delete :delete_ad, on: :collection
-      end
       resources :feed_ads, only: %i[index]
       resources :chat_rooms, only: %i[create index]
       resources :chat_room_users, only: %i[create destroy]
