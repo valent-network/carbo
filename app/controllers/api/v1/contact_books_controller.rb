@@ -12,6 +12,7 @@ module Api
 
       def destroy
         current_user.user_contacts.delete_all
+        USER_FRIENDS_GRAPH.delete_friends_for(current_user)
         CreateEvent.call(:deleted_contacts, user: current_user)
         render(json: [])
       end

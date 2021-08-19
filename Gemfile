@@ -20,6 +20,7 @@ gem 'pg'
 gem 'puma'
 gem 'rails', '~> 6'
 gem 'sidekiq'
+gem 'redisgraph'
 
 gem 'rack-cors', require: 'rack/cors'
 gem 'active_model_serializers'

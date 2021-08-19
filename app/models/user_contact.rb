@@ -15,4 +15,8 @@ class UserContact < ApplicationRecord
       .joins("JOIN user_contacts AS my_contacts ON my_contacts.id = friends.id AND my_contacts.phone_number_id != #{user.phone_number_id}")
       .where("friends.is_first_hand = TRUE OR my_contacts.phone_number_id != #{ad.phone_number_id}")
   end
+
+  def self.friends_users_ids_for(user)
+    user.user_contacts.joins("JOIN users AS registered_users ON registered_users.phone_number_id = user_contacts.phone_number_id AND registered_users.id != #{user.id}").pluck('registered_users.id')
+  end
 end

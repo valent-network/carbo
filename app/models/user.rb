@@ -26,6 +26,10 @@ class User < ApplicationRecord
   scope :no_contacts, -> () { where.not('EXISTS (SELECT * FROM user_contacts WHERE user_contacts.user_id = users.id)') }
   scope :with_referrer, -> () { where.not(referrer_id: nil) }
 
+  def update_friends!
+    USER_FRIENDS_GRAPH.update_friends_for(self)
+  end
+
   def contacts_count
     user_contacts.count
   end

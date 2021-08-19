@@ -30,8 +30,9 @@ module Api
         if user.new_record?
           begin
             user.refcode = RefcodeGenerator.new.call
-            user.save
+            user.save # TODO: bang?
             CreateEvent.call(:sign_up, user: user)
+            UserFriendsGraph.create_user(user)
           rescue
             retry
           end

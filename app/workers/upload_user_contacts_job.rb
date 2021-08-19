@@ -38,6 +38,8 @@ class UploadUserContactsJob
     UserContact.upsert_all(user_contacts_to_upsert, unique_by: [:phone_number_id, :user_id]) if user_contacts_to_upsert.present?
     CreateEvent.call(:uploaded_contatcts, user: user, data: { contacts_count: full_phone_numbers.count })
 
+    user.update_friends!
+
     InitialContactsUpload.perform_in(5.seconds, user.id, Time.zone.now.to_i) if initial_contacts_count.zero?
   end
 
