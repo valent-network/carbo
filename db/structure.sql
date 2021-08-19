@@ -24,6 +24,20 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 
 
 --
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
+
+--
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -445,7 +459,7 @@ CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
                           WHERE (ads_3.deleted = false)) ads_2
                      LEFT JOIN public.ad_options ON (((ad_options.ad_id = ads_2.id) AND (ad_options.ad_option_type_id IN ( SELECT ad_option_types_1.id
                            FROM public.ad_option_types ad_option_types_1
-                          WHERE ((ad_option_types_1.name)::text = ANY ((ARRAY['maker'::character varying, 'model'::character varying, 'year'::character varying])::text[])))))))
+                          WHERE ((ad_option_types_1.name)::text = ANY (ARRAY[('maker'::character varying)::text, ('model'::character varying)::text, ('year'::character varying)::text])))))))
                      JOIN public.ad_option_types ON ((ad_options.ad_option_type_id = ad_option_types.id)))
                      JOIN public.ad_option_values ON ((ad_options.ad_option_value_id = ad_option_values.id)))
                   GROUP BY ads_2.id, ads_2.price) ads_1) ads
@@ -814,7 +828,7 @@ CREATE MATERIALIZED VIEW public.promo_events_matview AS
    FROM ((public.events
      JOIN public.users ON ((events.user_id = users.id)))
      JOIN public.phone_numbers ON ((users.phone_number_id = phone_numbers.id)))
-  WHERE (((events.name)::text = ANY ((ARRAY['sign_up'::character varying, 'set_referrer'::character varying, 'invited_user'::character varying])::text[])) AND (NOT (users.phone_number_id IN ( SELECT demo_phone_numbers.phone_number_id
+  WHERE (((events.name)::text = ANY (ARRAY[('sign_up'::character varying)::text, ('set_referrer'::character varying)::text, ('invited_user'::character varying)::text])) AND (NOT (users.phone_number_id IN ( SELECT demo_phone_numbers.phone_number_id
            FROM public.demo_phone_numbers))))
   ORDER BY events.created_at DESC
   WITH NO DATA;
@@ -1055,6 +1069,37 @@ ALTER SEQUENCE public.static_pages_id_seq OWNED BY public.static_pages.id;
 
 
 --
+-- Name: user_connections; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_connections (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    friend_id integer NOT NULL,
+    connection_id integer NOT NULL
+);
+
+
+--
+-- Name: user_connections_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_connections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_connections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_connections_id_seq OWNED BY public.user_connections.id;
+
+
+--
 -- Name: user_contacts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1157,6 +1202,16 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: users_temp; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users_temp (
+    id integer,
+    known_numbers integer
+);
 
 
 --
@@ -1357,6 +1412,13 @@ ALTER TABLE ONLY public.rpush_notifications ALTER COLUMN id SET DEFAULT nextval(
 --
 
 ALTER TABLE ONLY public.static_pages ALTER COLUMN id SET DEFAULT nextval('public.static_pages_id_seq'::regclass);
+
+
+--
+-- Name: user_connections id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_connections ALTER COLUMN id SET DEFAULT nextval('public.user_connections_id_seq'::regclass);
 
 
 --
@@ -1600,6 +1662,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.static_pages
     ADD CONSTRAINT static_pages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_connections user_connections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_connections
+    ADD CONSTRAINT user_connections_pkey PRIMARY KEY (id);
 
 
 --
@@ -1979,6 +2049,13 @@ CREATE UNIQUE INDEX index_static_pages_on_slug ON public.static_pages USING btre
 
 
 --
+-- Name: index_user_connections_on_uniq; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_connections_on_uniq ON public.user_connections USING btree (user_id, connection_id, friend_id);
+
+
+--
 -- Name: index_user_contacts_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2056,6 +2133,13 @@ CREATE INDEX search_budget_index ON public.ads_grouped_by_maker_model_year USING
 
 
 --
+-- Name: ttt; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ttt ON public.ads USING btree (phone_number_id, updated_at) WHERE (deleted = false);
+
+
+--
 -- Name: uniq_set_referrer_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2107,6 +2191,14 @@ ALTER TABLE ONLY public.messages
 
 ALTER TABLE ONLY public.chat_room_users
     ADD CONSTRAINT fk_rails_28e7f29a4f FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_connections fk_rails_2a83c769c5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_connections
+    ADD CONSTRAINT fk_rails_2a83c769c5 FOREIGN KEY (friend_id) REFERENCES public.users(id);
 
 
 --
@@ -2163,6 +2255,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.verification_requests
     ADD CONSTRAINT fk_rails_98c15d8b5e FOREIGN KEY (phone_number_id) REFERENCES public.phone_numbers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_connections fk_rails_b58ad388f7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_connections
+    ADD CONSTRAINT fk_rails_b58ad388f7 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -2243,6 +2343,14 @@ ALTER TABLE ONLY public.ad_visits
 
 ALTER TABLE ONLY public.ad_options
     ADD CONSTRAINT fk_rails_d6a9533e31 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_connections fk_rails_dedc44dde8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_connections
+    ADD CONSTRAINT fk_rails_dedc44dde8 FOREIGN KEY (connection_id) REFERENCES public.users(id);
 
 
 --
@@ -2387,6 +2495,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210616211101'),
 ('20210616215226'),
 ('20210703111050'),
-('20210715203008');
+('20210715203008'),
+('20210814204316');
 
 
