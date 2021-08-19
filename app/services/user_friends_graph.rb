@@ -2,14 +2,16 @@
 class UserFriendsGraph
   BASE_GRAPH_NAME = 'UserFriends'
   REDIS_OPTIONS = {
-    host: ENV['REDISGRAPH_SERVICE_HOST'],
-    port: ENV['REDISGRAPH_SERVICE_PORT'],
+    host: ENV.fetch('REDISGRAPH_SERVICE_HOST', 'localhost'),
+    port: ENV.fetch('REDISGRAPH_SERVICE_PORT', '63790'),
   }
 
   attr_reader :graph
 
   def initialize
-    @graph = RedisGraph.new(BASE_GRAPH_NAME, redis_options: REDIS_OPTIONS)
+    unless ENV['SKIP_REDISGRAPH'].present?
+      @graph = RedisGraph.new(BASE_GRAPH_NAME, REDIS_OPTIONS)
+    end
   end
 
   def count_users
@@ -63,6 +65,8 @@ class UserFriendsGraph
   private
 
   def q(query_string)
+    return Rails.logger.warn('[UserFriendsGraph] OFF') unless graph
+
     t1 = Time.now.to_f
     debug(query_string)
     result = graph.query(query_string)
@@ -73,6 +77,8 @@ class UserFriendsGraph
   end
 
   def explain(query)
+    return Rails.logger.warn('[UserFriendsGraph] OFF') unless graph
+
     graph.connection.call("GRAPH.PROFILE", BASE_GRAPH_NAME, query)
   end
 

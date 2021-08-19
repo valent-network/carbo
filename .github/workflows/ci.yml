@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-20.04
 
     services:
+      redisgraph:
+        image: redislabs/redisgraph:edge
+        ports:
+          - 63790:6379
       redis:
         image: redis:6.0
         ports:
@@ -50,6 +54,8 @@ jobs:
 
     - name: Run Rubucop to ensure no complains
       run: bundle exec rubocop
+      env:
+        SKIP_REDISGRAPH: true
 
     - name: Install packages for database
       run: sudo apt-get install libpq-dev

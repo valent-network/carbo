@@ -32,7 +32,7 @@ module Api
             user.refcode = RefcodeGenerator.new.call
             user.save # TODO: bang?
             CreateEvent.call(:sign_up, user: user)
-            UserFriendsGraph.create_user(user)
+            USER_FRIENDS_GRAPH.create_user(user)
           rescue
             retry
           end
