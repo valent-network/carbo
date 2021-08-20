@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :chat_room_users, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :events, dependent: :delete_all
+  has_many :user_connections, dependent: :delete_all
 
   mount_base64_uploader :avatar, AvatarUploader
 
@@ -30,15 +31,32 @@ class User < ApplicationRecord
     USER_FRIENDS_GRAPH.update_friends_for(self)
   end
 
+  def update_connections!
+    connections = USER_FRIENDS_GRAPH.get_friends_connections(self, UserConnection::FRIENDS_HOPS).resultset
+    connections.reject! { |connection| connection.last == id }
+
+    return if connections.blank?
+
+    connections_to_upsert = connections.map { |conn| { user_id: id, friend_id: conn.first, connection_id: conn.last } }
+    UserConnection.transaction do
+      UserConnection.upsert_all(connections_to_upsert, unique_by: [:user_id, :connection_id, :friend_id], returning: false)
+    end
+  end
+
   def contacts_count
     user_contacts.count
   end
 
   def visible_ads_count
-    UserFriendlyAdsQuery.new.call(user: self, limit: 0).count
+    UserContact.joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
+      .where(user_id: user_connections.select(:connection_id).distinct(:connection_id))
+      .or(UserContact.where(user: self))
+      .count('user_contacts.*')
   end
 
   def visible_friends_count
-    User.connection.execute(KnownNumbers.new.call(id)).count
+    UserContact.where(user_id: user_connections.select(:connection_id).distinct(:connection_id))
+      .or(UserContact.where(user: self))
+      .count('user_contacts.*')
   end
 end
