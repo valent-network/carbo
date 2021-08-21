@@ -36,7 +36,6 @@ RSpec.describe(User, type: :model) do
       create(:user_connection, user: user, friend: user, connection: user)
       create(:user_connection, user: user, friend: friend, connection: friend)
       create_list(:user_contact, 5, user: friend)
-      create(:user_connection, user: user, friend: friend, connection: friend)
 
       expect(user.reload.visible_friends_count).to(eq(13))
     end

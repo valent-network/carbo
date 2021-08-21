@@ -52,6 +52,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'rspec-rails'
+  gem 'rspec-retry'
   gem 'dotenv-rails'
   gem 'spring'
 end
