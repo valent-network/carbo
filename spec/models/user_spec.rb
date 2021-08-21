@@ -32,6 +32,8 @@ RSpec.describe(User, type: :model) do
     it 'shows count users available for the user through friends recursively' do
       create_list(:user_contact, 8, user: user)
       friend = create(:user, phone_number: user.user_contacts.first.phone_number)
+      create(:user_connection, user: user, friend: user, connection: user)
+      create(:user_connection, user: user, friend: friend, connection: friend)
       create_list(:user_contact, 5, user: friend)
       EffectiveUserContact.refresh
       expect(user.reload.visible_friends_count).to(eq(13))
