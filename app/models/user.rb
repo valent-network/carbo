@@ -33,7 +33,12 @@ class User < ApplicationRecord
 
   def update_connections!
     connections = USER_FRIENDS_GRAPH.get_friends_connections(self, UserConnection::FRIENDS_HOPS).resultset
+
+    # We don't care that someone knows us
     connections.reject! { |connection| connection.last == id }
+
+    # We need this to omit joins to find self user_contacts
+    connections.concat([id, id])
 
     return if connections.blank?
 

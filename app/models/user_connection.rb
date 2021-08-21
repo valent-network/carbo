@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class UserConnection < ApplicationRecord
-  FRIENDS_HOPS = 6
+  FRIENDS_HOPS = 5
 
   belongs_to :user
   belongs_to :connection, class_name: 'User'
