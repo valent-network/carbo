@@ -38,7 +38,7 @@ class User < ApplicationRecord
     connections.reject! { |connection| connection.last == id }
 
     # We need this to omit joins to find self user_contacts
-    connections.concat([id, id])
+    connections.concat([[id, id]])
 
     return if connections.blank?
 
