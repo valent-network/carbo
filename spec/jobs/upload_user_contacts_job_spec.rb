@@ -10,6 +10,7 @@ RSpec.describe(UploadUserContactsJob) do
 
   it 'works' do
     user_contacts = [{ 'phoneNumbers' => ['+380931234567'], 'name' => 'Alice' }].to_json
+    allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
     expect { subject.perform(user.id, user_contacts) }.to(change { UserContact.count }.from(0).to(1))
   end
 
@@ -20,6 +21,7 @@ RSpec.describe(UploadUserContactsJob) do
 
   it 'truncates long names' do
     user_contacts = [{ 'phoneNumbers' => ['+380931234567'], 'name' => 'Alice' * 100 }].to_json
+    allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
     expect { subject.perform(user.id, user_contacts) }.to(change { UserContact.count }.from(0).to(1))
     phone_number = PhoneNumber.where(full_number: '931234567').first
     expect(UserContact.where(phone_number: phone_number).first.name.length).to(eq(100))
@@ -32,6 +34,7 @@ RSpec.describe(UploadUserContactsJob) do
   it 'changes existing contacts names' do
     user_contact = create(:user_contact, user: user)
     new_user_contacts = [{ 'phoneNumbers' => [user_contact.phone_number.to_s], name: 'New Name' }].to_json
+    allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
     expect { subject.perform(user.id, new_user_contacts) }.to(change { user_contact.reload.name }.from(user_contact.name).to('New Name'))
   end
 
@@ -40,6 +43,7 @@ RSpec.describe(UploadUserContactsJob) do
       { 'phoneNumbers' => ['+380931234567'], 'name' => 'Alice' },
       { 'phoneNumbers' => ['+380931234567'], 'name' => 'Bob' },
     ].to_json
+    allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
     expect { subject.perform(user.id, user_contacts) }.to(change { UserContact.count }.from(0).to(1))
   end
 

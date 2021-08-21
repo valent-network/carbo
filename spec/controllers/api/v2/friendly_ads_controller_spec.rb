@@ -33,6 +33,7 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
     it 'hand2' do
       friend_contact = create(:user_contact, user: user, phone_number: friend.phone_number)
       create(:user_contact, user: friend, phone_number: ad.phone_number)
+      create(:user_connection, user: user, friend: friend, connection: friend)
       expected_friends = [
         { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s, 'user_id' => friend_contact.phone_number.user.id, 'user_name' => nil },
       ]
@@ -47,6 +48,8 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
       friend_contact = create(:user_contact, user: user, phone_number: friend.phone_number)
       create(:user_contact, user: friend, phone_number: friend_of_friend.phone_number)
       create(:user_contact, user: friend_of_friend, phone_number: ad.phone_number)
+      create(:user_connection, user: user, friend: friend, connection: friend)
+      create(:user_connection, user: user, friend: friend, connection: friend_of_friend)
       expected_friends = [
         { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 2, 'avatar' => nil, 'phone_number' => friend_contact.phone_number.to_s, 'user_id' => friend_contact.phone_number.user.id, 'user_name' => nil },
       ]
@@ -66,6 +69,13 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
       hand3_friend = create(:user_contact, user: user, phone_number: friend_3.phone_number)
       create(:user_contact, user: friend_3, phone_number: friend_of_friend.phone_number)
       create(:user_contact, user: friend_of_friend, phone_number: ad.phone_number)
+
+      create(:user_connection, user: user, friend: friend_2, connection: friend_2)
+      create(:user_connection, user: user, friend: friend_3, connection: friend_3)
+      create(:user_connection, user: user, friend: friend_3, connection: friend_of_friend)
+
+      create(:user_connection, user: friend_3, friend: friend_of_friend, connection: friend_of_friend)
+
       EffectiveAd.refresh
       EffectiveUserContact.refresh
       get :show, params: { id: ad.id }

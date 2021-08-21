@@ -32,6 +32,7 @@ RSpec.describe(Api::V1::ChatRoomsController) do
       # TODO: https://github.com/rspec/rspec-mocks/issues/1306#issuecomment-756079746
       # expect_any_instance_of(InitiateChatRoom).to(receive(:call).with(initiator_user_id: user.id, ad_id: ad.id, user_id: other_user.id.to_s, user_name: intro_name).and_call_original)
       create(:user_contact, user: user, phone_number: other_user.phone_number)
+      create(:user_connection, user: user, friend: other_user, connection: other_user)
       expect do
         post(:create, params: { ad_id: ad.id, user_id: other_user.id, name: intro_name })
       end.to(change { ChatRoom.count }.by(1))

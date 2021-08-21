@@ -2,18 +2,15 @@
 class KnownNumbersFiltered
   def call(user_id, filtered_friends_phone_number_ids: [])
     <<~SQL
-      WITH RECURSIVE p AS (
-        SELECT id AS phone_number_id FROM phone_numbers WHERE id IN (#{filtered_friends_phone_number_ids.join(',')})
+      SELECT phone_number_id FROM UNNEST(ARRAY[#{filtered_friends_phone_number_ids.join(',')}]) AS phone_number_id
 
-        UNION
+      UNION
 
-        SELECT friends.phone_number_id
-        FROM user_contacts AS friends
-        JOIN users ON friends.user_id = users.id AND users.phone_number_id IN (#{filtered_friends_phone_number_ids.join(',')})
-        JOIN p ON users.phone_number_id = p.phone_number_id AND users.id != #{user_id}
-      )
-
-      SELECT DISTINCT phone_number_id FROM p
+      SELECT user_contacts.phone_number_id
+      FROM user_contacts
+      JOIN users ON users.phone_number_id IN (#{filtered_friends_phone_number_ids.join(',')})
+      JOIN user_connections ON user_connections.user_id = #{user_id} AND user_connections.connection_id = users.id
+      WHERE user_contacts.user_id = user_connections.connection_id
     SQL
   end
 end

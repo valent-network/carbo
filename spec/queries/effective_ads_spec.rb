@@ -51,7 +51,7 @@ RSpec.describe(EffectiveAds) do
   end
 
   subject do
-    sql = described_class.new.call(filters: filters, should_search_query: should_search_query)
+    sql = described_class.new.call(filters: filters, should_search_query: should_search_query).to_sql
     ids = Ad.find_by_sql(sql).pluck(:id)
     Ad.find(ids)
   end

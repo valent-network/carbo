@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 class EffectiveUserContact < ApplicationRecord
-  def self.refresh(concurrently: true)
+  # TODO: remove
+  def self.refresh(concurrently: true) # rubocop:disable Lint/UnusedMethodArgument
+    nil
     # TODO: space before CONCURRENTLY is VERY important
-    concurrently_string = concurrently ? ' CONCURRENTLY' : ''
-    connection.execute("REFRESH MATERIALIZED VIEW#{concurrently_string} #{table_name} WITH DATA")
+    # concurrently_string = concurrently ? ' CONCURRENTLY' : ''
+    # connection.execute("REFRESH MATERIALIZED VIEW#{concurrently_string} #{table_name} WITH DATA")
   end
 
   def readonly

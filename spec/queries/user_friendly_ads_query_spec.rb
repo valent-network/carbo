@@ -20,6 +20,10 @@ RSpec.describe(UserFriendlyAdsQuery) do
     create(:user_contact, user: user, phone_number: friend.phone_number)
     create(:user_contact, user: friend, phone_number: friend_of_friend.phone_number)
     create(:user_contact, user: friend_of_friend, phone_number: hand1_of_friend_of_friend.phone_number)
+
+    create(:user_connection, user: user, friend: friend, connection: friend)
+    create(:user_connection, user: user, friend: friend, connection: friend_of_friend)
+    create(:user_connection, user: user, friend: user, connection: user)
   end
 
   context 'With successful result' do

@@ -7,6 +7,7 @@ RSpec.describe(Api::V1::FeedAdsController) do
   let!(:friend) { create(:user) }
   let!(:friend_contact) { create(:user_contact, user: user, phone_number: friend.phone_number) }
   let!(:ad) { create(:ad, :active, phone_number: friend.phone_number) }
+  let!(:user_connection) { create(:user_connection, user: user, friend: friend, connection: friend) }
 
   before do
     allow(subject).to(receive(:current_user).and_return(user))
@@ -21,6 +22,7 @@ RSpec.describe(Api::V1::FeedAdsController) do
     it 'returns friend_name_and_total in serialzier' do
       EffectiveAd.refresh
       EffectiveUserContact.refresh
+      create(:user_connection, user: user, friend: user, connection: user)
       get :index
       ads = json_body
       ad = ads.first

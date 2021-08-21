@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 class EffectiveAds
   def call(filters:, should_search_query:)
-    ads = Ad.from('effective_ads AS ads').group('ads.id, ads.phone_number_id')
-    ads = ads.select('DISTINCT ON (ads.id) ads.id, ads.phone_number_id')
+    ads = Ad.from('effective_ads AS ads')
 
     ads = ads.where('price >= ?', filters[:min_price].to_i) if filters[:min_price].present?
     ads = ads.where('price <= ?', filters[:max_price].to_i) if filters[:max_price].present?
@@ -18,6 +17,6 @@ class EffectiveAds
       ads = ads.where('search_query ILIKE ?', "%#{filters[:query].strip}%")
     end
 
-    ads.to_sql
+    ads
   end
 end

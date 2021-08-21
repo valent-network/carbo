@@ -39,6 +39,7 @@ class UploadUserContactsJob
     CreateEvent.call(:uploaded_contatcts, user: user, data: { contacts_count: full_phone_numbers.count })
 
     user.update_friends!
+    user.update_connections!
 
     InitialContactsUpload.perform_in(5.seconds, user.id, Time.zone.now.to_i) if initial_contacts_count.zero?
   end

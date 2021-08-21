@@ -8,12 +8,20 @@ class UserContact < ApplicationRecord
   belongs_to :phone_number
   has_one :friend, through: :phone_number, source: :user
 
+  scope :effective, -> {} # TODO
+
   def self.ad_friends_for_user(ad, user)
-    query = UserRootFriendsForAdQuery.new.call(user.id, ad.phone_number_id)
-    self.select('my_contacts.*, friends.is_first_hand')
-      .from("(#{query}) friends")
-      .joins("JOIN user_contacts AS my_contacts ON my_contacts.id = friends.id AND my_contacts.phone_number_id != #{user.phone_number_id}")
-      .where("friends.is_first_hand = TRUE OR my_contacts.phone_number_id != #{ad.phone_number_id}")
+    friends_ids = UserConnection.where(user: user).joins(connection: :user_contacts).where(user_contacts: { phone_number_id: ad.phone_number_id }).select(:friend_id)
+    friends_phone_numbers_ids = User.where(id: friends_ids).select(:phone_number_id)
+
+    to_select = [
+      'user_contacts.*',
+      "(user_contacts.phone_number_id = #{ad.phone_number_id}) AS is_first_hand",
+    ].join(', ')
+
+    select(to_select)
+      .where(user: user)
+      .where("phone_number_id IN (#{friends_phone_numbers_ids.to_sql}) OR phone_number_id = #{ad.phone_number_id}")
   end
 
   def self.friends_users_ids_for(user)
