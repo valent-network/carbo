@@ -55,13 +55,11 @@ class User < ApplicationRecord
   def visible_ads_count
     UserContact.joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
       .where(user_id: user_connections.select(:connection_id).distinct(:connection_id))
-      .or(UserContact.where(user: self))
-      .count('user_contacts.*')
+      .count('user_contacts.user_id')
   end
 
   def visible_friends_count
     UserContact.where(user_id: user_connections.select(:connection_id).distinct(:connection_id))
-      .or(UserContact.where(user: self))
-      .count('user_contacts.*')
+      .count('user_contacts.user_id')
   end
 end

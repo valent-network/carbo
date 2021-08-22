@@ -11,12 +11,14 @@ class AdsWithFriendsQuery
              FALSE AS is_first_hand
       FROM ads
       JOIN user_contacts ON ads.phone_number_id = user_contacts.phone_number_id
-      JOIN (SELECT * FROM user_connections WHERE user_connections.user_id = #{user.id}) AS user_connections ON user_connections.connection_id = user_contacts.user_id
+      JOIN user_connections ON user_connections.connection_id = user_contacts.user_id
       JOIN users AS friends ON user_connections.friend_id = friends.id
-      JOIN user_contacts AS my_contacts ON my_contacts.user_id = #{user.id} AND my_contacts.phone_number_id = friends.phone_number_id
+      JOIN user_contacts AS my_contacts ON my_contacts.phone_number_id = friends.phone_number_id
       WHERE ads.phone_number_id IN (#{phones})
             AND deleted = false
-
+            AND user_connections.user_id = #{user.id}
+            AND my_contacts.user_id = #{user.id}
+            AND user_contacts.phone_number_id IN (#{phones})
       UNION
 
       SELECT DISTINCT ON (ads.id, my_contacts.id)
@@ -25,9 +27,10 @@ class AdsWithFriendsQuery
              my_contacts.name AS friend_name,
              TRUE AS is_first_hand
       FROM ads
-      JOIN user_contacts AS my_contacts ON my_contacts.user_id = #{user.id} AND my_contacts.phone_number_id = ads.phone_number_id
+      JOIN user_contacts AS my_contacts ON  my_contacts.phone_number_id = ads.phone_number_id
       WHERE ads.phone_number_id IN (#{phones})
             AND deleted = false
+            AND my_contacts.user_id = #{user.id}
     SQL
   end
 end

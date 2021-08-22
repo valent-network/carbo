@@ -21,6 +21,7 @@ RSpec.describe(User, type: :model) do
   describe '#visible_ads_count' do
     it 'shows count ads available for the user through friends recursively' do
       user_contact = create(:user_contact, user: user)
+      create(:user_connection, user: user, friend: user, connection: user)
       create_list(:ad, 3, phone_number: user_contact.phone_number, deleted: false)
       # EffectiveUserContact.refresh
       EffectiveAd.refresh

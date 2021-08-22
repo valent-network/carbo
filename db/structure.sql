@@ -2056,17 +2056,17 @@ CREATE UNIQUE INDEX index_user_connections_on_uniq ON public.user_connections US
 
 
 --
--- Name: index_user_contacts_on_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_user_contacts_on_name ON public.user_contacts USING gist (name);
-
-
---
 -- Name: index_user_contacts_on_phone_number_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_user_contacts_on_phone_number_id_and_user_id ON public.user_contacts USING btree (phone_number_id, user_id);
+
+
+--
+-- Name: index_user_contacts_on_phone_number_id_and_user_id_include_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_contacts_on_phone_number_id_and_user_id_include_name ON public.user_contacts USING btree (phone_number_id, user_id) INCLUDE (name);
 
 
 --
@@ -2151,6 +2151,27 @@ CREATE UNIQUE INDEX uniq_set_referrer_index ON public.events USING btree (user_i
 --
 
 CREATE UNIQUE INDEX uniq_sign_up_index ON public.events USING btree (user_id) WHERE ((name)::text = 'sign_up'::text);
+
+
+--
+-- Name: stats_for_user_connections_connections; Type: STATISTICS; Schema: public; Owner: -
+--
+
+CREATE STATISTICS public.stats_for_user_connections_connections (dependencies) ON user_id, connection_id FROM public.user_connections;
+
+
+--
+-- Name: stats_for_user_connections_friends; Type: STATISTICS; Schema: public; Owner: -
+--
+
+CREATE STATISTICS public.stats_for_user_connections_friends (dependencies) ON user_id, friend_id FROM public.user_connections;
+
+
+--
+-- Name: stats_for_user_contacts; Type: STATISTICS; Schema: public; Owner: -
+--
+
+CREATE STATISTICS public.stats_for_user_contacts (dependencies) ON user_id, phone_number_id FROM public.user_contacts;
 
 
 --
@@ -2496,6 +2517,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210616215226'),
 ('20210703111050'),
 ('20210715203008'),
-('20210814204316');
+('20210814204316'),
+('20210821191558'),
+('20210822202438');
 
 
