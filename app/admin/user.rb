@@ -7,6 +7,7 @@ ActiveAdmin.register(User) do
 
   scope :all, default: true
   scope :no_contacts
+  scope :no_connections
   scope :with_referrer
 
   index do

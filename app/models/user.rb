@@ -25,6 +25,7 @@ class User < ApplicationRecord
   mount_base64_uploader :avatar, AvatarUploader
 
   scope :no_contacts, -> () { where.not('EXISTS (SELECT 1 FROM user_contacts WHERE user_contacts.user_id = users.id)') }
+  scope :no_connections, -> () { where.not('EXISTS (SELECT 1 FROM user_connections WHERE user_connections.user_id = users.id AND user_connections.friend_id != users.id)') }
   scope :with_referrer, -> () { where.not(referrer_id: nil) }
 
   def update_friends!
