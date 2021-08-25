@@ -40,7 +40,7 @@ module Api
       end
 
       def photos
-        @photos ||= Hash[AdImageLinksSet.where(ad_id: chat_rooms.map(&:ad_id)).pluck(:id, :value)]
+        @photos ||= Hash[AdImageLinksSet.where(ad_id: chat_rooms.map(&:ad_id)).pluck(:ad_id, :value)]
       end
 
       def names
