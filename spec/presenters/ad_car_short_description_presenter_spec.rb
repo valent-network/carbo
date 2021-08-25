@@ -24,6 +24,6 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
   it { is_expected.to(be_a(String)) }
 
   it 'returns complete string' do
-    expect(subject).to(eq('2014 год, 50 тыс. км, Manual, Gas 3.7 л, 333 л. с'))
+    expect(subject).to(eq('50 тыс. км, Manual, Gas 3.7 л, 333 л. с'))
   end
 end
