@@ -36,14 +36,15 @@ class User < ApplicationRecord
     connections = USER_FRIENDS_GRAPH.get_friends_connections(self, UserConnection::FRIENDS_HOPS).resultset
 
     # We don't care that someone knows us
-    connections.reject! { |connection| connection.last == id }
+    connections.reject! { |connection| connection[1] == id }
 
     # We need this to omit joins to find self user_contacts
-    connections.concat([[id, id]])
+    connections.concat([[id, id, 1]])
 
-    return if connections.blank?
+    connections.reject!(&:blank?)
 
-    connections_to_upsert = connections.map { |conn| { user_id: id, friend_id: conn.first, connection_id: conn.last } }
+    connections_to_upsert = connections.map { |conn| { user_id: id, friend_id: conn[0], connection_id: conn[1], hops_count: conn[2] } }
+
     UserConnection.transaction do
       UserConnection.upsert_all(connections_to_upsert, unique_by: [:user_id, :connection_id, :friend_id], returning: false)
     end

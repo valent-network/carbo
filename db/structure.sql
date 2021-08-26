@@ -1076,7 +1076,8 @@ CREATE TABLE public.user_connections (
     id bigint NOT NULL,
     user_id integer NOT NULL,
     friend_id integer NOT NULL,
-    connection_id integer NOT NULL
+    connection_id integer NOT NULL,
+    hops_count smallint
 );
 
 
@@ -2519,6 +2520,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210715203008'),
 ('20210814204316'),
 ('20210821191558'),
-('20210822202438');
+('20210822202438'),
+('20210825204417');
 
 

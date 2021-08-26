@@ -41,4 +41,28 @@ RSpec.describe(User, type: :model) do
       expect(user.reload.visible_friends_count).to(eq(13))
     end
   end
+
+  describe '#update_connections!' do
+    it 'does not save connections to myself and does not delete existing connections' do
+      allow(USER_FRIENDS_GRAPH).to(receive_message_chain(:get_friends_connections, :resultset).and_return([[]]))
+      create(:user_connection, user: user, friend: user, connection: user)
+
+      expect { user.update_connections! }.to_not(change { user.reload.user_connections.count })
+      expect(user.user_connections.find_by(user: user, friend: user)).to(be_persisted)
+    end
+
+    it 'adds self-self connection in any case (but only once)' do
+      allow(USER_FRIENDS_GRAPH).to(receive_message_chain(:get_friends_connections, :resultset).and_return([[]]))
+
+      expect { user.update_connections! }.to(change { user.user_connections.where(friend: user, connection: user).count }.from(0).to(1))
+    end
+
+    it 'upserts connections' do
+      friend = create(:user)
+      allow(USER_FRIENDS_GRAPH).to(receive_message_chain(:get_friends_connections, :resultset).and_return([[friend.id, friend.id, 1]]))
+      create(:user_connection, user: user, friend: friend, connection: friend, hops_count: nil)
+
+      expect { user.update_connections! }.to(change { user.user_connections.find_by(friend: friend, connection: friend).hops_count }.from(nil).to(1))
+    end
+  end
 end

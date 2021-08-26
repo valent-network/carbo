@@ -53,9 +53,9 @@ class UserFriendsGraph
     q("MATCH (me:User {id: #{user.id}})-[r:KNOWS]->(:User) DELETE r")
   end
 
-  # @return [friend.id, connection.id]
+  # @return [friend.id, connection.id, hops_count]
   def get_friends_connections(user, hops = 1)
-    q("MATCH p=(me:User)-[:KNOWS*1..#{hops}]->(connection:User) WHERE me.id = #{user.id} RETURN DISTINCT nodes(p)[1].id, nodes(p)[length(p)].id")
+    q("MATCH p=(me:User)-[:KNOWS*1..#{hops}]->(connection:User) WHERE me.id = #{user.id} RETURN DISTINCT nodes(p)[1].id, nodes(p)[length(p)].id, min(length(p))")
   end
 
   def known_users_for(user, hops = 1)
@@ -71,7 +71,9 @@ class UserFriendsGraph
     debug(query_string)
     result = graph.query(query_string)
     t2 = (Time.now.to_f - t1) * 1000
-    debug("[#{t2.round} ms] #{result.resultset}")
+    to_debug = "[#{t2.round} ms] "
+    to_debug << result.resultset if Rails.env.dev?
+    debug(to_debug)
 
     result
   end
