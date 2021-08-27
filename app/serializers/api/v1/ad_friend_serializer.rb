@@ -6,15 +6,22 @@ module Api
       attributes :id, :name, :idx, :avatar, :phone_number, :user_id, :user_name
 
       def idx
-        object.is_first_hand ? 1 : 2
+        object.hops_count
       end
 
+      # TODO: Fix N1 - caused by using union in UserContact.ad_friends_for_user
       def avatar
         object.phone_number.user&.avatar&.url
       end
 
+      # TODO: Temporarely added smile as indicator
       def phone_number
-        object.phone_number.to_s
+        case object.hops_count
+        when 7
+          object.phone_number.to_s
+        else
+          "#{object.phone_number}\n#{"🤝" * object.hops_count}"
+        end
       end
 
       def user_id

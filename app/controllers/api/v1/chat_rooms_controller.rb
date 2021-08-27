@@ -20,7 +20,7 @@ module Api
 
       def create
         ad = Ad.find(params[:ad_id])
-        friends = UserContact.ad_friends_for_user(ad, current_user).includes(phone_number: :user)
+        friends = UserContact.ad_friends_for_user(ad, current_user)
         ad_chat_rooms = ChatRoom.includes(ad: [:ad_image_links_set]).joins(:chat_room_users).where(chat_room_users: { user: current_user }, ad: ad)
         chat_room = InitiateChatRoom.new.call(ad_id: ad.id, initiator_user_id: current_user.id, user_id: params[:user_id], user_name: params[:name])
 
