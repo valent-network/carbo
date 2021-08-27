@@ -14,13 +14,15 @@ class UserContact < ApplicationRecord
   # still don't have hops_count associated
   def self.ad_friends_for_user(ad, user)
     my_contacts = user.user_contacts.select('user_contacts.*, 1 AS hops_count').where(phone_number_id: ad.phone_number_id)
-    friends_contacts = select('user_contacts.*, (COALESCE(user_connections.hops_count, 6) + 1) AS hops_count')
+    t = select('user_contacts.id, (COALESCE(MIN(user_connections.hops_count), 6) + 1) AS hops_count')
       .where(user: user)
       .joins('JOIN users ON users.phone_number_id = user_contacts.phone_number_id')
       .joins('JOIN user_connections ON user_connections.friend_id = users.id')
       .joins('JOIN user_contacts AS friends_contacts ON friends_contacts.user_id = user_connections.connection_id')
       .where(user_connections: { user_id: user.id }, user_contacts: { user_id: user.id })
       .where('friends_contacts.phone_number_id = ?', ad.phone_number_id)
+      .group('user_contacts.id')
+    friends_contacts = UserContact.select('user_contacts.*, t.hops_count').joins("JOIN (#{t.to_sql}) AS t ON t.id = user_contacts.id")
 
     find_by_sql("#{my_contacts.to_sql} UNION #{friends_contacts.to_sql}")
   end
