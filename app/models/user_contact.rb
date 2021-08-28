@@ -24,7 +24,9 @@ class UserContact < ApplicationRecord
       .group('user_contacts.id')
     friends_contacts = UserContact.select('user_contacts.*, t.hops_count').joins("JOIN (#{t.to_sql}) AS t ON t.id = user_contacts.id")
 
-    find_by_sql("#{my_contacts.to_sql} UNION #{friends_contacts.to_sql}")
+    friends = find_by_sql("#{my_contacts.to_sql} UNION #{friends_contacts.to_sql}")
+    ActiveRecord::Associations::Preloader.new.preload(friends, [phone_number: :user])
+    friends
   end
 
   def self.friends_users_ids_for(user)

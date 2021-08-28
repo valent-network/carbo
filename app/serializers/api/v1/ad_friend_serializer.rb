@@ -9,7 +9,6 @@ module Api
         object.hops_count
       end
 
-      # TODO: Fix N1 - caused by using union in UserContact.ad_friends_for_user
       def avatar
         object.phone_number.user&.avatar&.url
       end
