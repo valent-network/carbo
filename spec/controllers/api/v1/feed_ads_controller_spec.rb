@@ -20,7 +20,7 @@ RSpec.describe(Api::V1::FeedAdsController) do
     end
 
     it 'returns friend_name_and_total in serialzier' do
-      create(:user_connection, user: user, friend: user, connection: user)
+      create(:user_connection, user: user, friend: user, connection: user, hops_count: 1)
       EffectiveAd.refresh
       EffectiveUserContact.refresh
       get :index

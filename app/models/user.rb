@@ -60,6 +60,12 @@ class User < ApplicationRecord
       .count('user_contacts.user_id')
   end
 
+  def visible_ads_count_for_default_hops
+    UserContact.joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
+      .where(user_id: user_connections.where('hops_count <= ?', UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT).select(:connection_id).distinct(:connection_id))
+      .count('user_contacts.user_id')
+  end
+
   def visible_friends_count
     UserContact.where(user_id: user_connections.select(:connection_id).distinct(:connection_id))
       .count('user_contacts.user_id')

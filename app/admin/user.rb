@@ -28,6 +28,7 @@ ActiveAdmin.register(User) do
       row :avatar
       row :contacts_count
       row :visible_ads_count
+      row :visible_ads_count_for_default_hops
       row :visible_friends_count
     end
     active_admin_comments

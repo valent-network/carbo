@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 class UserFriendlyAdsQuery
   LIMIT = 20
+  DEFAULT_HOPS_COUNT = ENV.fetch('DEFAULT_HOPS_COUNT', 3)
 
   def call(user:, offset: 0, limit: LIMIT, filters: {})
     user_contacts_matched_phone_numbers = user.user_contacts.where('user_contacts.name ILIKE ?', "%#{filters[:query]}%").pluck(:phone_number_id) if filters[:query].present?
@@ -14,6 +15,7 @@ class UserFriendlyAdsQuery
     else
       ads = effective_ads.joins("JOIN user_contacts ON ads.phone_number_id = user_contacts.phone_number_id")
       ads = ads.joins("JOIN user_connections ON user_connections.user_id = #{user.id} AND user_contacts.user_id = user_connections.connection_id")
+      ads = ads.where('user_connections.hops_count <= ?', DEFAULT_HOPS_COUNT)
     end
 
     query = ads.offset(offset)
