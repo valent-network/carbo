@@ -88,7 +88,7 @@ Rpush.reflect do |on|
   # can occur more than once for the same notification when there are multiple
   # recipients.
   on.gcm_delivered_to_recipient do |notification, _registration_id|
-    notification.destroy
+    # notification.destroy
   end
 
   # Called for each recipient which fails to receive a notification. This
