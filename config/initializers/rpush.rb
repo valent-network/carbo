@@ -30,16 +30,17 @@ Rpush.configure do |config|
   # If the logger goes to stdout, you can disable foreground logging to avoid duplication.
   # config.foreground_logging = false
 
-  # config.apns.feedback_receiver.enabled = true
-  # config.apns.feedback_receiver.frequency = 60
+  config.apns.feedback_receiver.enabled = true
+  config.apns.feedback_receiver.frequency = 60
 end
 
 Rpush.reflect do |on|
   # Called with a Rpush::Apns::Feedback instance when feedback is received
   # from the APNs that a notification has failed to be delivered.
   # Further notifications should not be sent to the device.
-  # on.apns_feedback do |feedback|
-  # end
+  on.apns_feedback do |feedback|
+    UserDevice.where(push_token: feedback.device_token).update_all(push_token: nil, os: nil)
+  end
 
   # Called when a notification is queued internally for delivery.
   # The internal queue for each app runner can be inspected:
@@ -53,8 +54,10 @@ Rpush.reflect do |on|
   # end
 
   # Called when a notification is successfully delivered.
-  # on.notification_delivered do |notification|
-  # end
+  on.notification_delivered do |notification|
+    Rails.logger.info("[Rpush][NotificationDelivered] #{notification.id}")
+    notification.destroy
+  end
 
   # Called when notification delivery failed.
   # Call 'error_code' and 'error_description' on the notification for the cause.
@@ -84,8 +87,9 @@ Rpush.reflect do |on|
   # Called for each recipient which successfully receives a notification. This
   # can occur more than once for the same notification when there are multiple
   # recipients.
-  # on.gcm_delivered_to_recipient do |notification, registration_id|
-  # end
+  on.gcm_delivered_to_recipient do |notification, _registration_id|
+    notification.destroy
+  end
 
   # Called for each recipient which fails to receive a notification. This
   # can occur more than once for the same notification when there are multiple
@@ -95,13 +99,15 @@ Rpush.reflect do |on|
 
   # Called when the GCM returns a canonical registration ID.
   # You will need to replace old_id with canonical_id in your records.
-  # on.gcm_canonical_id do |old_id, canonical_id|
-  # end
+  on.gcm_canonical_id do |old_id, canonical_id|
+    UserDevice.where(push_token: old_id).update_all(push_token: canonical_id)
+  end
 
   # Called when the GCM returns a failure that indicates an invalid registration id.
   # You will need to delete the registration_id from your records.
-  # on.gcm_invalid_registration_id do |app, error, registration_id|
-  # end
+  on.gcm_invalid_registration_id do |_app, _error, registration_id|
+    UserDevice.where(push_token: registration_id).update_all(push_token: nil, os: nil)
+  end
 
   # Called when an SSL certificate will expire within 1 month.
   # Implement on.error to catch errors raised when the certificate expires.
@@ -112,26 +118,8 @@ Rpush.reflect do |on|
   # on.ssl_certificate_revoked do |app, error|
   # end
 
-  # Called when the ADM returns a canonical registration ID.
-  # You will need to replace old_id with canonical_id in your records.
-  # on.adm_canonical_id do |old_id, canonical_id|
-  # end
-
-  # Called when Failed to deliver to ADM. Check the 'reason' string for further
-  # explanations.
-  #
-  # If the reason is the string 'Unregistered', you should remove
-  # this registration id from your records.
-  # on.adm_failed_to_recipient do |notification, registration_id, reason|
-  # end
-
-  # Called when Failed to deliver to WNS. Check the 'reason' string for further
-  # explanations.
-  # You should remove this uri from your records
-  # on.wns_invalid_channel do |notification, uri, reason|
-  # end
-
   # Called when an exception is raised.
-  # on.error do |error|
-  # end
+  on.error do |error|
+    Airbrake.notify(error)
+  end
 end
