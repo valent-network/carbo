@@ -14,9 +14,18 @@ class PrepareAdOptions
     city = details.delete('city').to_s.strip
 
     if region.present? && city.present?
-      region = Region.where(name: region).first_or_create
-      city = City.where(name: city, region: region).first_or_create
-      ad.city = city
+      region_record = Region.where(name: region).first_or_create
+      city_record = City.where(name: city, region: region_record).first_or_create
+      ad.city = city_record
+    elsif region.present? && city.blank?
+      begin
+        r = JSON.parse(region)
+        region_record = Region.where(name: r.first).first_or_create
+        city_record = City.where(name: r.last, region: region_record).first_or_create
+        ad.city = city_record
+      rescue => e
+        Rails.logger(e)
+      end
     end
 
     images_links = case images_links
