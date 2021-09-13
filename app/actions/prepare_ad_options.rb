@@ -24,7 +24,7 @@ class PrepareAdOptions
         city_record = City.where(name: r.last, region: region_record).first_or_create
         ad.city = city_record
       rescue => e
-        Rails.logger(e)
+        Rails.logger.error(e)
       end
     end
 
