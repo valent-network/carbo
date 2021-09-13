@@ -17,7 +17,7 @@ ru:
     gear: Коробка
     wheels: Привод
     carcass: Кузов
-    city: Город
+    location: Находится
     color: Цвет
     year: Год
     no_description: Описание отсутствует

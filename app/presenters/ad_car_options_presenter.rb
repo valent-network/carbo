@@ -17,6 +17,7 @@ class AdCarOptionsPresenter
     res[:color] = [I18n.t('ad_options.color'), ad_details['color']]
     res[:year] = [I18n.t('ad_options.year'), ad_details['year']]
     res[:horse_powers] = [I18n.t('ad_options.horse_powers'), "#{ad_details['horse_powers']} л.с"] if ad_details['horse_powers'].to_i.positive?
+    res[:location] = [I18n.t('ad_options.location'), ad_details['region']] if ad_details['region'].present?
 
     res.select { |_k, v| v.last.present? }
   end

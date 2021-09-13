@@ -14,7 +14,7 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
     }
   end
   let(:ad) do
-    a = create(:ad, :active)
+    a = create(:ad, :active, city: create(:city, name: 'Kharkiv'))
     a.details = ad_details
     a.save
     a
@@ -24,6 +24,6 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
   it { is_expected.to(be_a(String)) }
 
   it 'returns complete string' do
-    expect(subject).to(eq('50 тыс. км, Manual, Gas 3.7 л, 333 л. с'))
+    expect(subject).to(eq('50 тыс. км, Manual, Gas 3.7 л, 333 л. с, г. Kharkiv'))
   end
 end

@@ -10,6 +10,7 @@ class AdCarShortDescriptionPresenter
     result << details['gear'] if details['gear'].present?
     result << engine_string if details['fuel'].present?
     result << "#{details['horse_powers']} л. с" if details['horse_powers'].present?
+    result << "г. #{details['city']}" if details['city'].present?
 
     result.join(', ')
   end

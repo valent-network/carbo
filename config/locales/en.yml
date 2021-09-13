@@ -16,6 +16,7 @@ en:
     city: City
     color: Color
     year: Year
+    location: Location
     no_description: No description
     race_value: "%{value}k km"
     engine_value: "%{value}L %{fuel_type}"
