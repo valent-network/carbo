@@ -6,4 +6,8 @@ class Event < ApplicationRecord
   validates :name, presence: true
   validates :name, inclusion: { in: EVENT_TYPES }
   validates :data, exclusion: { in: [nil] }
+
+  def self.stats_for(event_type_name)
+    where(name: event_type_name).where('created_at > ?', 6.month.ago).order('date(created_at)').group('date(created_at)').count
+  end
 end

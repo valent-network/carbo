@@ -629,36 +629,6 @@ ALTER SEQUENCE public.cities_id_seq OWNED BY public.cities.id;
 
 
 --
--- Name: demo_phone_numbers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.demo_phone_numbers (
-    id bigint NOT NULL,
-    phone_number_id bigint NOT NULL,
-    demo_code integer
-);
-
-
---
--- Name: demo_phone_numbers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.demo_phone_numbers_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: demo_phone_numbers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.demo_phone_numbers_id_seq OWNED BY public.demo_phone_numbers.id;
-
-
---
 -- Name: user_contacts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -702,6 +672,60 @@ CREATE MATERIALIZED VIEW public.effective_ads AS
 
 
 --
+-- Name: events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events (
+    id bigint NOT NULL,
+    name character varying,
+    user_id bigint,
+    data jsonb,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: messages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.messages (
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    body character varying NOT NULL,
+    system boolean DEFAULT false NOT NULL,
+    user_id bigint,
+    chat_room_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: phone_numbers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.phone_numbers (
+    id integer NOT NULL,
+    full_number character varying(9) NOT NULL
+);
+
+
+--
+-- Name: user_devices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_devices (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    device_id character varying NOT NULL,
+    access_token character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    os character varying,
+    push_token character varying,
+    build_version character varying
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -715,6 +739,150 @@ CREATE TABLE public.users (
     referrer_id integer,
     refcode character varying
 );
+
+
+--
+-- Name: dashboard_stats; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.dashboard_stats AS
+ SELECT now() AS updated_at,
+    ( SELECT count(users.id) AS count
+           FROM public.users) AS users_count,
+    ( SELECT count(user_devices.id) AS count
+           FROM public.user_devices) AS user_devices_count,
+    ( SELECT count(ads.id) AS count
+           FROM public.ads) AS ads_count,
+    ( SELECT count(effective_ads.id) AS count
+           FROM public.effective_ads) AS effective_ads_count,
+    ( SELECT count(ads.id) AS count
+           FROM public.ads
+          WHERE (ads.deleted = false)) AS active_ads_count,
+    ( SELECT count(messages.id) AS count
+           FROM public.messages) AS messages_count,
+    ( SELECT count(chat_rooms.id) AS count
+           FROM public.chat_rooms) AS chat_rooms_count,
+    ( SELECT count(phone_numbers.id) AS count
+           FROM public.phone_numbers) AS phone_numbers_count,
+    ( SELECT count(user_contacts.id) AS count
+           FROM public.user_contacts) AS user_contacts_count,
+    ( SELECT count(DISTINCT user_contacts.phone_number_id) AS count
+           FROM public.user_contacts) AS uniq_user_contacts_count,
+    ( SELECT count(ads.id) AS count
+           FROM public.ads
+          WHERE (ads.phone_number_id IN ( SELECT user_contacts.phone_number_id
+                   FROM public.user_contacts))) AS known_ads_count,
+    ( SELECT count(ads.id) AS count
+           FROM public.ads
+          WHERE ((ads.phone_number_id IN ( SELECT user_contacts.phone_number_id
+                   FROM public.user_contacts)) AND (ads.updated_at > (now() - '24:00:00'::interval)))) AS syncing_ads_count,
+    ( SELECT users.created_at
+           FROM public.users
+          ORDER BY users.id DESC
+         LIMIT 1) AS last_user_created_at,
+    ( SELECT ads.created_at
+           FROM public.ads
+          ORDER BY ads.id DESC
+         LIMIT 1) AS last_ad_created_at,
+    ( SELECT messages.created_at
+           FROM public.messages
+          ORDER BY messages.created_at DESC
+         LIMIT 1) AS last_message_created_at,
+    ( SELECT chat_rooms.created_at
+           FROM public.chat_rooms
+          ORDER BY chat_rooms.created_at DESC
+         LIMIT 1) AS last_chat_room_created_at,
+    ( SELECT ads.created_at
+           FROM public.ads
+          WHERE (ads.id = ( SELECT max(effective_ads.id) AS max
+                   FROM public.effective_ads))
+         LIMIT 1) AS last_effective_ad_created_at,
+    ( SELECT user_devices.updated_at
+           FROM (public.user_devices
+             JOIN public.users ON ((users.id = user_devices.user_id)))
+          WHERE (users.id <> 1)
+          ORDER BY user_devices.updated_at DESC
+         LIMIT 1) AS last_user_device_updated_at,
+    ( SELECT json_agg(t.*) AS json_agg
+           FROM ( SELECT count(*) AS count,
+                    date(events.created_at) AS date
+                   FROM public.events
+                  WHERE (((events.name)::text = 'invited_user'::text) AND (events.created_at > (now() - '1 mon'::interval)))
+                  GROUP BY (date(events.created_at))
+                  ORDER BY (date(events.created_at))) t) AS invited_users_chart_data,
+    ( SELECT json_agg(t.*) AS json_agg
+           FROM ( SELECT count(*) AS count,
+                    date(events.created_at) AS date
+                   FROM public.events
+                  WHERE (((events.name)::text = 'visited_ad'::text) AND (events.created_at > (now() - '1 mon'::interval)))
+                  GROUP BY (date(events.created_at))
+                  ORDER BY (date(events.created_at))) t) AS visited_ad_chart_data,
+    ( SELECT json_agg(t.*) AS json_agg
+           FROM ( SELECT count(DISTINCT events.user_id) AS count,
+                    date(events.created_at) AS date
+                   FROM public.events
+                  WHERE (events.created_at > (now() - '1 mon'::interval))
+                  GROUP BY (date(events.created_at))) t) AS user_activity_chart_data,
+    ( SELECT json_agg(t.*) AS json_agg
+           FROM ( SELECT count(*) AS count,
+                    date(users.created_at) AS date
+                   FROM public.users
+                  WHERE (users.created_at > (now() - '1 mon'::interval))
+                  GROUP BY (date(users.created_at))) t) AS user_registrations_chart_data,
+    ( SELECT json_agg(t.*) AS json_agg
+           FROM ( SELECT count(*) AS count,
+                    date(messages.created_at) AS date
+                   FROM (public.messages
+                     JOIN public.chat_rooms ON ((chat_rooms.id = messages.chat_room_id)))
+                  WHERE ((messages.created_at > (now() - '1 mon'::interval)) AND (chat_rooms.system = false))
+                  GROUP BY (date(messages.created_at))) t) AS messages_chart_data,
+    ( SELECT json_agg(t.*) AS json_agg
+           FROM ( SELECT count(*) AS count,
+                    user_devices.os AS os_title
+                   FROM public.user_devices
+                  GROUP BY user_devices.os) t) AS user_devices_os_data,
+    ( SELECT json_agg(tt.*) AS json_agg
+           FROM ( SELECT users.refcode,
+                    t.count
+                   FROM (( SELECT users_1.referrer_id,
+                            count(users_1.referrer_id) AS count
+                           FROM public.users users_1
+                          WHERE (users_1.referrer_id IS NOT NULL)
+                          GROUP BY users_1.referrer_id
+                         HAVING (count(users_1.referrer_id) > 5)
+                          ORDER BY (count(users_1.referrer_id)) DESC) t
+                     JOIN public.users ON ((users.id = t.referrer_id)))) tt) AS referrers_top
+  WITH NO DATA;
+
+
+--
+-- Name: demo_phone_numbers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.demo_phone_numbers (
+    id bigint NOT NULL,
+    phone_number_id bigint NOT NULL,
+    demo_code integer
+);
+
+
+--
+-- Name: demo_phone_numbers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.demo_phone_numbers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: demo_phone_numbers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.demo_phone_numbers_id_seq OWNED BY public.demo_phone_numbers.id;
 
 
 --
@@ -740,19 +908,6 @@ UNION
 
 
 --
--- Name: events; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.events (
-    id bigint NOT NULL,
-    name character varying,
-    user_id bigint,
-    data jsonb,
-    created_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -769,30 +924,6 @@ CREATE SEQUENCE public.events_id_seq
 --
 
 ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
-
-
---
--- Name: messages; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.messages (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    body character varying NOT NULL,
-    system boolean DEFAULT false NOT NULL,
-    user_id bigint,
-    chat_room_id bigint NOT NULL,
-    created_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: phone_numbers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.phone_numbers (
-    id integer NOT NULL,
-    full_number character varying(9) NOT NULL
-);
 
 
 --
@@ -1148,23 +1279,6 @@ CREATE SEQUENCE public.user_device_stats_id_seq
 --
 
 ALTER SEQUENCE public.user_device_stats_id_seq OWNED BY public.user_device_stats.id;
-
-
---
--- Name: user_devices; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.user_devices (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    device_id character varying NOT NULL,
-    access_token character varying NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    os character varying,
-    push_token character varying,
-    build_version character varying
-);
 
 
 --
@@ -2521,6 +2635,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210814204316'),
 ('20210821191558'),
 ('20210822202438'),
-('20210825204417');
+('20210825204417'),
+('20210918194333');
 
 
