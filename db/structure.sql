@@ -851,7 +851,13 @@ CREATE MATERIALIZED VIEW public.dashboard_stats AS
                           GROUP BY users_1.referrer_id
                          HAVING (count(users_1.referrer_id) > 5)
                           ORDER BY (count(users_1.referrer_id)) DESC) t
-                     JOIN public.users ON ((users.id = t.referrer_id)))) tt) AS referrers_top
+                     JOIN public.users ON ((users.id = t.referrer_id)))) tt) AS referrers_top,
+    ( SELECT json_agg(t.*) AS json_agg
+           FROM ( SELECT count(DISTINCT events.user_id) AS count,
+                    to_char((date(events.created_at))::timestamp with time zone, 'YYYY-MM'::text) AS date
+                   FROM public.events
+                  WHERE (events.created_at > (now() - '6 mons'::interval))
+                  GROUP BY (to_char((date(events.created_at))::timestamp with time zone, 'YYYY-MM'::text))) t) AS mau_chart_data
   WITH NO DATA;
 
 
@@ -2636,6 +2642,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210821191558'),
 ('20210822202438'),
 ('20210825204417'),
-('20210918194333');
+('20210918194333'),
+('20210918212740');
 
 

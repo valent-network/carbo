@@ -2,7 +2,7 @@
 
 def chartify(data)
   hash_data = Hash[data.to_a.map { |x| [x['date'], x['count']] }]
-  res = ((1.month.ago + 1.day).to_date.to_s..Time.now.to_date.to_s).map do |date|
+  res = ((1.month.ago + 1.day).to_date..Time.now.to_date).map(&:to_s).map do |date|
     hash_data[date] ? [date, hash_data[date]] : [date, 0]
   end
 
@@ -117,15 +117,19 @@ ActiveAdmin.register_page('Dashboard') do
       end
     end
 
-    panel 'Активность пользователей (using UserDevice#updated_at information)' do
+    panel 'MAU' do
+      line_chart chartify @dashboard.mau_chart_data
+    end
+
+    panel 'Уникальные пользователи' do
       line_chart chartify(@dashboard.user_activity_chart_data)
     end
 
-    panel 'Активность приглашений' do
+    panel 'Приглашения' do
       line_chart chartify(@dashboard.invited_users_chart_data)
     end
 
-    panel 'Активность просмотров объявлений' do
+    panel 'Просмотры объявлений' do
       line_chart chartify(@dashboard.visited_ad_chart_data)
     end
 
