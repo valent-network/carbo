@@ -118,7 +118,7 @@ ActiveAdmin.register_page('Dashboard') do
     end
 
     panel 'MAU' do
-      line_chart chartify(@dashboard.mau_chart_data)
+      line_chart @dashboard.mau_chart_data.map { |x| ["#{x['date']}-01", x['count']] }
     end
 
     panel 'Уникальные пользователи' do
