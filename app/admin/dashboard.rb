@@ -118,7 +118,7 @@ ActiveAdmin.register_page('Dashboard') do
     end
 
     panel 'MAU' do
-      line_chart chartify @dashboard.mau_chart_data
+      line_chart chartify(@dashboard.mau_chart_data)
     end
 
     panel 'Уникальные пользователи' do
