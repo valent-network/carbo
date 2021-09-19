@@ -60,7 +60,7 @@ ActiveAdmin.register_page('Dashboard') do
           td do
             div class: 'pb-wrapper' do
               div class: 'pb-progress-bar' do
-                span class: 'pb-progress-bar-fill pb-first', style: "width: #{@effective_ads_percentage}%" do
+                span class: 'pb-progress-bar-fill pb-first pb-last', style: "width: #{@effective_ads_percentage}%" do
                 end
               end
               div class: 'pb-text' do
@@ -79,7 +79,7 @@ ActiveAdmin.register_page('Dashboard') do
           td do
             div class: 'pb-wrapper' do
               div class: 'pb-progress-bar' do
-                span class: 'pb-progress-bar-fill pb-first', style: "width: #{@known_ads_percentage}%" do
+                span class: 'pb-progress-bar-fill pb-first pb-last', style: "width: #{@known_ads_percentage}%" do
                 end
               end
               div class: 'pb-text' do
@@ -97,7 +97,7 @@ ActiveAdmin.register_page('Dashboard') do
           td do
             div class: 'pb-wrapper' do
               div class: 'pb-progress-bar' do
-                span class: 'pb-progress-bar-fill pb-first', style: "width: #{@user_contacts_percentage}%" do
+                span class: 'pb-progress-bar-fill pb-first pb-last', style: "width: #{@user_contacts_percentage}%" do
                 end
               end
               div class: 'pb-text' do
