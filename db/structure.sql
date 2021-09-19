@@ -775,7 +775,7 @@ CREATE MATERIALIZED VIEW public.dashboard_stats AS
     ( SELECT count(ads.id) AS count
            FROM public.ads
           WHERE ((ads.phone_number_id IN ( SELECT user_contacts.phone_number_id
-                   FROM public.user_contacts)) AND (ads.updated_at > (now() - '24:00:00'::interval)))) AS syncing_ads_count,
+                   FROM public.user_contacts)) AND (ads.updated_at < (now() - '24:00:00'::interval)))) AS syncing_ads_count,
     ( SELECT users.created_at
            FROM public.users
           ORDER BY users.id DESC
@@ -2643,6 +2643,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210822202438'),
 ('20210825204417'),
 ('20210918194333'),
-('20210918212740');
+('20210918212740'),
+('20210919192139');
 
 
