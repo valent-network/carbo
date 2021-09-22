@@ -721,7 +721,8 @@ CREATE TABLE public.user_devices (
     updated_at timestamp(6) without time zone NOT NULL,
     os character varying,
     push_token character varying,
-    build_version character varying
+    build_version character varying,
+    session_started_at timestamp without time zone
 );
 
 
@@ -2644,6 +2645,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210825204417'),
 ('20210918194333'),
 ('20210918212740'),
-('20210919192139');
+('20210919192139'),
+('20210920092905');
 
 
