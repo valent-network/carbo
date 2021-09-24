@@ -724,6 +724,19 @@ CREATE TABLE public.messages (
 
 
 --
+-- Name: user_connections; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_connections (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    friend_id integer NOT NULL,
+    connection_id integer NOT NULL,
+    hops_count smallint
+);
+
+
+--
 -- Name: user_devices; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -765,6 +778,21 @@ CREATE MATERIALIZED VIEW public.dashboard_stats AS
  SELECT now() AS updated_at,
     ( SELECT count(users.id) AS count
            FROM public.users) AS users_count,
+    ( SELECT count(users.id) AS count
+           FROM public.users
+          WHERE (NOT (EXISTS ( SELECT 1
+                   FROM public.user_contacts
+                  WHERE (user_contacts.user_id = users.id))))) AS users_with_no_contacts_count,
+    ( SELECT count(users.id) AS count
+           FROM public.users
+          WHERE (NOT (EXISTS ( SELECT 1
+                   FROM public.user_connections
+                  WHERE ((user_connections.user_id = users.id) AND (user_connections.friend_id <> users.id)))))) AS users_with_no_connections_count,
+    ( SELECT count(users.id) AS count
+           FROM public.users
+          WHERE (users.referrer_id IS NOT NULL)) AS users_with_referrer_count,
+    ( SELECT count(user_connections.id) AS count
+           FROM public.user_connections) AS user_connections_count,
     ( SELECT count(user_devices.id) AS count
            FROM public.user_devices) AS user_devices_count,
     ( SELECT count(ads.id) AS count
@@ -1219,19 +1247,6 @@ CREATE SEQUENCE public.static_pages_id_seq
 --
 
 ALTER SEQUENCE public.static_pages_id_seq OWNED BY public.static_pages.id;
-
-
---
--- Name: user_connections; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.user_connections (
-    id bigint NOT NULL,
-    user_id integer NOT NULL,
-    friend_id integer NOT NULL,
-    connection_id integer NOT NULL,
-    hops_count smallint
-);
 
 
 --
@@ -2655,6 +2670,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210918212740'),
 ('20210919192139'),
 ('20210920092905'),
-('20210922202047');
+('20210922202047'),
+('20210924204212');
 
 

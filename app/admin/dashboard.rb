@@ -20,6 +20,7 @@ ActiveAdmin.register_page('Dashboard') do
     @ios_devices_percentage = (@dashboard.user_devices_os_data.find { |t| t['os_title'] == 'ios' }['count'].to_f / @dashboard.user_devices_count) * 100
     @android_devices_percentage = (@dashboard.user_devices_os_data.find { |t| t['os_title'] == 'android' }['count'].to_f / @dashboard.user_devices_count) * 100
     @other_devices_percentage = (@dashboard.user_devices_os_data.find { |t| t['os_title'].nil? }['count'].to_f / @dashboard.user_devices_count) * 100
+    @users_with_contacts_percentage = (1 - @dashboard.users_with_no_contacts_count / @dashboard.users_count.to_f) * 100
 
     h1 'Статистика'
     h6 "Обновлено: #{@dashboard.updated_at.strftime("%x %X")}"
@@ -32,8 +33,28 @@ ActiveAdmin.register_page('Dashboard') do
         end
 
         tr do
-          td { 'Users' }
-          td { number_to_human @dashboard.users_count }
+          td { 'No Contacts / No Connections / With Ref / Users ' }
+          td do
+            div class: 'pb-wrapper' do
+              div class: 'pb-progress-bar' do
+                span class: 'pb-progress-bar-fill pb-first', style: "width: #{@users_with_contacts_percentage}%; background-color: orange" do
+                end
+              end
+              div class: 'pb-text' do
+                span do
+                  [
+                    number_to_human(@dashboard.users_with_no_contacts_count),
+                    number_to_human(@dashboard.users_with_no_connections_count),
+                    number_to_human(@dashboard.users_with_referrer_count),
+                    "<b>#{number_to_human(@dashboard.users_count)}</b>",
+                  ].join(' / ').html_safe
+                end
+                span style: "float: right" do
+                  "#{number_to_human(@users_with_contacts_percentage)}%"
+                end
+              end
+            end
+          end
           td { I18n.l(@dashboard.last_user_created_at) }
         end
 
