@@ -533,6 +533,31 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: phone_numbers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.phone_numbers (
+    id integer NOT NULL,
+    full_number character varying(9) NOT NULL
+);
+
+
+--
+-- Name: business_phone_numbers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.business_phone_numbers AS
+ SELECT ads.phone_number_id,
+    count(ads.phone_number_id) AS ads_count
+   FROM (public.ads
+     JOIN public.phone_numbers ON ((ads.phone_number_id = phone_numbers.id)))
+  WHERE (ads.created_at > (now() - '1 year'::interval))
+  GROUP BY ads.phone_number_id
+ HAVING (count(ads.phone_number_id) > 5)
+  WITH NO DATA;
+
+
+--
 -- Name: chat_room_users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -695,16 +720,6 @@ CREATE TABLE public.messages (
     user_id bigint,
     chat_room_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: phone_numbers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.phone_numbers (
-    id integer NOT NULL,
-    full_number character varying(9) NOT NULL
 );
 
 
@@ -966,7 +981,7 @@ CREATE MATERIALIZED VIEW public.promo_events_matview AS
    FROM ((public.events
      JOIN public.users ON ((events.user_id = users.id)))
      JOIN public.phone_numbers ON ((users.phone_number_id = phone_numbers.id)))
-  WHERE (((events.name)::text = ANY (ARRAY[('sign_up'::character varying)::text, ('set_referrer'::character varying)::text, ('invited_user'::character varying)::text])) AND (NOT (users.phone_number_id IN ( SELECT demo_phone_numbers.phone_number_id
+  WHERE (((events.name)::text = ANY ((ARRAY['sign_up'::character varying, 'set_referrer'::character varying, 'invited_user'::character varying])::text[])) AND (NOT (users.phone_number_id IN ( SELECT demo_phone_numbers.phone_number_id
            FROM public.demo_phone_numbers))))
   ORDER BY events.created_at DESC
   WITH NO DATA;
@@ -2003,6 +2018,13 @@ CREATE UNIQUE INDEX index_ads_sources_on_title ON public.ads_sources USING btree
 
 
 --
+-- Name: index_business_phone_numbers_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_business_phone_numbers_on_phone_number_id ON public.business_phone_numbers USING btree (phone_number_id);
+
+
+--
 -- Name: index_chat_room_users_on_chat_room_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2119,20 +2141,6 @@ CREATE UNIQUE INDEX index_on_chat_rooms_user_id_where_system_true ON public.chat
 --
 
 CREATE UNIQUE INDEX index_phone_numbers_on_full_number ON public.phone_numbers USING btree (full_number);
-
-
---
--- Name: index_promo_events_matview_on_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_promo_events_matview_on_id ON public.promo_events_matview USING btree (id);
-
-
---
--- Name: index_promo_events_matview_on_refcode; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_promo_events_matview_on_refcode ON public.promo_events_matview USING btree (refcode);
 
 
 --
@@ -2646,6 +2654,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210918194333'),
 ('20210918212740'),
 ('20210919192139'),
-('20210920092905');
+('20210920092905'),
+('20210922202047');
 
 
