@@ -66,7 +66,7 @@ class User < ApplicationRecord
     user_connections.select('effective_ads.id')
       .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
       .joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
-      .where('hops_count <= ?', UserConnection::FRIENDS_HOPS)
+      .where('user_connections.hops_count <= ?', UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT)
       .distinct('effective_ads.id')
       .count('effective_ads.id')
   end
