@@ -5,10 +5,10 @@ ActiveAdmin.register(User) do
 
   includes :phone_number
 
-  scope :all, default: true
-  scope :no_contacts
-  scope :no_connections
-  scope :with_referrer
+  scope :all, default: true, pagination_total: false
+  scope :no_contacts, show_count: false, pagination_total: false
+  scope :no_connections, show_count: false, pagination_total: false
+  scope :with_referrer, show_count: false, pagination_total: false
 
   index do
     column :id
