@@ -1250,6 +1250,35 @@ ALTER SEQUENCE public.static_pages_id_seq OWNED BY public.static_pages.id;
 
 
 --
+-- Name: system_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.system_stats (
+    id bigint NOT NULL,
+    data jsonb
+);
+
+
+--
+-- Name: system_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.system_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: system_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.system_stats_id_seq OWNED BY public.system_stats.id;
+
+
+--
 -- Name: user_connections_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1567,6 +1596,13 @@ ALTER TABLE ONLY public.static_pages ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: system_stats id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.system_stats ALTER COLUMN id SET DEFAULT nextval('public.system_stats_id_seq'::regclass);
+
+
+--
 -- Name: user_connections id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1814,6 +1850,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.static_pages
     ADD CONSTRAINT static_pages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: system_stats system_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.system_stats
+    ADD CONSTRAINT system_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -2671,6 +2715,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210919192139'),
 ('20210920092905'),
 ('20210922202047'),
-('20210924204212');
+('20210924204212'),
+('20210924210053');
 
 
