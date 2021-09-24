@@ -20,6 +20,7 @@ class ProfileUserSerializer < ActiveModel::Serializer
       name: object.referrer_name,
       contact_name: object.referrer_contact&.name,
       phone: object.referrer_contact&.phone_number&.to_s,
+      avatar: User.select(:id, :avatar).find_by(id: object.referrer_id)&.avatar&.url
     }
   end
 end
