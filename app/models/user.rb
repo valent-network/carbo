@@ -55,19 +55,48 @@ class User < ApplicationRecord
   end
 
   def visible_ads_count
-    UserContact.joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
-      .where(user_id: user_connections.select(:connection_id).distinct(:connection_id))
-      .count('user_contacts.user_id')
+    user_connections.select('effective_ads.id')
+      .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
+      .joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
+      .distinct('effective_ads.id')
+      .count('effective_ads.id')
   end
 
   def visible_ads_count_for_default_hops
-    UserContact.joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
-      .where(user_id: user_connections.where('hops_count <= ?', UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT).select(:connection_id).distinct(:connection_id))
-      .count('user_contacts.user_id')
+    user_connections.select('effective_ads.id')
+      .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
+      .joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
+      .where('hops_count <= ?', UserConnection::FRIENDS_HOPS)
+      .distinct('effective_ads.id')
+      .count('effective_ads.id')
+  end
+
+  def visible_business_ads_count
+    user_connections.select('effective_ads.id')
+      .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
+      .joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
+      .joins('JOIN business_phone_numbers ON user_contacts.phone_number_id = business_phone_numbers.phone_number_id')
+      .distinct('effective_ads.id')
+      .count('effective_ads.id')
   end
 
   def visible_friends_count
-    UserContact.where(user_id: user_connections.select(:connection_id).distinct(:connection_id))
-      .count('user_contacts.user_id')
+    # TODO: slow query
+    # user_connections.select('user_contacts.phone_number_id')
+    #   .joins("JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id")
+    #   .distinct('user_contacts.phone_number_id')
+    #   .count('user_contacts.phone_number_id')
+    999_999_999
+  end
+
+  def current_visibility
+    {
+      default_hops: UserConnection::FRIENDS_HOPS,
+      contacts_count: contacts_count,
+      registered_friends_count: user_contacts.joins(phone_number: :user).count,
+      visible_ads_count: visible_ads_count,
+      visible_ads_count_for_default_hops: visible_ads_count_for_default_hops,
+      visible_business_ads_count: visible_business_ads_count,
+    }
   end
 end

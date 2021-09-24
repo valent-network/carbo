@@ -30,6 +30,7 @@ ActiveAdmin.register(User) do
       row :visible_ads_count
       row :visible_ads_count_for_default_hops
       row :visible_friends_count
+      row :visible_business_ads_count
     end
     active_admin_comments
   end
