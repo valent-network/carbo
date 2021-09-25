@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateBusinessPhoneNumbersMatview < ActiveRecord::Migration[6.1]
   def up
     execute(<<~SQL)
@@ -11,7 +12,7 @@ class CreateBusinessPhoneNumbersMatview < ActiveRecord::Migration[6.1]
       )
     SQL
 
-    add_index :business_phone_numbers, :phone_number_id, unique: true
+    add_index(:business_phone_numbers, :phone_number_id, unique: true)
   end
 
   def down

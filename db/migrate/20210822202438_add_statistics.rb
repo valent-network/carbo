@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddStatistics < ActiveRecord::Migration[6.1]
   def up
     execute('CREATE STATISTICS stats_for_user_contacts (dependencies) ON user_id, phone_number_id FROM user_contacts')

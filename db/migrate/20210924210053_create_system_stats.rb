@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 class CreateSystemStats < ActiveRecord::Migration[6.1]
   def change
-    create_table :system_stats do |t|
-      t.jsonb :data
+    create_table(:system_stats) do |t|
+      t.jsonb(:data)
     end
   end
 end
