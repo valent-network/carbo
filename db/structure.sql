@@ -865,7 +865,7 @@ CREATE MATERIALIZED VIEW public.dashboard_stats AS
            FROM ( SELECT count(DISTINCT events.user_id) AS count,
                     date(events.created_at) AS date
                    FROM public.events
-                  WHERE (events.created_at > (now() - '1 mon'::interval))
+                  WHERE (((events.name)::text <> 'snapshot_user_visibility'::text) AND (events.created_at > (now() - '1 mon'::interval)))
                   GROUP BY (date(events.created_at))) t) AS user_activity_chart_data,
     ( SELECT json_agg(t.*) AS json_agg
            FROM ( SELECT count(*) AS count,
@@ -900,7 +900,7 @@ CREATE MATERIALIZED VIEW public.dashboard_stats AS
            FROM ( SELECT count(DISTINCT events.user_id) AS count,
                     to_char((date(events.created_at))::timestamp with time zone, 'YYYY-MM'::text) AS date
                    FROM public.events
-                  WHERE (events.created_at > (now() - '6 mons'::interval))
+                  WHERE (((events.name)::text <> 'snapshot_user_visibility'::text) AND (events.created_at > (now() - '6 mons'::interval)))
                   GROUP BY (to_char((date(events.created_at))::timestamp with time zone, 'YYYY-MM'::text))) t) AS mau_chart_data
   WITH NO DATA;
 
@@ -2716,6 +2716,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210920092905'),
 ('20210922202047'),
 ('20210924204212'),
-('20210924210053');
+('20210924210053'),
+('20210925082350');
 
 
