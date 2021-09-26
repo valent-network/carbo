@@ -35,11 +35,11 @@ RSpec.describe(UserFriendlyAdsQuery) do
       ]
       EffectiveAd.refresh
       EffectiveUserContact.refresh
-      is_expected.to(match_array(expected_ads))
+      expect(subject).to(match_array(expected_ads))
     end
 
     it 'returns Ad relation' do
-      is_expected.to(be_a(ActiveRecord::Relation))
+      expect(subject).to(be_a(ActiveRecord::Relation))
     end
 
     it 'does not show deleted ads' do
@@ -49,7 +49,7 @@ RSpec.describe(UserFriendlyAdsQuery) do
       ]
       EffectiveAd.refresh
       EffectiveUserContact.refresh
-      is_expected.to(match_array(expected_ads))
+      expect(subject).to(match_array(expected_ads))
     end
 
     it 'applies offset' do

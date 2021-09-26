@@ -52,13 +52,13 @@ RSpec.describe(AddUserToChatRoom) do
     it 'ChatRoomUser not saved for some reason' do
       expect_any_instance_of(ChatRoomUser).to(receive(:save!).and_raise)
 
-      expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
-      expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
+      expect(ApplicationCable::UserChannel).not_to(receive(:broadcast_to))
+      expect_any_instance_of(SendChatMessagePushNotification).not_to(receive(:call))
       expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(not_change { chat_room.reload.updated_at }
           .and(not_change { chat_room.chat_room_users.find_by(user: user).reload.updated_at })
-          .and(change { ChatRoomUser.count }.by(0)
-          .and(change { Message.count }.by(0)))))
+          .and(change(ChatRoomUser, :count).by(0)
+          .and(change(Message, :count).by(0)))))
 
       expect { invite_valid_user }.to(raise_error(StandardError))
     end
@@ -66,13 +66,13 @@ RSpec.describe(AddUserToChatRoom) do
     it 'Message not saved for some reason' do
       expect_any_instance_of(Message).to(receive(:save!).and_raise)
 
-      expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
-      expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
+      expect(ApplicationCable::UserChannel).not_to(receive(:broadcast_to))
+      expect_any_instance_of(SendChatMessagePushNotification).not_to(receive(:call))
       expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(not_change { chat_room.reload.updated_at }
           .and(not_change { chat_room.chat_room_users.find_by(user: user).reload.updated_at })
-          .and(change { ChatRoomUser.count }.by(0)
-          .and(change { Message.count }.by(0)))))
+          .and(change(ChatRoomUser, :count).by(0)
+          .and(change(Message, :count).by(0)))))
 
       expect { invite_valid_user }.to(raise_error(StandardError))
     end
@@ -80,13 +80,13 @@ RSpec.describe(AddUserToChatRoom) do
     it 'ChatRoom#touch didnt work for some reason' do
       expect_any_instance_of(ChatRoom).to(receive(:touch).and_raise)
 
-      expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
-      expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
+      expect(ApplicationCable::UserChannel).not_to(receive(:broadcast_to))
+      expect_any_instance_of(SendChatMessagePushNotification).not_to(receive(:call))
       expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(not_change { chat_room.reload.updated_at }
           .and(not_change { chat_room.chat_room_users.find_by(user: user).reload.updated_at })
-          .and(change { ChatRoomUser.count }.by(0)
-          .and(change { Message.count }.by(0)))))
+          .and(change(ChatRoomUser, :count).by(0)
+          .and(change(Message, :count).by(0)))))
 
       expect { invite_valid_user }.to(raise_error(StandardError))
     end
@@ -94,13 +94,13 @@ RSpec.describe(AddUserToChatRoom) do
     it 'Initiator ChatRoomUser#touch didnt work for some reason' do
       expect_any_instance_of(ChatRoomUser).to(receive(:touch).and_raise)
 
-      expect(ApplicationCable::UserChannel).to_not(receive(:broadcast_to))
-      expect_any_instance_of(SendChatMessagePushNotification).to_not(receive(:call))
+      expect(ApplicationCable::UserChannel).not_to(receive(:broadcast_to))
+      expect_any_instance_of(SendChatMessagePushNotification).not_to(receive(:call))
       expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(not_change { chat_room.reload.updated_at }
           .and(not_change { chat_room.chat_room_users.find_by(user: user).reload.updated_at })
-          .and(change { ChatRoomUser.count }.by(0)
-          .and(change { Message.count }.by(0)))))
+          .and(change(ChatRoomUser, :count).by(0)
+          .and(change(Message, :count).by(0)))))
 
       expect { invite_valid_user }.to(raise_error(StandardError))
     end
@@ -126,6 +126,7 @@ RSpec.describe(AddUserToChatRoom) do
     it 'Returns new ChatRoomUser record for Added User' do
       expect(invite_valid_user).to(eq(ChatRoomUser.find_by(user: third_user, chat_room: chat_room)))
     end
+
     it 'Broadcasts #chat event to all ChatRoomUsers through ActionCable' do
       expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(user, hash_including(type: 'chat')).once)
       expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(user, hash_including(type: 'unread_update')).once)

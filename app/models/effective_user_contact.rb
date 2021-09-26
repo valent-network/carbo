@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class EffectiveUserContact < ApplicationRecord
   # TODO: remove
-  def self.refresh(concurrently: true) # rubocop:disable Lint/UnusedMethodArgument
+  def self.refresh(concurrently: true)
     nil
     # TODO: space before CONCURRENTLY is VERY important
     # concurrently_string = concurrently ? ' CONCURRENTLY' : ''

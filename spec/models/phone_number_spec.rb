@@ -21,20 +21,20 @@ RSpec.describe(PhoneNumber, type: :model) do
     it 'works for existing number' do
       num = '931234567'
       create(:phone_number, full_number: num)
-      expect(PhoneNumber.by_full_number(num).count).to(eq(1))
+      expect(described_class.by_full_number(num).count).to(eq(1))
     end
 
     it 'works for invalid numbers but returns nothing' do
-      expect(PhoneNumber.by_full_number('555-555-123').count).to(eq(0))
+      expect(described_class.by_full_number('555-555-123').count).to(eq(0))
     end
 
     context 'works with .first_or_create Rails method number (on Ruby 3) when' do
       it 'phone number is valid' do
-        expect(PhoneNumber.by_full_number('+380931234567').first_or_create).to(be_persisted)
+        expect(described_class.by_full_number('+380931234567').first_or_create).to(be_persisted)
       end
 
       it 'phone number is invalid' do
-        expect(PhoneNumber.by_full_number('(555) 564-8583').first_or_create).to_not(be_valid)
+        expect(described_class.by_full_number('(555) 564-8583').first_or_create).not_to(be_valid)
       end
     end
   end

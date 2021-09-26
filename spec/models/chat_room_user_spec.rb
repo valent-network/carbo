@@ -3,6 +3,7 @@ require 'rails_helper'
 
 RSpec.describe(ChatRoomUser, type: :model) do
   subject { create(:chat_room_user) }
+
   context 'On callbacks' do
     context 'after_touch' do
       it 'broadcasts #unread_update to ActionCable for User' do

@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe('FactoryBot lint spec') do
+RSpec.describe(FactoryBot) do
   it 'works' do
-    FactoryBot.lint
+    described_class.lint
   end
 end

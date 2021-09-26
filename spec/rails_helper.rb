@@ -56,7 +56,7 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.filter_run(:focus) unless ENV['CI']
 
-  config.after(:each) do
+  config.after do
     if Rails.env.test?
       FileUtils.rm_rf(Dir[Rails.root.join('public/uploads')])
     end

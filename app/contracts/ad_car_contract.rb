@@ -35,10 +35,10 @@ class AdCarContract < Dry::Validation::Contract
 
   rule(details: :images_json_array_tmp) do
     valid_json = begin
-                   JSON.parse(value)
-                 rescue StandardError
-                   false
-                 end
+      JSON.parse(value)
+    rescue StandardError
+      false
+    end
     key.failure('failed to JSON.parse') unless valid_json
     key.failure('is not JSON array') if valid_json && !JSON.parse(value).is_a?(Array)
   end

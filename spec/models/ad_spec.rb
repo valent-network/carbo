@@ -23,11 +23,11 @@ RSpec.describe(Ad, type: :model) do
     end
 
     it 'does not create AdPrice record when Ad was updated but not price' do
-      expect { ad.update(deleted: true) }.to_not(change { ad.reload.ad_prices.count })
+      expect { ad.update(deleted: true) }.not_to(change { ad.reload.ad_prices.count })
     end
 
     it 'does not create AdPrice record when Ad was created' do
-      expect { create(:ad, :active) }.to_not(change { AdPrice.count })
+      expect { create(:ad, :active) }.not_to(change(AdPrice, :count))
     end
   end
 

@@ -35,7 +35,7 @@ RSpec.describe(Api::V1::ChatRoomsController) do
       create(:user_connection, user: user, friend: other_user, connection: other_user)
       expect do
         post(:create, params: { ad_id: ad.id, user_id: other_user.id, name: intro_name })
-      end.to(change { ChatRoom.count }.by(1))
+      end.to(change(ChatRoom, :count).by(1))
 
       chat_room = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: user }, ad: ad).first
       expected_chat_room = JSON.parse(Api::V1::ChatRoomListSerializer.new(user, chat_room).first.to_json)

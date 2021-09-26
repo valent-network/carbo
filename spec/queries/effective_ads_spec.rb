@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe(EffectiveAds) do
+  subject do
+    sql = described_class.new.call(filters: filters, should_search_query: should_search_query).to_sql
+    ids = Ad.find_by_sql(sql).pluck(:id)
+    Ad.find(ids)
+  end
+
   let!(:other_ads) do
     o_ads = create_list(:ad, 5, :active)
     o_ads.each do |ad|
@@ -39,7 +45,8 @@ RSpec.describe(EffectiveAds) do
 
     e_ads
   end
-  before(:each) do
+
+  before do
     user = create(:user)
     [other_ads, expected_ads].flatten.each do |ad|
       user.user_contacts.create(phone_number: ad.phone_number, name: FFaker::Name.name)
@@ -48,12 +55,6 @@ RSpec.describe(EffectiveAds) do
     EffectiveAd.refresh
 
     expect(EffectiveAd.count).to(eq(7))
-  end
-
-  subject do
-    sql = described_class.new.call(filters: filters, should_search_query: should_search_query).to_sql
-    ids = Ad.find_by_sql(sql).pluck(:id)
-    Ad.find(ids)
   end
 
   context 'with #should_search_query = false' do
@@ -245,7 +246,7 @@ RSpec.describe(EffectiveAds) do
       end
     end
 
-    context 'with filter for query (maker + model + year)' do
+    context 'with filter for query (maker + year + model)' do
       let(:filters) { { query: 'BMW 2016 X6' } }
 
       it 'fails for wrong order' do

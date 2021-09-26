@@ -3,11 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe(ApplicationController) do
-  describe '#langing' do
+  describe '#landing' do
     it 'OK' do
       get :landing
       expect(response).to(be_ok)
     end
+  end
+
+  describe '#filters' do
     it 'OK' do
       get :filters
       expect(response).to(be_ok)

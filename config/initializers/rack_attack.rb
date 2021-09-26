@@ -82,7 +82,7 @@ module Rack
       # so the request is blocked
       Fail2Ban.filter("pentesters-#{req.ip}", maxretry: 3, findtime: 10.minutes, bantime: 5.minutes) do
         # The count for the IP is incremented if the return value is truthy
-        CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
+        CGI.unescape(req.query_string).include?('/etc/passwd') ||
         req.path.include?('/etc/passwd') ||
         req.path.include?('wp-admin') ||
         req.path.include?('wp-login')

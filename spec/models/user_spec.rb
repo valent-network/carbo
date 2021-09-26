@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe(User, type: :model) do
   let(:user) { create(:user) }
   let(:sample_image_base64) { Base64.strict_encode64(File.read(Rails.root.join('spec/support/sample.png'))) }
+
   describe '#avatar' do
     it 'successfully consumes base64 image' do
       expect { user.update(avatar: "data:image/png;base64,#{sample_image_base64}") }.to(change { user.reload.avatar.size }.from(0).to(5138))
@@ -47,7 +48,7 @@ RSpec.describe(User, type: :model) do
       allow(USER_FRIENDS_GRAPH).to(receive_message_chain(:get_friends_connections, :resultset).and_return([[]]))
       create(:user_connection, user: user, friend: user, connection: user)
 
-      expect { user.update_connections! }.to_not(change { user.reload.user_connections.count })
+      expect { user.update_connections! }.not_to(change { user.reload.user_connections.count })
       expect(user.user_connections.find_by(user: user, friend: user)).to(be_persisted)
     end
 

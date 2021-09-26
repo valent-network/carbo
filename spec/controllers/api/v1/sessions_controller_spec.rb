@@ -32,6 +32,7 @@ RSpec.describe(Api::V1::SessionsController) do
       end
     end
   end
+
   describe '#update' do
     it 'OK' do
       verification_code = 1234
@@ -51,6 +52,7 @@ RSpec.describe(Api::V1::SessionsController) do
       end
     end
   end
+
   describe '#destroy' do
     it 'OK' do
       delete :destroy
@@ -62,6 +64,7 @@ RSpec.describe(Api::V1::SessionsController) do
         allow(subject).to(receive(:current_user).and_return(nil))
         allow(subject).to(receive(:current_device).and_return(nil))
       end
+
       it 'is unauthorized' do
         delete :destroy
         expect(response).to(be_unauthorized)

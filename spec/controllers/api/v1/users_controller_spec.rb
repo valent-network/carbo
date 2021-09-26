@@ -25,7 +25,7 @@ RSpec.describe(Api::V1::UsersController) do
     context 'With invalid params' do
       it 'does not save user and returns error' do
         invalid_name = 'a' * 10000
-        expect { put(:update, params: { user: { name: invalid_name } }) }.to_not(change { user.reload.name })
+        expect { put(:update, params: { user: { name: invalid_name } }) }.not_to(change { user.reload.name })
         expect(response).to(be_unprocessable)
         expect(json_body['message']).to(eq('error'))
       end

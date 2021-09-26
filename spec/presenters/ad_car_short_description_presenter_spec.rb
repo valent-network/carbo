@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe(AdCarShortDescriptionPresenter) do
+  subject { described_class.new.call(ad.details) }
+
   let(:ad_details) do
     {
       race: 50_000,
@@ -19,7 +21,6 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
     a.save
     a
   end
-  subject { described_class.new.call(ad.details) }
 
   it { is_expected.to(be_a(String)) }
 

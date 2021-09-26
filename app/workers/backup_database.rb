@@ -29,7 +29,7 @@ class BackupDatabase
     FileUtils.rm(BACKUP_TEMP_LOCATION)
 
     contents.each do |object|
-      backups << object.key if object.key =~ /.+\.dump\.sql\Z/
+      backups << object.key if /.+\.dump\.sql\Z/.match?(object.key)
     end
 
     if backups.size > BACKUPS_NUMBER_TO_PERSIST

@@ -5,7 +5,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   end
 
   def size_range
-    0..2.megabytes
+    0..(2.megabytes)
   end
 
   def extension_whitelist

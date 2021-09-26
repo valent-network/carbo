@@ -20,7 +20,7 @@ RSpec.describe(PrepareAdOptions) do
       ad.save
     end.to(change { AdOptionType.where(name: 'new_option').count }.from(0).to(1)
       .and(change { AdOptionValue.where(value: 'car').count }.from(0).to(1)
-      .and(change { AdOption.count }.by(1))))
+      .and(change(AdOption, :count).by(1))))
   end
 
   it 'destroys records if details value is blank' do

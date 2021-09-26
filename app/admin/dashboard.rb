@@ -20,7 +20,7 @@ ActiveAdmin.register_page('Dashboard') do
     @ios_devices_percentage = (@dashboard.user_devices_os_data.find { |t| t['os_title'] == 'ios' }['count'].to_f / @dashboard.user_devices_count) * 100
     @android_devices_percentage = (@dashboard.user_devices_os_data.find { |t| t['os_title'] == 'android' }['count'].to_f / @dashboard.user_devices_count) * 100
     @other_devices_percentage = (@dashboard.user_devices_os_data.find { |t| t['os_title'].nil? }['count'].to_f / @dashboard.user_devices_count) * 100
-    @users_with_contacts_percentage = (1 - @dashboard.users_with_no_contacts_count / @dashboard.users_count.to_f) * 100
+    @users_with_contacts_percentage = (1 - (@dashboard.users_with_no_contacts_count / @dashboard.users_count.to_f)) * 100
 
     h1 'Статистика'
     h6 "Обновлено: #{@dashboard.updated_at.strftime("%x %X")}"

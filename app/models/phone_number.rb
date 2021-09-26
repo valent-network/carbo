@@ -2,11 +2,14 @@
 
 class PhoneNumber < ApplicationRecord
   OPERATORS = %w[67 68 96 97 98 50 66 95 99 63 93 73 91 92 94].freeze
-  validates :full_number, uniqueness: true, phone: { possible: true,
-                                                     allow_blank: false,
-                                                     types: [:mobile],
-                                                     countries: [:ua],
-                                                     extensions: false }
+  validates :full_number, uniqueness: true, phone: {
+    possible: true,
+    allow_blank: false,
+    types: [:mobile],
+    countries: [:ua],
+    extensions: false,
+  }
+
   has_many :ads, dependent: :destroy
   has_many :user_contacts, dependent: :delete_all
   has_one :user, dependent: :destroy

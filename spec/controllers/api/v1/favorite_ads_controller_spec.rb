@@ -14,6 +14,7 @@ RSpec.describe(Api::V1::FavoriteAdsController) do
     before do
       create(:ad_favorite, ad: ad, user: user)
     end
+
     it 'OK' do
       get :index
       expect(json_body.map { |ad| ad['id'] }).to(eq([ad.id]))
@@ -31,7 +32,7 @@ RSpec.describe(Api::V1::FavoriteAdsController) do
 
     context 'With invalid params' do
       it 'does not create record' do
-        expect { post(:create, params: { id: 'INVALID' }) }.to_not(change { user.ad_favorites.where(ad: ad).count })
+        expect { post(:create, params: { id: 'INVALID' }) }.not_to(change { user.ad_favorites.where(ad: ad).count })
         expect(response).to(be_unprocessable)
         expect(json_body['message']).to(eq('error'))
         expect(json_body['errors']).to(eq(['Ad must exist']))
@@ -51,7 +52,7 @@ RSpec.describe(Api::V1::FavoriteAdsController) do
 
     context 'With invalid params' do
       it 'does not destroy record' do
-        expect { delete(:destroy, params: { id: 'INVALID' }) }.to_not(change { user.ad_favorites.where(ad: ad).count })
+        expect { delete(:destroy, params: { id: 'INVALID' }) }.not_to(change { user.ad_favorites.where(ad: ad).count })
         expect(response).to(be_unprocessable)
         expect(json_body['message']).to(eq('error'))
         expect(json_body['errors']).to(eq(['Ad must exist']))
