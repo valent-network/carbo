@@ -91,7 +91,7 @@ class User < ApplicationRecord
 
   def current_visibility
     {
-      default_hops: UserConnection::FRIENDS_HOPS,
+      default_hops: UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT,
       contacts_count: contacts_count,
       registered_friends_count: user_contacts.joins(phone_number: :user).count,
       visible_ads_count: visible_ads_count,
