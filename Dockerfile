@@ -1,4 +1,4 @@
-FROM ruby:3.0.0-alpine
+FROM ruby:3.0.2-alpine
 
 RUN apk update && apk --no-cache add build-base postgresql-dev tzdata git bash nodejs postgresql-client shared-mime-info
 
@@ -11,7 +11,7 @@ ENV GIT_COMMIT $GIT_COMMIT
 
 WORKDIR /tmp
 
-RUN gem install bundler -v 2.2.11 && bundle install -j 4 --full-index --without development test
+RUN gem install bundler -v 2.2.28 && bundle install -j 4 --full-index --without development test
 
 WORKDIR /app
 
