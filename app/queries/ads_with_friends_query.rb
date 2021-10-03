@@ -8,7 +8,7 @@ class AdsWithFriendsQuery
              ads.id,
              my_contacts.id AS friend_id,
              my_contacts.name AS friend_name,
-             FALSE AS is_first_hand
+             (COALESCE(user_connections.hops_count, 6) + 1) AS hops_count
       FROM ads
       JOIN user_contacts ON ads.phone_number_id = user_contacts.phone_number_id
       JOIN user_connections ON user_connections.connection_id = user_contacts.user_id
@@ -25,7 +25,7 @@ class AdsWithFriendsQuery
              ads.id,
              my_contacts.id AS friend_id,
              my_contacts.name AS friend_name,
-             TRUE AS is_first_hand
+             1 AS hops_count
       FROM ads
       JOIN user_contacts AS my_contacts ON  my_contacts.phone_number_id = ads.phone_number_id
       WHERE ads.phone_number_id IN (#{phones})

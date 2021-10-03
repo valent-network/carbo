@@ -38,11 +38,11 @@ class Ad < ApplicationRecord
     associated = ads_with_friends.select { |ad_with_friends| ad_with_friends.id == id }
     return if associated.blank?
 
-    friend = associated.detect(&:is_first_hand) || associated.first
+    friend = associated.min_by(&:hops_count)
 
     @friend_name_and_total = {
       name: friend.friend_name,
-      friend_hands: friend.is_first_hand ? 1 : 2,
+      friend_hands: friend.hops_count,
       count: (associated.count - 1),
     }
   end

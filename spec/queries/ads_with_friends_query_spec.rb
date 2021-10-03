@@ -10,7 +10,6 @@ RSpec.describe(AdsWithFriendsQuery) do
   describe 'Returning records attributes' do
     it '#id'
     it '#friend_name'
-    it '#is_first_hand'
     it '#friend_id'
   end
 end
