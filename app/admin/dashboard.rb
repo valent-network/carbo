@@ -15,7 +15,7 @@ ActiveAdmin.register_page('Dashboard') do
   content do
     @dashboard = DashboardStats.first
     @effective_ads_percentage = ((@dashboard.effective_ads_count / @dashboard.active_ads_count.to_f) * 100).round(2)
-    @known_ads_percentage = (((@dashboard.known_ads_count - @dashboard.syncing_ads_count.to_f) / @dashboard.known_ads_count) * 100).round(2)
+    @known_ads_percentage = ((@dashboard.known_ads_count.to_f / @dashboard.ads_count) * 100).round(2)
     @user_contacts_percentage = ((@dashboard.uniq_user_contacts_count / @dashboard.user_contacts_count.to_f) * 100).round(2)
     @ios_devices_percentage = (@dashboard.user_devices_os_data.find { |t| t['os_title'] == 'ios' }['count'].to_f / @dashboard.user_devices_count) * 100
     @android_devices_percentage = (@dashboard.user_devices_os_data.find { |t| t['os_title'] == 'android' }['count'].to_f / @dashboard.user_devices_count) * 100
@@ -59,24 +59,6 @@ ActiveAdmin.register_page('Dashboard') do
         end
 
         tr do
-          td { 'Ads' }
-          td { number_to_human @dashboard.ads_count }
-          td { I18n.l(@dashboard.last_ad_created_at) }
-        end
-
-        tr do
-          td { 'Messages' }
-          td { number_to_human @dashboard.messages_count }
-          td { I18n.l(@dashboard.last_message_created_at) }
-        end
-
-        tr do
-          td { 'Chat Rooms' }
-          td { number_to_human @dashboard.chat_rooms_count }
-          td { I18n.l(@dashboard.last_chat_room_created_at) }
-        end
-
-        tr do
           td { 'Effective Ads / Active Ads' }
           td do
             div class: 'pb-wrapper' do
@@ -96,7 +78,7 @@ ActiveAdmin.register_page('Dashboard') do
         end
 
         tr do
-          td { 'Syncing Ads / Known Ads' }
+          td { 'Known Ads / Total Ads' }
           td do
             div class: 'pb-wrapper' do
               div class: 'pb-progress-bar' do
@@ -104,13 +86,14 @@ ActiveAdmin.register_page('Dashboard') do
                 end
               end
               div class: 'pb-text' do
-                span { "#{number_to_human(@dashboard.syncing_ads_count)} / <b>#{number_to_human(@dashboard.known_ads_count)}</b>".html_safe }
+                span { "#{number_to_human(@dashboard.known_ads_count)} / <b>#{number_to_human(@dashboard.ads_count)}</b>".html_safe }
                 span style: "float: right" do
                   "#{@known_ads_percentage}%"
                 end
               end
             end
           end
+          td { I18n.l(@dashboard.last_ad_created_at) }
         end
 
         tr do
@@ -157,6 +140,18 @@ ActiveAdmin.register_page('Dashboard') do
               end
             end
           end
+        end
+
+        tr do
+          td { 'Messages' }
+          td { number_to_human @dashboard.messages_count }
+          td { I18n.l(@dashboard.last_message_created_at) }
+        end
+
+        tr do
+          td { 'Chat Rooms' }
+          td { number_to_human @dashboard.chat_rooms_count }
+          td { I18n.l(@dashboard.last_chat_room_created_at) }
         end
       end
     end
