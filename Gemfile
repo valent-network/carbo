@@ -44,6 +44,7 @@ gem 'rack-attack'
 # 3-rd party gems
 gem 'turbosms'
 gem 'airbrake'
+gem 'newrelic_rpm'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
