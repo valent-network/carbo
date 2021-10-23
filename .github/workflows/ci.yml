@@ -54,8 +54,6 @@ jobs:
 
     - name: Run Rubucop to ensure no complains
       run: bundle exec rubocop
-      env:
-        SKIP_REDISGRAPH: true
 
     - name: Install packages for database
       run: sudo apt-get install libpq-dev

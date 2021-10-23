@@ -9,9 +9,9 @@ class UserFriendsGraph
   attr_reader :graph
 
   def initialize
-    unless ENV['SKIP_REDISGRAPH'].present?
-      @graph = RedisGraph.new(BASE_GRAPH_NAME, REDIS_OPTIONS)
-    end
+    @graph = RedisGraph.new(BASE_GRAPH_NAME, REDIS_OPTIONS)
+  rescue Redis::CannotConnectError
+    @graph = nil
   end
 
   def count_users
