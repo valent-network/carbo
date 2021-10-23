@@ -977,6 +977,20 @@ ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 
 
 --
+-- Name: known_ads; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.known_ads AS
+ SELECT DISTINCT ads.id,
+    ads.phone_number_id,
+    ads.price
+   FROM public.ads
+  WHERE ((ads.deleted = false) AND (ads.phone_number_id IN ( SELECT user_contacts.phone_number_id
+           FROM public.user_contacts)))
+  WITH NO DATA;
+
+
+--
 -- Name: phone_numbers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2175,6 +2189,20 @@ CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
 
 
 --
+-- Name: index_known_ads_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_known_ads_on_id ON public.known_ads USING btree (id);
+
+
+--
+-- Name: index_known_ads_on_id_and_phone_number_id_and_price; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_known_ads_on_id_and_phone_number_id_and_price ON public.known_ads USING btree (id, phone_number_id, price);
+
+
+--
 -- Name: index_messages_on_chat_room_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2717,6 +2745,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210922202047'),
 ('20210924204212'),
 ('20210924210053'),
-('20210925082350');
+('20210925082350'),
+('20211023130942');
 
 
