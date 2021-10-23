@@ -5,7 +5,7 @@ class SnapshotUserVisibility
 
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'default', retry: true, backtrace: false
+  sidekiq_options queue: 'system', retry: true, backtrace: false
 
   def perform
     users = User.joins("LEFT JOIN events ON events.user_id = users.id AND events.name = 'snapshot_user_visibility' AND events.created_at > (NOW() - INTERVAL '1 day')")
