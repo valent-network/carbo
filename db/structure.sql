@@ -666,6 +666,20 @@ CREATE TABLE public.user_contacts (
 
 
 --
+-- Name: known_ads; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.known_ads AS
+ SELECT DISTINCT ads.id,
+    ads.phone_number_id,
+    ads.price
+   FROM public.ads
+  WHERE ((ads.deleted = false) AND (ads.phone_number_id IN ( SELECT user_contacts.phone_number_id
+           FROM public.user_contacts)))
+  WITH NO DATA;
+
+
+--
 -- Name: effective_ads; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
@@ -683,13 +697,8 @@ CREATE MATERIALIZED VIEW public.effective_ads AS
             ads_1.phone_number_id,
             ads_1.price,
             json_object((array_agg(ARRAY[ad_option_types.name, ad_option_values.value]))::text[]) AS options
-           FROM (((( SELECT DISTINCT ads_2.id,
-                    ads_2.phone_number_id,
-                    ads_2.price
-                   FROM (public.ads ads_2
-                     JOIN public.user_contacts ON ((user_contacts.phone_number_id = ads_2.phone_number_id)))
-                  WHERE (ads_2.deleted = false)) ads_1
-             JOIN public.ad_options ON ((ad_options.ad_id = ads_1.id)))
+           FROM (((public.known_ads ads_1
+             JOIN public.ad_options ON (((ad_options.ad_id = ads_1.id) AND (ad_options.ad_option_type_id = ANY (ARRAY[1, 2, 4, 6, 7, 9, 11])))))
              JOIN public.ad_option_types ON ((ad_options.ad_option_type_id = ad_option_types.id)))
              JOIN public.ad_option_values ON ((ad_options.ad_option_value_id = ad_option_values.id)))
           GROUP BY ads_1.id, ads_1.phone_number_id, ads_1.price) ads
@@ -952,20 +961,6 @@ CREATE SEQUENCE public.events_id_seq
 --
 
 ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
-
-
---
--- Name: known_ads; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.known_ads AS
- SELECT DISTINCT ads.id,
-    ads.phone_number_id,
-    ads.price
-   FROM public.ads
-  WHERE ((ads.deleted = false) AND (ads.phone_number_id IN ( SELECT user_contacts.phone_number_id
-           FROM public.user_contacts)))
-  WITH NO DATA;
 
 
 --
@@ -1309,37 +1304,6 @@ ALTER SEQUENCE public.user_contacts_id_seq OWNED BY public.user_contacts.id;
 
 
 --
--- Name: user_device_stats; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.user_device_stats (
-    id bigint NOT NULL,
-    user_devices_appeared_count integer NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: user_device_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.user_device_stats_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: user_device_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.user_device_stats_id_seq OWNED BY public.user_device_stats.id;
-
-
---
 -- Name: user_devices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1609,13 +1573,6 @@ ALTER TABLE ONLY public.user_contacts ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- Name: user_device_stats id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.user_device_stats ALTER COLUMN id SET DEFAULT nextval('public.user_device_stats_id_seq'::regclass);
-
-
---
 -- Name: user_devices id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1869,14 +1826,6 @@ ALTER TABLE ONLY public.user_contacts
 
 
 --
--- Name: user_device_stats user_device_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.user_device_stats
-    ADD CONSTRAINT user_device_stats_pkey PRIMARY KEY (id);
-
-
---
 -- Name: user_devices user_devices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1992,6 +1941,13 @@ CREATE UNIQUE INDEX index_ad_options_on_ad_id_and_ad_option_type_id ON public.ad
 
 
 --
+-- Name: index_ad_options_on_ad_id_and_ad_option_value_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_options_on_ad_id_and_ad_option_value_id ON public.ad_options USING btree (ad_id, ad_option_value_id) WHERE (ad_option_type_id = ANY (ARRAY[1, 2, 4, 6, 7, 9, 11]));
+
+
+--
 -- Name: index_ad_options_on_ad_option_value_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2041,17 +1997,10 @@ CREATE UNIQUE INDEX index_ads_on_address ON public.ads USING btree (address);
 
 
 --
--- Name: index_ads_on_phone_number_id_and_updated_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_phone_number_id_and_updated_at ON public.ads USING btree (phone_number_id, updated_at) WHERE (ads_source_id = 1);
-
-
---
 -- Name: index_ads_on_phone_number_id_where_deleted_false_include_price; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_phone_number_id_where_deleted_false_include_price ON public.ads USING btree (phone_number_id) INCLUDE (price) WHERE (deleted = false);
+CREATE INDEX index_ads_on_phone_number_id_where_deleted_false_include_price ON public.ads USING btree (phone_number_id, id) INCLUDE (price) WHERE (deleted = false);
 
 
 --
@@ -2318,13 +2267,6 @@ CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.ver
 --
 
 CREATE INDEX search_budget_index ON public.ads_grouped_by_maker_model_year USING btree (min_price, max_price);
-
-
---
--- Name: ttt; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX ttt ON public.ads USING btree (phone_number_id, updated_at) WHERE (deleted = false);
 
 
 --
@@ -2657,14 +2599,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201126214710'),
 ('20201130223551'),
 ('20201202195700'),
-('20201214222348'),
 ('20210206130842'),
 ('20210317140913'),
 ('20210317140918'),
 ('20210323200730'),
-('20210328171747'),
 ('20210328180036'),
-('20210328200259'),
 ('20210328204025'),
 ('20210328211421'),
 ('20210328211424'),
@@ -2718,6 +2657,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210924210053'),
 ('20210925082350'),
 ('20211023130942'),
-('20211023132934');
+('20211023132934'),
+('20211023133410'),
+('20211023133756'),
+('20211023140945');
 
 
