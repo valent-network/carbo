@@ -5,6 +5,6 @@ class VacuumDatabase
   sidekiq_options queue: 'system', retry: true, backtrace: false
 
   def perform
-    %x(psql -h $POSTGRESQL_SERVICE_HOST -U $POSTGRES_USER -d $POSTGRES_DATABASE -c "VACUUM")
+    %x(psql -h $POSTGRESQL_SERVICE_HOST -U $POSTGRES_USER -d $POSTGRES_DATABASE -c "VACUUM ANALYZE")
   end
 end
