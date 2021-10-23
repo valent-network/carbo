@@ -96,23 +96,26 @@ jobs:
         mkdir -p $HOME/.kube
         curl --silent -X GET -H 'Authorization: Bearer ${{ secrets.DO_TOKEN }}' https://api.digitalocean.com/v2/kubernetes/clusters/${{ secrets.K8_ID }}/kubeconfig?expiry_seconds=3600 -o $HOME/.kube/config
 
-    - name: Update web image for k8 cluster
+    - name: Update sidekiq-contacts image for k8 cluster
+      run: kubectl set image --record deployment/sidekiq-contacts rails=recario/server:${{steps.vars.outputs.tag}}
+
+    - name: Update sidekiq-main image for k8 cluster
+      run: kubectl set image --record deployment/sidekiq-main rails=recario/server:${{steps.vars.outputs.tag}}
+
+    - name: Update sidekiq-matviews image for k8 cluster
+      run: kubectl set image --record deployment/sidekiq-matviews rails=recario/server:${{steps.vars.outputs.tag}}
+
+    - name: Update sidekiq-sms image for k8 cluster
+      run: kubectl set image --record deployment/sidekiq-sms rails=recario/server:${{steps.vars.outputs.tag}}
+
+    - name: Update sidekiq-system image for k8 cluster
+      run: kubectl set image --record deployment/sidekiq-system rails=recario/server:${{steps.vars.outputs.tag}}
+
+    - name: Update rpush image for k8 cluster
+      run: kubectl set image --record deployment/rpush rails=recario/server:${{steps.vars.outputs.tag}}
+
+    - name: Update rails image for k8 cluster
       run: kubectl set image --record deployment/rails rails=recario/server:${{steps.vars.outputs.tag}}
-
-    - name: Update critical-worker image for k8 cluster
-      run: kubectl set image --record deployment/critical-worker critical-worker=recario/server:${{steps.vars.outputs.tag}}
-
-    - name: Update main-worker image for k8 cluster
-      run: kubectl set image --record deployment/main-worker main-worker=recario/server:${{steps.vars.outputs.tag}}
-
-    - name: Update matviews-worker image for k8 cluster
-      run: kubectl set image --record deployment/matviews-worker matviews-worker=recario/server:${{steps.vars.outputs.tag}}
-
-    - name: Update provider-worker image for k8 cluster
-      run: kubectl set image --record deployment/provider-worker provider-worker=recario/server:${{steps.vars.outputs.tag}}
-
-    - name: Update RPush image for k8 cluster
-      run: kubectl set image --record deployment/rpush rpush=recario/server:${{steps.vars.outputs.tag}}
 
     - name: Verify deployment
       run: kubectl rollout status deployment/rails
