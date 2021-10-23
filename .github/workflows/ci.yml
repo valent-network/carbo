@@ -97,7 +97,7 @@ jobs:
         curl --silent -X GET -H 'Authorization: Bearer ${{ secrets.DO_TOKEN }}' https://api.digitalocean.com/v2/kubernetes/clusters/${{ secrets.K8_ID }}/kubeconfig?expiry_seconds=3600 -o $HOME/.kube/config
 
     - name: Update sidekiq-contacts image for k8 cluster
-      run: kubectl set image --record deployment/sidekiq-contacts sidekiq-contact=recario/server:${{steps.vars.outputs.tag}}
+      run: kubectl set image --record deployment/sidekiq-contacts sidekiq-contacts=recario/server:${{steps.vars.outputs.tag}}
 
     - name: Update sidekiq-main image for k8 cluster
       run: kubectl set image --record deployment/sidekiq-main sidekiq-main=recario/server:${{steps.vars.outputs.tag}}
