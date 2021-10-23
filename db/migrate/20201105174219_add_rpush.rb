@@ -33,7 +33,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
   end
 
   def self.down
-    migrations.reverse.each do |m|
+    migrations.reverse_each do |m|
       m.down
     rescue ActiveRecord::StatementInvalid => e
       p(e)
