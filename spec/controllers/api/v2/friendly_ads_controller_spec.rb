@@ -24,7 +24,6 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
         { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 1, 'avatar' => nil, 'phone_number' => "#{friend_contact.phone_number}\n🤝", 'user_id' => nil, 'user_name' => nil },
       ]
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
       expect(json_body['friends']).to(eq(expected_friends))
@@ -38,7 +37,6 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
         { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 3, 'avatar' => nil, 'phone_number' => "#{friend_contact.phone_number}\n🤝🤝🤝", 'user_id' => friend_contact.phone_number.user.id, 'user_name' => nil },
       ]
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
       expect(json_body['friends']).to(eq(expected_friends))
@@ -54,7 +52,6 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
         { 'id' => friend_contact.id, 'name' => friend_contact.name, 'idx' => 4, 'avatar' => nil, 'phone_number' => "#{friend_contact.phone_number}\n🤝🤝🤝🤝", 'user_id' => friend_contact.phone_number.user.id, 'user_name' => nil },
       ]
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
       expect(json_body['friends']).to(eq(expected_friends))
@@ -77,7 +74,6 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
       create(:user_connection, user: friend_3, friend: friend_of_friend, connection: friend_of_friend)
 
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       get :show, params: { id: ad.id }
       expect(response).to(be_ok)
       expect(json_body['friends'].detect { |x| x['id'] ==  hand1_friend.id }).to(eq({ 'id' => hand1_friend.id, 'name' => hand1_friend.name, 'idx' => 1, 'avatar' => nil, 'phone_number' => "#{hand1_friend.phone_number}\n🤝", 'user_id' => nil, 'user_name' => nil }))

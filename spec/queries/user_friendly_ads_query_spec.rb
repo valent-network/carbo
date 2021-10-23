@@ -34,7 +34,6 @@ RSpec.describe(UserFriendlyAdsQuery) do
         ad_hand1, ad_hand2, ad_hand3, ad_hand1_no_user
       ]
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       expect(subject).to(match_array(expected_ads))
     end
 
@@ -48,19 +47,16 @@ RSpec.describe(UserFriendlyAdsQuery) do
         ad_hand1, ad_hand3, ad_hand1_no_user
       ]
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       expect(subject).to(match_array(expected_ads))
     end
 
     it 'applies offset' do
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       expect(described_class.new.call(user: user, offset: 2).count).to(eq(2))
     end
 
     it 'orders by date' do
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       # expect(subject.last.id).to(eq(ad_hand1_no_user.id))
       expect(subject.first.id).to(eq(ad_hand3.id))
       expect(subject.first.created_at).to(be > subject.last.created_at)
@@ -71,7 +67,6 @@ RSpec.describe(UserFriendlyAdsQuery) do
         create(:user_contact, user: user, phone_number: create(:ad, :active).phone_number)
       end
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       expect(described_class.new.call(user: user).count).to(eq(UserFriendlyAdsQuery::LIMIT))
     end
 
@@ -80,7 +75,6 @@ RSpec.describe(UserFriendlyAdsQuery) do
       ad.details = ad.details.merge('maker' => 'BMW', 'model' => 'X6')
       ad.save
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       expect(described_class.new.call(user: user, filters: { query: 'BMW X6' })).to(match_array([ad]))
       expect(described_class.new.call(user: user, filters: { query: 'BMW' })).to(match_array([ad]))
       expect(described_class.new.call(user: user, filters: { query: 'X6' })).to(match_array([ad]))
@@ -92,7 +86,6 @@ RSpec.describe(UserFriendlyAdsQuery) do
       create(:user_contact, user: user, phone_number: new_friend.phone_number, name: 'John')
       ad = create(:ad, :active, phone: new_friend.phone_number)
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       expected_ads = described_class.new.call(user: user, filters: { query: 'John' })
 
       expect(expected_ads).to(match_array([ad]))
@@ -101,14 +94,12 @@ RSpec.describe(UserFriendlyAdsQuery) do
     it 'filters by user contacts if match hand2' do
       user.user_contacts.find_by(phone_number: friend.phone_number).update(name: 'John')
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       expected_ads = described_class.new.call(user: user, filters: { query: 'John' })
       expect(expected_ads).to(match_array([ad_hand1, ad_hand2]))
     end
 
     it 'filters by contacts_mode' do
       EffectiveAd.refresh
-      EffectiveUserContact.refresh
       expected_ads = [ad_hand1_no_user, ad_hand1]
       expect(described_class.new.call(user: user, filters: { contacts_mode: 'directFriends' })).to(match_array(expected_ads))
     end

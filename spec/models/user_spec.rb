@@ -24,7 +24,7 @@ RSpec.describe(User, type: :model) do
       user_contact = create(:user_contact, user: user)
       create(:user_connection, user: user, friend: user, connection: user)
       create_list(:ad, 3, phone_number: user_contact.phone_number, deleted: false)
-      # EffectiveUserContact.refresh
+      KnownAd.refresh
       EffectiveAd.refresh
       expect(user.reload.visible_ads_count).to(eq(3))
     end
