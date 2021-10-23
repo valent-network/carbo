@@ -7,9 +7,8 @@ class InitialContactsUpload
   def perform(user_id, init_time)
     init_time = Time.at(init_time)
     ads_last_refreshed_at = REDIS.get('server.effective_ads.last_refreshed_at')
-    contacts_last_refreshed_at = REDIS.get('server.effective_user_contacts.last_refreshed_at')
 
-    if ads_last_refreshed_at.present? && contacts_last_refreshed_at.present? && Time.zone.parse(ads_last_refreshed_at).after?(init_time) && Time.zone.parse(contacts_last_refreshed_at).after?(init_time)
+    if ads_last_refreshed_at.present? && Time.zone.parse(ads_last_refreshed_at).after?(init_time)
       user = User.find(user_id)
       ApplicationCable::UserChannel.broadcast_to(user, type: 'contacts')
     else

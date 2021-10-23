@@ -936,28 +936,6 @@ ALTER SEQUENCE public.demo_phone_numbers_id_seq OWNED BY public.demo_phone_numbe
 
 
 --
--- Name: effective_user_contacts; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.effective_user_contacts AS
- SELECT user_contacts.id,
-    user_contacts.user_id,
-    user_contacts.phone_number_id,
-    user_contacts.name
-   FROM (public.user_contacts
-     JOIN public.users ON ((users.phone_number_id = user_contacts.phone_number_id)))
-UNION
- SELECT user_contacts.id,
-    user_contacts.user_id,
-    user_contacts.phone_number_id,
-    user_contacts.name
-   FROM public.user_contacts
-  WHERE (user_contacts.phone_number_id IN ( SELECT DISTINCT effective_ads.phone_number_id
-           FROM public.effective_ads))
-  WITH NO DATA;
-
-
---
 -- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2175,13 +2153,6 @@ CREATE INDEX index_effective_ads_on_search_query ON public.effective_ads USING g
 
 
 --
--- Name: index_effective_user_contacts_on_phone_number_id_and_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_effective_user_contacts_on_phone_number_id_and_user_id ON public.effective_user_contacts USING btree (phone_number_id, user_id);
-
-
---
 -- Name: index_events_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2746,6 +2717,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210924204212'),
 ('20210924210053'),
 ('20210925082350'),
-('20211023130942');
+('20211023130942'),
+('20211023132934');
 
 
