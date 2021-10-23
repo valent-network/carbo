@@ -70,28 +70,8 @@ RSpec.configure do |config|
   end
 
   config.before(:all) do
-    {
-      1 => 'fuel',
-      2 => 'gear',
-      3 => 'race',
-      4 => 'year',
-      5 => 'color',
-      6 => 'maker',
-      7 => 'model',
-      8 => 'region',
-      9 => 'wheels',
-      10 => 'address',
-      11 => 'carcass',
-      12 => 'customs_clear',
-      13 => 'city',
-      14 => 'state_num',
-      15 => 'seller_name',
-      16 => 'engine_capacity',
-      17 => 'horse_powers',
-      18 => 'fuel_string',
-      19 => 'new_car',
-    }.each do |key, value|
-      AdOptionType.create(id: key, name: value)
+    %w[fuel gear race year color maker model region wheels address carcass customs_clear city state_num seller_name engine_capacity horse_powers fuel_string new_car].each do |ad_option_type|
+      AdOptionType.create(name: ad_option_type)
     end
     KnownAd.refresh(concurrently: false)
     EffectiveAd.refresh(concurrently: false)
