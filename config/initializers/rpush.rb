@@ -4,7 +4,13 @@ Rpush.configure do |config|
   config.client = :active_record
 
   # Options passed to Redis.new
-  # config.redis_options = {}
+  redis_options = {
+    host: ENV['REDIS_SERVICE_HOST'],
+    password: ENV['REDIS_SERVICE_PASSWORD'],
+    port: ENV['REDIS_SERVICE_PORT'],
+  }
+
+  config.redis_options = redis_options
 
   # Frequency in seconds to check for new notifications.
   config.push_poll = 2
