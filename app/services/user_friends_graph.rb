@@ -4,6 +4,7 @@ class UserFriendsGraph
   REDIS_OPTIONS = {
     host: ENV.fetch('REDISGRAPH_SERVICE_HOST', 'localhost'),
     port: ENV.fetch('REDISGRAPH_SERVICE_PORT', '63790'),
+    password: ENV.fetch('REDISGRAPH_SERVICE_PASSWORD', nil),
   }
 
   attr_reader :graph
