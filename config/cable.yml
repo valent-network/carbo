@@ -8,4 +8,6 @@ test:
 
 production:
   adapter: redis
-  url: <%= "redis://#{ENV['REDIS_SERVICE_HOST']}:6379" %>
+  password: <%= "#{ENV['REDIS_SERVICE_PASSWORD']}" %>
+  host: <%= "#{ENV['REDIS_SERVICE_HOST']}" %>
+  port: <%= "#{ENV['REDIS_SERVICE_PORT']}" %>
