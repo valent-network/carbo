@@ -10,7 +10,9 @@ class UserFriendsGraph
   attr_reader :graph
 
   def initialize
-    @graph = RedisGraph.new(BASE_GRAPH_NAME, REDIS_OPTIONS)
+    redis_options = REDIS_OPTIONS
+    redis_options.delete(:password) if REDIS_OPTIONS[:password].blank?
+    @graph = RedisGraph.new(BASE_GRAPH_NAME, redis_options)
   rescue Redis::CannotConnectError
     @graph = nil
   end
