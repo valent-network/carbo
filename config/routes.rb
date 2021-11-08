@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 # frozen_string_literal: true
 
 git_commit = ENV.fetch('GIT_COMMIT') { %x(git rev-parse --short HEAD).strip }
@@ -11,6 +13,7 @@ Rails.application.routes.draw do
 
   authenticate :admin_user do
     mount ActiveAnalytics::Engine, at: 'analytics'
+    mount Sidekiq::Web, at: 'sidekiq'
   end
 
   get :health, to: ->(_env) { [200, {}, [{ build: ENV.fetch('GIT_COMMIT') { git_commit } }.to_json]] }
