@@ -96,20 +96,8 @@ jobs:
         mkdir -p $HOME/.kube
         curl --silent -X GET -H 'Authorization: Bearer ${{ secrets.DO_TOKEN }}' https://api.digitalocean.com/v2/kubernetes/clusters/${{ secrets.K8_ID }}/kubeconfig?expiry_seconds=3600 -o $HOME/.kube/config
 
-    - name: Update sidekiq-contacts image for k8 cluster
-      run: kubectl set image --record deployment/sidekiq-contacts sidekiq-contacts=recario/server:${{steps.vars.outputs.tag}}
-
-    - name: Update sidekiq-main image for k8 cluster
-      run: kubectl set image --record deployment/sidekiq-main sidekiq-main=recario/server:${{steps.vars.outputs.tag}}
-
-    - name: Update sidekiq-matviews image for k8 cluster
-      run: kubectl set image --record deployment/sidekiq-matviews sidekiq-matviews=recario/server:${{steps.vars.outputs.tag}}
-
-    - name: Update sidekiq-sms image for k8 cluster
-      run: kubectl set image --record deployment/sidekiq-sms sidekiq-sms=recario/server:${{steps.vars.outputs.tag}}
-
-    - name: Update sidekiq-system image for k8 cluster
-      run: kubectl set image --record deployment/sidekiq-system sidekiq-system=recario/server:${{steps.vars.outputs.tag}}
+    - name: Update sidekiq-all image for k8 cluster
+      run: kubectl set image --record deployment/sidekiq-all sidekiq-all=recario/server:${{steps.vars.outputs.tag}}
 
     - name: Update rpush image for k8 cluster
       run: kubectl set image --record deployment/rpush rpush=recario/server:${{steps.vars.outputs.tag}}
