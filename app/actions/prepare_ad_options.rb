@@ -42,8 +42,12 @@ class PrepareAdOptions
     values = details.values.select(&:present?).uniq
 
     ad_option_types = AdOptionType.where(name: keys).to_a
-    ad_option_values = AdOptionValue.where(value: values).to_a
     ad_options = ad.ad_options.to_a
+
+    ad_option_values = AdOptionValue.where(value: values).to_a
+    to_create_values = values - ad_option_values.map(&:value)
+    to_create_values.each { |v| AdOptionValue.create(value: v) }
+    ad_option_values = AdOptionValue.where(value: values).to_a
 
     if description_body.present?
       ad_description = ad.ad_description || ad.build_ad_description
@@ -75,7 +79,7 @@ class PrepareAdOptions
       if val.present?
         opt_value = ad_option_values.detect do |ov|
           val.class.in?([TrueClass, FalseClass]) ? (ActiveModel::Type::Boolean.new.cast(ov.value) == val) : (ov.value == val.to_s)
-        end || AdOptionValue.create(value: val)
+        end
         ad_option.ad_option_value = opt_value
       else
         ad_option.mark_for_destruction
