@@ -75,7 +75,7 @@ class PrepareAdOptions
       if val.present?
         opt_value = ad_option_values.detect do |ov|
           val.class.in?([TrueClass, FalseClass]) ? (ActiveModel::Type::Boolean.new.cast(ov.value) == val) : (ov.value == val.to_s)
-        end || AdOptionValue.new(value: val)
+        end || AdOptionValue.create(value: val)
         ad_option.ad_option_value = opt_value
       else
         ad_option.mark_for_destruction
