@@ -9,7 +9,7 @@
 
 Rails.application.config.middleware.insert_before(0, Rack::Cors) do
   allow do
-    origins ENV['CORS_ALLOWED_ORIGINS'].to_s.split(',').map(&:strip)
+    origins ENV.fetch('CORS_ALLOWED_ORIGINS', 'localhost:3001,recar.io,www.recar.io,app.recar.io').to_s.split(',').map(&:strip)
 
     resource '*',
       headers: :any,
