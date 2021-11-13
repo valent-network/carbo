@@ -4,14 +4,14 @@ RUN apk update && apk --no-cache add build-base postgresql-dev tzdata git bash n
 
 RUN mkdir -p /app/tmp/pids
 
-COPY Gemfile* /tmp/
+COPY Gemfile* /gems/
 
 ARG GIT_COMMIT
 ENV GIT_COMMIT $GIT_COMMIT
 
-WORKDIR /tmp
+WORKDIR /gems
 
-RUN gem install bundler -v 2.2.28 && bundle install -j 2 --full-index --without development test
+RUN gem install bundler -v 2.2.31 && bundle install -j 8 --full-index --without development test
 
 WORKDIR /app
 
