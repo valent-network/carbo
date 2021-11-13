@@ -3,7 +3,7 @@ class UserFriendsGraph
   BASE_GRAPH_NAME = 'UserFriends'
   REDIS_OPTIONS = {
     host: ENV.fetch('REDISGRAPH_SERVICE_HOST', 'localhost'),
-    port: ENV.fetch('REDISGRAPH_SERVICE_PORT', '63790'),
+    port: ENV.fetch('REDISGRAPH_SERVICE_PORT', '6379'),
     password: ENV.fetch('REDISGRAPH_SERVICE_PASSWORD', nil),
   }
 
