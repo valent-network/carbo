@@ -17,6 +17,7 @@ en:
         updated_at: "Updated"
   active_admin:
     dashboard: "Dashboard"
+    users: "Users"
     dashboard_welcome:
       welcome: "Welcome to Active Admin. This is the default dashboard page."
       call_to_action: "To add dashboard sections, checkout 'app/admin/dashboard.rb'"

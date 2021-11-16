@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(PromoEvent) do
+  menu label: proc { I18n.t('active_admin.promo_events') }, parent: I18n.t('active_admin.other')
   actions :index, :show
 
   index do

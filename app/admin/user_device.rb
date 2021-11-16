@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(UserDevice) do
+  menu label: proc { I18n.t('active_admin.user_devices') }, parent: I18n.t('active_admin.other')
   actions :index
 
   includes :user

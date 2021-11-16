@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(User) do
+  menu priority: 2, label: proc { I18n.t('active_admin.users') }
   actions :index, :show
 
   includes :phone_number

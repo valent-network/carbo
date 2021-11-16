@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(Event) do
+  menu priority: 6, label: proc { I18n.t('active_admin.events') }
   actions :index, :show
 
   includes :user
