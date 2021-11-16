@@ -33,11 +33,11 @@ ActiveAdmin.register(DashboardStats) do
           semantic_form_for('rkey', url: update_redis_key_admin_dashboard_stat_path(1), method: :post) do |f|
             f.inputs do
               f.input(:key, as: :hidden, input_html: { value: rkey }, label: false) +
-              f.input(:value, input_html: { value: REDIS.get(rkey) }, label: false)
+                f.input(:value, input_html: { value: REDIS.get(rkey) }, label: false)
             end +
-            f.actions do
-              f.submit('Update')
-            end
+              f.actions do
+                f.submit('Update')
+              end
           end
         end
       end

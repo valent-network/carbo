@@ -66,3 +66,8 @@ RSpec/ExpectInHook:
   Enabled: false
 RSpec/EmptyExampleGroup:
   Enabled: false
+
+### New version
+
+Layout/EmptyLineAfterMagicComment:
+  Enabled: false # too many noise at the moment

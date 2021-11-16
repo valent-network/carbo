@@ -32,9 +32,9 @@ ActiveAdmin.register(ChatRoom) do
         f.inputs do
           f.input(:body, as: :text, input_html: { maxlength: 255, rows: 5 })
         end +
-        f.actions do
-          f.submit('Send')
-        end
+          f.actions do
+            f.submit('Send')
+          end
       end
     end
     active_admin_comments

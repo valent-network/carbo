@@ -6,11 +6,11 @@ module Api
         :new_messages_count,
         :title,
         :photo,
-        :chat_room_users,
+        :chat_room_users
 
-        def updated_at
-          last_message.created_at
-        end
+      def updated_at
+        last_message.created_at
+      end
 
       def messages
         [
