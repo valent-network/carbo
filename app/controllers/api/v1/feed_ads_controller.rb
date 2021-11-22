@@ -3,6 +3,22 @@
 module Api
   module V1
     class FeedAdsController < ApplicationController
+      FILTERS = [
+        :contacts_mode,
+        :min_price,
+        :max_price,
+        :min_year,
+        :max_year,
+        :query,
+        {
+          hops_count: [],
+          gears: [],
+          wheels: [],
+          carcasses: [],
+          fuels: [],
+        }
+      ]
+
       before_action :require_auth
 
       def index
@@ -27,7 +43,7 @@ module Api
       def filter_params
         return {} unless params[:filters]
 
-        params[:filters].permit(:contacts_mode, :min_price, :max_price, :min_year, :max_year, :query, gears: [], wheels: [], carcasses: [], fuels: [])
+        params[:filters].permit(*FILTERS)
       end
     end
   end

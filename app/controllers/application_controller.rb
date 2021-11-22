@@ -10,13 +10,7 @@ class ApplicationController < ActionController::Base
   end
 
   def filters
-    payload = {
-      fuels: ['Газ', 'Газ / Бензин', 'Бензин', 'Гибрид', 'Дизель', 'Электро'],
-      wheels: ['Передний', 'Задний', 'Полный'],
-      carcasses: ['Хэтчбек', 'Купе', 'Универсал', 'Седан', 'Пикап', 'Внедорожник / Кроссовер', 'Лифтбек', 'Кабриолет', 'Родстер', 'Минивэн'],
-      gears: ['Автомат', 'Ручная / Механика', 'Робот', 'Вариатор', 'Типтроник'],
-    }
-    render(json: payload)
+    render(json: UserFriendlyAdsQuery::FILTERS)
   end
 
   def multibutton
