@@ -24,20 +24,6 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 
 
 --
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
-
-
---
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -996,7 +982,7 @@ CREATE MATERIALIZED VIEW public.promo_events_matview AS
    FROM ((public.events
      JOIN public.users ON ((events.user_id = users.id)))
      JOIN public.phone_numbers ON ((users.phone_number_id = phone_numbers.id)))
-  WHERE (((events.name)::text = ANY ((ARRAY['sign_up'::character varying, 'set_referrer'::character varying, 'invited_user'::character varying])::text[])) AND (NOT (users.phone_number_id IN ( SELECT demo_phone_numbers.phone_number_id
+  WHERE (((events.name)::text = ANY (ARRAY[('sign_up'::character varying)::text, ('set_referrer'::character varying)::text, ('invited_user'::character varying)::text])) AND (NOT (users.phone_number_id IN ( SELECT demo_phone_numbers.phone_number_id
            FROM public.demo_phone_numbers))))
   ORDER BY events.created_at DESC
   WITH NO DATA;
@@ -1339,16 +1325,6 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
-
---
--- Name: users_temp; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.users_temp (
-    id integer,
-    known_numbers integer
-);
 
 
 --
@@ -2148,6 +2124,20 @@ CREATE UNIQUE INDEX index_on_chat_rooms_user_id_where_system_true ON public.chat
 --
 
 CREATE UNIQUE INDEX index_phone_numbers_on_full_number ON public.phone_numbers USING btree (full_number);
+
+
+--
+-- Name: index_promo_events_matview_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_promo_events_matview_on_id ON public.promo_events_matview USING btree (id);
+
+
+--
+-- Name: index_promo_events_matview_on_refcode; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_promo_events_matview_on_refcode ON public.promo_events_matview USING btree (refcode);
 
 
 --
