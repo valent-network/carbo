@@ -1252,6 +1252,36 @@ ALTER SEQUENCE public.system_stats_id_seq OWNED BY public.system_stats.id;
 
 
 --
+-- Name: user_blocked_phone_numbers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_blocked_phone_numbers (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    phone_number_id bigint NOT NULL
+);
+
+
+--
+-- Name: user_blocked_phone_numbers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_blocked_phone_numbers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_blocked_phone_numbers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_blocked_phone_numbers_id_seq OWNED BY public.user_blocked_phone_numbers.id;
+
+
+--
 -- Name: user_connections_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1535,6 +1565,13 @@ ALTER TABLE ONLY public.system_stats ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: user_blocked_phone_numbers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_blocked_phone_numbers ALTER COLUMN id SET DEFAULT nextval('public.user_blocked_phone_numbers_id_seq'::regclass);
+
+
+--
 -- Name: user_connections id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1783,6 +1820,14 @@ ALTER TABLE ONLY public.static_pages
 
 ALTER TABLE ONLY public.system_stats
     ADD CONSTRAINT system_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_blocked_phone_numbers user_blocked_phone_numbers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_blocked_phone_numbers
+    ADD CONSTRAINT user_blocked_phone_numbers_pkey PRIMARY KEY (id);
 
 
 --
@@ -2176,6 +2221,13 @@ CREATE UNIQUE INDEX index_static_pages_on_slug ON public.static_pages USING btre
 
 
 --
+-- Name: index_user_blocked_phone_numbers_on_user_id_and_phone_number_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_blocked_phone_numbers_on_user_id_and_phone_number_id ON public.user_blocked_phone_numbers USING btree (user_id, phone_number_id);
+
+
+--
 -- Name: index_user_connections_on_uniq; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2375,6 +2427,14 @@ ALTER TABLE ONLY public.ad_options
 
 
 --
+-- Name: user_blocked_phone_numbers fk_rails_62c5663e3d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_blocked_phone_numbers
+    ADD CONSTRAINT fk_rails_62c5663e3d FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: ad_image_links_sets fk_rails_73a21eede7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2519,6 +2579,14 @@ ALTER TABLE ONLY public.user_devices
 
 
 --
+-- Name: user_blocked_phone_numbers fk_rails_e9928cde2e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_blocked_phone_numbers
+    ADD CONSTRAINT fk_rails_e9928cde2e FOREIGN KEY (phone_number_id) REFERENCES public.phone_numbers(id);
+
+
+--
 -- Name: ads fk_rails_f7e6a33a41; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2650,6 +2718,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211023132934'),
 ('20211023133410'),
 ('20211023133756'),
-('20211023140945');
+('20211023140945'),
+('20211128102012');
 
 

@@ -21,6 +21,7 @@ class User < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :events, dependent: :delete_all
   has_many :user_connections, dependent: :delete_all
+  has_many :user_blocked_phone_numbers, dependent: :delete_all
 
   mount_base64_uploader :avatar, AvatarUploader
 
@@ -30,6 +31,10 @@ class User < ApplicationRecord
 
   def update_friends!
     USER_FRIENDS_GRAPH.update_friends_for(self)
+  end
+
+  def blocked_users_ids
+    user_blocked_phone_numbers.joins(phone_number: :user).pluck('users.id')
   end
 
   def update_connections!

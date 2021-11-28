@@ -16,6 +16,11 @@ class UserFriendlyAdsQuery
 
     hops_count = FILTERS[:hops_count].index(filters[:hops_count]&.first)
 
+    blocked_users_ids = user.blocked_users_ids
+    if blocked_users_ids.present?
+      effective_ads = effective_ads.where('ads.phone_number_id NOT IN (SELECT phone_number_id FROM user_blocked_phone_numbers WHERE user_id = ?)', user.id)
+    end
+
     if hops_count == 0 || filters[:contacts_mode] == 'directFriends'
       ads = effective_ads.where("ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts WHERE user_id = #{user.id})")
     elsif user_contacts_matched_phone_numbers.present?

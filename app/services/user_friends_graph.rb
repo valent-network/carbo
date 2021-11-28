@@ -58,7 +58,19 @@ class UserFriendsGraph
 
   # @return [friend.id, connection.id, hops_count]
   def get_friends_connections(user, hops = 1)
-    q("MATCH p=(me:User)-[:KNOWS*1..#{hops}]->(connection:User) WHERE me.id = #{user.id} RETURN DISTINCT nodes(p)[1].id, nodes(p)[length(p)].id, min(length(p))")
+    blocked_users_ids = user.blocked_users_ids.join(', ')
+
+    cypher_query = <<~CYPHER_QUERY
+      MATCH p=(me:User{id: #{user.id}})-[:KNOWS*1..#{hops}]->(connection:User)
+      WHERE ALL(
+        user IN NODES(p) WHERE (ALL(
+          blocked_id IN [#{blocked_users_ids}] WHERE user.id <> blocked_id )
+        )
+      )
+      RETURN DISTINCT NODES(p)[1].id, NODES(p)[LENGTH(p)].id, min(LENGTH(p))
+    CYPHER_QUERY
+
+    q(cypher_query)
   end
 
   def known_users_for(user, hops = 1)
