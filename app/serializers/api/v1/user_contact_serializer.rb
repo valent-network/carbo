@@ -2,7 +2,7 @@
 module Api
   module V1
     class UserContactSerializer < ActiveModel::Serializer
-      attributes :id, :name, :phone, :user
+      attributes :id, :name, :phone, :user, :is_blocked
 
       def phone
         object.phone_number.to_s

@@ -57,6 +57,7 @@ Rails.application.routes.draw do
       resources :chat_room_users, only: %i[create destroy]
       resources :messages, only: %i[index]
       resources :referrers, only: %i[show]
+      resources :blocked_user_contacts, only: %i[update]
       resource :system_chat_room, only: %i[show]
     end
 
