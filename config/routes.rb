@@ -7,6 +7,14 @@ git_commit = ENV.fetch('GIT_COMMIT') { %x(git rev-parse --short HEAD).strip }
 
 Rails.application.routes.draw do
   root to: 'application#landing'
+
+  get '/ios', to: 'https://apps.apple.com/us/app/id1458212603'
+  get '/apk', to: 'https://assets.recar.io/recario.apk'
+  get '/android', to: 'https://play.google.com/store/apps/details?id=com.viktorvsk.recario'
+  get '/news', to: 'https://t.me/recar_io'
+  get '/chat', to: 'https://t.me/recar_io_chat'
+  get '/whitepaper', to: 'https://assets.recar.io/Whitepaper.pdf'
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
