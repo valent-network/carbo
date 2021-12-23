@@ -4,7 +4,7 @@ ENV BUILD_PACKAGES="build-base postgresql-dev shared-mime-info"
 ENV DEV_PACKAGES="tzdata postgresql-client git nodejs"
 ENV EFFECTIVE_PACKAGES="bash"
 
-ENV BUNDLER_VERSION="2.2.31"
+ENV BUNDLER_VERSION="2.2.32"
 
 ARG BUNDLE_CONFIG_WITHOUT="development test"
 
