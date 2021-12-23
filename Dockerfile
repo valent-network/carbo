@@ -1,4 +1,4 @@
-FROM ruby:3.0.2-alpine AS base
+FROM ruby:3.0.3-alpine AS base
 
 ENV BUILD_PACKAGES="build-base postgresql-dev shared-mime-info"
 ENV DEV_PACKAGES="tzdata postgresql-client git nodejs"

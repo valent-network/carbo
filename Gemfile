@@ -3,13 +3,13 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.2'
+ruby '3.0.3'
 
 # Active Admin gems
 gem 'activeadmin'
 # TODO: https://github.com/formtastic/formtastic/issues/1325
 # Ruby 3
-gem 'formtastic', '4.0.0.rc1'
+gem 'formtastic', '~> 4.0'
 
 gem 'arctic_admin'
 gem 'devise'
@@ -46,16 +46,19 @@ gem 'turbosms'
 gem 'airbrake'
 gem 'newrelic_rpm'
 
-gem 'bootsnap', '>= 1.1.0', require: false
+gem 'bootsnap', '~> 1.9', require: false
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'dotenv-rails'
+  gem 'spring'
+end
+
+group :test do
   gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'rspec-rails'
   gem 'rspec-retry'
-  gem 'dotenv-rails'
-  gem 'spring'
 end
 
 group :test do
