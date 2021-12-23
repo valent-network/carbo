@@ -1,3 +1,5 @@
 # frozen_string_literal: true
 
-USER_FRIENDS_GRAPH = UserFriendsGraph.new
+Rails.application.reloader.to_prepare do
+  USER_FRIENDS_GRAPH = UserFriendsGraph.new
+end
