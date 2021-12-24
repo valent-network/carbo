@@ -6,10 +6,10 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     / TITLE OF SITE
-    %title Розыгрыш трех iPhone 11 от Рекарио и Dreamcar.ua
+    %title Участники розыгрыша Рекарио
     / Meta
     %meta{:charset => "utf-8"}/
-    %meta{:content => "Выиграй три iPhone 11 установив приложение Рекарио!", :name => "description"}/
+    %meta{:content => "Розыгрыш от Рекарио", :name => "description"}/
     %meta{:content => "автомобили, машины, купить машину, продать машину, купить авто, продать авто", :name => "keywords"}/
     %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}/
     / FAV AND TOUCH ICONS
@@ -18,28 +18,24 @@
     %link{:href => "/favicon-16x16.png", :rel => "icon", :sizes => "16x16", :type => "image/png"}/
     %link{:href => "/site.webmanifest", :rel => "manifest"}/
     / Social OG tags
-    %meta{:content => "Выиграй три iPhone 11 установив приложение Рекарио!х", :property => "og:title"}/
+    %meta{:content => "Розыгрыш от Рекарио", :property => "og:title"}/
     %meta{:content => "company", :property => "og:type"}/
     %meta{:content => "https://recar.io/network", :property => "og:url"}/
     %meta{:content => "https://recar.io/images/background-1.jpg", :property => "og:image"}/
     %meta{:content => "recar.io", :property => "og:site_name"}/
-    %meta{:content => "Участвуй в розыгрыше трёх iPhone 11", :property => "og:description"}/
+    %meta{:content => "Участвуй в розыгрыше от Рекарио", :property => "og:description"}/
     / BOOTSTRAP CSS
     %script{ src: "https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js", integrity: "sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4", crossorigin: "anonymous" }
     %link{:crossorigin => "anonymous", :href => "https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css", :rel => "stylesheet"}/
     :css
-      h1 { color: #fff; background: #8e44ad; padding: 1em 0; margin: 0; text-align: center; }
-      h2 { text-align: center; padding-top: 24px;}
-      #intro img { min-height: 600px; max-height: 600px; }
-      #verify {  }
-      #first-screen { min-height: 100%!important;  }
+      body { background: #2E2C4F }
+      #verify { padding: 0; maring: 0 }
       .step-num { background: #8e44ad; color: #fff; border-radius: 50%; padding: 2em; width: 2em; height: 2em; margin: 2em 0; font-size: 1em; font-weight: bold }
       .pagination { margin: 0; }
-      form button.btn { background: #8e44ad; color: #fff }
-      .carousel { background: #8e44ad; }
-      .carousel h2 { color: #fff; }
-      .carousel-item { min-height: 350px; }
-      .carousel a { color: azure }
-      .footer { background: #8e44ad; color: #fff; }
+      form button.btn { background: #5E56D3; color: #fff }
+      .card-footer ul {
+        justify-content: center;
+      }
+
   %body
     = yield
