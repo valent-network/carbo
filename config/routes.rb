@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   get '/privacy', to: 'application#static_page', slug: :privacy
 
   get '/network', to: 'promo_events#index'
+  get '/win', to: 'promo_events#index'
 
   get '/budget/show_ads', to: 'budget#show_ads', as: :show_budget_ads
   get '/budget/:maker/:model', to: 'budget#show_model', as: :show_model
