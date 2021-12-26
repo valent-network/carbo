@@ -11,7 +11,7 @@ require 'action_controller/railtie'
 require 'action_view/railtie'
 require 'sprockets/railtie'
 # require 'active_storage/engine'
-require 'action_mailer/railtie'
+# require 'action_mailer/railtie'
 require 'action_cable/engine'
 # require 'rails/test_unit/railtie'
 

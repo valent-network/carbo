@@ -253,18 +253,18 @@ GEM
       thor (>= 0.14, < 2.0)
     jsonapi-renderer (0.2.2)
     jwt (2.3.0)
-    kaminari (1.2.1)
+    kaminari (1.2.2)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.1)
-      kaminari-activerecord (= 1.2.1)
-      kaminari-core (= 1.2.1)
-    kaminari-actionview (1.2.1)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
       actionview
-      kaminari-core (= 1.2.1)
-    kaminari-activerecord (1.2.1)
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
       activerecord
-      kaminari-core (= 1.2.1)
-    kaminari-core (1.2.1)
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     kramdown (2.3.1)
       rexml
     listen (3.7.0)
@@ -346,7 +346,7 @@ GEM
       thor (~> 1.0)
     rainbow (3.0.0)
     rake (13.0.6)
-    ransack (2.4.2)
+    ransack (2.5.0)
       activerecord (>= 5.2.4)
       activesupport (>= 5.2.4)
       i18n
@@ -404,7 +404,7 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.15.0)
       parser (>= 3.0.1.1)
-    rubocop-performance (1.12.0)
+    rubocop-performance (1.13.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     rubocop-rspec (2.6.0)
@@ -526,7 +526,7 @@ DEPENDENCIES
   turbosms
 
 RUBY VERSION
-   ruby 3.0.3p157
+   ruby 3.1.0p0
 
 BUNDLED WITH
    2.2.32
