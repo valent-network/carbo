@@ -2,7 +2,7 @@
 
 ActiveAdmin.register(ChatRoom) do
   menu priority: 3, label: proc { I18n.t('active_admin.chat_rooms') }
-  scope :system, default: true
+  scope :system_chat_rooms, default: true
   actions :index, :show
   includes :messages, :user
 
