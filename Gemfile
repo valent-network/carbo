@@ -73,3 +73,7 @@ group :development do
   gem 'rubocop-shopify', require: false
   gem 'foreman', require: false
 end
+
+gem 'net-smtp'
+gem 'net-pop'
+gem 'net-imap'
