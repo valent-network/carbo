@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 class SendChatMessagePushNotification
   APPS = {
-    'ios' => Rpush::Client::ActiveRecord::Apnsp8::App.find_by_name('ios'),
-    'android' => Rpush::Gcm::App.find_by_name('android'),
+    'ios' => Rpush::App.find_by_name('ios'),
+    'android' => Rpush::App.find_by_name('android'),
   }
 
   def call(message:, chat_room_user:)
