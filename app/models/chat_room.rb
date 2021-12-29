@@ -6,5 +6,5 @@ class ChatRoom < ApplicationRecord
   has_many :users, through: :chat_room_users
   has_many :messages, dependent: :destroy
 
-  scope :system, -> { where(system: true) }
+  scope :system_chat_rooms, -> { where(system: true) }
 end
