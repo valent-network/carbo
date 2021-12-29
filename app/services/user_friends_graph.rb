@@ -15,6 +15,9 @@ class UserFriendsGraph
     @graph = RedisGraph.new(BASE_GRAPH_NAME, redis_options)
   rescue Redis::CannotConnectError
     @graph = nil
+  rescue RedisGraph::ServerError => e
+    @graph = nil
+    raise unless e.message == "RedisGraph module not loaded."
   end
 
   def count_users
