@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class SendChatMessagePushNotification
   APPS = {
-    'ios' => Rpush::Apnsp8::App.find_by_name('ios'),
+    'ios' => Rpush::Client::ActiveRecord::Apnsp8::App.find_by_name('ios'),
     'android' => Rpush::Gcm::App.find_by_name('android'),
   }
 
