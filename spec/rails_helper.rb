@@ -77,5 +77,6 @@ RSpec.configure do |config|
     end
     KnownAd.refresh(concurrently: false)
     EffectiveAd.refresh(concurrently: false)
+    AdsGroupedByMakerModelYear.refresh(concurrently: false)
   end
 end
