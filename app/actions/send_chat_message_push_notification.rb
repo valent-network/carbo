@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 class SendChatMessagePushNotification
   APPS = {
-    'ios' => Rpush::App.find_by_name('ios'),
-    'android' => Rpush::App.find_by_name('android'),
+    'ios' => Rpush::Client::ActiveRecord::Apnsp8::App.find_by_name('ios'),
+    'android' => Rpush::Client::ActiveRecord::Gcm::App.find_by_name('android'),
   }
 
   def call(message:, chat_room_user:)
@@ -11,7 +11,6 @@ class SendChatMessagePushNotification
     title = chat_room_user.chat_room.system? ? 'Рекарио 🌀' : "#{ad.details['maker']} #{ad.details['model']} #{ad.details['year']}"
     unread_count = Message.unread_messages_for(chat_room_user.user_id).count
     user_devices_to_receive_notification = chat_room_user.user.user_devices.where.not(push_token: ['', nil]).where(os: %w[ios android])
-
     user_devices_to_receive_notification.each do |device|
       app = APPS[device.os]
 
@@ -27,7 +26,7 @@ class SendChatMessagePushNotification
           data: { chat_room_id: chat_room_user.chat_room_id },
         }
 
-        Rpush::Apns::Notification.create(notification_params)
+        Rpush::Client::ActiveRecord::Apnsp8::Notification.create!(notification_params)
       when 'android'
         notification_params = {
           app: app,
@@ -41,7 +40,7 @@ class SendChatMessagePushNotification
           },
         }
 
-        Rpush::Gcm::Notification.create(notification_params)
+        Rpush::Client::ActiveRecord::Gcm::Notification.create!(notification_params)
       end
     end
 

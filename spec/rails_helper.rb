@@ -72,6 +72,8 @@ RSpec.configure do |config|
   end
 
   config.before(:all) do
+    Rpush::Client::ActiveRecord::Apnsp8::App.where(name: 'ios', connections: 2, apn_key: "BEGINEND", apn_key_id: "ID", environment: 'production', team_id: 'team', bundle_id: 'com.recar.io').first_or_create!
+    Rpush::Client::ActiveRecord::Gcm::App.where(name: 'android', connections: 2, auth_key: 'INVALID').first_or_create!
     %w[fuel gear race year color maker model region wheels address carcass customs_clear city state_num seller_name engine_capacity horse_powers fuel_string new_car].each do |ad_option_type|
       AdOptionType.create(name: ad_option_type)
     end
