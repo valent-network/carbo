@@ -381,8 +381,8 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.5)
-    rpush (6.0.1)
-      activesupport (>= 5.2)
+    rpush (5.4.0)
+      activesupport (>= 5.0)
       jwt (>= 1.5.6)
       multi_json (~> 1.0)
       net-http-persistent
@@ -536,7 +536,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 6)
   redisgraph
-  rpush
+  rpush (~> 5)
   rspec-rails
   rspec-retry
   rubocop
