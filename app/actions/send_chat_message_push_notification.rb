@@ -28,6 +28,9 @@ class SendChatMessagePushNotification
 
         Rpush::Client::ActiveRecord::Apnsp8::Notification.create!(notification_params)
       when 'android'
+        notification_title = device.build_version.to_i >= 26 ? title : 'Новое сообщение'
+        notification_message = device.build_version.to_i >= 26 ? message_body : 'Чтобы прочитать, нужно обновить приложение'
+
         notification_params = {
           app: app,
           registration_ids: [device.push_token],
@@ -35,8 +38,12 @@ class SendChatMessagePushNotification
           data: {
             chat_room_id: chat_room_user.chat_room_id,
             unread_count: unread_count,
-            title: device.build_version.to_i >= 26 ? title : 'Новое сообщение',
-            message: device.build_version.to_i >= 26 ? message_body : 'Чтобы прочитать, нужно обновить приложение',
+            title: notification_title,
+            message: notification_message,
+          },
+          notification: {
+            title: notification_title,
+            body: notification_message,
           },
         }
 
