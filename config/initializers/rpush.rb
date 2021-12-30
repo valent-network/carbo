@@ -54,7 +54,11 @@ Rpush.reflect do |on|
   # Called when a notification is successfully delivered.
   on.notification_delivered do |notification|
     Rails.logger.info("[notification_delivered] notification_id=#{notification.id}")
-    notification.destroy
+    begin
+      notification.destroy
+    rescue FrozenError, StandardError => e
+      Airbrake.notify(e)
+    end
   end
 
   # Called when notification delivery failed.
@@ -94,7 +98,7 @@ Rpush.reflect do |on|
 
     begin
       notification.destroy
-    rescue StandardError => e
+    rescue FrozenError, StandardError => e
       Airbrake.notify(e)
     end
   end
