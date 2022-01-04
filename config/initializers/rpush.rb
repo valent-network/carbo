@@ -54,10 +54,11 @@ Rpush.reflect do |on|
   # Called when a notification is successfully delivered.
   on.notification_delivered do |notification|
     Rails.logger.info("[notification_delivered] notification_id=#{notification.id}")
+
     begin
       notification.destroy
-    rescue FrozenError => e
-      Airbrake.notify(e)
+    rescue FrozenError
+      Rails.logger.error("[notification_delivered][FrozenError] notification_id=#{notification.id}")
     end
   end
 
@@ -98,8 +99,8 @@ Rpush.reflect do |on|
 
     begin
       notification.destroy
-    rescue FrozenError => e
-      Airbrake.notify(e)
+    rescue FrozenError
+      Rails.logger.error("[gcm_delivered_to_recipient][FrozenError] notification_id=#{notification.id}")
     end
   end
 
@@ -108,8 +109,8 @@ Rpush.reflect do |on|
   # recipients. (do not handle invalid registration IDs here)
   on.gcm_failed_to_recipient do |notification, error, registration_id|
     Rails.logger.error("[gcm_failed_to_recipient] notification_id=#{notification.id} error=#{error} registration_id=#{registration_id}")
-    Airbrake.notify(error)
-    UserDevice.where(push_token: registration_id).update_all(push_token: nil)
+    # Airbrake.notify(error)
+    # UserDevice.where(push_token: registration_id).update_all(push_token: nil)
   end
 
   # Called when the GCM returns a canonical registration ID.
@@ -122,8 +123,8 @@ Rpush.reflect do |on|
   # Called when the GCM returns a failure that indicates an invalid registration id.
   # You will need to delete the registration_id from your records.
   on.gcm_invalid_registration_id do |app, error, registration_id|
-    Rails.logger.error("[gcm_invalid_registration_id] app_name=#{app.name} error=#{error} registration_id=#{registration_id}")
-    Airbrake.notify(error)
+    Rails.logger.warn("[gcm_invalid_registration_id] app_name=#{app.name} error=#{error} registration_id=#{registration_id}")
+    # Airbrake.notify(error)
     UserDevice.where(push_token: registration_id).update_all(push_token: nil, os: 'android')
   end
 
