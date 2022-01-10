@@ -12,7 +12,7 @@ RSpec.describe(AdCarOptionsPresenter) do
   it { is_expected.to(be_a(Hash)) }
 
   it 'returns raw values' do
-    ad.details = { 'gear' => 'g', 'wheels' => 'w', 'carcass' => 'cc', 'color' => 'cl' }
+    ad.details = { 'gear' => 'g', 'wheels' => 'w', 'carcass' => 'cc', 'color' => 'cl', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"] }
     ad.save
     expect(subject).to(eq(
       gear: [I18n.t('ad_options.gear'), 'g'],
@@ -24,7 +24,7 @@ RSpec.describe(AdCarOptionsPresenter) do
   end
 
   it 'transforms engine_capacity + fuel => engine' do
-    ad.details = { engine_capacity: '1400', fuel: 'Diesel' }
+    ad.details = { engine_capacity: '1400', fuel: 'Diesel', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"] }
     ad.save
     expect(subject).to(eq(
       engine: [I18n.t('ad_options.engine'), I18n.t('ad_options.engine_value', value: '1.4', fuel_type: 'Diesel')],
@@ -33,7 +33,7 @@ RSpec.describe(AdCarOptionsPresenter) do
   end
 
   it 'transforms race' do
-    ad.details = { race: 100_000 }
+    ad.details = { race: 100_000, 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"] }
     ad.save
     expect(subject).to(eq(
       race: [I18n.t('ad_options.race'), I18n.t('ad_options.race_value', value: 100)],

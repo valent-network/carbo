@@ -6,12 +6,13 @@ class PrepareAdOptions
     details.delete('address')
 
     details['region'], details['city'] = details['region']
+
     description_body = details.delete('description')
     images_links = details.delete('images_json_array_tmp')
     state_num = details.delete('state_num').to_s.strip
     seller_name = details.delete('seller_name').to_s.strip
-    region = details.delete('region').to_s.strip
-    city = details.delete('city').to_s.strip
+    region = details['region'].to_s.strip
+    city = details['city'].to_s.strip
 
     if region.present? && city.present?
       region_record = Region.where(name: region).first_or_create
@@ -25,6 +26,7 @@ class PrepareAdOptions
         ad.city = city_record
       rescue => e
         Rails.logger.error(e)
+        Sidekiq.logger.error(e)
       end
     end
 
@@ -35,8 +37,12 @@ class PrepareAdOptions
       images_links
     else
       Rails.logger.error("[PrepareAdOptions][NoImages]#{images_links}")
+      Sidekiq.logger.error("[PrepareAdOptions][NoImages]#{images_links}")
       []
     end
+
+    details.delete('region')
+    details.delete('city')
 
     keys = details.keys.uniq
     values = details.values.select(&:present?).uniq

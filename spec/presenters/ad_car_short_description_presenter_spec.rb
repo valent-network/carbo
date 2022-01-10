@@ -13,6 +13,7 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
       gear: 'Manual',
       fuel: 'Gas',
       horse_powers: 333,
+      images_json_array_tmp: ["#{FFaker::Image.url}#{SecureRandom.hex}"],
     }
   end
   let(:ad) do

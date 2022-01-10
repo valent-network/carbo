@@ -83,7 +83,12 @@ class UserFriendsGraph
   private
 
   def q(query_string)
-    return Rails.logger.warn('[UserFriendsGraph] OFF') unless graph
+    unless graph
+      msg = '[UserFriendsGraph] OFF'
+      Rails.logger.warn(msg)
+      Sidekiq.logger.warn(msg)
+      return false
+    end
 
     t1 = Time.now.to_f
     debug(query_string)
@@ -97,12 +102,18 @@ class UserFriendsGraph
   end
 
   def explain(query)
-    return Rails.logger.warn('[UserFriendsGraph] OFF') unless graph
+    unless graph
+      msg = '[UserFriendsGraph] OFF'
+      Rails.logger.warn(msg)
+      Sidekiq.logger.warn(msg)
+      return false
+    end
 
     graph.connection.call("GRAPH.PROFILE", BASE_GRAPH_NAME, query)
   end
 
   def debug(message)
     Rails.logger.info(ActiveSupport::LogSubscriber.new.send(:color, message, :red))
+    Sidekiq.logger.info(ActiveSupport::LogSubscriber.new.send(:color, message, :red))
   end
 end

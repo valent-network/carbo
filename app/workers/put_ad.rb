@@ -56,12 +56,12 @@ class PutAd
           logger.info("[PutAd][#{address}]")
         else
           callback(errors: ad.errors.to_hash, address: address, status: STATUSES[:failed])
-          logger.info("[PutAd][Errors] #{address}")
+          logger.error("[PutAd][Errors] #{address}")
         end
       rescue PG::TRDeadlockDetected
         retry if (retries += 1) < MAX_RETRIES_ON_DEADLOCK
       rescue ActiveRecord::RecordNotUnique, PG::UniqueViolation
-        logger.info("[PutAd][DuplicateRaceCondition] #{address}")
+        logger.warn("[PutAd][DuplicateRaceCondition] #{address}")
       end
     end
   end
