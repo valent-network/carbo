@@ -10,10 +10,10 @@ redis_options = {
 
 Sidekiq.configure_server do |config|
   config.redis = redis_options
-  # config.logger = Rails.logger
-  config.logger.level = Logger::WARN
+  config.logger.level = Rails.logger.level
 end
 
 Sidekiq.configure_client do |config|
+  config.logger.level = Rails.logger.level
   config.redis = redis_options
 end
