@@ -5,7 +5,16 @@ class PrepareAdOptions
 
     details.delete('address')
 
-    details['region'], details['city'] = details['region']
+    if details['region'].blank? || details['city'].blank?
+      if details['region'].is_a?(Array)
+        details['region'], details['city'] = details['region']
+        Rails.logger.warn("[PrepareAdOptions][region-old] #{details}")
+        Sidekiq.logger.warn("[PrepareAdOptions][region-old] #{details}")
+      else
+        Rails.logger.error("[PrepareAdOptions][region] #{details}")
+        Sidekiq.logger.error("[PrepareAdOptions][region] #{details}")
+      end
+    end
 
     description_body = details.delete('description')
     images_links = details.delete('images_json_array_tmp')
