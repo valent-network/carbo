@@ -5,14 +5,14 @@ require 'rails_helper'
 RSpec.describe(AdCarOptionsPresenter) do
   subject { described_class.new.call(ad.details) }
 
-  let(:region) { create(:region, name: 'kh') }
-  let(:city) { create(:city, region: region) }
-  let(:ad) { create(:ad, :active, city: city) }
+  # let(:region) { create(:region, name: 'kh') }
+  # let(:city) { create(:city, region: region) }
+  let(:ad) { create(:ad, :active) }
 
   it { is_expected.to(be_a(Hash)) }
 
   it 'returns raw values' do
-    ad.details = { 'gear' => 'g', 'wheels' => 'w', 'carcass' => 'cc', 'color' => 'cl', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"] }
+    ad.details = { 'gear' => 'g', 'wheels' => 'w', 'carcass' => 'cc', 'color' => 'cl', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: 'kh', city: 'city-kh' }
     ad.save
     expect(subject).to(eq(
       gear: [I18n.t('ad_options.gear'), 'g'],
@@ -24,7 +24,7 @@ RSpec.describe(AdCarOptionsPresenter) do
   end
 
   it 'transforms engine_capacity + fuel => engine' do
-    ad.details = { engine_capacity: '1400', fuel: 'Diesel', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"] }
+    ad.details = { engine_capacity: '1400', fuel: 'Diesel', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: 'kh', city: 'city-kh' }
     ad.save
     expect(subject).to(eq(
       engine: [I18n.t('ad_options.engine'), I18n.t('ad_options.engine_value', value: '1.4', fuel_type: 'Diesel')],
@@ -33,7 +33,7 @@ RSpec.describe(AdCarOptionsPresenter) do
   end
 
   it 'transforms race' do
-    ad.details = { race: 100_000, 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"] }
+    ad.details = { race: 100_000, 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: 'kh', city: 'city-kh' }
     ad.save
     expect(subject).to(eq(
       race: [I18n.t('ad_options.race'), I18n.t('ad_options.race_value', value: 100)],

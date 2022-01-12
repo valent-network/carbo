@@ -19,7 +19,8 @@ FactoryBot.define do
         gear: FFaker::Vehicle.transmission,
         wheels: FFaker::Vehicle.drivetrain,
         carcass: FFaker::Vehicle.interior_upholstery,
-        region: [FFaker::AddressRU.province, FFaker::AddressRU.city],
+        region: FFaker::AddressRU.province,
+        city: FFaker::AddressRU.city,
         color: FFaker::Vehicle.mfg_color(0),
         images_json_array_tmp: (0..rand(1..5)).to_a.map { |_i| "#{FFaker::Image.url}#{SecureRandom.hex}" },
       }

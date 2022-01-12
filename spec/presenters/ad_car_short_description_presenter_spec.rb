@@ -14,10 +14,12 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
       fuel: 'Gas',
       horse_powers: 333,
       images_json_array_tmp: ["#{FFaker::Image.url}#{SecureRandom.hex}"],
+      region: 'kh',
+      city: 'Kharkiv',
     }
   end
   let(:ad) do
-    a = create(:ad, :active, city: create(:city, name: 'Kharkiv'))
+    a = create(:ad, :active)
     a.details = ad_details
     a.save
     a

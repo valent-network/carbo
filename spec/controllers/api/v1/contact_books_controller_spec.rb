@@ -19,6 +19,7 @@ RSpec.describe(Api::V1::ContactBooksController) do
 
   describe '#destroy' do
     it 'OK' do
+      expect(USER_FRIENDS_GRAPH).to(receive(:delete_friends_for))
       delete :destroy, params: { id: ad.id }
       expect(response).to(be_ok)
     end
