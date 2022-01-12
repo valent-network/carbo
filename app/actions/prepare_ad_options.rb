@@ -8,8 +8,9 @@ class PrepareAdOptions
     if details['region'].blank? || details['city'].blank?
       if details['region'].is_a?(Array)
         details['region'], details['city'] = details['region']
-        Rails.logger.warn("[PrepareAdOptions][region-old] #{details}")
-        Sidekiq.logger.warn("[PrepareAdOptions][region-old] #{details}")
+        # TODO: FIX
+        # Rails.logger.warn("[PrepareAdOptions][region-old] #{details}")
+        # Sidekiq.logger.warn("[PrepareAdOptions][region-old] #{details}")
       else
         Rails.logger.error("[PrepareAdOptions][region] #{details}")
         Sidekiq.logger.error("[PrepareAdOptions][region] #{details}")
