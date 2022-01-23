@@ -6,7 +6,7 @@ class PostgresCmdWorker
 
   def perform(table_name)
 
-    if effective_ads
+    if table_name == 'effective_ads'
       last_refreshed_at = REDIS.get('server.effective_ads.last_refreshed_at')
       return if last_refreshed_at.present? && (Time.zone.now - Time.zone.parse(last_refreshed_at)) < 5
     end
