@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class SendSystemMessageToChatRoom
-  def call(user_id:, message_text:)
+  def call(user_id:, message_text:, async: true)
     user = User.find(user_id)
 
     # We need this workaround to make system notifications work like regular chats
@@ -18,10 +18,12 @@ class SendSystemMessageToChatRoom
       message.save!
     end
 
-    user_payload = Api::V1::ChatRoomListSerializer.new(user, chat_room).first
-    ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: user_payload)
-    ApplicationCable::UserChannel.broadcast_to(user, type: 'unread_update', count: Message.unread_messages_for(user.id).count)
-    SendChatMessagePushNotification.new.call(message: message, chat_room_user: target_user)
+    if async
+      user_payload = Api::V1::ChatRoomListSerializer.new(user, chat_room).first
+      ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: user_payload)
+      ApplicationCable::UserChannel.broadcast_to(user, type: 'unread_update', count: Message.unread_messages_for(user.id).count)
+      SendChatMessagePushNotification.new.call(message: message, chat_room_user: target_user)
+    end
 
     chat_room
   end
