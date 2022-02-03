@@ -23,7 +23,7 @@ class SendChatMessagePushNotification
           alert: alert,
           sound: 'default',
           badge: unread_count,
-          data: { chat_room_id: chat_room_user.chat_room_id },
+          data: { chat_room_id: chat_room_user.chat_room_id, notification_action: 'open_chat_room' },
         }
 
         Rpush::Client::ActiveRecord::Apnsp8::Notification.create!(notification_params)
@@ -36,6 +36,7 @@ class SendChatMessagePushNotification
           registration_ids: [device.push_token],
           priority: 'high',
           data: {
+            notification_action: 'open_chat_room',
             chat_room_id: chat_room_user.chat_room_id,
             unread_count: unread_count,
             title: notification_title,

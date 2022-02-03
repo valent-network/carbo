@@ -55,11 +55,7 @@ Rpush.reflect do |on|
   on.notification_delivered do |notification|
     Rails.logger.info("[notification_delivered] notification_id=#{notification.id}")
 
-    begin
-      notification.destroy
-    rescue FrozenError
-      Rails.logger.error("[notification_delivered][FrozenError] notification_id=#{notification.id}")
-    end
+    notification.destroy
   end
 
   # Called when notification delivery failed.
@@ -96,12 +92,6 @@ Rpush.reflect do |on|
   # recipients.
   on.gcm_delivered_to_recipient do |notification, registration_id|
     Rails.logger.info("[gcm_delivered_to_recipient] notification_id=#{notification.id} registration_id=#{registration_id}")
-
-    begin
-      notification.destroy
-    rescue FrozenError
-      Rails.logger.error("[gcm_delivered_to_recipient][FrozenError] notification_id=#{notification.id}")
-    end
   end
 
   # Called for each recipient which fails to receive a notification. This
