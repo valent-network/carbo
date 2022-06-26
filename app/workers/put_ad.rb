@@ -43,7 +43,7 @@ class PutAd
 
     if ad_contract.failure?
       callback(errors: ad_contract.errors.to_h, address: address, status: STATUSES[:failed])
-      logger.info("[PutAd][ValidationErrors] #{address}")
+      logger.warn("[PutAd][ValidationErrors] address=#{address} errors=#{ad_contract.errors.to_h}")
     else
       ad.assign_attributes(ad_params.slice(:price, :phone, :ad_type))
       ad.updated_at = Time.zone.now
