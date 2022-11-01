@@ -32,8 +32,8 @@ class PutAd
 
   MAX_RETRIES_ON_DEADLOCK = 3
 
-  def perform(zipped_ad_params)
-    original_ad_params = Zlib.inflate(zipped_ad_params)
+  def perform(base64_zipped_ad_params)
+    original_ad_params = Zlib.inflate(Base64.urlsafe_decode64(base64_zipped_ad_params))
     ad_params = JSON.parse(original_ad_params).with_indifferent_access
 
     address = ad_params[:details][:address]

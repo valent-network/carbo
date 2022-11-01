@@ -8,7 +8,8 @@ module Api
       def update
         if params[:contacts]
           zipped_contacts = Zlib.deflate(params[:contacts].to_json).to_s
-          UploadUserContactsJob.perform_async(current_user.id, zipped_contacts)
+          base64_zipped_contacts = Base64.urlsafe_encode64(zipped_contacts)
+          UploadUserContactsJob.perform_async(current_user.id, base64_zipped_contacts)
         end
 
         render(json: { message: :ok })

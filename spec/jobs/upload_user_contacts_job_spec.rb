@@ -11,31 +11,31 @@ RSpec.describe(UploadUserContactsJob) do
   it 'works' do
     user_contacts = [{ 'phoneNumbers' => ['+380931234567'], 'name' => 'Alice' }].to_json
     allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
-    expect { subject.perform(user.id, Zlib.deflate(user_contacts)) }.to(change(UserContact, :count).from(0).to(1))
+    expect { subject.perform(user.id, Base64.urlsafe_encode64(Zlib.deflate(user_contacts))) }.to(change(UserContact, :count).from(0).to(1))
   end
 
   it 'ignores semi-invalid numbers (non-9-digits)' do
     user_contacts = [{ 'phoneNumbers' => ['08005010150'], 'name' => 'Universal' }].to_json
-    expect { subject.perform(user.id, Zlib.deflate(user_contacts)) }.not_to(change(UserContact, :count))
+    expect { subject.perform(user.id, Base64.urlsafe_encode64(Zlib.deflate(user_contacts))) }.not_to(change(UserContact, :count))
   end
 
   it 'truncates long names' do
     user_contacts = [{ 'phoneNumbers' => ['+380931234567'], 'name' => 'Alice' * 100 }].to_json
     allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
-    expect { subject.perform(user.id, Zlib.deflate(user_contacts)) }.to(change(UserContact, :count).from(0).to(1))
+    expect { subject.perform(user.id, Base64.urlsafe_encode64(Zlib.deflate(user_contacts))) }.to(change(UserContact, :count).from(0).to(1))
     phone_number = PhoneNumber.where(full_number: '931234567').first
     expect(UserContact.where(phone_number: phone_number).first.name.length).to(eq(100))
   end
 
   it 'does not create records for invalid numbers' do
-    expect { subject.perform(user.id, Zlib.deflate(no_valid_numbers_contacts)) }.not_to(change(UserContact, :count))
+    expect { subject.perform(user.id, Base64.urlsafe_encode64(Zlib.deflate(no_valid_numbers_contacts))) }.not_to(change(UserContact, :count))
   end
 
   it 'changes existing contacts names' do
     user_contact = create(:user_contact, user: user)
     new_user_contacts = [{ 'phoneNumbers' => [user_contact.phone_number.to_s], name: 'New Name' }].to_json
     allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
-    expect { subject.perform(user.id, Zlib.deflate(new_user_contacts)) }.to(change { user_contact.reload.name }.from(user_contact.name).to('New Name'))
+    expect { subject.perform(user.id, Base64.urlsafe_encode64(Zlib.deflate(new_user_contacts))) }.to(change { user_contact.reload.name }.from(user_contact.name).to('New Name'))
   end
 
   it 'works for duplicate numbers' do
@@ -44,7 +44,7 @@ RSpec.describe(UploadUserContactsJob) do
       { 'phoneNumbers' => ['+380931234567'], 'name' => 'Bob' },
     ].to_json
     allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
-    expect { subject.perform(user.id, Zlib.deflate(user_contacts)) }.to(change(UserContact, :count).from(0).to(1))
+    expect { subject.perform(user.id, Base64.urlsafe_encode64(Zlib.deflate(user_contacts))) }.to(change(UserContact, :count).from(0).to(1))
   end
 
   it 'does not process invalid phone numbers' do
@@ -54,6 +54,6 @@ RSpec.describe(UploadUserContactsJob) do
       { 'phoneNumbers' => [invalid_phone_number], 'name' => 'Alice' },
     ].to_json
 
-    expect { subject.perform(user_id, Zlib.deflate(user_contacts)) }.not_to(change(PhoneNumber, :count))
+    expect { subject.perform(user_id, Base64.urlsafe_encode64(Zlib.deflate(user_contacts))) }.not_to(change(PhoneNumber, :count))
   end
 end
