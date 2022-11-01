@@ -6,7 +6,11 @@ module Api
       before_action :require_auth
 
       def update
-        UploadUserContactsJob.perform_async(current_user.id, params[:contacts].to_json)
+        if params[:contacts]
+          zipped_contacts = Zlib.deflate(params[:contacts].to_json).to_s
+          UploadUserContactsJob.perform_async(current_user.id, zipped_contacts)
+        end
+
         render(json: { message: :ok })
       end
 

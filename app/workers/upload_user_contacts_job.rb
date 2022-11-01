@@ -5,7 +5,8 @@ class UploadUserContactsJob
 
   sidekiq_options queue: 'contacts', retry: true, backtrace: false
 
-  def perform(user_id, contacts)
+  def perform(user_id, zipped_contacts)
+    contacts = Zlib.inflate(zipped_contacts)
     user = User.find(user_id)
     contacts = normalize_contacts!(JSON.parse(contacts))
     initial_contacts_count = user.user_contacts.count
