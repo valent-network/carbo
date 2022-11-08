@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(PhoneNumber, type: :model) do
+RSpec.describe(PhoneNumber) do
   it '#to_s'
   it '#demo?'
   it '#demo'

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(ApplicationCable::ChatRoomChannel, type: :channel) do
+RSpec.describe(ApplicationCable::ChatRoomChannel) do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:chat_room) { create(:chat_room) }

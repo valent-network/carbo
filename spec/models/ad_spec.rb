@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(Ad, type: :model) do
+RSpec.describe(Ad) do
   let(:ad) { create(:ad, :active) }
 
   describe '#associate_friends_with' do

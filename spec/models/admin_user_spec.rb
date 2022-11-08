@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(AdminUser, type: :model) do
+RSpec.describe(AdminUser) do
   describe 'Devise' do
     it '#database_authenticatable'
     it '#rememberable'

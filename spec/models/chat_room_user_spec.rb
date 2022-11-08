@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe(ChatRoomUser, type: :model) do
+RSpec.describe(ChatRoomUser) do
   subject { create(:chat_room_user) }
 
   context 'On callbacks' do

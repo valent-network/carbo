@@ -51,11 +51,13 @@ module Api
 
       def user_params
         return {} unless params[:user]
+
         params[:user].permit(:name, :avatar, :remove_avatar, :referrer_from_code)
       end
 
       def device_params
         return {} unless params[:device]
+
         params[:device].permit(:token, :os, :push_token, :build_version)
       end
     end

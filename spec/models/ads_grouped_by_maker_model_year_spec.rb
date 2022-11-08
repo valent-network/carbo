@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe(AdsGroupedByMakerModelYear, type: :model) do
+RSpec.describe(AdsGroupedByMakerModelYear) do
   describe '.by_budget' do
-    it "works" do
+    it "returns aggregated results by { maker => [[model, {data}]] }" do
       ads = build_list(:ad, 10, :active)
       ads.each do |ad|
         ad.details = ad.details.merge('maker' => 'BMW', 'model' => 'X6', 'year' => '2015')

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe(SellerName, type: :model) do
+RSpec.describe(SellerName) do
   pending "add some examples to (or delete) #{__FILE__}"
 end

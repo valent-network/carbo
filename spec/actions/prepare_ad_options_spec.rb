@@ -33,18 +33,13 @@ RSpec.describe(PrepareAdOptions) do
     end.to(change { ad.reload.ad_options.count }.from(1).to(0))
   end
 
-  it 'destroys records missing in details object' do
-  end
+  pending 'destroys records missing in details object'
 
-  it 'updates records correctly' do
-  end
+  pending 'updates records correctly'
 
-  it 'works for existing records' do
-  end
+  pending 'works for existing records'
 
-  it 'works for new records' do
-  end
+  pending 'works for new records'
 
-  it 'does not update records on save (i.e. price change)' do
-  end
+  pending 'does not update records on save (i.e. price change)'
 end

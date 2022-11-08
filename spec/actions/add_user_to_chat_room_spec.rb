@@ -57,8 +57,8 @@ RSpec.describe(AddUserToChatRoom) do
       expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(not_change { chat_room.reload.updated_at }
           .and(not_change { chat_room.chat_room_users.find_by(user: user).reload.updated_at })
-          .and(change(ChatRoomUser, :count).by(0)
-          .and(change(Message, :count).by(0)))))
+          .and(not_change(ChatRoomUser, :count)
+          .and(not_change(Message, :count)))))
 
       expect { invite_valid_user }.to(raise_error(StandardError))
     end
@@ -71,8 +71,8 @@ RSpec.describe(AddUserToChatRoom) do
       expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(not_change { chat_room.reload.updated_at }
           .and(not_change { chat_room.chat_room_users.find_by(user: user).reload.updated_at })
-          .and(change(ChatRoomUser, :count).by(0)
-          .and(change(Message, :count).by(0)))))
+          .and(not_change(ChatRoomUser, :count)
+          .and(not_change(Message, :count)))))
 
       expect { invite_valid_user }.to(raise_error(StandardError))
     end
@@ -85,8 +85,8 @@ RSpec.describe(AddUserToChatRoom) do
       expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(not_change { chat_room.reload.updated_at }
           .and(not_change { chat_room.chat_room_users.find_by(user: user).reload.updated_at })
-          .and(change(ChatRoomUser, :count).by(0)
-          .and(change(Message, :count).by(0)))))
+          .and(not_change(ChatRoomUser, :count)
+          .and(not_change(Message, :count)))))
 
       expect { invite_valid_user }.to(raise_error(StandardError))
     end
@@ -99,8 +99,8 @@ RSpec.describe(AddUserToChatRoom) do
       expect { initiate_valid_chat_room }.to(raise_error(StandardError)
           .and(not_change { chat_room.reload.updated_at }
           .and(not_change { chat_room.chat_room_users.find_by(user: user).reload.updated_at })
-          .and(change(ChatRoomUser, :count).by(0)
-          .and(change(Message, :count).by(0)))))
+          .and(not_change(ChatRoomUser, :count)
+          .and(not_change(Message, :count)))))
 
       expect { invite_valid_user }.to(raise_error(StandardError))
     end

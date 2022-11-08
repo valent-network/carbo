@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(UserContact, type: :model) do
+RSpec.describe(UserContact) do
   it '.ad_friends_for_user'
   it 'belongs_to user'
   it 'belongs_to phone_number'

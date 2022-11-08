@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(VerificationRequest, type: :model) do
+RSpec.describe(VerificationRequest) do
   it 'belongs_to phone_number'
 
   describe 'Validates' do

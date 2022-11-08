@@ -8,7 +8,7 @@ RSpec.describe(UploadUserContactsJob) do
     '[{"name":"Kate Bell Creative Consulting","phoneNumbers":["(555) 564-8583","(415) 555-3695"]},{"name":"Daniel Higgins","phoneNumbers":["555-478-7672","(408) 555-5270","(408) 555-3514"]},{"name":"John Appleseed","phoneNumbers":["888-555-5512","888-555-1212"]},{"name":"Anna Haro","phoneNumbers":["555-522-8243"]},{"name":"Hank M. Zakroff Financial Services Inc.","phoneNumbers":["(555) 766-4823","(707) 555-1854"]},{"name":"David Taylor","phoneNumbers":["555-610-6679"]}]'
   end
 
-  it 'works' do
+  it 'creates UserContact record in database' do
     user_contacts = [{ 'phoneNumbers' => ['+380931234567'], 'name' => 'Alice' }].to_json
     allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
     expect { subject.perform(user.id, Base64.urlsafe_encode64(Zlib.deflate(user_contacts))) }.to(change(UserContact, :count).from(0).to(1))

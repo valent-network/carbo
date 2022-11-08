@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(ApplicationCable::Connection, type: :channel) do
+RSpec.describe(ApplicationCable::Connection) do
   let(:user) { create(:user) }
   let(:user_device) { create(:user_device, user: user) }
 

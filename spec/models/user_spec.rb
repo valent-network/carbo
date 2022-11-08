@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(User, type: :model) do
+RSpec.describe(User) do
   let(:user) { create(:user) }
   let(:sample_image_base64) { Base64.strict_encode64(File.read(Rails.root.join('spec/support/sample.png'))) }
 

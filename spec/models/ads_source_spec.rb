@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(AdsSource, type: :model) do
+RSpec.describe(AdsSource) do
   it 'has_many ads'
   describe 'Validates' do
     it '#title'

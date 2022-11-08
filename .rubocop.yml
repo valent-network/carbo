@@ -35,6 +35,8 @@ Naming/InclusiveLanguage:
   Enabled: false
 Style/TrailingCommaInArrayLiteral:
   Enabled: false
+Style/ClassMethodsDefinitions:
+  EnforcedStyle: def_self
 
 ### Shopify bad spec styles
 

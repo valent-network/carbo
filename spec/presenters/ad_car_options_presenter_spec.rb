@@ -19,7 +19,7 @@ RSpec.describe(AdCarOptionsPresenter) do
       wheels: [I18n.t('ad_options.wheels'), 'w'],
       carcass: [I18n.t('ad_options.carcass'), 'cc'],
       color: [I18n.t('ad_options.color'), 'cl'],
-      location: [I18n.t('ad_options.location'), 'kh']
+      location: [I18n.t('ad_options.location'), 'kh'],
     ))
   end
 

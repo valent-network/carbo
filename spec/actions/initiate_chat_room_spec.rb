@@ -55,9 +55,9 @@ RSpec.describe(InitiateChatRoom) do
         expect(ApplicationCable::UserChannel).not_to(receive(:broadcast_to))
         expect_any_instance_of(SendChatMessagePushNotification).not_to(receive(:call))
         expect { initiate_valid_chat_room }.to(raise_error(StandardError)
-          .and(change(ChatRoom, :count).by(0)
-          .and(change(ChatRoomUser, :count).by(0)
-          .and(change(Message, :count).by(0)))))
+          .and(not_change(ChatRoom, :count)
+          .and(not_change(ChatRoomUser, :count)
+          .and(not_change(Message, :count)))))
       end
 
       # TODO: Failed once
@@ -67,9 +67,9 @@ RSpec.describe(InitiateChatRoom) do
         expect(ApplicationCable::UserChannel).not_to(receive(:broadcast_to))
         expect_any_instance_of(SendChatMessagePushNotification).not_to(receive(:call))
         expect { initiate_valid_chat_room }.to(raise_error(StandardError)
-          .and(change(ChatRoom, :count).by(0)
-          .and(change(ChatRoomUser, :count).by(0)
-          .and(change(Message, :count).by(0)))))
+          .and(not_change(ChatRoom, :count)
+          .and(not_change(ChatRoomUser, :count)
+          .and(not_change(Message, :count)))))
       end
 
       it 'ChatRoomUser is not saved for some reason' do
@@ -78,9 +78,9 @@ RSpec.describe(InitiateChatRoom) do
         expect(ApplicationCable::UserChannel).not_to(receive(:broadcast_to))
         expect_any_instance_of(SendChatMessagePushNotification).not_to(receive(:call))
         expect { initiate_valid_chat_room }.to(raise_error(StandardError)
-          .and(change(ChatRoom, :count).by(0)
-          .and(change(ChatRoomUser, :count).by(0)
-          .and(change(Message, :count).by(0)))))
+          .and(not_change(ChatRoom, :count)
+          .and(not_change(ChatRoomUser, :count)
+          .and(not_change(Message, :count)))))
       end
     end
   end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe(Message, type: :model) do
+RSpec.describe(Message) do
   it '#unread_messages_for'
   it '.implicit_order_column'
   it 'belongs_to user'

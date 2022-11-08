@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe(DemoPhoneNumber, type: :model) do
+RSpec.describe(DemoPhoneNumber) do
   let(:phone_number) { create(:phone_number) }
   let(:another_phone_number) { create(:phone_number) }
   let(:demo_phone_number) { create(:demo_phone_number, phone_number: phone_number) }

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(UserDevice, type: :model) do
+RSpec.describe(UserDevice) do
   it '#generate_access_token'
   it 'belongs_to user'
 
