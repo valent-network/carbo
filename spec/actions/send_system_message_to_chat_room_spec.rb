@@ -51,8 +51,8 @@ RSpec.describe(SendSystemMessageToChatRoom) do
   end
 
   it "triggers broadcasts" do
-    expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(user, type: 'chat', chat: anything).once)
-    expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(user, type: 'unread_update', count: 1).once)
+    expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(user, { type: 'chat', chat: anything }).once)
+    expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(user, { type: 'unread_update', count: 1 }).once)
     expect_any_instance_of(Api::V1::ChatRoomListSerializer).to(receive(:first).once)
     expect(Api::V1::ChatRoomListSerializer).to(receive(:new).once.and_call_original)
     expect_any_instance_of(SendChatMessagePushNotification).to(receive(:call).once)

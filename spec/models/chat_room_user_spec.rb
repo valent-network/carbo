@@ -7,7 +7,7 @@ RSpec.describe(ChatRoomUser) do
   context 'On callbacks' do
     context 'after_touch' do
       it 'broadcasts #unread_update to ActionCable for User' do
-        expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(subject.user, type: 'unread_update', count: 0))
+        expect(ApplicationCable::UserChannel).to(receive(:broadcast_to).with(subject.user, { type: 'unread_update', count: 0 }))
         subject.touch
       end
     end
