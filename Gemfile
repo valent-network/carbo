@@ -19,7 +19,7 @@ gem 'sassc-rails'
 gem 'pg'
 gem 'puma'
 gem 'rails', '~> 6'
-gem 'sidekiq'
+gem 'sidekiq', '~> 6'
 gem 'redisgraph'
 
 gem 'rack-cors', require: 'rack/cors'
