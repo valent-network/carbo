@@ -18,7 +18,7 @@ gem 'sassc-rails'
 # Main gems
 gem 'pg'
 gem 'puma'
-gem 'rails', '~> 6'
+gem 'rails', '~> 7'
 gem 'sidekiq', '~> 7'
 gem 'redisgraph'
 
