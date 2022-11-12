@@ -20,7 +20,7 @@ class ActualizeAd
         'lock' => :until_executed,
       )
     end
-  end
 
-  Ad.where(address: addresses).touch_all
+    Ad.where(address: addresses).touch_all
+  end
 end
