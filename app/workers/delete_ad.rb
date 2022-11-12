@@ -2,11 +2,7 @@
 class DeleteAd
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'provider-ads-delete', retry: true, backtrace: false
-
-  STATUSES = { deleted: 'deleted', failed: 'failed' }
-
-  RECEIVER = { queue: 'provider-ads-status', class: 'AutoRia::StatusUpdater' }
+  sidekiq_options queue: 'ads', retry: true, backtrace: false
 
   def perform(address)
     ad = Ad.find_by(address: address)
@@ -14,26 +10,12 @@ class DeleteAd
     if ad
       if ad.update(deleted: true)
         ad.touch
-        callback(address: address, status: STATUSES[:deleted])
-        logger.info("[DeleteAd][#{ad.id}]")
+        logger.info("[DeleteAd] id=#{ad.id} address=#{address}")
       else
-        callback(address: address, errors: ad.errors.to_hash, status: STATUSES[:failed])
+        logger.warn("[DeleteAd][UpdateFailure] id=#{ad.id} address=#{address} errors=#{ad.errors.to_hash.to_json}")
       end
     else
-      callback(address: address, status: STATUSES[:deleted])
-      logger.info("[DeleteAd][MissingAd]: #{address}")
+      logger.warn("[DeleteAd][AdNotFound] address=#{address}")
     end
-  end
-
-  private
-
-  def callback(params)
-    Sidekiq::Client.push(
-      'class' => RECEIVER[:class],
-      'args' => [params.to_json],
-      'queue' => RECEIVER[:queue],
-      'retry' => true,
-      'backtrace' => false,
-    )
   end
 end

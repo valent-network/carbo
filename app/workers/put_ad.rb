@@ -2,7 +2,7 @@
 class PutAd
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'provider-ads-new', retry: true, backtrace: false
+  sidekiq_options queue: 'ads', retry: true, backtrace: false
 
   AD_DETAILS_PARAMS = %i[
     maker
@@ -23,13 +23,6 @@ class PutAd
     region
   ]
 
-  STATUSES = {
-    failed: 'failed',
-    completed: 'completed',
-  }
-
-  RECEIVER = { queue: 'provider-ads-status', class: 'AutoRia::StatusUpdater' }
-
   MAX_RETRIES_ON_DEADLOCK = 3
 
   def perform(base64_zipped_ad_params)
@@ -43,8 +36,7 @@ class PutAd
     ad_contract = AdCarContract.new.call(ad_params)
 
     if ad_contract.failure?
-      callback(errors: ad_contract.errors.to_h, address: address, status: STATUSES[:failed])
-      logger.warn("[PutAd][ValidationErrors] address=#{address} errors=#{ad_contract.errors.to_h}")
+      logger.warn("[PutAd][ValidationErrors] id=#{ad&.id} address=#{address} errors=#{ad_contract.errors.to_h.to_json}")
     else
       ad.assign_attributes(ad_params.slice(:price, :phone, :ad_type))
       ad.updated_at = Time.zone.now
@@ -53,29 +45,15 @@ class PutAd
       begin
         retries ||= 0
         if ad.save
-          callback(id: ad.id, address: address, status: STATUSES[:completed])
-          logger.info("[PutAd][#{address}]")
+          logger.info("[PutAd] id=#{ad.id} address=#{address}")
         else
-          callback(errors: ad.errors.to_hash, address: address, status: STATUSES[:failed])
-          logger.error("[PutAd][Errors] #{address}")
+          logger.warn("[PutAd][AdNotSaved] id=#{ad&.id} address=#{address} errors=#{ad.errors.to_hash.to_json}")
         end
       rescue PG::TRDeadlockDetected
         retry if (retries += 1) < MAX_RETRIES_ON_DEADLOCK
       rescue ActiveRecord::RecordNotUnique, PG::UniqueViolation
-        logger.warn("[PutAd][DuplicateRaceCondition] #{address}")
+        logger.warn("[PutAd][DuplicateRaceCondition] id=#{ad&.id} address=#{address}")
       end
     end
-  end
-
-  private
-
-  def callback(params)
-    Sidekiq::Client.push(
-      'class' => RECEIVER[:class],
-      'args' => [params.to_json],
-      'queue' => RECEIVER[:queue],
-      'retry' => true,
-      'backtrace' => false,
-    )
   end
 end
