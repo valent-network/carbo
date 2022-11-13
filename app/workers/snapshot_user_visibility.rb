@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SnapshotUserVisibility
-  BATCH_SIZE = 100
+  BATCH_SIZE = 10
 
   include Sidekiq::Worker
 
