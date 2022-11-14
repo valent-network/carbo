@@ -71,7 +71,7 @@ class Rpush200Updates < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migrat
 
   def self.adapter_name
     env = defined?(Rails) && Rails.env ? Rails.env : 'development'
-    Hash[ActiveRecord::Base.configurations[env].map { |k, v| [k.to_sym, v] }][:adapter]
+    ActiveRecord::Base.configurations.configs_for.detect { |c| c.env_name == env }.configuration_hash[:adapter]
   end
 
   def self.postgresql?
