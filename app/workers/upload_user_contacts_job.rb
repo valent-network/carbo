@@ -42,7 +42,7 @@ class UploadUserContactsJob
     user.update_friends!
     user.update_connections!
 
-    InitialContactsUpload.perform_in(5.seconds, user.id, Time.zone.now.to_i) if initial_contacts_count.zero?
+    ApplicationCable::UserChannel.broadcast_to(user, type: 'contacts') if initial_contacts_count.zero?
   end
 
   private
