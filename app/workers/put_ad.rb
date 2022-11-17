@@ -45,8 +45,7 @@ class PutAd
       begin
         retries ||= 0
         if ad.save
-          logger.info("[PutAd] id=#{ad.id} address=#{address}")
-          CreateEvent.call('put_ad', user: nil, data: { address: address, id: ad.id })
+          Rails.logger.warn("[PutAd][AdSaved] data=#{{ address: address, id: ad.id }.to_json}")
         else
           logger.warn("[PutAd][AdNotSaved] id=#{ad&.id} address=#{address} errors=#{ad.errors.to_hash.to_json}")
         end

@@ -14,7 +14,7 @@ class SendUserVerificationJob
     request.save!
     body = I18n.t('send_verification.sms_text', verification_code: verification_code)
 
-    CreateEvent.call('sms_send_attempt', user: nil, data: { phone_number_id: phone_number_id })
+    Rails.logger.warn("[SendUserVerificationJob][sms_send_attempt] data=#{{ phone_number_id: phone_number_id }.to_json}")
 
     begin
       TurboSMS.send_sms(phone_number_for_sms, body)
