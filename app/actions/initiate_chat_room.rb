@@ -33,6 +33,8 @@ class InitiateChatRoom
       SendChatMessagePushNotification.new.call(message: message, chat_room_user: chat_room_user)
     end
 
+    CreateEvent.call('chat_room_initiated', user: initiator, data: { ad_id: ad_id, initiator_user_id: initiator_user_id, user_id: user_id })
+
     chat_room
   end
 end

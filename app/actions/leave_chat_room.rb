@@ -31,6 +31,8 @@ class LeaveChatRoom
 
     ApplicationCable::UserChannel.broadcast_to(initiator, type: 'unread_update', count: Message.unread_messages_for(initiator.id).count)
 
+    CreateEvent.call('chat_room_left', user: initiator, data: { chat_room_id: chat_room_id, initiator_user_id: initiator_user_id })
+
     chat_room.destroy if chat_room.chat_room_users.count.zero? && !chat_room.system?
     chat_room.chat_room_users
   end

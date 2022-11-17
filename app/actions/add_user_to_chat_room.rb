@@ -31,6 +31,8 @@ class AddUserToChatRoom
       end
     end
 
+    CreateEvent.call('chat_room_user_added', user: initiator, data: { chat_room_id: chat_room_id, initiator_user_id: initiator_user_id, user_id: user_id })
+
     chat_room_user
   end
 end

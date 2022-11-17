@@ -23,6 +23,8 @@ class PostMessage
       end
     end
 
+    CreateEvent.call('message_posted', user: sender, data: {})
+
     message
   end
 end

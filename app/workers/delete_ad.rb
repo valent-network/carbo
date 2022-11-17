@@ -11,6 +11,7 @@ class DeleteAd
       if ad.update(deleted: true)
         ad.touch
         logger.info("[DeleteAd] id=#{ad.id} address=#{address}")
+        CreateEvent.call('delete_ad', user: nil, data: { address: address, id: ad.id })
       else
         logger.warn("[DeleteAd][UpdateFailure] id=#{ad.id} address=#{address} errors=#{ad.errors.to_hash.to_json}")
       end

@@ -13,6 +13,9 @@ class SendUserVerificationJob
     request.verification_code = verification_code
     request.save!
     body = I18n.t('send_verification.sms_text', verification_code: verification_code)
+
+    CreateEvent.call('sms_send_attempt', user: nil, data: { phone_number_id: phone_number_id })
+
     begin
       TurboSMS.send_sms(phone_number_for_sms, body)
     rescue StandardError
