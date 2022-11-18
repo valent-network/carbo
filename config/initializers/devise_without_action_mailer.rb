@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 if Rails.autoloaders.zeitwerk_enabled?
-  class Devise::Mailer
+  module Devise
+    class Mailer
+    end
   end
 end
