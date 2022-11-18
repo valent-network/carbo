@@ -33,11 +33,9 @@ gem 'carrierwave-base64'
 gem 'fog-aws'
 gem 'rpush', '~> 7'
 gem 'haml-rails'
-gem 'kramdown'
 gem 'aws-sdk-s3'
 gem 'chartkick'
 gem 'kaminari'
-gem 'active_analytics'
 gem 'lograge'
 gem "logstash-event"
 gem 'rack-attack'
@@ -74,7 +72,3 @@ group :development do
   gem 'rubocop-shopify', require: false
   gem 'foreman', require: false
 end
-
-gem 'net-smtp'
-gem 'net-pop'
-gem 'net-imap'

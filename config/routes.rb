@@ -21,7 +21,6 @@ Rails.application.routes.draw do
   mount ActionCable.server, at: '/cable'
 
   authenticate :admin_user do
-    mount ActiveAnalytics::Engine, at: 'analytics'
     mount Sidekiq::Web, at: 'sidekiq'
   end
 

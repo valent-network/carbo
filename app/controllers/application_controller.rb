@@ -2,7 +2,6 @@
 
 class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, raise: false
-  before_action :record_page_view
 
   def landing
     @total_count = EffectiveAd.count
@@ -40,9 +39,5 @@ class ApplicationController < ActionController::Base
   def error!(message, status = 422)
     Rails.logger.debug("Unknown error code: #{message}") unless message.in?(API_ERROR_CODES)
     render(json: { message: t("api_error_messages.#{message.downcase}") }, status: status)
-  end
-
-  def record_page_view
-    ActiveAnalytics.record_request(request)
   end
 end

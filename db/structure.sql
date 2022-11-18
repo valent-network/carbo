@@ -92,42 +92,6 @@ ALTER SEQUENCE public.active_admin_comments_id_seq OWNED BY public.active_admin_
 
 
 --
--- Name: active_analytics_views_per_days; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.active_analytics_views_per_days (
-    id bigint NOT NULL,
-    site character varying NOT NULL,
-    page character varying NOT NULL,
-    date date NOT NULL,
-    total bigint DEFAULT 1 NOT NULL,
-    referrer_host character varying,
-    referrer_path character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: active_analytics_views_per_days_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.active_analytics_views_per_days_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: active_analytics_views_per_days_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.active_analytics_views_per_days_id_seq OWNED BY public.active_analytics_views_per_days.id;
-
-
---
 -- Name: ad_descriptions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1397,13 +1361,6 @@ ALTER TABLE ONLY public.active_admin_comments ALTER COLUMN id SET DEFAULT nextva
 
 
 --
--- Name: active_analytics_views_per_days id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.active_analytics_views_per_days ALTER COLUMN id SET DEFAULT nextval('public.active_analytics_views_per_days_id_seq'::regclass);
-
-
---
 -- Name: ad_descriptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1615,14 +1572,6 @@ ALTER TABLE ONLY public.active_admin_comments
 
 
 --
--- Name: active_analytics_views_per_days active_analytics_views_per_days_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.active_analytics_views_per_days
-    ADD CONSTRAINT active_analytics_views_per_days_pkey PRIMARY KEY (id);
-
-
---
 -- Name: ad_descriptions ad_descriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1660,6 +1609,14 @@ ALTER TABLE ONLY public.ad_option_types
 
 ALTER TABLE ONLY public.ad_option_values
     ADD CONSTRAINT ad_option_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_options ad_options_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_options
+    ADD CONSTRAINT ad_options_pkey PRIMARY KEY (id);
 
 
 --
@@ -1871,6 +1828,20 @@ ALTER TABLE ONLY public.verification_requests
 
 
 --
+-- Name: ads_grouped_by_maker_model_year_model_maker_year_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX ads_grouped_by_maker_model_year_model_maker_year_idx ON public.ads_grouped_by_maker_model_year USING btree (model, maker, year);
+
+
+--
+-- Name: dashboard_stats_updated_at_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX dashboard_stats_updated_at_idx ON public.dashboard_stats USING btree (updated_at);
+
+
+--
 -- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1889,27 +1860,6 @@ CREATE INDEX index_active_admin_comments_on_namespace ON public.active_admin_com
 --
 
 CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON public.active_admin_comments USING btree (resource_type, resource_id);
-
-
---
--- Name: index_active_analytics_views_per_days_on_date; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_active_analytics_views_per_days_on_date ON public.active_analytics_views_per_days USING btree (date);
-
-
---
--- Name: index_active_analytics_views_per_days_on_referrer_and_date; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_active_analytics_views_per_days_on_referrer_and_date ON public.active_analytics_views_per_days USING btree (referrer_host, referrer_path, date);
-
-
---
--- Name: index_active_analytics_views_per_days_on_site_and_date; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_active_analytics_views_per_days_on_site_and_date ON public.active_analytics_views_per_days USING btree (site, page, date);
 
 
 --
@@ -2123,6 +2073,13 @@ CREATE INDEX index_effective_ads_on_search_query ON public.effective_ads USING g
 
 
 --
+-- Name: index_events_for_user_snapshot; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_for_user_snapshot ON public.events USING btree (user_id, created_at) WHERE ((name)::text = 'snapshot_user_visibility'::text);
+
+
+--
 -- Name: index_events_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2309,6 +2266,13 @@ CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.ver
 --
 
 CREATE INDEX search_budget_index ON public.ads_grouped_by_maker_model_year USING btree (min_price, max_price);
+
+
+--
+-- Name: ttt; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ttt ON public.ad_options USING btree (ad_id, ad_option_value_id, ad_option_type_id) WHERE (ad_option_type_id = ANY (ARRAY[4, 6, 7]));
 
 
 --
@@ -2719,6 +2683,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211023133410'),
 ('20211023133756'),
 ('20211023140945'),
-('20211128102012');
+('20211128102012'),
+('20221117233245');
 
 
