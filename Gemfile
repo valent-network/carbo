@@ -12,6 +12,7 @@ gem 'rails', '~> 7'
 gem 'sidekiq', '~> 7'
 gem 'redisgraph'
 gem 'rpush', '~> 7'
+gem 'clockwork'
 
 # Secondary gems
 gem 'dry-validation'

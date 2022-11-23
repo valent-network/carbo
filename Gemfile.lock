@@ -134,6 +134,9 @@ GEM
     case_transform (0.2)
       activesupport
     chartkick (4.2.1)
+    clockwork (3.0.0)
+      activesupport
+      tzinfo
     concurrent-ruby (1.1.10)
     connection_pool (2.3.0)
     crass (1.0.6)
@@ -520,6 +523,7 @@ DEPENDENCIES
   carrierwave
   carrierwave-base64
   chartkick
+  clockwork
   derailed_benchmarks
   devise
   dotenv-rails
