@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 require 'clockwork'
 require 'active_support/time'
+require 'redis'
 require 'sidekiq'
 require 'sidekiq/api'
+
+require './config/initializers/sidekiq'
 
 def enqueue(job_params)
   base_job_params = { 'args' => [], 'retry' => true, 'backtrace' => false, 'queue' => 'default' }
