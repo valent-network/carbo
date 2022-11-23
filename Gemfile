@@ -5,47 +5,34 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # ruby '3.2.0-preview2'
 
-# Active Admin gems
-gem 'activeadmin'
-# TODO: https://github.com/formtastic/formtastic/issues/1325
-# Ruby 3
-gem 'formtastic', '~> 4.0'
-
-gem 'arctic_admin'
-gem 'devise'
-gem 'sassc-rails'
-
 # Main gems
 gem 'pg'
 gem 'puma'
 gem 'rails', '~> 7'
 gem 'sidekiq', '~> 7'
 gem 'redisgraph'
-
-gem 'rack-cors', require: 'rack/cors'
-gem 'active_model_serializers'
+gem 'rpush', '~> 7'
 
 # Secondary gems
 gem 'dry-validation'
+gem 'active_model_serializers'
 gem 'phonelib'
 gem 'carrierwave'
 gem 'carrierwave-base64'
 gem 'fog-aws'
-gem 'rpush', '~> 7'
-gem 'haml-rails'
-gem 'aws-sdk-s3'
-gem 'chartkick'
-gem 'kaminari'
-gem 'lograge'
-gem "logstash-event"
-gem 'rack-attack'
 
 # 3-rd party gems
 gem 'turbosms'
 gem 'airbrake'
 gem 'newrelic_rpm'
+gem 'aws-sdk-s3'
 
+# Other
 gem 'bootsnap', '~> 1.9', require: false
+gem 'rack-cors', require: 'rack/cors'
+gem 'rack-attack'
+gem 'lograge'
+gem 'logstash-event'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
@@ -71,4 +58,20 @@ group :development do
   gem 'rubocop-rspec', require: false
   gem 'rubocop-shopify', require: false
   gem 'foreman', require: false
+  gem 'derailed_benchmarks'
+  gem 'stackprof'
 end
+
+### Remove candidates ###
+
+# Active Admin gems
+gem 'activeadmin'
+gem 'arctic_admin'
+gem 'devise'
+gem 'sassc-rails'
+gem 'formtastic', '~> 4.0' # TODO: Ruby 3: https://github.com/formtastic/formtastic/issues/1325
+gem 'haml-rails'
+gem 'chartkick'
+gem 'kaminari'
+
+###
