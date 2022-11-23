@@ -933,26 +933,6 @@ ALTER SEQUENCE public.phone_numbers_id_seq OWNED BY public.phone_numbers.id;
 
 
 --
--- Name: promo_events_matview; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.promo_events_matview AS
- SELECT row_number() OVER (ORDER BY events.created_at) AS id,
-    events.id AS event_id,
-    users.refcode,
-    regexp_replace((phone_numbers.full_number)::text, '^(\d{2})(\d{3})(\d{4})$'::text, '+380\1\2****'::text, 'g'::text) AS full_phone_number_masked,
-    events.name,
-    events.created_at
-   FROM ((public.events
-     JOIN public.users ON ((events.user_id = users.id)))
-     JOIN public.phone_numbers ON ((users.phone_number_id = phone_numbers.id)))
-  WHERE (((events.name)::text = ANY (ARRAY[('sign_up'::character varying)::text, ('set_referrer'::character varying)::text, ('invited_user'::character varying)::text])) AND (NOT (users.phone_number_id IN ( SELECT demo_phone_numbers.phone_number_id
-           FROM public.demo_phone_numbers))))
-  ORDER BY events.created_at DESC
-  WITH NO DATA;
-
-
---
 -- Name: regions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2129,20 +2109,6 @@ CREATE UNIQUE INDEX index_phone_numbers_on_full_number ON public.phone_numbers U
 
 
 --
--- Name: index_promo_events_matview_on_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_promo_events_matview_on_id ON public.promo_events_matview USING btree (id);
-
-
---
--- Name: index_promo_events_matview_on_refcode; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_promo_events_matview_on_refcode ON public.promo_events_matview USING btree (refcode);
-
-
---
 -- Name: index_rpush_feedback_on_device_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2684,6 +2650,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211023133756'),
 ('20211023140945'),
 ('20211128102012'),
-('20221117233245');
+('20221117233245'),
+('20221123131714');
 
 

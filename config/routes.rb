@@ -31,9 +31,6 @@ Rails.application.routes.draw do
   get '/tos', to: 'application#static_page', slug: :tos
   get '/privacy', to: 'application#static_page', slug: :privacy
 
-  get '/network', to: 'promo_events#index'
-  get '/win', to: 'promo_events#index'
-
   get '/budget/show_ads', to: 'budget#show_ads', as: :show_budget_ads
   get '/budget/:maker/:model', to: 'budget#show_model', as: :show_model
   get '/budget/:maker/:model/:year', to: 'budget#show_model_year', as: :show_model_year
