@@ -979,7 +979,7 @@ CREATE TABLE public.rpush_apps (
     client_id character varying,
     client_secret character varying,
     access_token character varying,
-    access_token_expiration timestamp without time zone,
+    access_token_expiration timestamp(6) without time zone,
     apn_key text,
     apn_key_id character varying,
     team_id character varying,
@@ -1815,13 +1815,6 @@ CREATE UNIQUE INDEX ads_grouped_by_maker_model_year_model_maker_year_idx ON publ
 
 
 --
--- Name: dashboard_stats_updated_at_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX dashboard_stats_updated_at_idx ON public.dashboard_stats USING btree (updated_at);
-
-
---
 -- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1899,10 +1892,17 @@ CREATE INDEX index_ad_options_on_ad_id_and_ad_option_value_id ON public.ad_optio
 
 
 --
--- Name: index_ad_options_on_ad_option_value_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ad_options_on_data1; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ad_options_on_ad_option_value_id ON public.ad_options USING btree (ad_option_value_id) WHERE (ad_option_type_id = ANY (ARRAY[4, 6, 7]));
+CREATE INDEX index_ad_options_on_data1 ON public.ad_options USING btree (ad_id, ad_option_value_id, ad_option_type_id) WHERE (ad_option_type_id = ANY (ARRAY[4, 6, 7]));
+
+
+--
+-- Name: index_ad_options_on_data2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_options_on_data2 ON public.ad_options USING btree (ad_option_value_id) WHERE (ad_option_type_id = ANY (ARRAY[4, 6, 7]));
 
 
 --
@@ -2025,6 +2025,13 @@ CREATE INDEX index_cities_on_region_id ON public.cities USING btree (region_id);
 
 
 --
+-- Name: index_dashboard_stats_on_updated_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_dashboard_stats_on_updated_at ON public.dashboard_stats USING btree (updated_at);
+
+
+--
 -- Name: index_demo_phone_numbers_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2053,17 +2060,17 @@ CREATE INDEX index_effective_ads_on_search_query ON public.effective_ads USING g
 
 
 --
--- Name: index_events_for_user_snapshot; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_events_for_user_snapshot ON public.events USING btree (user_id, created_at) WHERE ((name)::text = 'snapshot_user_visibility'::text);
-
-
---
 -- Name: index_events_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
+
+
+--
+-- Name: index_events_on_user_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_user_id_and_created_at ON public.events USING btree (user_id, created_at) WHERE ((name)::text = 'snapshot_user_visibility'::text);
 
 
 --
@@ -2232,13 +2239,6 @@ CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.ver
 --
 
 CREATE INDEX search_budget_index ON public.ads_grouped_by_maker_model_year USING btree (min_price, max_price);
-
-
---
--- Name: ttt; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX ttt ON public.ad_options USING btree (ad_id, ad_option_value_id, ad_option_type_id) WHERE (ad_option_type_id = ANY (ARRAY[4, 6, 7]));
 
 
 --
@@ -2651,6 +2651,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211023140945'),
 ('20211128102012'),
 ('20221117233245'),
-('20221123131714');
+('20221123131714'),
+('20221124225005'),
+('20221124225553'),
+('20221124230552'),
+('20221124230927'),
+('20221124232851');
 
 

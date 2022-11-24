@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class RemovePromoEventsMatview < ActiveRecord::Migration[7.0]
   def up
     execute('DROP MATERIALIZED VIEW promo_events_matview')
