@@ -33,6 +33,7 @@ module Api
             user.save # TODO: bang?
             CreateEvent.call(:sign_up, user: user)
             USER_FRIENDS_GRAPH.create_user(user)
+            SendSystemMessageToAdmins.new.call("New User signed up! Its now #{User.count} users in the system!")
           rescue
             retry
           end
