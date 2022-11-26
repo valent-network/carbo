@@ -1,0 +1,1108 @@
+{
+  "id" : 1,
+  "name" : "Name",
+  "description" : "Description",
+  "lastModifiedDate" : "2022-11-26T15:55:07Z",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgdXNlciA9IHBlcnNvbiAiVXNlciIgIkEgdXNlciBvZiBteSBzb2Z0d2FyZSBzeXN0ZW0uIgogICAgICAgIAogICAgICAgIGFwcFN0b3JlID0gc29mdHdhcmVTeXN0ZW0gIkFwcGxlIEFwcFN0b3JlIiAiIiAiRGlzdHJpYnV0aW9uIgogICAgICAgIGdvb2dsZVBsYXkgPSBzb2Z0d2FyZVN5c3RlbSAiR29vZ2xlIFBsYXkiICIiICJEaXN0cmlidXRpb24iCiAgICAgICAgYXBwQ2VudGVyID0gc29mdHdhcmVTeXN0ZW0gIkFwcCBDZW50ZXIiICIiICJEaXN0cmlidXRpb24iCiAgICAgICAgCiAgICAgICAgdGhyaWRQYXJ0eUFkc1Byb3ZpZGVycyA9IHNvZnR3YXJlU3lzdGVtICIzcmQtcGFydHkiICIiICJTdXBwb3J0IgogICAgICAgIAogICAgICAgIG5ld1JlbGljID0gc29mdHdhcmVTeXN0ZW0gIk5ldyBSZWxpYyIgIkFQTSwgbG9ncyBhbmQgZGFzaGJvYXJkcyIgIlN1cHBvcnQiCiAgICAgICAgYWlyYnJha2UgPSBzb2Z0d2FyZVN5c3RlbSAiQWlyYnJha2UiICJFeGNlcHRpb25zIiAiU3VwcG9ydCIKICAgICAgICB0dXJib1NNUyA9IHNvZnR3YXJlU3lzdGVtICJTTVMgUHJvdmlkZXIiICJUdXJib1NNUyIgIkV4dGVybmFsIgogICAgICAgIHMzID0gc29mdHdhcmVTeXN0ZW0gIlMzIiAiRGlnaXRhbCBPY2VhbiBTcGFjZXMiICJEYXRhYmFzZSIKICAgICAgICAKICAgICAgICBlbnRlcnByaXNlIHsKICAgICAgICAgICAgcmVjYXJpbyA9IHNvZnR3YXJlU3lzdGVtICJyZWNhci5pbyIgewogICAgICAgICAgICAgICAgZmVycnVtID0gY29udGFpbmVyICJGZXJydW0iIHsKICAgICAgICAgICAgICAgICAgICBhbmRyb2lkQnVpbGQgPSBjb21wb25lbnQgIkFuZHJvaWQgZGlzdCIKICAgICAgICAgICAgICAgICAgICBpb3NCdWlsZCA9IGNvbXBvbmVudCAiaU9TIGRpc3QiCiAgICAgICAgICAgICAgICAgICAgaG90VXBkYXRlcyA9IGNvbXBvbmVudCAiSlMgdXBkYXRlcyIKICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIGNhcmJvID0gY29udGFpbmVyICJDYXJibyIgewogICAgICAgICAgICAgICAgICAgIGNvbXBvbmVudCAiU2lkZWtpcSBXb3JrZXJzIgogICAgICAgICAgICAgICAgICAgIGNvbXBvbmVudCAiQ2xvY2t3b3JrIFNjaGVkdWxlciIKICAgICAgICAgICAgICAgICAgICBjYXJib0FQSSA9IGNvbXBvbmVudCAiUHVtYSBXZWIgU2VydmVyIgogICAgICAgICAgICAgICAgICAgIHJwdXNoID0gY29tcG9uZW50ICJSUHVzaCBQdXNoIE5vdGlmaWNhdGlvbnMgU2VuZGVyIgogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgYm9yYXggPSBjb250YWluZXIgIkJvcmF4IiB7CiAgICAgICAgICAgICAgICAgICAgY29tcG9uZW50ICJTaWRla2lxIFdvcmtlcnMiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIHBvc3RncmVzID0gY29udGFpbmVyICJQb3N0Z3JlU1FMIiAiIiAiRGF0YWJhc2UiIHsKICAgICAgICAgICAgICAgICAgICBjb21wb25lbnQgIkRhdGFiYXNlIFNlcnZlciIKICAgICAgICAgICAgICAgICAgICBjb21wb25lbnQgIkNyb24iCiAgICAgICAgICAgICAgICAgICAgY29tcG9uZW50ICJCYWNrdXAgU2NyaXB0IgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgcmVkaXMgPSBjb250YWluZXIgIlJlZGlzIiAiIiAiRGF0YWJhc2UiCiAgICAgICAgICAgICAgICByZWRpc0dyYXBoID0gY29udGFpbmVyICJSZWRpc0dyYXBoIiAiIiAiRGF0YWJhc2UiCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIAogICAgICAgIH0KCiAgICAgICAgdXNlciAtPiBmZXJydW0gIlVzZXMiCiAgICAgICAgCiAgICAgICAgZmVycnVtIC0+IGNhcmJvICJSZXF1ZXN0cyBBUEkiCiAgICAgICAgYW5kcm9pZEJ1aWxkIC0+IGNhcmJvQVBJICJSZXF1ZXN0cyBBUEkiCiAgICAgICAgaW9zQnVpbGQgLT4gY2FyYm9BUEkgIlJlcXVlc3RzIEFQSSIKICAgICAgICBhbmRyb2lkQnVpbGQgLT4gZ29vZ2xlUGxheSAiRGlzdHJpYnV0ZWQgdG8iCiAgICAgICAgaW9zQnVpbGQgLT4gYXBwU3RvcmUgIkRpc3RyaWJ1dGVkIHRvIgogICAgICAgIGhvdFVwZGF0ZXMgLT4gYXBwQ2VudGVyICJEaXN0cmlidXRlZCB0byIKICAgICAgICAKICAgICAgICBib3JheCAtPiByZWRpcyAiUG9wdWxhdGVzIEFkcyIKICAgICAgICBib3JheCAtPiB0aHJpZFBhcnR5QWRzUHJvdmlkZXJzICJDb2xsZWN0cyBBZHMiCiAgICAgICAgCiAgICAgICAgY2FyYm8gLT4gbmV3UmVsaWMgIkxvZ3MvTWV0cmljcyIKICAgICAgICBjYXJibyAtPiBhaXJicmFrZSAiRXhjZXB0aW9ucyIKICAgICAgICBjYXJibyAtPiBzMyAiU2F2ZXMgVXNlciBBdmF0YXJzIgogICAgICAgIGNhcmJvIC0+IHBvc3RncmVzICJTdG9yZXMgRGF0YSIKICAgICAgICBjYXJibyAtPiByZWRpcyAiU2lkZWtpcSIKICAgICAgICBjYXJibyAtPiByZWRpc0dyYXBoICJVc2VyQ29ubmVjdGlvbnMgZGF0YSIKICAgICAgICBjYXJibyAtPiB0dXJib1NNUyAiQXV0aCBPVFAiCiAgICAgICAgcnB1c2ggLT4gYXBwU3RvcmUgIlNlbmRzIFB1c2ggTm90aWZpY2F0aW9ucyIKICAgICAgICBycHVzaCAtPiBnb29nbGVQbGF5ICJTZW5kcyBQdXNoIE5vdGlmaWNhdGlvbnMiCiAgICAgICAgCiAgICAgICAgYXBwU3RvcmUgLT4gdXNlciAiUHVzaCBOb3RpZmljYXRpb25zIgogICAgICAgIGdvb2dsZVBsYXkgLT4gdXNlciAiUHVzaCBOb3RpZmljYXRpb25zIgogICAgICAgIGFwcENlbnRlciAtPiB1c2VyICJEZWxpdmVycyBKUyB1cGRhdGVzIgogICAgICAgIHR1cmJvU01TIC0+IHVzZXIgIkF1dGggT1RQIgogICAgICAgIAogICAgICAgIAogICAgfQoKICAgIHZpZXdzIHsKCiAgICAgICAgCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiU29mdHdhcmUgU3lzdGVtIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICMxMTY4YmQKICAgICAgICAgICAgICAgIGNvbG9yICNmZmZmZmYKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJTdXBwb3J0IiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICNhYWFhYWEKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJEYXRhYmFzZSIgewogICAgICAgICAgICAgICAgc2hhcGUgQ3lsaW5kZXIKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJEaXN0cmlidXRpb24iIHsKICAgICAgICAgICAgICAgIHNoYXBlIEZvbGRlcgogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMDA5MzViCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiUGVyc29uIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBwZXJzb24KICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzA4NDI3YgogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQoKICAgIAp9Cg=="
+  },
+  "configuration" : { },
+  "model" : {
+    "people" : [ {
+      "id" : "1",
+      "tags" : "Element,Person",
+      "name" : "User",
+      "description" : "A user of my software system.",
+      "relationships" : [ {
+        "id" : "28",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "11",
+        "description" : "Uses"
+      }, {
+        "id" : "29",
+        "sourceId" : "1",
+        "destinationId" : "10",
+        "description" : "Uses",
+        "linkedRelationshipId" : "28"
+      } ],
+      "location" : "Unspecified"
+    } ],
+    "softwareSystems" : [ {
+      "id" : "2",
+      "tags" : "Element,Software System,Distribution",
+      "name" : "Apple AppStore",
+      "relationships" : [ {
+        "id" : "63",
+        "tags" : "Relationship",
+        "sourceId" : "2",
+        "destinationId" : "1",
+        "description" : "Push Notifications"
+      } ],
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "3",
+      "tags" : "Element,Software System,Distribution",
+      "name" : "Google Play",
+      "relationships" : [ {
+        "id" : "64",
+        "tags" : "Relationship",
+        "sourceId" : "3",
+        "destinationId" : "1",
+        "description" : "Push Notifications"
+      } ],
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "4",
+      "tags" : "Element,Software System,Distribution",
+      "name" : "App Center",
+      "relationships" : [ {
+        "id" : "65",
+        "tags" : "Relationship",
+        "sourceId" : "4",
+        "destinationId" : "1",
+        "description" : "Delivers JS updates"
+      } ],
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "5",
+      "tags" : "Element,Software System,Support",
+      "name" : "3rd-party",
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "6",
+      "tags" : "Element,Software System,Support",
+      "name" : "New Relic",
+      "description" : "APM, logs and dashboards",
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "7",
+      "tags" : "Element,Software System,Support",
+      "name" : "Airbrake",
+      "description" : "Exceptions",
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "8",
+      "tags" : "Element,Software System,External",
+      "name" : "SMS Provider",
+      "description" : "TurboSMS",
+      "relationships" : [ {
+        "id" : "66",
+        "tags" : "Relationship",
+        "sourceId" : "8",
+        "destinationId" : "1",
+        "description" : "Auth OTP"
+      } ],
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "9",
+      "tags" : "Element,Software System,Database",
+      "name" : "S3",
+      "description" : "Digital Ocean Spaces",
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "10",
+      "tags" : "Element,Software System",
+      "name" : "recar.io",
+      "relationships" : [ {
+        "id" : "38",
+        "sourceId" : "10",
+        "destinationId" : "3",
+        "description" : "Distributed to",
+        "linkedRelationshipId" : "36"
+      }, {
+        "id" : "41",
+        "sourceId" : "10",
+        "destinationId" : "2",
+        "description" : "Distributed to",
+        "linkedRelationshipId" : "39"
+      }, {
+        "id" : "44",
+        "sourceId" : "10",
+        "destinationId" : "4",
+        "description" : "Distributed to",
+        "linkedRelationshipId" : "42"
+      }, {
+        "id" : "47",
+        "sourceId" : "10",
+        "destinationId" : "5",
+        "description" : "Collects Ads",
+        "linkedRelationshipId" : "46"
+      }, {
+        "id" : "49",
+        "sourceId" : "10",
+        "destinationId" : "6",
+        "description" : "Logs/Metrics",
+        "linkedRelationshipId" : "48"
+      }, {
+        "id" : "51",
+        "sourceId" : "10",
+        "destinationId" : "7",
+        "description" : "Exceptions",
+        "linkedRelationshipId" : "50"
+      }, {
+        "id" : "53",
+        "sourceId" : "10",
+        "destinationId" : "9",
+        "description" : "Saves User Avatars",
+        "linkedRelationshipId" : "52"
+      }, {
+        "id" : "58",
+        "sourceId" : "10",
+        "destinationId" : "8",
+        "description" : "Auth OTP",
+        "linkedRelationshipId" : "57"
+      } ],
+      "location" : "Internal",
+      "containers" : [ {
+        "id" : "22",
+        "tags" : "Element,Container",
+        "name" : "PostgreSQL",
+        "technology" : "Database",
+        "components" : [ {
+          "id" : "25",
+          "tags" : "Element,Component",
+          "name" : "Backup Script",
+          "size" : 0
+        }, {
+          "id" : "24",
+          "tags" : "Element,Component",
+          "name" : "Cron",
+          "size" : 0
+        }, {
+          "id" : "23",
+          "tags" : "Element,Component",
+          "name" : "Database Server",
+          "size" : 0
+        } ]
+      }, {
+        "id" : "26",
+        "tags" : "Element,Container",
+        "name" : "Redis",
+        "technology" : "Database"
+      }, {
+        "id" : "27",
+        "tags" : "Element,Container",
+        "name" : "RedisGraph",
+        "technology" : "Database"
+      }, {
+        "id" : "20",
+        "tags" : "Element,Container",
+        "name" : "Borax",
+        "relationships" : [ {
+          "id" : "45",
+          "tags" : "Relationship",
+          "sourceId" : "20",
+          "destinationId" : "26",
+          "description" : "Populates Ads"
+        }, {
+          "id" : "46",
+          "tags" : "Relationship",
+          "sourceId" : "20",
+          "destinationId" : "5",
+          "description" : "Collects Ads"
+        } ],
+        "components" : [ {
+          "id" : "21",
+          "tags" : "Element,Component",
+          "name" : "Sidekiq Workers",
+          "size" : 0
+        } ]
+      }, {
+        "id" : "15",
+        "tags" : "Element,Container",
+        "name" : "Carbo",
+        "relationships" : [ {
+          "id" : "48",
+          "tags" : "Relationship",
+          "sourceId" : "15",
+          "destinationId" : "6",
+          "description" : "Logs/Metrics"
+        }, {
+          "id" : "50",
+          "tags" : "Relationship",
+          "sourceId" : "15",
+          "destinationId" : "7",
+          "description" : "Exceptions"
+        }, {
+          "id" : "52",
+          "tags" : "Relationship",
+          "sourceId" : "15",
+          "destinationId" : "9",
+          "description" : "Saves User Avatars"
+        }, {
+          "id" : "54",
+          "tags" : "Relationship",
+          "sourceId" : "15",
+          "destinationId" : "22",
+          "description" : "Stores Data"
+        }, {
+          "id" : "55",
+          "tags" : "Relationship",
+          "sourceId" : "15",
+          "destinationId" : "26",
+          "description" : "Sidekiq"
+        }, {
+          "id" : "56",
+          "tags" : "Relationship",
+          "sourceId" : "15",
+          "destinationId" : "27",
+          "description" : "UserConnections data"
+        }, {
+          "id" : "57",
+          "tags" : "Relationship",
+          "sourceId" : "15",
+          "destinationId" : "8",
+          "description" : "Auth OTP"
+        }, {
+          "id" : "60",
+          "sourceId" : "15",
+          "destinationId" : "2",
+          "description" : "Sends Push Notifications",
+          "linkedRelationshipId" : "59"
+        }, {
+          "id" : "62",
+          "sourceId" : "15",
+          "destinationId" : "3",
+          "description" : "Sends Push Notifications",
+          "linkedRelationshipId" : "61"
+        } ],
+        "components" : [ {
+          "id" : "18",
+          "tags" : "Element,Component",
+          "name" : "Puma Web Server",
+          "size" : 0
+        }, {
+          "id" : "17",
+          "tags" : "Element,Component",
+          "name" : "Clockwork Scheduler",
+          "size" : 0
+        }, {
+          "id" : "19",
+          "tags" : "Element,Component",
+          "name" : "RPush Push Notifications Sender",
+          "relationships" : [ {
+            "id" : "59",
+            "tags" : "Relationship",
+            "sourceId" : "19",
+            "destinationId" : "2",
+            "description" : "Sends Push Notifications"
+          }, {
+            "id" : "61",
+            "tags" : "Relationship",
+            "sourceId" : "19",
+            "destinationId" : "3",
+            "description" : "Sends Push Notifications"
+          } ],
+          "size" : 0
+        }, {
+          "id" : "16",
+          "tags" : "Element,Component",
+          "name" : "Sidekiq Workers",
+          "size" : 0
+        } ]
+      }, {
+        "id" : "11",
+        "tags" : "Element,Container",
+        "name" : "Ferrum",
+        "relationships" : [ {
+          "id" : "30",
+          "tags" : "Relationship",
+          "sourceId" : "11",
+          "destinationId" : "15",
+          "description" : "Requests API"
+        }, {
+          "id" : "33",
+          "sourceId" : "11",
+          "destinationId" : "18",
+          "description" : "Requests API",
+          "linkedRelationshipId" : "31"
+        }, {
+          "id" : "37",
+          "sourceId" : "11",
+          "destinationId" : "3",
+          "description" : "Distributed to",
+          "linkedRelationshipId" : "36"
+        }, {
+          "id" : "40",
+          "sourceId" : "11",
+          "destinationId" : "2",
+          "description" : "Distributed to",
+          "linkedRelationshipId" : "39"
+        }, {
+          "id" : "43",
+          "sourceId" : "11",
+          "destinationId" : "4",
+          "description" : "Distributed to",
+          "linkedRelationshipId" : "42"
+        } ],
+        "components" : [ {
+          "id" : "12",
+          "tags" : "Element,Component",
+          "name" : "Android dist",
+          "relationships" : [ {
+            "id" : "31",
+            "tags" : "Relationship",
+            "sourceId" : "12",
+            "destinationId" : "18",
+            "description" : "Requests API"
+          }, {
+            "id" : "32",
+            "sourceId" : "12",
+            "destinationId" : "15",
+            "description" : "Requests API",
+            "linkedRelationshipId" : "31"
+          }, {
+            "id" : "36",
+            "tags" : "Relationship",
+            "sourceId" : "12",
+            "destinationId" : "3",
+            "description" : "Distributed to"
+          } ],
+          "size" : 0
+        }, {
+          "id" : "13",
+          "tags" : "Element,Component",
+          "name" : "iOS dist",
+          "relationships" : [ {
+            "id" : "34",
+            "tags" : "Relationship",
+            "sourceId" : "13",
+            "destinationId" : "18",
+            "description" : "Requests API"
+          }, {
+            "id" : "35",
+            "sourceId" : "13",
+            "destinationId" : "15",
+            "description" : "Requests API",
+            "linkedRelationshipId" : "34"
+          }, {
+            "id" : "39",
+            "tags" : "Relationship",
+            "sourceId" : "13",
+            "destinationId" : "2",
+            "description" : "Distributed to"
+          } ],
+          "size" : 0
+        }, {
+          "id" : "14",
+          "tags" : "Element,Component",
+          "name" : "JS updates",
+          "relationships" : [ {
+            "id" : "42",
+            "tags" : "Relationship",
+            "sourceId" : "14",
+            "destinationId" : "4",
+            "description" : "Distributed to"
+          } ],
+          "size" : 0
+        } ]
+      } ],
+      "documentation" : { }
+    } ]
+  },
+  "documentation" : { },
+  "views" : {
+    "systemLandscapeViews" : [ {
+      "key" : "SystemLandscape",
+      "order" : 1,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "51"
+      }, {
+        "id" : "63"
+      }, {
+        "id" : "41"
+      }, {
+        "id" : "53"
+      }, {
+        "id" : "65"
+      }, {
+        "id" : "64"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "44"
+      }, {
+        "id" : "66"
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "58"
+      }, {
+        "id" : "38"
+      }, {
+        "id" : "49"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    } ],
+    "systemContextViews" : [ {
+      "softwareSystemId" : "10",
+      "key" : "recario-SystemContext",
+      "order" : 10,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "51"
+      }, {
+        "id" : "63"
+      }, {
+        "id" : "41"
+      }, {
+        "id" : "65"
+      }, {
+        "id" : "53"
+      }, {
+        "id" : "64"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "44"
+      }, {
+        "id" : "66"
+      }, {
+        "id" : "58"
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "49"
+      }, {
+        "id" : "38"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "softwareSystemId" : "2",
+      "key" : "AppleAppStore-SystemContext",
+      "order" : 5,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "29"
+      }, {
+        "id" : "63"
+      }, {
+        "id" : "41"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "softwareSystemId" : "3",
+      "key" : "GooglePlay-SystemContext",
+      "order" : 6,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "29"
+      }, {
+        "id" : "64"
+      }, {
+        "id" : "38"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "softwareSystemId" : "9",
+      "key" : "S3-SystemContext",
+      "order" : 8,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "53"
+      } ],
+      "elements" : [ {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "softwareSystemId" : "8",
+      "key" : "SMSProvider-SystemContext",
+      "order" : 9,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "29"
+      }, {
+        "id" : "66"
+      }, {
+        "id" : "58"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "softwareSystemId" : "6",
+      "key" : "NewRelic-SystemContext",
+      "order" : 7,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "49"
+      } ],
+      "elements" : [ {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "softwareSystemId" : "5",
+      "key" : "3rdparty-SystemContext",
+      "order" : 2,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "47"
+      } ],
+      "elements" : [ {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "softwareSystemId" : "4",
+      "key" : "AppCenter-SystemContext",
+      "order" : 4,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "29"
+      }, {
+        "id" : "65"
+      }, {
+        "id" : "44"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "softwareSystemId" : "7",
+      "key" : "Airbrake-SystemContext",
+      "order" : 3,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "51"
+      } ],
+      "elements" : [ {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    } ],
+    "containerViews" : [ {
+      "softwareSystemId" : "10",
+      "key" : "recario-Container",
+      "order" : 11,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "externalSoftwareSystemBoundariesVisible" : true,
+      "relationships" : [ {
+        "id" : "60"
+      }, {
+        "id" : "50"
+      }, {
+        "id" : "40"
+      }, {
+        "id" : "63"
+      }, {
+        "id" : "52"
+      }, {
+        "id" : "62"
+      }, {
+        "id" : "65"
+      }, {
+        "id" : "54"
+      }, {
+        "id" : "64"
+      }, {
+        "id" : "43"
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "28"
+      }, {
+        "id" : "37"
+      }, {
+        "id" : "55"
+      }, {
+        "id" : "45"
+      }, {
+        "id" : "56"
+      }, {
+        "id" : "66"
+      }, {
+        "id" : "46"
+      }, {
+        "id" : "57"
+      }, {
+        "id" : "48"
+      } ],
+      "elements" : [ {
+        "id" : "22",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "26",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "15",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "27",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "20",
+        "x" : 0,
+        "y" : 0
+      } ]
+    } ],
+    "componentViews" : [ {
+      "key" : "recario-PostgreSQL-Component",
+      "order" : 15,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "containerId" : "22",
+      "externalContainerBoundariesVisible" : true,
+      "elements" : [ {
+        "id" : "23",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "24",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "25",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "key" : "recario-Ferrum-Component",
+      "order" : 14,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "containerId" : "11",
+      "externalContainerBoundariesVisible" : true,
+      "relationships" : [ {
+        "id" : "60"
+      }, {
+        "id" : "36"
+      }, {
+        "id" : "62"
+      }, {
+        "id" : "35"
+      }, {
+        "id" : "42"
+      }, {
+        "id" : "32"
+      }, {
+        "id" : "39"
+      } ],
+      "elements" : [ {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "14",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "15",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "key" : "recario-Carbo-Component",
+      "order" : 13,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "containerId" : "15",
+      "externalContainerBoundariesVisible" : true,
+      "relationships" : [ {
+        "id" : "61"
+      }, {
+        "id" : "37"
+      }, {
+        "id" : "40"
+      }, {
+        "id" : "33"
+      }, {
+        "id" : "59"
+      } ],
+      "elements" : [ {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "16",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "18",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "19",
+        "x" : 0,
+        "y" : 0
+      } ]
+    }, {
+      "key" : "recario-Borax-Component",
+      "order" : 12,
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false
+      },
+      "containerId" : "20",
+      "externalContainerBoundariesVisible" : true,
+      "elements" : [ {
+        "id" : "21",
+        "x" : 0,
+        "y" : 0
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : {
+        "elements" : [ {
+          "tag" : "Software System",
+          "background" : "#1168bd",
+          "color" : "#ffffff"
+        }, {
+          "tag" : "Support",
+          "background" : "#aaaaaa"
+        }, {
+          "tag" : "Database",
+          "shape" : "Cylinder"
+        }, {
+          "tag" : "Distribution",
+          "background" : "#00935b",
+          "shape" : "Folder"
+        }, {
+          "tag" : "Person",
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "shape" : "Person"
+        } ]
+      },
+      "terminology" : { },
+      "lastSavedView" : "3rdparty-SystemContext"
+    }
+  }
+}
