@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, raise: false
+  rescue_from StandardError, with: :standard_error
 
   def landing
     @total_count = EffectiveAd.count
@@ -39,5 +40,9 @@ class ApplicationController < ActionController::Base
   def error!(message, status = 422)
     Rails.logger.debug("Unknown error code: #{message}") unless message.in?(API_ERROR_CODES)
     render(json: { message: t("api_error_messages.#{message.downcase}") }, status: status)
+  end
+
+  def standard_error
+    render(json: { message: t("api_error_messages.unknown") }, status: 500)
   end
 end
