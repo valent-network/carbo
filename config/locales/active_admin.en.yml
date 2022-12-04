@@ -180,3 +180,7 @@ en:
       block: "List"
       grid: "Grid"
       blog: "Blog"
+
+  active_admin:
+    notices:
+      actualize_success: "Succesfully added ads to actualization"

@@ -15,38 +15,43 @@ ActiveAdmin.register(AdOptionValue) do
     attributes_table do
       row :id
       row :value
+      row :ad_options do |ad_option_value|
+        ad_option_value.ad_options.map(&:ad_option_type).map(&:name).join(', ')
+      end
       row :active_ads do |ad_option_value|
         ad_option_value.ad_options.joins(:ad).distinct('ads.id').where(ads: { deleted: false }).pluck('ads.address').map { |url| link_to(url, url) }.join("<br>").html_safe
       end
       row :deleted_ads do
         ad_option_value.ad_options.joins(:ad).distinct('ads.id').where(ads: { deleted: true }).pluck('ads.address').map { |url| link_to(url, url) }.join("<br>").html_safe
       end
+      row :actions do |ad_option_value|
+        semantic_form_for('', url: actualize_ads_admin_ad_option_value_path(ad_option_value), method: :post) do |f|
+          f.actions do
+            f.submit('Actualize')
+          end
+        end
+      end
     end
   end
 
-  # show do
-  #   attributes_table do
-  #     row :user do |chat_room|
-  #       link_to((chat_room.user.name.presence || chat_room.user.id), admin_user_path(chat_room.user))
-  #     end
-  #     row :messages do |chat_room|
-  #       chat_room.messages.includes(:user).order(:created_at).map do |m|
-  #         "<b>#{m.user ? (m.user.name.presence || m.user.id) : 'System'}</b><br/>#{m.body}<small style='float: right'>(#{m.created_at.strftime("%b, %d — %X")})</small><hr/>"
-  #       end.join("\n<br>").html_safe
-  #     end
-  #   end
-  #   panel 'Reply' do
-  #     semantic_form_for('system_message', url: system_message_admin_chat_room_path(chat_room)) do |f|
-  #       f.inputs do
-  #         f.input(:body, as: :text, input_html: { maxlength: 255, rows: 5 })
-  #       end +
-  #         f.actions do
-  #           f.submit('Send')
-  #         end
-  #     end
-  #   end
-  #   active_admin_comments
-  # end
+  member_action :actualize_ads, method: :post do
+    addresses = resource.ad_options.joins(:ad).distinct('ads.address').pluck(:address)
+    jobs = Sidekiq::ScheduledSet.new
+    jobs.each { |job| job.delete if job.args.first.in?(addresses) }
+    addresses.each do |url|
+      Sidekiq::Client.push(
+        'class' => 'AutoRia::AdProcessor',
+        'args' => [url],
+        'queue' => 'provider',
+        'retry' => true,
+        'backtrace' => false,
+        'lock' => :until_executed,
+      )
+    end
+    Ad.where(address: addresses).touch_all
+
+    redirect_to admin_ad_option_value_path(resource), notice: t('active_admin.notices.actualize_success').html_safe
+  end
 
   filter :of_type, as: :select, collection: -> { AdOptionType.pluck(:name) }
 end
