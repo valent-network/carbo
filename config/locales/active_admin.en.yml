@@ -18,6 +18,25 @@ en:
   active_admin:
     dashboard: "Dashboard"
     users: "Users"
+    admin_users: Admins
+    ads: Ads
+    android: Android
+    apple: Apples
+    user_contacts: User Contacts
+    user_devices: User Devices
+    verification_requests: Verification Requests
+    ads_sources: Ads Sources
+    chat_rooms: Chat Rooms
+    dashboard_stats: Dashboard Stats
+    system_stats: System Stats
+    events: Events
+    static_pages: Static Pages
+    other: Other
+    phones: Phone Numbers
+    all_phone_numbers: All
+    business_phone_numbers: Business
+    demo_phone_numbers: Demo
+    ad_option_values: EAV
     dashboard_welcome:
       welcome: "Welcome to Active Admin. This is the default dashboard page."
       call_to_action: "To add dashboard sections, checkout 'app/admin/dashboard.rb'"
