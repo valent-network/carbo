@@ -678,7 +678,8 @@ CREATE TABLE public.messages (
     system boolean DEFAULT false NOT NULL,
     user_id bigint,
     chat_room_id bigint NOT NULL,
-    created_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    extra jsonb
 );
 
 
@@ -2656,6 +2657,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221124225553'),
 ('20221124230552'),
 ('20221124230927'),
-('20221124232851');
+('20221124232851'),
+('20221202170729');
 
 
