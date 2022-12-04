@@ -6,7 +6,5 @@ REDIS = Redis.new(
 )
 
 REDIS_KEYS = [
-  'server.effective_ads.last_refreshed_at',
-  'provider.crawler.finished_at',
   'provider.proxy.pool'
 ]
