@@ -10,7 +10,7 @@ class AddUserToChatRoom
     raise unless initiator.user_contacts.joins(phone_number: :user).exists?(users: { id: user.id })
 
     chat_room_user = chat_room.chat_room_users.new(user: user, name: name)
-    message = chat_room.messages.new(system: true, body: "#{chat_room_user.name} присоединился к чату")
+    message = chat_room.messages.new(system: true, body: "#{chat_room_user.name} присоединился к чату", extra: { type: :add, name: chat_room_user.name })
 
     ChatRoom.transaction do
       chat_room_user.save!

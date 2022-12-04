@@ -2,7 +2,7 @@
 module Api
   module V1
     class MessageSerializer < ActiveModel::Serializer
-      attributes :_id, :chat_room_id, :text, :user, :createdAt, :system, :pending
+      attributes :_id, :chat_room_id, :text, :user, :createdAt, :system, :pending, :extra
 
       def _id
         object.id
@@ -38,6 +38,10 @@ module Api
 
       def createdAt # rubocop:disable Naming/MethodName
         object.created_at
+      end
+
+      def extra
+        object.extra || {}
       end
     end
   end

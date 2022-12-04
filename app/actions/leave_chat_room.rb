@@ -8,7 +8,7 @@ class LeaveChatRoom
 
     initiator_user = chat_room.chat_room_users.find_by(user: initiator)
 
-    message = chat_room.messages.new(system: true, body: "#{initiator_user.name} покинул чат") unless chat_room.system?
+    message = chat_room.messages.new(system: true, body: "#{initiator_user.name} покинул чат", extra: { type: :left, name: initiator.name }) unless chat_room.system?
 
     ChatRoom.transaction do
       initiator_user.destroy
