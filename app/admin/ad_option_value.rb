@@ -16,7 +16,7 @@ ActiveAdmin.register(AdOptionValue) do
       row :id
       row :value
       row :ad_options do |ad_option_value|
-        ad_option_value.ad_options.distinct("ad_option_type_id").map(&:ad_option_type).map(&:name).join(', ')
+        ad_option_value.ad_options.select(:ad_option_type_id).distinct(:ad_option_type_id).map(&:ad_option_type).map(&:name).join(', ')
       end
       row :active_ads do |ad_option_value|
         ad_option_value.ad_options.joins(:ad).distinct('ads.id').where(ads: { deleted: false }).pluck('ads.address').map { |url| link_to(url, url) }.join("<br>").html_safe
