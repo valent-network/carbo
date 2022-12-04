@@ -42,7 +42,10 @@ class ApplicationController < ActionController::Base
     render(json: { message: t("api_error_messages.#{message.downcase}") }, status: status)
   end
 
-  def standard_error
+  def standard_error(exception)
+    raise exception if Rails.env.development?
+
+    Rails.logger.error(exception)
     render(json: { message: t("api_error_messages.unknown") }, status: 500)
   end
 end
