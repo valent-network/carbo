@@ -58,6 +58,8 @@ en:
     has_many_delete: "Delete"
     has_many_remove: "Remove"
     move: "Move"
+    notices:
+      actualize_success: "Succesfully added ads to actualization"
     filters:
       buttons:
         filter: "Filter"
@@ -180,7 +182,3 @@ en:
       block: "List"
       grid: "Grid"
       blog: "Blog"
-
-  active_admin:
-    notices:
-      actualize_success: "Succesfully added ads to actualization"
