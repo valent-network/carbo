@@ -915,6 +915,39 @@ ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 
 
 --
+-- Name: filterable_values; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.filterable_values (
+    id bigint NOT NULL,
+    ad_option_type_id bigint,
+    ad_option_value_id bigint,
+    name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: filterable_values_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.filterable_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: filterable_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.filterable_values_id_seq OWNED BY public.filterable_values.id;
+
+
+--
 -- Name: phone_numbers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1454,6 +1487,13 @@ ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.event
 
 
 --
+-- Name: filterable_values id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.filterable_values ALTER COLUMN id SET DEFAULT nextval('public.filterable_values_id_seq'::regclass);
+
+
+--
 -- Name: phone_numbers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1686,6 +1726,14 @@ ALTER TABLE ONLY public.demo_phone_numbers
 
 ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: filterable_values filterable_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.filterable_values
+    ADD CONSTRAINT filterable_values_pkey PRIMARY KEY (id);
 
 
 --
@@ -2072,6 +2120,27 @@ CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
 --
 
 CREATE INDEX index_events_on_user_id_and_created_at ON public.events USING btree (user_id, created_at) WHERE ((name)::text = 'snapshot_user_visibility'::text);
+
+
+--
+-- Name: index_filterable_values_on_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_filterable_values_on_ad_option_type_id ON public.filterable_values USING btree (ad_option_type_id);
+
+
+--
+-- Name: index_filterable_values_on_ad_option_value_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_filterable_values_on_ad_option_value_id ON public.filterable_values USING btree (ad_option_value_id);
+
+
+--
+-- Name: index_filterable_values_on_eav; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_filterable_values_on_eav ON public.filterable_values USING btree (ad_option_value_id, ad_option_type_id);
 
 
 --
@@ -2658,6 +2727,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221124230552'),
 ('20221124230927'),
 ('20221124232851'),
-('20221202170729');
+('20221202170729'),
+('20221204203325');
 
 

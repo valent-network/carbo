@@ -53,4 +53,5 @@ ActiveAdmin.register(AdOptionValue) do
   end
 
   filter :of_type, as: :select, collection: -> { AdOptionType.pluck(:name) }
+  filter :non_filterable, as: :select, collection: -> { ['Yes'] }
 end

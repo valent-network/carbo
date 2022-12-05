@@ -17,6 +17,7 @@ en:
         updated_at: "Updated"
   active_admin:
     dashboard: "Dashboard"
+    filterable_values: Filterable Values
     users: "Users"
     admin_users: Admins
     ads: Ads
