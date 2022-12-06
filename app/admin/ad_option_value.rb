@@ -5,7 +5,12 @@ ActiveAdmin.register(AdOptionValue) do
   actions :index, :show
   config.sort_order = 'value_desc'
 
+  filter :of_type, as: :select, collection: -> { AdOptionType.pluck(:name) }
+  filter :non_filterable, as: :select, collection: -> { ['Yes'] }
+
   index do
+    selectable_column
+    id_column
     column :id
     column :value
     actions
@@ -52,6 +57,11 @@ ActiveAdmin.register(AdOptionValue) do
     redirect_to admin_ad_option_value_path(resource), notice: t('active_admin.notices.actualize_success').html_safe
   end
 
-  filter :of_type, as: :select, collection: -> { AdOptionType.pluck(:name) }
-  filter :non_filterable, as: :select, collection: -> { ['Yes'] }
+  batch_action :flag, form: { type: :text, name: :text } do |ids, _inputs|
+    filterable_params = JSON.parse(params['batch_action_inputs'])
+    ad_option_type = AdOptionType.find_by_name(filterable_params['type'])
+
+    FilterableValue.insert_all(ids.map { |id| { ad_option_value_id: id, ad_option_type_id: ad_option_type.id, name: filterable_params['name'] } })
+    redirect_to request.referrer, notice: "The posts have been flagged."
+  end
 end
