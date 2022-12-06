@@ -61,6 +61,7 @@ en:
     move: "Move"
     notices:
       actualize_success: "Succesfully added ads to actualization"
+      make_filterable_success: "AdOptionValues were successfully added to FilterableValues"
     filters:
       buttons:
         filter: "Filter"

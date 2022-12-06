@@ -2,11 +2,14 @@
 
 ActiveAdmin.register(AdOptionValue) do
   menu priority: 6, label: proc { I18n.t('active_admin.ad_option_values') }
-  actions :index, :show
+  actions :index, :show, :destroy
   config.sort_order = 'value_desc'
+  config.per_page = 100
 
   filter :of_type, as: :select, collection: -> { AdOptionType.pluck(:name) }
   filter :non_filterable, as: :select, collection: -> { ['Yes'] }
+  filter :without_active_ads, as: :select, collection: -> { ['Yes'] }
+  filter :without_ad_options, as: :select, collection: -> { ['Yes'] }
 
   index do
     selectable_column
@@ -57,11 +60,10 @@ ActiveAdmin.register(AdOptionValue) do
     redirect_to admin_ad_option_value_path(resource), notice: t('active_admin.notices.actualize_success').html_safe
   end
 
-  batch_action :flag, form: { type: :text, name: :text } do |ids, _inputs|
-    filterable_params = JSON.parse(params['batch_action_inputs'])
-    ad_option_type = AdOptionType.find_by_name(filterable_params['type'])
+  batch_action :make_filterable, form: { type: :text, name: :text } do |ids, inputs|
+    ad_option_type = AdOptionType.find_by_name(inputs['type'])
 
-    FilterableValue.insert_all(ids.map { |id| { ad_option_value_id: id, ad_option_type_id: ad_option_type.id, name: filterable_params['name'] } })
-    redirect_to request.referrer, notice: "The posts have been flagged."
+    FilterableValue.insert_all(ids.map { |id| { ad_option_value_id: id, ad_option_type_id: ad_option_type.id, name: inputs['name'] } })
+    redirect_to request.referrer, notice: t('active_admin.notices.make_filterable_success')
   end
 end
