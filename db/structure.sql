@@ -580,7 +580,8 @@ ALTER SEQUENCE public.chat_rooms_id_seq OWNED BY public.chat_rooms.id;
 CREATE TABLE public.cities (
     id bigint NOT NULL,
     name character varying(255) NOT NULL,
-    region_id bigint
+    region_id bigint,
+    translations jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -710,7 +711,8 @@ CREATE TABLE public.user_devices (
     os character varying,
     push_token character varying,
     build_version character varying,
-    session_started_at timestamp without time zone
+    session_started_at timestamp without time zone,
+    locale character varying
 );
 
 
@@ -915,6 +917,40 @@ ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 
 
 --
+-- Name: filterable_value_translations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.filterable_value_translations (
+    id bigint NOT NULL,
+    ad_option_type_id bigint,
+    alias_group_name character varying NOT NULL,
+    name character varying NOT NULL,
+    locale character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: filterable_value_translations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.filterable_value_translations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: filterable_value_translations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.filterable_value_translations_id_seq OWNED BY public.filterable_value_translations.id;
+
+
+--
 -- Name: filterable_values; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -972,7 +1008,8 @@ ALTER SEQUENCE public.phone_numbers_id_seq OWNED BY public.phone_numbers.id;
 
 CREATE TABLE public.regions (
     id bigint NOT NULL,
-    name character varying(255) NOT NULL
+    name character varying(255) NOT NULL,
+    translations jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -1487,6 +1524,13 @@ ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.event
 
 
 --
+-- Name: filterable_value_translations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.filterable_value_translations ALTER COLUMN id SET DEFAULT nextval('public.filterable_value_translations_id_seq'::regclass);
+
+
+--
 -- Name: filterable_values id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1726,6 +1770,14 @@ ALTER TABLE ONLY public.demo_phone_numbers
 
 ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: filterable_value_translations filterable_value_translations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.filterable_value_translations
+    ADD CONSTRAINT filterable_value_translations_pkey PRIMARY KEY (id);
 
 
 --
@@ -2120,6 +2172,20 @@ CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
 --
 
 CREATE INDEX index_events_on_user_id_and_created_at ON public.events USING btree (user_id, created_at) WHERE ((name)::text = 'snapshot_user_visibility'::text);
+
+
+--
+-- Name: index_filterable_value_translations_on_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_filterable_value_translations_on_ad_option_type_id ON public.filterable_value_translations USING btree (ad_option_type_id);
+
+
+--
+-- Name: index_filterable_value_translations_on_uniq; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_filterable_value_translations_on_uniq ON public.filterable_value_translations USING btree (name, ad_option_type_id, locale);
 
 
 --
@@ -2728,6 +2794,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221124230927'),
 ('20221124232851'),
 ('20221202170729'),
-('20221204203325');
+('20221204203325'),
+('20221206130721'),
+('20221207123334'),
+('20221207134116'),
+('20221207140949');
 
 
