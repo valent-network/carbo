@@ -48,4 +48,8 @@ class ApplicationController < ActionController::Base
     Rails.logger.error(exception)
     render(json: { message: t("api_error_messages.unknown") }, status: 500)
   end
+
+  def set_en_locale(&action)
+    I18n.with_locale(:en, &action)
+  end
 end
