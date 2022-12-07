@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(UserContact) do
-  menu label: proc { I18n.t('active_admin.user_contacts') }, parent: I18n.t('active_admin.other')
+  menu label: proc { I18n.t('active_admin.user_contacts') }, parent: 'other'
   actions :index
 
   includes :phone_number, :user

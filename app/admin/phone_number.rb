@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(PhoneNumber) do
-  menu label: proc { I18n.t('active_admin.all_phone_numbers') }, parent: I18n.t('active_admin.phones')
+  menu label: proc { I18n.t('active_admin.all_phone_numbers') }, parent: 'phones'
   actions :index
 
   scope :all, default: true, show_count: false

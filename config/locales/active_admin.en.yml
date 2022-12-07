@@ -18,6 +18,10 @@ en:
   active_admin:
     dashboard: "Dashboard"
     filterable_values: Filterable Values
+    filterable_value_translations: Filterable Translations
+    region: Region
+    city: "City"
+    other: Other
     users: "Users"
     admin_users: Admins
     ads: Ads
@@ -32,7 +36,6 @@ en:
     system_stats: System Stats
     events: Events
     static_pages: Static Pages
-    other: Other
     phones: Phone Numbers
     all_phone_numbers: All
     business_phone_numbers: Business

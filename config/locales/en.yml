@@ -1,5 +1,10 @@
 en:
   recario: Recario
+  invitation_text: I'm listening
+  time:
+    formats:
+      long: "%Y-%m-%d %H:%M:%S"
+      default: "%e %B"
   api_error_messages:
     not_authorized: Authorization required
     wrong_verification_code: Wrong verification code
@@ -10,15 +15,29 @@ en:
     sms_text: Authentication code - %{verification_code}
   ad_options:
     engine: Engine
-    race: Race
-    gear: Gearbox
-    wheels: Wheels
-    carcass: Carcass
-    city: City
-    color: Color
-    year: Year
+    race: Mileage
+    gear: Transmission
+    wheels: Drive
+    carcass: Body
     location: Location
+    color: Coolor
+    year: Year
     no_description: No description
-    race_value: "%{value}k km"
-    engine_value: "%{value}L %{fuel_type}"
-    horse_powers: Horse Powers
+    race_value: "%{value}k\u00A0km"
+    hp_value: "%{value}\u00A0h.p."
+    city_value: "%{value}\u00A0city"
+    full_engine_value: "%{engine_type}\u00A0%{engine_capacity}L"
+    engine_value: "%{value}L\u00A0%{fuel_type}"
+    horse_powers: Engine output
+  hops_count:
+    - Friends
+    - Friends of friends
+    - 🤝🤝🤝
+    - 🤝🤝🤝🤝
+  views:
+    pagination:
+      first: '<<'
+      last: '>>'
+      next: '>'
+      previous: '<'
+      truncate: '...'

@@ -59,8 +59,8 @@ class Ad < ApplicationRecord
     other_details = {
       'description' => ad_description&.body,
       'images_json_array_tmp' => ad_image_links_set&.value,
-      'city' => city&.name,
-      'region' => city&.region&.name,
+      'city' => city&.display_name,
+      'region' => city&.region&.display_name,
     }
 
     @details = Hash[opts_array].merge(other_details)

@@ -4,7 +4,7 @@ ActiveAdmin.register(AdOptionValue) do
   menu priority: 6, label: proc { I18n.t('active_admin.ad_option_values') }
   actions :index, :show, :destroy
   config.sort_order = 'value_desc'
-  config.per_page = 100
+  config.per_page = [100, 1000, 5000]
 
   filter :of_type, as: :select, collection: -> { AdOptionType.pluck(:name) }
   filter :non_filterable, as: :select, collection: -> { ['Yes'] }

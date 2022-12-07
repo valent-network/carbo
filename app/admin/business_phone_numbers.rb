@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 ActiveAdmin.register(BusinessPhoneNumber) do
-  menu label: proc { I18n.t('active_admin.business_phone_numbers') }, parent: I18n.t('active_admin.phones')
+  menu label: proc { I18n.t('active_admin.business_phone_numbers') }, parent: 'phones'
   actions :index
   includes :phone_number
   config.sort_order = 'ads_count_desc'

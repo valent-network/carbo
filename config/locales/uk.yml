@@ -1,30 +1,39 @@
 uk:
-  recario: Рекарио
+  recario: Рекаріо
+  invitation_text: Слухаю
   time:
     formats:
       long: "%Y-%m-%d %H:%M:%S"
       default: "%e %B"
   api_error_messages:
-    not_authorized: Доступ запрещен
-    wrong_verification_code: Неверный код
-    missing_verification_code: Код отсутствует
-    phone_number_not_mobile: Необходимо использовать номер мобильного телефона
-    unknown: "Ошибка в Рекарио"
+    not_authorized: Доступ заборонено
+    wrong_verification_code: Неправильний код
+    missing_verification_code: Код відустній
+    phone_number_not_mobile: Необхідно використовувати номер мобільного телефону
+    unknown: "Помилка в Рекаріо"
   send_verification:
-    sms_text: Проверочный код для входа в систему - %{verification_code}
+    sms_text: Код для входу в систему - %{verification_code}
   ad_options:
-    engine: Мотор
-    race: Пробег
+    engine: Двигун
+    race: Одометр
     gear: Коробка
-    wheels: Привод
+    wheels: Привід
     carcass: Кузов
-    location: Находится
-    color: Цвет
-    year: Год
-    no_description: Описание отсутствует
-    race_value: "%{value} тыс. км"
-    engine_value: "%{value} л %{fuel_type}"
-    horse_powers: Мощность
+    location: Знаходиться
+    color: Колір
+    year: Рік випуску
+    no_description: Опис відсутній
+    race_value: "%{value}\u00A0тис.\u00A0км"
+    hp_value: "%{value}\u00A0к.с."
+    city_value: "м.\u00A0%{value}"
+    full_engine_value: "%{engine_type}\u00A0%{engine_capacity}\u00A0л"
+    engine_value: "%{value}\u00A0л\u00A0%{fuel_type}"
+    horse_powers: Потужність
+  hops_count:
+    - Друзів
+    - Друзів друзів
+    - 🤝🤝🤝
+    - 🤝🤝🤝🤝
   views:
     pagination:
       first: '<<'
