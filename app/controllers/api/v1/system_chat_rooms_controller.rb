@@ -21,7 +21,7 @@ module Api
           # ApplicationCable::UserChannel.broadcast_to(current_user, type: 'chat', chat: user_payload)
           # ApplicationCable::UserChannel.broadcast_to(current_user, type: 'unread_update', count: Message.unread_messages_for(current_user.id).count)
         else
-          system_chat_room = SendSystemMessageToChatRoom.new.call(user_id: current_user.id, message_text: 'Слушаю', async: false)
+          system_chat_room = SendSystemMessageToChatRoom.new.call(user_id: current_user.id, message_text: I18n.t('invitation_text'), async: false)
         end
 
         render(json: { chat_room_id: system_chat_room.id })
