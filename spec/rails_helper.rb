@@ -72,7 +72,7 @@ RSpec.configure do |config|
     end
   end
 
-  config.before { controller.request.headers['HTTP_ACCEPT_LANGUAGE'] = 'en' if defined?(controller) }
+  config.before { controller.request.headers['X-LOCALE'] = 'en' if defined?(controller) }
 
   config.before(:all) do
     Rpush::Client::ActiveRecord::Apnsp8::App.where(name: 'ios', connections: 2, apn_key: "BEGINEND", apn_key_id: "ID", environment: 'production', team_id: 'team', bundle_id: 'com.recar.io').first_or_create!

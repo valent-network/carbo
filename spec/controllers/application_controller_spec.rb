@@ -40,7 +40,7 @@ RSpec.describe(ApplicationController) do
       get :filters
       expect(response).to(be_ok)
       expect(json_body.keys).to(match_array(%w[fuels gears wheels carcasses hops_count]))
-      expect(json_body['fuels']).to(eq(["Diesel", "LPG", "Petrol", "Other"]))
+      expect(json_body['fuels']).to(match_array(["Diesel", "LPG", "Petrol", "Other"]))
     end
   end
 end

@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
   end
 
   def switch_locale(&action)
-    locale = params[:locale] || request.env['HTTP_ACCEPT_LANGUAGE'].to_s.scan(/^[a-z]{2}/).first.presence || 'uk'
+    locale = params[:locale] || request.headers['X-LOCALE'].to_s.scan(/^[a-z]{2}/).first.presence || 'uk'
     locale = 'uk' unless locale.in?(%w[en uk])
 
     I18n.with_locale(locale, &action)
