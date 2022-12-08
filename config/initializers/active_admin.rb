@@ -148,7 +148,7 @@ ActiveAdmin.setup do |config|
   # Active Admin resources and pages from here.
   #
   # config.before_action :do_something_awesome
-  config.around_action :set_en_locale
+  config.around_action(:set_en_locale)
 
   # == Localize Date/Time Format
   #

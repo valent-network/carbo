@@ -101,7 +101,7 @@ RSpec.describe(UserFriendlyAdsQuery) do
     it 'filters by contacts_mode' do
       EffectiveAd.refresh
       expected_ads = [ad_hand1_no_user, ad_hand1]
-      expect(described_class.new.call(user: user, filters: { hops_count: [UserFriendlyAdsQuery::FILTERS[:hops_count].first] })).to(match_array(expected_ads))
+      expect(described_class.new.call(user: user, filters: { hops_count: [I18n.t('hops_count').first] })).to(match_array(expected_ads))
     end
   end
 end

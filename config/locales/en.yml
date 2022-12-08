@@ -20,7 +20,7 @@ en:
     wheels: Drive
     carcass: Body
     location: Location
-    color: Coolor
+    color: Color
     year: Year
     no_description: No description
     race_value: "%{value}k\u00A0km"

@@ -1,20 +1,13 @@
 # frozen_string_literal: true
 class UserFriendlyAdsQuery
   LIMIT = 20
-  FILTERS = {
-    fuels: ['Газ', 'Газ / Бензин', 'Бензин', 'Гибрид', 'Дизель', 'Электро'],
-    wheels: ['Передний', 'Задний', 'Полный'],
-    carcasses: ['Хэтчбек', 'Купе', 'Универсал', 'Седан', 'Пикап', 'Внедорожник / Кроссовер', 'Лифтбек', 'Кабриолет', 'Родстер', 'Минивэн'],
-    gears: ['Автомат', 'Ручная / Механика', 'Робот', 'Вариатор', 'Типтроник'],
-    hops_count: ['Друзей', 'Друзей друзей', '🤝🤝🤝', '🤝🤝🤝🤝'],
-  }
   DEFAULT_HOPS_COUNT = ENV.fetch('DEFAULT_HOPS_COUNT', 3)
 
   def call(user:, offset: 0, limit: LIMIT, filters: {})
     user_contacts_matched_phone_numbers = user.user_contacts.where('user_contacts.name ILIKE ?', "%#{filters[:query]}%").pluck(:phone_number_id) if filters[:query].present?
-    effective_ads = EffectiveAds.new.call(filters: filters, should_search_query: user_contacts_matched_phone_numbers.blank?)
+    effective_ads = EffectiveAds.new.call(filters: filters_from_aliases_groups(filters), should_search_query: user_contacts_matched_phone_numbers.blank?)
 
-    hops_count = FILTERS[:hops_count].index(filters[:hops_count]&.first)
+    hops_count = I18n.t('hops_count').index(filters[:hops_count]&.first)
 
     blocked_users_ids = user.blocked_users_ids
     if blocked_users_ids.present?
@@ -37,5 +30,16 @@ class UserFriendlyAdsQuery
     query = query.limit(limit) if limit > 0
 
     Ad.where(id: query.select(:id).distinct(:id).map(&:id)).order('ads.created_at DESC')
+  end
+
+  private
+
+  def filters_from_aliases_groups(filters)
+    filters[:fuels] = filters[:fuels].map { |f| FilterableValueTranslation.aliases_for('fuel', f) }.flatten if filters[:fuels].present?
+    filters[:gears] = filters[:gears].map { |f| FilterableValueTranslation.aliases_for('gear', f) }.flatten if filters[:gears].present?
+    filters[:carcasses] = filters[:carcasses].map { |f| FilterableValueTranslation.aliases_for('carcass', f) }.flatten if filters[:carcasses].present?
+    filters[:wheels] = filters[:wheels].map { |f| FilterableValueTranslation.aliases_for('wheels', f) }.flatten if filters[:wheels].present?
+
+    filters
   end
 end

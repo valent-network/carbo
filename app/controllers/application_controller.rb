@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, raise: false
   rescue_from StandardError, with: :standard_error
+  around_action :switch_locale
 
   def landing
     @total_count = EffectiveAd.count
@@ -10,7 +11,19 @@ class ApplicationController < ActionController::Base
   end
 
   def filters
-    render(json: UserFriendlyAdsQuery::FILTERS)
+    mapping = {
+      fuel: :fuels,
+      gear: :gears,
+      carcass: :carcasses,
+      wheels: :wheels,
+    }
+    filters = FilterableValueTranslation.where(locale: I18n.locale).includes(:ad_option_type).pluck("ad_option_types.name, filterable_value_translations.name")
+      .group_by(&:first)
+      .transform_values { |v| v.map(&:last) }
+      .transform_keys { |k| mapping[k.to_sym] }
+      .merge(hops_count: t('hops_count'))
+
+    render(json: filters)
   end
 
   def multibutton
@@ -32,7 +45,10 @@ class ApplicationController < ActionController::Base
     access_token = request.headers['X-User-Access-Token'] || params[:access_token]
 
     @current_device = UserDevice.find_by(access_token: access_token) if access_token.present?
-    @current_user = @current_device.user if @current_device
+    if @current_device
+      @current_user = @current_device.user
+      @current_device.update(locale: I18n.locale)
+    end
 
     error!('NOT_AUTHORIZED', 401) unless current_user
   end
@@ -43,10 +59,17 @@ class ApplicationController < ActionController::Base
   end
 
   def standard_error(exception)
-    raise exception if Rails.env.development?
+    raise exception if Rails.env.development? || Rails.env.test?
 
     Rails.logger.error(exception)
     render(json: { message: t("api_error_messages.unknown") }, status: 500)
+  end
+
+  def switch_locale(&action)
+    locale = params[:locale] || request.env['HTTP_ACCEPT_LANGUAGE'].to_s.scan(/^[a-z]{2}/).first.presence || 'uk'
+    locale = 'uk' unless locale.in?(%w[en uk])
+
+    I18n.with_locale(locale, &action)
   end
 
   def set_en_locale(&action)
