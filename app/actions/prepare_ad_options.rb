@@ -19,8 +19,6 @@ class PrepareAdOptions
 
     description_body = details.delete('description')
     images_links = details.delete('images_json_array_tmp')
-    state_num = details.delete('state_num').to_s.strip
-    seller_name = details.delete('seller_name').to_s.strip
     region = details['region'].to_s.strip
     city = details['city'].to_s.strip
 
@@ -76,14 +74,6 @@ class PrepareAdOptions
       ad_description.body = description_body
     else
       ad.ad_description&.mark_for_destruction
-    end
-
-    if state_num.present?
-      ad.state_nums.where(value: state_num).first_or_initialize
-    end
-
-    if seller_name.present?
-      ad.seller_names.where(value: seller_name).first_or_initialize
     end
 
     if images_links.present?
