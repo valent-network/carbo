@@ -54,6 +54,12 @@ class PrepareAdOptions
     details.delete('region')
     details.delete('city')
 
+    ad_extra = ad.ad_extra || ad.build_ad_extra
+    ad_extra.details = details
+
+    ad_query = ad.ad_query || ad.build_ad_query
+    ad_query.title = [details['maker'], details['model'], details['year']].join(' ')
+
     keys = details.keys.uniq
     values = details.values.select(&:present?).uniq
 

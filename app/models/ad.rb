@@ -15,6 +15,7 @@ class Ad < ApplicationRecord
   belongs_to :ads_source
   belongs_to :phone_number
   belongs_to :city, optional: true
+  has_one :region, through: :city
   has_many :ad_visits, dependent: :delete_all
   has_many :ad_favorites, dependent: :delete_all
   has_many :ad_prices, dependent: :delete_all
@@ -23,6 +24,15 @@ class Ad < ApplicationRecord
   has_many :state_nums, dependent: :delete_all, autosave: true
   has_one :ad_description, dependent: :delete, autosave: true
   has_one :ad_image_links_set, dependent: :delete, autosave: true
+  has_one :ad_extra, dependent: :delete, autosave: true
+  has_one :ad_query, dependent: :delete, autosave: true
+
+  delegate :body, to: :ad_description, prefix: true, allow_nil: true
+  delegate :value, to: :ad_image_links_set, prefix: true, allow_nil: true
+  delegate :details, to: :ad_extra, prefix: true, allow_nil: true
+  delegate :title, to: :ad_query, allow_nil: true
+  delegate :display_name, to: :city, prefix: true, allow_nil: true
+  delegate :display_name, to: :region, prefix: true, allow_nil: true
 
   scope :active, -> { where(deleted: false) }
 

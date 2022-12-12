@@ -122,6 +122,38 @@ ALTER SEQUENCE public.ad_descriptions_id_seq OWNED BY public.ad_descriptions.id;
 
 
 --
+-- Name: ad_extras; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_extras (
+    id bigint NOT NULL,
+    details jsonb DEFAULT '{}'::jsonb,
+    ad_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ad_extras_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_extras_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_extras_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_extras_id_seq OWNED BY public.ad_extras.id;
+
+
+--
 -- Name: ad_favorites; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -301,6 +333,38 @@ CREATE SEQUENCE public.ad_prices_id_seq
 --
 
 ALTER SEQUENCE public.ad_prices_id_seq OWNED BY public.ad_prices.id;
+
+
+--
+-- Name: ad_queries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_queries (
+    id bigint NOT NULL,
+    title character varying,
+    ad_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ad_queries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_queries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_queries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_queries_id_seq OWNED BY public.ad_queries.id;
 
 
 --
@@ -1419,6 +1483,13 @@ ALTER TABLE ONLY public.ad_descriptions ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
+-- Name: ad_extras id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_extras ALTER COLUMN id SET DEFAULT nextval('public.ad_extras_id_seq'::regclass);
+
+
+--
 -- Name: ad_favorites id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1458,6 +1529,13 @@ ALTER TABLE ONLY public.ad_options ALTER COLUMN id SET DEFAULT nextval('public.a
 --
 
 ALTER TABLE ONLY public.ad_prices ALTER COLUMN id SET DEFAULT nextval('public.ad_prices_id_seq'::regclass);
+
+
+--
+-- Name: ad_queries id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_queries ALTER COLUMN id SET DEFAULT nextval('public.ad_queries_id_seq'::regclass);
 
 
 --
@@ -1645,6 +1723,14 @@ ALTER TABLE ONLY public.ad_descriptions
 
 
 --
+-- Name: ad_extras ad_extras_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_extras
+    ADD CONSTRAINT ad_extras_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ad_favorites ad_favorites_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1690,6 +1776,14 @@ ALTER TABLE ONLY public.ad_options
 
 ALTER TABLE ONLY public.ad_prices
     ADD CONSTRAINT ad_prices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_queries ad_queries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_queries
+    ADD CONSTRAINT ad_queries_pkey PRIMARY KEY (id);
 
 
 --
@@ -1944,6 +2038,13 @@ CREATE UNIQUE INDEX index_ad_descriptions_on_ad_id ON public.ad_descriptions USI
 
 
 --
+-- Name: index_ad_extras_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ad_extras_on_ad_id ON public.ad_extras USING btree (ad_id);
+
+
+--
 -- Name: index_ad_favorites_on_ad_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2011,6 +2112,20 @@ CREATE INDEX index_ad_options_on_data2 ON public.ad_options USING btree (ad_opti
 --
 
 CREATE INDEX index_ad_prices_on_ad_id ON public.ad_prices USING btree (ad_id);
+
+
+--
+-- Name: index_ad_queries_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_queries_on_ad_id ON public.ad_queries USING btree (ad_id);
+
+
+--
+-- Name: index_ad_queries_on_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_queries_on_title ON public.ad_queries USING gin (title public.gin_trgm_ops);
 
 
 --
@@ -2798,6 +2913,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221206130721'),
 ('20221207123334'),
 ('20221207134116'),
-('20221207140949');
+('20221207140949'),
+('20221210215729'),
+('20221211172613');
 
 
