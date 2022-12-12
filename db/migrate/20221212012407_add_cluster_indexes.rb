@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddClusterIndexes < ActiveRecord::Migration[7.0]
   def up
     execute('CLUSTER user_contacts USING index_user_contacts_on_user_id_and_phone_number_id')

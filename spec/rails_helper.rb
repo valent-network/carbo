@@ -80,8 +80,6 @@ RSpec.configure do |config|
     %w[fuel gear race year color maker model region wheels address carcass customs_clear city state_num seller_name engine_capacity horse_powers new_car].each do |ad_option_type|
       AdOptionType.create(name: ad_option_type)
     end
-    KnownAd.refresh(concurrently: false)
-    EffectiveAd.refresh(concurrently: false)
     AdsGroupedByMakerModelYear.refresh(concurrently: false)
   end
 end

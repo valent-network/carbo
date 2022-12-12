@@ -60,29 +60,32 @@ class User < ApplicationRecord
   end
 
   def visible_ads_count
-    user_connections.select('effective_ads.id')
+    user_connections.select('ads.id')
       .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
-      .joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
-      .distinct('effective_ads.id')
-      .count('effective_ads.id')
+      .joins('JOIN ads ON ads.phone_number_id = user_contacts.phone_number_id')
+      .where(ads: { deleted: false })
+      .distinct('ads.id')
+      .count('ads.id')
   end
 
   def visible_ads_count_for_default_hops
-    user_connections.select('effective_ads.id')
+    user_connections.select('ads.id')
       .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
-      .joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
+      .joins('JOIN ads ON ads.phone_number_id = user_contacts.phone_number_id')
       .where('user_connections.hops_count <= ?', UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT)
-      .distinct('effective_ads.id')
-      .count('effective_ads.id')
+      .where(ads: { deleted: false })
+      .distinct('ads.id')
+      .count('ads.id')
   end
 
   def visible_business_ads_count
-    user_connections.select('effective_ads.id')
+    user_connections.select('ads.id')
       .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
-      .joins('JOIN effective_ads ON effective_ads.phone_number_id = user_contacts.phone_number_id')
+      .joins('JOIN ads ON ads.phone_number_id = user_contacts.phone_number_id')
       .joins('JOIN business_phone_numbers ON user_contacts.phone_number_id = business_phone_numbers.phone_number_id')
-      .distinct('effective_ads.id')
-      .count('effective_ads.id')
+      .where(ads: { deleted: false })
+      .distinct('ads.id')
+      .count('ads.id')
   end
 
   def visible_friends_count

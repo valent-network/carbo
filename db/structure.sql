@@ -669,58 +669,6 @@ ALTER SEQUENCE public.cities_id_seq OWNED BY public.cities.id;
 
 
 --
--- Name: user_contacts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.user_contacts (
-    id integer NOT NULL,
-    user_id integer NOT NULL,
-    phone_number_id integer NOT NULL,
-    name character varying(100) NOT NULL
-);
-
-
---
--- Name: known_ads; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.known_ads AS
- SELECT DISTINCT ads.id,
-    ads.phone_number_id,
-    ads.price
-   FROM public.ads
-  WHERE ((ads.deleted = false) AND (ads.phone_number_id IN ( SELECT user_contacts.phone_number_id
-           FROM public.user_contacts)))
-  WITH NO DATA;
-
-
---
--- Name: effective_ads; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.effective_ads AS
- SELECT ads.id,
-    ads.phone_number_id,
-    ads.price,
-    ((ads.options ->> 'year'::text))::smallint AS year,
-    (((((ads.options ->> 'maker'::text) || ' '::text) || (ads.options ->> 'model'::text)) || ' '::text) || (ads.options ->> 'year'::text)) AS search_query,
-    (ads.options ->> 'fuel'::text) AS fuel,
-    (ads.options ->> 'wheels'::text) AS wheels,
-    (ads.options ->> 'gear'::text) AS gear,
-    (ads.options ->> 'carcass'::text) AS carcass
-   FROM ( SELECT ads_1.id,
-            ads_1.phone_number_id,
-            ads_1.price,
-            json_object((array_agg(ARRAY[ad_option_types.name, ad_option_values.value]))::text[]) AS options
-           FROM (((public.known_ads ads_1
-             JOIN public.ad_options ON (((ad_options.ad_id = ads_1.id) AND (ad_options.ad_option_type_id = ANY (ARRAY[1, 2, 4, 6, 7, 9, 11])))))
-             JOIN public.ad_option_types ON ((ad_options.ad_option_type_id = ad_option_types.id)))
-             JOIN public.ad_option_values ON ((ad_options.ad_option_value_id = ad_option_values.id)))
-          GROUP BY ads_1.id, ads_1.phone_number_id, ads_1.price) ads
-  WITH NO DATA;
-
-
---
 -- Name: events; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -758,6 +706,18 @@ CREATE TABLE public.user_connections (
     friend_id integer NOT NULL,
     connection_id integer NOT NULL,
     hops_count smallint
+);
+
+
+--
+-- Name: user_contacts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_contacts (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    phone_number_id integer NOT NULL,
+    name character varying(100) NOT NULL
 );
 
 
@@ -823,8 +783,10 @@ CREATE MATERIALIZED VIEW public.dashboard_stats AS
            FROM public.user_devices) AS user_devices_count,
     ( SELECT count(ads.id) AS count
            FROM public.ads) AS ads_count,
-    ( SELECT count(effective_ads.id) AS count
-           FROM public.effective_ads) AS effective_ads_count,
+    ( SELECT count(DISTINCT ads.id) AS count
+           FROM (public.ads
+             JOIN public.user_contacts ON ((ads.phone_number_id = user_contacts.phone_number_id)))
+          WHERE (ads.deleted = false)) AS effective_ads_count,
     ( SELECT count(ads.id) AS count
            FROM public.ads
           WHERE (ads.deleted = false)) AS active_ads_count,
@@ -864,8 +826,10 @@ CREATE MATERIALIZED VIEW public.dashboard_stats AS
          LIMIT 1) AS last_chat_room_created_at,
     ( SELECT ads.created_at
            FROM public.ads
-          WHERE (ads.id = ( SELECT max(effective_ads.id) AS max
-                   FROM public.effective_ads))
+          WHERE (ads.id = ( SELECT max(ads_1.id) AS max
+                   FROM (public.ads ads_1
+                     JOIN public.user_contacts ON ((ads_1.phone_number_id = user_contacts.phone_number_id)))
+                  WHERE (ads_1.deleted = false)))
          LIMIT 1) AS last_effective_ad_created_at,
     ( SELECT user_devices.updated_at
            FROM (public.user_devices
@@ -1024,7 +988,8 @@ CREATE TABLE public.filterable_values (
     ad_option_value_id bigint,
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    raw_value character varying
 );
 
 
@@ -2280,38 +2245,10 @@ CREATE INDEX index_cities_on_region_id ON public.cities USING btree (region_id);
 
 
 --
--- Name: index_dashboard_stats_on_updated_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_dashboard_stats_on_updated_at ON public.dashboard_stats USING btree (updated_at);
-
-
---
 -- Name: index_demo_phone_numbers_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_demo_phone_numbers_on_phone_number_id ON public.demo_phone_numbers USING btree (phone_number_id);
-
-
---
--- Name: index_effective_ads_on_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_effective_ads_on_id ON public.effective_ads USING btree (id DESC);
-
-
---
--- Name: index_effective_ads_on_phone_number_id_and_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_effective_ads_on_phone_number_id_and_id ON public.effective_ads USING btree (phone_number_id, id DESC);
-
-
---
--- Name: index_effective_ads_on_search_query; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_effective_ads_on_search_query ON public.effective_ads USING gin (search_query public.gin_trgm_ops);
 
 
 --
@@ -2363,20 +2300,6 @@ CREATE INDEX index_filterable_values_on_ad_option_value_id ON public.filterable_
 --
 
 CREATE UNIQUE INDEX index_filterable_values_on_eav ON public.filterable_values USING btree (ad_option_value_id, ad_option_type_id);
-
-
---
--- Name: index_known_ads_on_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_known_ads_on_id ON public.known_ads USING btree (id);
-
-
---
--- Name: index_known_ads_on_id_and_phone_number_id_and_price; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_known_ads_on_id_and_phone_number_id_and_price ON public.known_ads USING btree (id, phone_number_id, price);
 
 
 --
@@ -2988,6 +2911,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221212011330'),
 ('20221212012407'),
 ('20221212143033'),
-('20221212151349');
+('20221212151349'),
+('20221212185441'),
+('20221212200038'),
+('20221212201534'),
+('20221212201814');
 
 

@@ -35,6 +35,7 @@ class Ad < ApplicationRecord
   delegate :display_name, to: :region, prefix: true, allow_nil: true
 
   scope :active, -> { where(deleted: false) }
+  scope :known, -> { joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id') }
 
   def self.by_options(opt_name, opt_id, val_id)
     joins("JOIN ad_options AS ad_option_#{opt_name} ON ad_option_#{opt_name}.ad_id = ads.id AND ad_option_#{opt_name}.ad_option_type_id = #{opt_id} AND ad_option_#{opt_name}.ad_option_value_id = #{val_id}")

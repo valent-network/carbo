@@ -52,9 +52,7 @@ RSpec.describe(EffectiveAds) do
       user.user_contacts.create(phone_number: ad.phone_number, name: FFaker::Name.name)
     end
 
-    EffectiveAd.refresh
-
-    expect(EffectiveAd.count).to(eq(7))
+    expect(Ad.known.active.distinct('ads.id').count).to(eq(7))
   end
 
   context 'with #should_search_query = false' do

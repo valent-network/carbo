@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def landing
-    @total_count = EffectiveAd.count
+    @total_count = Ad.known.active.distinct('ads.id').count
     render('/landing', layout: false)
   end
 

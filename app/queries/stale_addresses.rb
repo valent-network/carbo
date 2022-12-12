@@ -6,8 +6,7 @@ class StaleAddresses
   def self.call
     update_interval_ago = Time.zone.now - UPDATE_INTERVAL
 
-    Ad.select(:address)
-      .joins('JOIN effective_ads ON effective_ads.id = ads.id')
+    Ad.known.active.distinct('ads.id').select(:address)
       .where('ads.updated_at < ?', update_interval_ago)
       .limit(BATCH_LIMIT)
   end

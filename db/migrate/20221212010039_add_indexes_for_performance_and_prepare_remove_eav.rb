@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddIndexesForPerformanceAndPrepareRemoveEav < ActiveRecord::Migration[7.0]
   def change
     add_index(:ad_extras, :details, using: :gin)
