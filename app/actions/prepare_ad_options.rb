@@ -55,6 +55,9 @@ class PrepareAdOptions
     ad_extra = ad.ad_extra || ad.build_ad_extra
     ad_extra.details = details
 
+    details.delete('state_num')
+    details.delete('seller_name')
+
     ad_query = ad.ad_query || ad.build_ad_query
     ad_query.title = [details['maker'], details['model'], details['year']].join(' ')
 
