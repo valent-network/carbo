@@ -9,12 +9,14 @@ ActiveAdmin.register(PhoneNumber) do
   scope :having_two_or_three_ads, show_count: false
   scope :having_four_to_ten_ads, show_count: false
   scope :having_more_ten_ads, show_count: false
+  scope :business, show_count: false
 
   index pagination_total: false do
     column :full_number
   end
 
   filter :by_region, as: :select, collection: -> { Region.pluck(:name) }
+  filter :business, as: :select, collection: -> { [5, 10, 20, 50, 100, 200, 500, 1000] }
   filter :not_registered_only, as: :select, collection: -> { ['Yes'] }
   filter :full_number_eq, as: :string
 end

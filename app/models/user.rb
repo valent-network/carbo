@@ -82,8 +82,8 @@ class User < ApplicationRecord
     user_connections.select('ads.id')
       .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
       .joins('JOIN ads ON ads.phone_number_id = user_contacts.phone_number_id')
-      .joins('JOIN business_phone_numbers ON user_contacts.phone_number_id = business_phone_numbers.phone_number_id')
       .where(ads: { deleted: false })
+      .where("user_contacts.phone_number_id IN (#{PhoneNumber.business.select(:id).to_sql})")
       .distinct('ads.id')
       .count('ads.id')
   end

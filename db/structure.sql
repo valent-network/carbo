@@ -547,31 +547,6 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: phone_numbers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.phone_numbers (
-    id integer NOT NULL,
-    full_number character varying(9) NOT NULL
-);
-
-
---
--- Name: business_phone_numbers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.business_phone_numbers AS
- SELECT ads.phone_number_id,
-    count(ads.phone_number_id) AS ads_count
-   FROM (public.ads
-     JOIN public.phone_numbers ON ((ads.phone_number_id = phone_numbers.id)))
-  WHERE (ads.created_at > (now() - '1 year'::interval))
-  GROUP BY ads.phone_number_id
- HAVING (count(ads.phone_number_id) > 5)
-  WITH NO DATA;
-
-
---
 -- Name: chat_room_users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -693,6 +668,16 @@ CREATE TABLE public.messages (
     chat_room_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     extra jsonb
+);
+
+
+--
+-- Name: phone_numbers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.phone_numbers (
+    id integer NOT NULL,
+    full_number character varying(9) NOT NULL
 );
 
 
@@ -2169,13 +2154,6 @@ CREATE UNIQUE INDEX index_ads_sources_on_title ON public.ads_sources USING btree
 
 
 --
--- Name: index_business_phone_numbers_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_business_phone_numbers_on_phone_number_id ON public.business_phone_numbers USING btree (phone_number_id);
-
-
---
 -- Name: index_chat_room_users_on_chat_room_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2874,6 +2852,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221212200038'),
 ('20221212201534'),
 ('20221212201814'),
-('20221212205750');
+('20221212205750'),
+('20221212212301');
 
 
