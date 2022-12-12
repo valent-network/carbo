@@ -2036,6 +2036,8 @@ CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON pub
 
 CREATE UNIQUE INDEX index_ad_descriptions_on_ad_id ON public.ad_descriptions USING btree (ad_id);
 
+ALTER TABLE public.ad_descriptions CLUSTER ON index_ad_descriptions_on_ad_id;
+
 
 --
 -- Name: index_ad_extras_on_ad_id; Type: INDEX; Schema: public; Owner: -
@@ -2043,12 +2045,23 @@ CREATE UNIQUE INDEX index_ad_descriptions_on_ad_id ON public.ad_descriptions USI
 
 CREATE UNIQUE INDEX index_ad_extras_on_ad_id ON public.ad_extras USING btree (ad_id);
 
+ALTER TABLE public.ad_extras CLUSTER ON index_ad_extras_on_ad_id;
+
+
+--
+-- Name: index_ad_extras_on_details; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_extras_on_details ON public.ad_extras USING gin (details);
+
 
 --
 -- Name: index_ad_favorites_on_ad_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_ad_favorites_on_ad_id_and_user_id ON public.ad_favorites USING btree (ad_id, user_id);
+
+ALTER TABLE public.ad_favorites CLUSTER ON index_ad_favorites_on_ad_id_and_user_id;
 
 
 --
@@ -2063,6 +2076,8 @@ CREATE INDEX index_ad_favorites_on_user_id ON public.ad_favorites USING btree (u
 --
 
 CREATE UNIQUE INDEX index_ad_image_links_sets_on_ad_id ON public.ad_image_links_sets USING btree (ad_id);
+
+ALTER TABLE public.ad_image_links_sets CLUSTER ON index_ad_image_links_sets_on_ad_id;
 
 
 --
@@ -2113,12 +2128,16 @@ CREATE INDEX index_ad_options_on_data2 ON public.ad_options USING btree (ad_opti
 
 CREATE INDEX index_ad_prices_on_ad_id ON public.ad_prices USING btree (ad_id);
 
+ALTER TABLE public.ad_prices CLUSTER ON index_ad_prices_on_ad_id;
+
 
 --
 -- Name: index_ad_queries_on_ad_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_ad_queries_on_ad_id ON public.ad_queries USING btree (ad_id);
+
+ALTER TABLE public.ad_queries CLUSTER ON index_ad_queries_on_ad_id;
 
 
 --
@@ -2133,6 +2152,8 @@ CREATE INDEX index_ad_queries_on_title ON public.ad_queries USING gin (title pub
 --
 
 CREATE UNIQUE INDEX index_ad_visits_on_ad_id_and_user_id ON public.ad_visits USING btree (ad_id, user_id);
+
+ALTER TABLE public.ad_visits CLUSTER ON index_ad_visits_on_ad_id_and_user_id;
 
 
 --
@@ -2161,6 +2182,22 @@ CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_us
 --
 
 CREATE UNIQUE INDEX index_ads_on_address ON public.ads USING btree (address);
+
+
+--
+-- Name: index_ads_on_id_and_price; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_id_and_price ON public.ads USING btree (id DESC, price) WHERE (deleted = false);
+
+
+--
+-- Name: index_ads_on_phone_number_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_phone_number_id_and_id ON public.ads USING btree (phone_number_id, id);
+
+ALTER TABLE public.ads CLUSTER ON index_ads_on_phone_number_id_and_id;
 
 
 --
@@ -2280,6 +2317,8 @@ CREATE INDEX index_effective_ads_on_search_query ON public.effective_ads USING g
 --
 
 CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
+
+ALTER TABLE public.events CLUSTER ON index_events_on_user_id;
 
 
 --
@@ -2409,6 +2448,15 @@ CREATE UNIQUE INDEX index_user_blocked_phone_numbers_on_user_id_and_phone_number
 
 
 --
+-- Name: index_user_connections_for_feed; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_connections_for_feed ON public.user_connections USING btree (user_id, connection_id, hops_count);
+
+ALTER TABLE public.user_connections CLUSTER ON index_user_connections_for_feed;
+
+
+--
 -- Name: index_user_connections_on_uniq; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2437,6 +2485,15 @@ CREATE INDEX index_user_contacts_on_user_id ON public.user_contacts USING btree 
 
 
 --
+-- Name: index_user_contacts_on_user_id_and_phone_number_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_contacts_on_user_id_and_phone_number_id ON public.user_contacts USING btree (user_id, phone_number_id);
+
+ALTER TABLE public.user_contacts CLUSTER ON index_user_contacts_on_user_id_and_phone_number_id;
+
+
+--
 -- Name: index_user_devices_on_access_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2462,6 +2519,15 @@ CREATE INDEX index_user_devices_on_user_id ON public.user_devices USING btree (u
 --
 
 CREATE UNIQUE INDEX index_users_on_phone_number_id ON public.users USING btree (phone_number_id);
+
+
+--
+-- Name: index_users_on_phone_number_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_phone_number_id_and_id ON public.users USING btree (phone_number_id, id);
+
+ALTER TABLE public.users CLUSTER ON index_users_on_phone_number_id_and_id;
 
 
 --
@@ -2915,6 +2981,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221207134116'),
 ('20221207140949'),
 ('20221210215729'),
-('20221211172613');
+('20221211172613'),
+('20221212010039'),
+('20221212011330'),
+('20221212012407');
 
 
