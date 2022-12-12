@@ -24,5 +24,5 @@ ActiveAdmin.register(FilterableValue) do
   end
 
   filter :ad_option_type
-  filter :name, as: :select, collection: FilterableValue.distinct(:name).pluck(:name)
+  filter :name, as: :select, collection: -> { FilterableValue.distinct(:name).pluck(:name) }
 end
