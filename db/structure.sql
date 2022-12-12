@@ -1897,6 +1897,8 @@ ALTER TABLE ONLY public.messages
 ALTER TABLE ONLY public.phone_numbers
     ADD CONSTRAINT phone_numbers_pkey PRIMARY KEY (id);
 
+ALTER TABLE public.phone_numbers CLUSTER ON phone_numbers_pkey;
+
 
 --
 -- Name: regions regions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -2135,7 +2137,7 @@ ALTER TABLE public.ad_prices CLUSTER ON index_ad_prices_on_ad_id;
 -- Name: index_ad_queries_on_ad_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ad_queries_on_ad_id ON public.ad_queries USING btree (ad_id);
+CREATE UNIQUE INDEX index_ad_queries_on_ad_id ON public.ad_queries USING btree (ad_id);
 
 ALTER TABLE public.ad_queries CLUSTER ON index_ad_queries_on_ad_id;
 
@@ -2984,6 +2986,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221211172613'),
 ('20221212010039'),
 ('20221212011330'),
-('20221212012407');
+('20221212012407'),
+('20221212143033'),
+('20221212151349');
 
 
