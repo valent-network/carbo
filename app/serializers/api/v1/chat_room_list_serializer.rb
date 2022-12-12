@@ -36,7 +36,7 @@ module Api
       end
 
       def titles
-        @titles ||= AdOption.titles_for(chat_rooms.map(&:ad_id))
+        @titles ||= chat_rooms.map(&:ad).map(&:title)
       end
 
       def photos

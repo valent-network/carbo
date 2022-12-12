@@ -15,21 +15,21 @@ class UserFriendlyAdsQuery
     end
 
     if hops_count == 0 || filters[:contacts_mode] == 'directFriends'
-      ads = effective_ads.where("ads.phone_number_id IN (SELECT phone_number_id FROM user_contacts WHERE user_id = #{user.id})")
+      effective_ads = effective_ads.where(phone_number_id: user.user_contacts.select(:phone_number_id))
     elsif user_contacts_matched_phone_numbers.present?
-      known_numbers = KnownNumbersFiltered.new.call(user.id, filtered_friends_phone_number_ids: user_contacts_matched_phone_numbers)
-      ads = effective_ads.where("ads.phone_number_id IN (#{known_numbers})")
+      known_numbers_filtered = KnownNumbersFiltered.new.call(user.id, filtered_friends_phone_number_ids: user_contacts_matched_phone_numbers)
+      effective_ads = effective_ads.where("ads.phone_number_id IN (#{known_numbers_filtered})")
     else
-      ads = effective_ads.joins("JOIN user_contacts ON ads.phone_number_id = user_contacts.phone_number_id")
-      ads = ads.joins("JOIN user_connections ON user_connections.user_id = #{user.id} AND user_contacts.user_id = user_connections.connection_id")
-      ads = ads.where('user_connections.hops_count <= ?', hops_count || DEFAULT_HOPS_COUNT)
+      effective_ads = effective_ads
+        .joins(%[JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id])
+        .joins(%[JOIN user_connections ON user_contacts.user_id = user_connections.connection_id AND "user_connections"."user_id" = #{user.id} AND (user_connections.hops_count <= #{hops_count || DEFAULT_HOPS_COUNT})])
     end
 
-    query = ads.offset(offset)
+    query = effective_ads.offset(offset)
     query = query.order('ads.id DESC')
     query = query.limit(limit) if limit > 0
 
-    Ad.where(id: query.select(:id).distinct(:id).map(&:id)).order('ads.created_at DESC')
+    query
   end
 
   private

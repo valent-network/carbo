@@ -5,7 +5,7 @@ module Api
       before_action :require_auth
 
       def show
-        ad = Ad.where(id: params[:id]).eager_load(ad_options: [:ad_option_type, :ad_option_value]).first
+        ad = Ad.find(params[:id])
         friends = UserContact.ad_friends_for_user(ad, current_user)
         chat_rooms = ChatRoom.joins(:chat_room_users).where(chat_room_users: { user: current_user }, ad: ad)
         serialized_friends = ActiveModelSerializers::SerializableResource.new(friends, each_serializer: Api::V1::AdFriendSerializer).as_json.sort_by { |friend| friend[:idx] }

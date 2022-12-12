@@ -6,7 +6,7 @@ module Api
       before_action :require_auth
 
       def index
-        chat_rooms = ChatRoom.includes(ad: [:ad_image_links_set])
+        chat_rooms = ChatRoom.includes(ad: [:ad_image_links_set, :ad_query, :ad_extra])
           .joins(:chat_room_users)
           .where(chat_room_users: { user: current_user })
           .order(updated_at: :desc)

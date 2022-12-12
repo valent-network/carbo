@@ -23,7 +23,7 @@ module Api
 
       def index
         ads = UserFriendlyAdsQuery.new.call(user: current_user, offset: params[:offset], filters: filter_params)
-        ads = Ad.where(id: ads.ids).eager_load(:ad_description, :ad_image_links_set, city: [:region], ad_options: [:ad_option_type, :ad_option_value]).order('ads.id DESC')
+        ads = Ad.where(id: ads.ids).eager_load(:ad_description, :ad_extra, :ad_query, :ad_image_links_set, city: [:region]).order('ads.id DESC')
         ads_phone_number_ids = ads.map(&:phone_number_id)
 
         if ads_phone_number_ids.present?

@@ -2,7 +2,7 @@
 module ApplicationCable
   class ChatRoomChannel < ApplicationChannel
     def subscribed
-      @chat_room = ChatRoom.eager_load(chat_room_users: [user: :phone_number], ad: [:ad_description, :ad_image_links_set, :city, ad_options: [:ad_option_type, :ad_option_value]], messages: [:user, :chat_room]).find(params[:chat_room_id])
+      @chat_room = ChatRoom.eager_load(chat_room_users: [user: :phone_number], ad: [:ad_description, :ad_image_links_set, :city, :ad_query, :ad_extra], messages: [:user, :chat_room]).find(params[:chat_room_id])
       @chat_room_user = @chat_room.chat_room_users.find_by(user: current_user)
 
       # TODO: user can't receive this from UserChannel if ChatRoomChannel

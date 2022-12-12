@@ -58,22 +58,16 @@ class Ad < ApplicationRecord
   end
 
   def details
-    return @details if @details
+    @details ||= (ad_extra_details || {}).merge({
+      'description' => ad_description_body,
+      'images_json_array_tmp' => ad_image_links_set_value,
+      'city' => city_display_name,
+      'region' => region_display_name,
+    })
+  end
 
-    rel = ad_options.loaded? ? ad_options : ad_options.eager_load(:ad_option_type, :ad_option_value)
-
-    opts_array = rel.map do |opt|
-      [opt.ad_option_type.name, opt.ad_option_value&.value]
-    end
-
-    other_details = {
-      'description' => ad_description&.body,
-      'images_json_array_tmp' => ad_image_links_set&.value,
-      'city' => city&.display_name,
-      'region' => city&.region&.display_name,
-    }
-
-    @details = Hash[opts_array].merge(other_details)
+  def image
+    Array.wrap(ad_image_links_set_value).first
   end
 
   def details=(new_details)
