@@ -1213,26 +1213,6 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: seller_names; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.seller_names (
-    ad_id integer NOT NULL,
-    value character varying(255) NOT NULL
-);
-
-
---
--- Name: state_nums; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.state_nums (
-    ad_id integer NOT NULL,
-    value character varying(20) NOT NULL
-);
-
-
---
 -- Name: static_pages; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2345,20 +2325,6 @@ CREATE INDEX index_rpush_notifications_multi ON public.rpush_notifications USING
 
 
 --
--- Name: index_seller_names_on_ad_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_seller_names_on_ad_id ON public.seller_names USING btree (ad_id);
-
-
---
--- Name: index_state_nums_on_ad_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_state_nums_on_ad_id ON public.state_nums USING btree (ad_id);
-
-
---
 -- Name: index_static_pages_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2564,14 +2530,6 @@ ALTER TABLE ONLY public.chat_room_users
 
 ALTER TABLE ONLY public.user_connections
     ADD CONSTRAINT fk_rails_2a83c769c5 FOREIGN KEY (friend_id) REFERENCES public.users(id);
-
-
---
--- Name: seller_names fk_rails_35cf035f87; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.seller_names
-    ADD CONSTRAINT fk_rails_35cf035f87 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
 
 
 --
@@ -2915,6 +2873,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221212185441'),
 ('20221212200038'),
 ('20221212201534'),
-('20221212201814');
+('20221212201814'),
+('20221212205750');
 
 

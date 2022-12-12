@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class DropKnownAdsMatview < ActiveRecord::Migration[7.0]
   def up
     execute('DROP MATERIALIZED VIEW known_ads')
@@ -15,5 +16,4 @@ class DropKnownAdsMatview < ActiveRecord::Migration[7.0]
     add_index(:known_ads, [:id, :phone_number_id, :price])
     add_index(:known_ads, :id, unique: true)
   end
-
 end
