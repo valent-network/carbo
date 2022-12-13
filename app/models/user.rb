@@ -79,6 +79,9 @@ class User < ApplicationRecord
   end
 
   def visible_business_ads_count
+    # Temporarely while fixing performance
+    return 888_888_888
+
     user_connections.select('ads.id')
       .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
       .joins('JOIN ads ON ads.phone_number_id = user_contacts.phone_number_id')
