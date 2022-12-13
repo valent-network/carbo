@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class RemoveClusterIndexFromAdDescriptionsAndEvents < ActiveRecord::Migration[7.0]
   def up
     execute('ALTER TABLE ad_descriptions SET WITHOUT CLUSTER')

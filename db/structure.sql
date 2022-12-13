@@ -453,33 +453,18 @@ CREATE TABLE public.ads (
 --
 
 CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
- SELECT ads.maker,
-    ads.model,
-    ads.year,
+ SELECT (ad_extras.details ->> 'maker'::text) AS maker,
+    (ad_extras.details ->> 'model'::text) AS model,
+    (ad_extras.details ->> 'year'::text) AS year,
     min(ads.price) AS min_price,
     (round((avg(ads.price) / (100)::numeric)) * (100)::numeric) AS avg_price,
     max(ads.price) AS max_price
-   FROM ( SELECT ads_1.price,
-            (ads_1.options ->> 'maker'::text) AS maker,
-            (ads_1.options ->> 'model'::text) AS model,
-            (ads_1.options ->> 'year'::text) AS year
-           FROM ( SELECT ads_2.id,
-                    ads_2.price,
-                    json_object((array_agg(ARRAY[ad_option_types.name, ad_option_values.value]))::text[]) AS options
-                   FROM (((( SELECT ads_3.id,
-                            ads_3.phone_number_id,
-                            ads_3.price
-                           FROM public.ads ads_3
-                          WHERE (ads_3.deleted = false)) ads_2
-                     LEFT JOIN public.ad_options ON (((ad_options.ad_id = ads_2.id) AND (ad_options.ad_option_type_id IN ( SELECT ad_option_types_1.id
-                           FROM public.ad_option_types ad_option_types_1
-                          WHERE ((ad_option_types_1.name)::text = ANY (ARRAY[('maker'::character varying)::text, ('model'::character varying)::text, ('year'::character varying)::text])))))))
-                     JOIN public.ad_option_types ON ((ad_options.ad_option_type_id = ad_option_types.id)))
-                     JOIN public.ad_option_values ON ((ad_options.ad_option_value_id = ad_option_values.id)))
-                  GROUP BY ads_2.id, ads_2.price) ads_1) ads
-  GROUP BY ads.maker, ads.model, ads.year
+   FROM (public.ads
+     JOIN public.ad_extras ON ((ads.id = ad_extras.ad_id)))
+  WHERE (ads.deleted = false)
+  GROUP BY (ad_extras.details ->> 'maker'::text), (ad_extras.details ->> 'model'::text), (ad_extras.details ->> 'year'::text)
  HAVING (count(ads.*) >= 5)
-  ORDER BY ads.maker, ads.model, ads.year
+  ORDER BY (ad_extras.details ->> 'maker'::text), (ad_extras.details ->> 'model'::text), (ad_extras.details ->> 'year'::text)
   WITH NO DATA;
 
 
@@ -1935,13 +1920,6 @@ ALTER TABLE ONLY public.verification_requests
 
 
 --
--- Name: ads_grouped_by_maker_model_year_model_maker_year_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX ads_grouped_by_maker_model_year_model_maker_year_idx ON public.ads_grouped_by_maker_model_year USING btree (model, maker, year);
-
-
---
 -- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2848,6 +2826,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221212201814'),
 ('20221212205750'),
 ('20221212212301'),
-('20221213110340');
+('20221213110340'),
+('20221213112542');
 
 
