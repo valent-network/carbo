@@ -1968,8 +1968,6 @@ CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON pub
 
 CREATE UNIQUE INDEX index_ad_descriptions_on_ad_id ON public.ad_descriptions USING btree (ad_id);
 
-ALTER TABLE public.ad_descriptions CLUSTER ON index_ad_descriptions_on_ad_id;
-
 
 --
 -- Name: index_ad_extras_on_ad_id; Type: INDEX; Schema: public; Owner: -
@@ -2008,8 +2006,6 @@ CREATE INDEX index_ad_favorites_on_user_id ON public.ad_favorites USING btree (u
 --
 
 CREATE UNIQUE INDEX index_ad_image_links_sets_on_ad_id ON public.ad_image_links_sets USING btree (ad_id);
-
-ALTER TABLE public.ad_image_links_sets CLUSTER ON index_ad_image_links_sets_on_ad_id;
 
 
 --
@@ -2214,8 +2210,6 @@ CREATE INDEX index_demo_phone_numbers_on_phone_number_id ON public.demo_phone_nu
 --
 
 CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
-
-ALTER TABLE public.events CLUSTER ON index_events_on_user_id;
 
 
 --
@@ -2853,6 +2847,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221212201534'),
 ('20221212201814'),
 ('20221212205750'),
-('20221212212301');
+('20221212212301'),
+('20221213110340');
 
 
