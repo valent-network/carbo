@@ -10,8 +10,8 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
       race: 50_000,
       engine_capacity: 3700,
       year: 2014,
-      gear: 'Manual',
-      fuel: 'Gas',
+      gear: 'Manual Transmission',
+      fuel: 'Methane Gas',
       horse_powers: 333,
       images_json_array_tmp: ["#{FFaker::Image.url}#{SecureRandom.hex}"],
       region: 'kh',
@@ -29,12 +29,10 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
 
   it 'returns complete string' do
     gear_opt_type = AdOptionType.find_by_name('gear')
-    gear_opt_val = ad.ad_options.where(ad_option_type: gear_opt_type).first.ad_option_value
-    create(:filterable_value, ad_option_type: gear_opt_type, ad_option_value: gear_opt_val, name: 'manual')
+    create(:filterable_value, ad_option_type: gear_opt_type, name: 'manual', raw_value: 'Manual Transmission')
 
     fuel_opt_type = AdOptionType.find_by_name('fuel')
-    fuel_opt_val = ad.ad_options.where(ad_option_type: fuel_opt_type).first.ad_option_value
-    create(:filterable_value, ad_option_type: fuel_opt_type, ad_option_value: fuel_opt_val, name: 'lpg')
+    create(:filterable_value, ad_option_type: fuel_opt_type, name: 'lpg', raw_value: 'Methane Gas')
 
     create(:filterable_value_translation, ad_option_type: gear_opt_type, name: 'Manual', alias_group_name: 'manual', locale: 'en')
     create(:filterable_value_translation, ad_option_type: fuel_opt_type, name: 'Gas', alias_group_name: 'lpg', locale: 'en')

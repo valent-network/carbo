@@ -61,17 +61,6 @@ class PrepareAdOptions
     ad_query = ad.ad_query || ad.build_ad_query
     ad_query.title = [details['maker'], details['model'], details['year']].join(' ')
 
-    keys = details.keys.uniq
-    values = details.values.select(&:present?).uniq
-
-    ad_option_types = AdOptionType.where(name: keys).to_a
-    ad_options = ad.ad_options.to_a
-
-    ad_option_values = AdOptionValue.where(value: values).to_a
-    to_create_values = values - ad_option_values.map(&:value)
-    to_create_values.each { |v| AdOptionValue.create(value: v) }
-    ad_option_values = AdOptionValue.where(value: values).to_a
-
     if description_body.present?
       ad_description = ad.ad_description || ad.build_ad_description
       ad_description.body = description_body
@@ -85,23 +74,5 @@ class PrepareAdOptions
     else
       ad.ad_image_links_set&.mark_for_destruction
     end
-
-    details.each do |key, val|
-      opt_type = ad_option_types.detect { |ot| ot.name == key.to_s } || AdOptionType.new(name: key)
-
-      ad_option = ad_options.detect { |ao| ao.ad_option_type_id == opt_type.id } || ad.ad_options.new(ad_option_type: opt_type)
-
-      if val.present?
-        opt_value = ad_option_values.detect do |ov|
-          val.class.in?([TrueClass, FalseClass]) ? (ActiveModel::Type::Boolean.new.cast(ov.value) == val) : (ov.value == val.to_s)
-        end
-        ad_option.ad_option_value = opt_value
-      else
-        ad_option.mark_for_destruction
-        ad_options.detect { |opt| opt.id == ad_option.id }&.mark_for_destruction
-      end
-    end
-
-    ad_options.reject { |ao| ao.ad_option_type_id.in?(ad_option_types.map(&:id)) }.map(&:mark_for_destruction)
   end
 end

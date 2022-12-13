@@ -245,66 +245,6 @@ ALTER SEQUENCE public.ad_option_types_id_seq OWNED BY public.ad_option_types.id;
 
 
 --
--- Name: ad_option_values; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ad_option_values (
-    id integer NOT NULL,
-    value character varying NOT NULL
-);
-
-
---
--- Name: ad_option_values_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.ad_option_values_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ad_option_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.ad_option_values_id_seq OWNED BY public.ad_option_values.id;
-
-
---
--- Name: ad_options; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ad_options (
-    id integer NOT NULL,
-    ad_id integer NOT NULL,
-    ad_option_type_id smallint NOT NULL,
-    ad_option_value_id integer NOT NULL
-);
-
-
---
--- Name: ad_options_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.ad_options_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ad_options_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.ad_options_id_seq OWNED BY public.ad_options.id;
-
-
---
 -- Name: ad_prices; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1426,20 +1366,6 @@ ALTER TABLE ONLY public.ad_option_types ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
--- Name: ad_option_values id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_option_values ALTER COLUMN id SET DEFAULT nextval('public.ad_option_values_id_seq'::regclass);
-
-
---
--- Name: ad_options id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_options ALTER COLUMN id SET DEFAULT nextval('public.ad_options_id_seq'::regclass);
-
-
---
 -- Name: ad_prices id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1667,22 +1593,6 @@ ALTER TABLE ONLY public.ad_image_links_sets
 
 ALTER TABLE ONLY public.ad_option_types
     ADD CONSTRAINT ad_option_types_pkey PRIMARY KEY (id);
-
-
---
--- Name: ad_option_values ad_option_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_option_values
-    ADD CONSTRAINT ad_option_values_pkey PRIMARY KEY (id);
-
-
---
--- Name: ad_options ad_options_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_options
-    ADD CONSTRAINT ad_options_pkey PRIMARY KEY (id);
 
 
 --
@@ -1991,41 +1901,6 @@ CREATE UNIQUE INDEX index_ad_image_links_sets_on_ad_id ON public.ad_image_links_
 --
 
 CREATE UNIQUE INDEX index_ad_option_types_on_name ON public.ad_option_types USING btree (name);
-
-
---
--- Name: index_ad_option_values_on_value; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_ad_option_values_on_value ON public.ad_option_values USING btree (value);
-
-
---
--- Name: index_ad_options_on_ad_id_and_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_ad_options_on_ad_id_and_ad_option_type_id ON public.ad_options USING btree (ad_id, ad_option_type_id);
-
-
---
--- Name: index_ad_options_on_ad_id_and_ad_option_value_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ad_options_on_ad_id_and_ad_option_value_id ON public.ad_options USING btree (ad_id, ad_option_value_id) WHERE (ad_option_type_id = ANY (ARRAY[1, 2, 4, 6, 7, 9, 11]));
-
-
---
--- Name: index_ad_options_on_data1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ad_options_on_data1 ON public.ad_options USING btree (ad_id, ad_option_value_id, ad_option_type_id) WHERE (ad_option_type_id = ANY (ARRAY[4, 6, 7]));
-
-
---
--- Name: index_ad_options_on_data2; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ad_options_on_data2 ON public.ad_options USING btree (ad_option_value_id) WHERE (ad_option_type_id = ANY (ARRAY[4, 6, 7]));
 
 
 --
@@ -2499,14 +2374,6 @@ ALTER TABLE ONLY public.ad_descriptions
 
 
 --
--- Name: ad_options fk_rails_60c6ef7709; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_options
-    ADD CONSTRAINT fk_rails_60c6ef7709 FOREIGN KEY (ad_option_type_id) REFERENCES public.ad_option_types(id) ON DELETE CASCADE;
-
-
---
 -- Name: user_blocked_phone_numbers fk_rails_62c5663e3d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2619,27 +2486,11 @@ ALTER TABLE ONLY public.ad_visits
 
 
 --
--- Name: ad_options fk_rails_d6a9533e31; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_options
-    ADD CONSTRAINT fk_rails_d6a9533e31 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
-
-
---
 -- Name: user_connections fk_rails_dedc44dde8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.user_connections
     ADD CONSTRAINT fk_rails_dedc44dde8 FOREIGN KEY (connection_id) REFERENCES public.users(id);
-
-
---
--- Name: ad_options fk_rails_df36140a4c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_options
-    ADD CONSTRAINT fk_rails_df36140a4c FOREIGN KEY (ad_option_value_id) REFERENCES public.ad_option_values(id) ON DELETE CASCADE;
 
 
 --
@@ -2827,6 +2678,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221212212301'),
 ('20221213110340'),
 ('20221213112542'),
-('20221213134103');
+('20221213134103'),
+('20221213220328'),
+('20221213220334');
 
 

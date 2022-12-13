@@ -19,7 +19,6 @@ class Ad < ApplicationRecord
   has_many :ad_visits, dependent: :delete_all
   has_many :ad_favorites, dependent: :delete_all
   has_many :ad_prices, dependent: :delete_all
-  has_many :ad_options, dependent: :delete_all, autosave: true
   has_one :ad_description, dependent: :delete, autosave: true
   has_one :ad_image_links_set, dependent: :delete, autosave: true
   has_one :ad_extra, dependent: :delete, autosave: true
@@ -35,8 +34,8 @@ class Ad < ApplicationRecord
   scope :active, -> { where(deleted: false) }
   scope :known, -> { joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id') }
 
-  def self.by_options(opt_name, opt_id, val_id)
-    joins("JOIN ad_options AS ad_option_#{opt_name} ON ad_option_#{opt_name}.ad_id = ads.id AND ad_option_#{opt_name}.ad_option_type_id = #{opt_id} AND ad_option_#{opt_name}.ad_option_value_id = #{val_id}")
+  def self.by_options(opt_type, opt_val)
+    joins(:ad_extra).where(%[ad_extras.details @> '{"#{opt_type}": "#{opt_val}"}'])
   end
 
   def phone=(val)

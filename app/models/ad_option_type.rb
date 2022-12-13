@@ -2,6 +2,5 @@
 class AdOptionType < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   has_many :ad_options, dependent: :destroy
-  has_many :ad_option_values, through: :ad_options
   has_many :filterable_values, dependent: :destroy
 end

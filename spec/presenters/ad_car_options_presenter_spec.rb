@@ -16,23 +16,19 @@ RSpec.describe(AdCarOptionsPresenter) do
     ad.save
 
     gear_opt_type = AdOptionType.find_by_name('gear')
-    gear_opt_val = ad.ad_options.where(ad_option_type: gear_opt_type).first.ad_option_value
-    create(:filterable_value, ad_option_type: gear_opt_type, ad_option_value: gear_opt_val, name: 'g')
+    create(:filterable_value, ad_option_type: gear_opt_type, name: 'g')
     create(:filterable_value_translation, ad_option_type: gear_opt_type, name: 'g', alias_group_name: 'g', locale: 'en')
 
     carcass_opt_type = AdOptionType.find_by_name('carcass')
-    carcass_opt_val = ad.ad_options.where(ad_option_type: carcass_opt_type).first.ad_option_value
-    create(:filterable_value, ad_option_type: carcass_opt_type, ad_option_value: carcass_opt_val, name: 'cc')
+    create(:filterable_value, ad_option_type: carcass_opt_type, name: 'cc')
     create(:filterable_value_translation, ad_option_type: carcass_opt_type, name: 'cc', alias_group_name: 'cc', locale: 'en')
 
     wheels_opt_type = AdOptionType.find_by_name('wheels')
-    wheels_opt_val = ad.ad_options.where(ad_option_type: wheels_opt_type).first.ad_option_value
-    create(:filterable_value, ad_option_type: wheels_opt_type, ad_option_value: wheels_opt_val, name: 'w')
+    create(:filterable_value, ad_option_type: wheels_opt_type, name: 'w')
     create(:filterable_value_translation, ad_option_type: wheels_opt_type, name: 'w', alias_group_name: 'w', locale: 'en')
 
     color_opt_type = AdOptionType.find_by_name('color')
-    color_opt_val = ad.ad_options.where(ad_option_type: color_opt_type).first.ad_option_value
-    create(:filterable_value, ad_option_type: color_opt_type, ad_option_value: color_opt_val, name: 'cl')
+    create(:filterable_value, ad_option_type: color_opt_type, name: 'cl')
     create(:filterable_value_translation, ad_option_type: color_opt_type, name: 'cl', alias_group_name: 'cl', locale: 'en')
 
     expect(subject).to(eq(
@@ -49,8 +45,7 @@ RSpec.describe(AdCarOptionsPresenter) do
     ad.save
 
     fuel_opt_type = AdOptionType.find_by_name('fuel')
-    fuel_opt_val = ad.ad_options.where(ad_option_type: fuel_opt_type).first.ad_option_value
-    create(:filterable_value, ad_option_type: fuel_opt_type, ad_option_value: fuel_opt_val, name: 'diesel')
+    create(:filterable_value, ad_option_type: fuel_opt_type, name: 'diesel')
     create(:filterable_value_translation, ad_option_type: fuel_opt_type, name: 'Diesel', alias_group_name: 'diesel', locale: 'en')
 
     expect(subject).to(eq(
