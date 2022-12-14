@@ -12,7 +12,7 @@ class SendChatMessagePushNotification
     user_devices_to_receive_notification = chat_room_user.user.user_devices.where.not(push_token: ['', nil]).where(os: %w[ios android])
     user_devices_to_receive_notification.each do |device|
       app = APPS[device.os]
-      title = chat_room_user.chat_room.system? ? "#{I18n.t('recario', locale: device.locale)} 🌀" : "#{ad.details['maker']} #{ad.details['model']} #{ad.details['year']}"
+      title = chat_room_user.chat_room.system? ? "#{I18n.t('recario', locale: device.locale)} 🌀" : ad.title
 
       case device.os
       when 'ios'

@@ -20,10 +20,6 @@ module Api
         ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
       end
 
-      def title
-        "#{object.details['maker']} #{object.details['model']} #{object.details['year']}"
-      end
-
       def image
         images.first
       end

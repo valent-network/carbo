@@ -15,7 +15,7 @@ class AdsController < ApplicationController
       ''
     end
 
-    @meta_title = "#{@ad.details['maker']} #{@ad.details['model']} #{@ad.details['year']}"
+    @meta_title = @ad.title
     render('ads/show', layout: false)
   end
 end
