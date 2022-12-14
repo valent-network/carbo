@@ -36,7 +36,7 @@ class PhoneNumber < ApplicationRecord
   end
 
   def self.by_region(region_name)
-    joins(ads: [city: [:region]]).where(regions: { name: region_name })
+    joins(ads: [:city, :region]).where(regions: { name: region_name })
   end
 
   def self.not_registered_only(_value)
