@@ -79,9 +79,6 @@ class User < ApplicationRecord
   end
 
   def visible_business_ads_count
-    # Temporarely while fixing performance
-    return 888_888_888
-
     user_connections.select('ads.id')
       .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
       .joins('JOIN ads ON ads.phone_number_id = user_contacts.phone_number_id')
@@ -92,12 +89,10 @@ class User < ApplicationRecord
   end
 
   def visible_friends_count
-    # TODO: slow query
-    # user_connections.select('user_contacts.phone_number_id')
-    #   .joins("JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id")
-    #   .distinct('user_contacts.phone_number_id')
-    #   .count('user_contacts.phone_number_id')
-    999_999_999
+    user_connections.select('user_contacts.phone_number_id')
+      .joins("JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id")
+      .distinct('user_contacts.phone_number_id')
+      .count('user_contacts.phone_number_id')
   end
 
   def current_visibility
@@ -105,6 +100,7 @@ class User < ApplicationRecord
       default_hops: UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT,
       contacts_count: contacts_count,
       registered_friends_count: user_contacts.joins(phone_number: :user).count,
+      visible_friends_count: visible_friends_count,
       visible_ads_count: visible_ads_count,
       visible_ads_count_for_default_hops: visible_ads_count_for_default_hops,
       visible_business_ads_count: visible_business_ads_count,
