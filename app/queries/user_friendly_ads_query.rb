@@ -35,10 +35,10 @@ class UserFriendlyAdsQuery
   private
 
   def filters_from_aliases_groups(filters)
-    filters[:fuels] = filters[:fuels].map { |f| FilterableValueTranslation.aliases_for('fuel', f) }.flatten if filters[:fuels].present?
-    filters[:gears] = filters[:gears].map { |f| FilterableValueTranslation.aliases_for('gear', f) }.flatten if filters[:gears].present?
-    filters[:carcasses] = filters[:carcasses].map { |f| FilterableValueTranslation.aliases_for('carcass', f) }.flatten if filters[:carcasses].present?
-    filters[:wheels] = filters[:wheels].map { |f| FilterableValueTranslation.aliases_for('wheels', f) }.flatten if filters[:wheels].present?
+    filters[:fuels] = filters[:fuels].map { |f| FilterableValue.translation_to_raw_values('fuel', f) }.flatten if filters[:fuels].present?
+    filters[:gears] = filters[:gears].map { |f| FilterableValue.translation_to_raw_values('gear', f) }.flatten if filters[:gears].present?
+    filters[:carcasses] = filters[:carcasses].map { |f| FilterableValue.translation_to_raw_values('carcass', f) }.flatten if filters[:carcasses].present?
+    filters[:wheels] = filters[:wheels].map { |f| FilterableValue.translation_to_raw_values('wheels', f) }.flatten if filters[:wheels].present?
 
     filters
   end

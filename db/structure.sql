@@ -855,47 +855,12 @@ ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 
 
 --
--- Name: filterable_value_translations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.filterable_value_translations (
-    id bigint NOT NULL,
-    ad_option_type_id bigint,
-    alias_group_name character varying NOT NULL,
-    name character varying NOT NULL,
-    locale character varying NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: filterable_value_translations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.filterable_value_translations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: filterable_value_translations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.filterable_value_translations_id_seq OWNED BY public.filterable_value_translations.id;
-
-
---
 -- Name: filterable_values; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.filterable_values (
     id bigint NOT NULL,
     ad_option_type_id bigint,
-    ad_option_value_id bigint,
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -1443,13 +1408,6 @@ ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.event
 
 
 --
--- Name: filterable_value_translations id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.filterable_value_translations ALTER COLUMN id SET DEFAULT nextval('public.filterable_value_translations_id_seq'::regclass);
-
-
---
 -- Name: filterable_values id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1689,14 +1647,6 @@ ALTER TABLE ONLY public.demo_phone_numbers
 
 ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_pkey PRIMARY KEY (id);
-
-
---
--- Name: filterable_value_translations filterable_value_translations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.filterable_value_translations
-    ADD CONSTRAINT filterable_value_translations_pkey PRIMARY KEY (id);
 
 
 --
@@ -2073,38 +2023,10 @@ CREATE INDEX index_events_on_user_id_and_created_at ON public.events USING btree
 
 
 --
--- Name: index_filterable_value_translations_on_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_filterable_value_translations_on_ad_option_type_id ON public.filterable_value_translations USING btree (ad_option_type_id);
-
-
---
--- Name: index_filterable_value_translations_on_uniq; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_filterable_value_translations_on_uniq ON public.filterable_value_translations USING btree (name, ad_option_type_id, locale);
-
-
---
 -- Name: index_filterable_values_on_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_filterable_values_on_ad_option_type_id ON public.filterable_values USING btree (ad_option_type_id);
-
-
---
--- Name: index_filterable_values_on_ad_option_value_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_filterable_values_on_ad_option_value_id ON public.filterable_values USING btree (ad_option_value_id);
-
-
---
--- Name: index_filterable_values_on_eav; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_filterable_values_on_eav ON public.filterable_values USING btree (ad_option_value_id, ad_option_type_id);
 
 
 --
@@ -2680,6 +2602,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221213112542'),
 ('20221213134103'),
 ('20221213220328'),
-('20221213220334');
+('20221213220334'),
+('20221214124328'),
+('20221214124559');
 
 

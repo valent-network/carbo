@@ -28,15 +28,9 @@ RSpec.describe(AdCarShortDescriptionPresenter) do
   it { is_expected.to(be_a(String)) }
 
   it 'returns complete string' do
-    gear_opt_type = AdOptionType.find_by_name('gear')
-    create(:filterable_value, ad_option_type: gear_opt_type, name: 'manual', raw_value: 'Manual Transmission')
+    create(:filterable_value, ad_option_type: AdOptionType.find_by_name('gear'), name: 'manual', raw_value: 'Manual Transmission')
+    create(:filterable_value, ad_option_type: AdOptionType.find_by_name('fuel'), name: 'lpg', raw_value: 'Methane Gas')
 
-    fuel_opt_type = AdOptionType.find_by_name('fuel')
-    create(:filterable_value, ad_option_type: fuel_opt_type, name: 'lpg', raw_value: 'Methane Gas')
-
-    create(:filterable_value_translation, ad_option_type: gear_opt_type, name: 'Manual', alias_group_name: 'manual', locale: 'en')
-    create(:filterable_value_translation, ad_option_type: fuel_opt_type, name: 'Gas', alias_group_name: 'lpg', locale: 'en')
-    # create(:filterable_value, ad_option_type: , )
-    expect(subject).to(eq("50k\u00A0km, Manual, Gas\u00A03.7L, 333\u00A0h.p., Kharkiv\u00A0city"))
+    expect(subject).to(eq("50k\u00A0km, Manual, LPG\u00A03.7L, 333\u00A0h.p., Kharkiv\u00A0city"))
   end
 end

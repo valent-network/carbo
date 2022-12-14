@@ -11,19 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def filters
-    mapping = {
-      fuel: :fuels,
-      gear: :gears,
-      carcass: :carcasses,
-      wheels: :wheels,
-    }
-    filters = FilterableValueTranslation.where(locale: I18n.locale).includes(:ad_option_type).pluck("ad_option_types.name, filterable_value_translations.name")
-      .group_by(&:first)
-      .transform_values { |v| v.map(&:last) }
-      .transform_keys { |k| mapping[k.to_sym] }
-      .merge(hops_count: t('hops_count'))
-
-    render(json: filters)
+    render(json: FilterableValue.filters.merge(hops_count: t('hops_count')))
   end
 
   def multibutton

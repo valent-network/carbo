@@ -24,6 +24,6 @@ class AdCarShortDescriptionPresenter
       ['gear', details['gear']],
     ]
 
-    FilterableValue.alias_group_name_for_alias(groups)
+    FilterableValue.raw_value_to_translation_for_groups(groups)
   end
 end

@@ -18,7 +18,6 @@ en:
   active_admin:
     dashboard: "Dashboard"
     filterable_values: Filterable Values
-    filterable_value_translations: Filterable Translations
     region: Region
     city: "City"
     other: Other
@@ -39,7 +38,6 @@ en:
     phones: Phone Numbers
     all_phone_numbers: All
     demo_phone_numbers: Demo
-    ad_option_values: EAV
     dashboard_welcome:
       welcome: "Welcome to Active Admin. This is the default dashboard page."
       call_to_action: "To add dashboard sections, checkout 'app/admin/dashboard.rb'"

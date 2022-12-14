@@ -12,41 +12,28 @@ RSpec.describe(AdCarOptionsPresenter) do
   it { is_expected.to(be_a(Hash)) }
 
   it 'returns raw values' do
-    ad.details = { 'gear' => 'g', 'wheels' => 'w', 'carcass' => 'cc', 'color' => 'cl', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: 'kh', city: 'city-kh' }
+    ad.details = { 'gear' => 'g', 'wheels' => 'w', 'carcass' => 'cc', 'color' => 'Red Colour', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: 'kh', city: 'city-kh' }
     ad.save
 
-    gear_opt_type = AdOptionType.find_by_name('gear')
-    create(:filterable_value, ad_option_type: gear_opt_type, name: 'g')
-    create(:filterable_value_translation, ad_option_type: gear_opt_type, name: 'g', alias_group_name: 'g', locale: 'en')
-
-    carcass_opt_type = AdOptionType.find_by_name('carcass')
-    create(:filterable_value, ad_option_type: carcass_opt_type, name: 'cc')
-    create(:filterable_value_translation, ad_option_type: carcass_opt_type, name: 'cc', alias_group_name: 'cc', locale: 'en')
-
-    wheels_opt_type = AdOptionType.find_by_name('wheels')
-    create(:filterable_value, ad_option_type: wheels_opt_type, name: 'w')
-    create(:filterable_value_translation, ad_option_type: wheels_opt_type, name: 'w', alias_group_name: 'w', locale: 'en')
-
-    color_opt_type = AdOptionType.find_by_name('color')
-    create(:filterable_value, ad_option_type: color_opt_type, name: 'cl')
-    create(:filterable_value_translation, ad_option_type: color_opt_type, name: 'cl', alias_group_name: 'cl', locale: 'en')
+    create(:filterable_value, ad_option_type: AdOptionType.find_by_name('gear'), name: 'auto', raw_value: 'g')
+    create(:filterable_value, ad_option_type: AdOptionType.find_by_name('carcass'), name: 'coupe', raw_value: 'cc')
+    create(:filterable_value, ad_option_type: AdOptionType.find_by_name('wheels'), name: 'awd', raw_value: 'w')
+    create(:filterable_value, ad_option_type: AdOptionType.find_by_name('color'), name: 'red', raw_value: 'Red Colour')
 
     expect(subject).to(eq(
-      gear: [I18n.t('ad_options.gear'), 'g'],
-      wheels: [I18n.t('ad_options.wheels'), 'w'],
-      carcass: [I18n.t('ad_options.carcass'), 'cc'],
-      color: [I18n.t('ad_options.color'), 'cl'],
+      gear: [I18n.t('ad_options.gear'), 'Automatic'],
+      wheels: [I18n.t('ad_options.wheels'), '4x4'],
+      carcass: [I18n.t('ad_options.carcass'), 'Coupe'],
       location: [I18n.t('ad_options.location'), 'kh'],
+      color: [I18n.t('ad_options.color'), 'Red'],
     ))
   end
 
   it 'transforms engine_capacity + fuel => engine' do
-    ad.details = { engine_capacity: '1400', fuel: 'Diesel', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: 'kh', city: 'city-kh' }
+    ad.details = { engine_capacity: '1400', fuel: 'Diesel (raw)', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: 'kh', city: 'city-kh' }
     ad.save
 
-    fuel_opt_type = AdOptionType.find_by_name('fuel')
-    create(:filterable_value, ad_option_type: fuel_opt_type, name: 'diesel')
-    create(:filterable_value_translation, ad_option_type: fuel_opt_type, name: 'Diesel', alias_group_name: 'diesel', locale: 'en')
+    create(:filterable_value, ad_option_type: AdOptionType.find_by_name('fuel'), name: 'diesel', raw_value: 'Diesel (raw)')
 
     expect(subject).to(eq(
       engine: [I18n.t('ad_options.engine'), I18n.t('ad_options.engine_value', value: '1.4', fuel_type: 'Diesel')],

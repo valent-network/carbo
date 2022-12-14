@@ -7,7 +7,7 @@ class AdCarOptionsPresenter
     race = I18n.t('ad_options.race_value', value: race_value) if ad_details['race'].to_i.positive?
     engine_value = (ad_details['engine_capacity'].to_f / 1000).round(1)
 
-    translations = FilterableValue.alias_group_name_for_alias([
+    translations = FilterableValue.raw_value_to_translation_for_groups([
       ['fuel', ad_details['fuel']],
       ['gear', ad_details['gear']],
       ['wheels', ad_details['wheels']],

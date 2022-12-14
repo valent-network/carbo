@@ -2,7 +2,13 @@
 
 FactoryBot.define do
   factory :filterable_value do
-    ad_option_type
+    ad_option_type { AdOptionType.find_by_name(FilterableValue::FITLERABLE_OPTIONS.sample) }
     name { FFaker::Vehicle.fuel_type.parameterize }
+    before(:create) do |fv|
+      group_name, group_name_translation = I18n.t("filters.types.#{fv.ad_option_type.name}").to_a.sample
+
+      fv.name ||= group_name
+      fv.raw_value ||= "Raw #{group_name_translation} #{rand}"
+    end
   end
 end
