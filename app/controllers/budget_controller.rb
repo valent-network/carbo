@@ -37,9 +37,7 @@ class BudgetController < ApplicationController
     @model_year = AdsGroupedByMakerModelYear.where('LOWER(maker) = :maker AND LOWER(model) = :model AND year = :year', maker: params[:maker].downcase, model: params[:model].downcase, year: params[:year]).first
     raise ActiveRecord::RecordNotFound unless @model_year
 
-    @ads = Ad.active.by_options('maker', params[:maker])
-    @ads = @ads.by_options('model', params[:model])
-    @ads = @ads.by_options('year', params[:year])
+    @ads = Ad.active.by_options('maker', params[:maker]).by_options('model', params[:model]).by_options('year', params[:year])
 
     @ads_grouped_by_region = @ads.group(:city_id).count.sort_by(&:last).reverse
     cities = Hash[City.where(id: @ads_grouped_by_region.map(&:first)).joins(:region).pluck('cities.id, regions.name')]
