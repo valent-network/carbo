@@ -29,7 +29,7 @@ RSpec.describe(SendSystemMessageToChatRoom) do
 
   context "when nothing exists" do
     it "creates chat room" do
-      expect { subject }.to(change { user.chat_rooms.where(system: true, ad: ad).exists? }.from(false).to(true))
+      expect { subject }.to(change { user.chat_rooms.where(system: true).exists? }.from(false).to(true))
     end
 
     it "creates chat room user" do

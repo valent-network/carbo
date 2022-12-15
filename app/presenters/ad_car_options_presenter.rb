@@ -26,7 +26,7 @@ class AdCarOptionsPresenter
 
     if ad_details['region'].present? || ad_details['city'].present?
       city = I18n.t('ad_options.city_value', value: ad_details['city']) if ad_details['city'].present?
-      location = [ad_details['region'], city].join(', ')
+      location = [ad_details['region'], city].join(",\u00A0")
       res[:location] = [I18n.t('ad_options.location'), location]
     end
 

@@ -24,7 +24,7 @@ RSpec.describe(AdCarOptionsPresenter) do
       gear: [I18n.t('ad_options.gear'), 'Automatic'],
       wheels: [I18n.t('ad_options.wheels'), '4x4'],
       carcass: [I18n.t('ad_options.carcass'), 'Coupe'],
-      location: [I18n.t('ad_options.location'), 'kh'],
+      location: [I18n.t('ad_options.location'), "kh,\u00A0city-kh\u00A0city"],
       color: [I18n.t('ad_options.color'), 'Red'],
     ))
   end
@@ -37,7 +37,7 @@ RSpec.describe(AdCarOptionsPresenter) do
 
     expect(subject).to(eq(
       engine: [I18n.t('ad_options.engine'), I18n.t('ad_options.engine_value', value: '1.4', fuel_type: 'Diesel')],
-      location: [I18n.t('ad_options.location'), 'kh'],
+      location: [I18n.t('ad_options.location'), "kh,\u00A0city-kh\u00A0city"],
     ))
   end
 
@@ -46,7 +46,7 @@ RSpec.describe(AdCarOptionsPresenter) do
     ad.save
     expect(subject).to(eq(
       race: [I18n.t('ad_options.race'), I18n.t('ad_options.race_value', value: 100)],
-      location: [I18n.t('ad_options.location'), 'kh'],
+      location: [I18n.t('ad_options.location'), "kh,\u00A0city-kh\u00A0city"],
     ))
   end
 end
