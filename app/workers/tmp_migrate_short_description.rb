@@ -15,8 +15,10 @@ class TmpMigrateShortDescription
       .limit(10_000)
 
     to_upsert = ads.map do |ad|
-      { ad_id: ad.id, short: AdCarShortDescriptionPresenter.new.call(ad.ad_extra_details) }
-    end
+      short = AdCarShortDescriptionPresenter.new.call(ad.ad_extra_details)
+      next if short.blank?
+      { ad_id: ad.id, short: short }
+    end.compact
 
     res = AdDescription.upsert_all(to_upsert, unique_by: [:ad_id]) if to_upsert.present?
     res&.count
