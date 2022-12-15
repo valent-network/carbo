@@ -24,7 +24,11 @@ class AdCarOptionsPresenter
     res[:carcass] = [I18n.t('ad_options.carcass'), translations['carcass']]
     res[:color] = [I18n.t('ad_options.color'), translations['color']]
 
-    res[:location] = [I18n.t('ad_options.location'), ad_details['region']] if ad_details['region'].present?
+    if ad_details['region'].present? || ad_details['city'].present?
+      city = I18n.t('ad_options.city_value', value: ad_details['city']) if ad_details['city'].present?
+      location = [ad_details['region'], city].join(', ')
+      res[:location] = [I18n.t('ad_options.location'), location]
+    end
 
     res[:race] = [I18n.t('ad_options.race'), race]
     res[:year] = [I18n.t('ad_options.year'), ad_details['year']]
