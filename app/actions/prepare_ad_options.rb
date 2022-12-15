@@ -61,12 +61,10 @@ class PrepareAdOptions
     ad_query = ad.ad_query || ad.build_ad_query
     ad_query.title = [details['maker'], details['model'], details['year']].join(' ')
 
-    if description_body.present?
-      ad_description = ad.ad_description || ad.build_ad_description
-      ad_description.body = description_body
-    else
-      ad.ad_description&.mark_for_destruction
-    end
+    ad_description = ad.ad_description || ad.build_ad_description
+
+    ad_description.short = I18n.with_locale(:uk) { AdCarShortDescriptionPresenter.new.call(details) }
+    ad_description.body = description_body.presence
 
     if images_links.present?
       ad_image_links_set = ad.ad_image_links_set || ad.build_ad_image_links_set

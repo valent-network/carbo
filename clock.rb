@@ -26,4 +26,6 @@ module Clockwork
   every(1.hour, 'Provider.crawl', skip_first_run: true, tz: 'UTC') { enqueue('class' => 'AutoRia::IndexCrawler', 'queue' => 'provider', 'lock' => 'until_expired', 'lock_ttl' => 3600) }
 
   every(1.minute, 'Request Provider to Actualize Ads', skip_first_run: true, tz: 'UTC') { enqueue('class' => 'ActualizeAd', 'queue' => 'ads', 'lock' => 'until_expired', 'lock_ttl' => 3600) }
+
+  every(30.seconds, 'Migrate short descriptions', skip_first_run: true, tz: 'UTC') { enqueue('class' => 'TmpMigrateShortDescription', 'queue' => 'system' }
 end

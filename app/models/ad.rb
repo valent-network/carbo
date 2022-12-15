@@ -25,6 +25,7 @@ class Ad < ApplicationRecord
   has_one :ad_query, dependent: :delete, autosave: true
 
   delegate :body, to: :ad_description, prefix: true, allow_nil: true
+  delegate :short, to: :ad_description, prefix: true, allow_nil: true
   delegate :value, to: :ad_image_links_set, prefix: true, allow_nil: true
   delegate :details, to: :ad_extra, prefix: true, allow_nil: true
   delegate :title, to: :ad_query, allow_nil: true

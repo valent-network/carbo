@@ -98,7 +98,8 @@ ALTER SEQUENCE public.active_admin_comments_id_seq OWNED BY public.active_admin_
 CREATE TABLE public.ad_descriptions (
     id integer NOT NULL,
     ad_id integer NOT NULL,
-    body text
+    body text,
+    short character varying(200)
 );
 
 
@@ -2604,6 +2605,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221213220328'),
 ('20221213220334'),
 ('20221214124328'),
-('20221214124559');
+('20221214124559'),
+('20221214234730');
 
 
