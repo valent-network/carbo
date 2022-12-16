@@ -8,8 +8,9 @@ ActiveAdmin.register(FilterableValue) do
   index do
     selectable_column
     id_column
-    column :name
     column :ad_option_type
+    column :name
+    column :raw_value
     actions
   end
 

@@ -33,6 +33,7 @@ class Ad < ApplicationRecord
   delegate :display_name, to: :region, prefix: true, allow_nil: true
 
   scope :active, -> { where(deleted: false) }
+  scope :opts, ->(query) { by_options(query.split(';').first.strip, query.split(';').last.strip) }
   scope :known, -> { joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id') }
 
   def self.by_options(opt_type, opt_val)
@@ -82,6 +83,10 @@ class Ad < ApplicationRecord
   def reload
     @details = nil
     super
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+    [:opts]
   end
 
   private

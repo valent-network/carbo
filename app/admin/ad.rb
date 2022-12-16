@@ -6,11 +6,11 @@ ActiveAdmin.register(Ad) do
 
   index pagination_total: false do
     column :price
+    column :address
     column :created_at
     column :updated_at
   end
 
   filter :price
-  filter :created_at
-  filter :updated_at
+  filter :opts, as: :string
 end
