@@ -77,4 +77,4 @@ gem 'kaminari'
 
 ###
 
-gem 'mail', '~> 2.7.1' # TODO https://github.com/mikel/mail/issues/1489
+gem 'mail', '~> 2.7.1' # TODO: https://github.com/mikel/mail/issues/1489
