@@ -2003,6 +2003,13 @@ CREATE INDEX index_cities_on_region_id ON public.cities USING btree (region_id);
 
 
 --
+-- Name: index_dashboard_stats_on_updated_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_dashboard_stats_on_updated_at ON public.dashboard_stats USING btree (updated_at);
+
+
+--
 -- Name: index_demo_phone_numbers_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2606,6 +2613,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221213220334'),
 ('20221214124328'),
 ('20221214124559'),
-('20221214234730');
+('20221214234730'),
+('20221216113749');
 
 
