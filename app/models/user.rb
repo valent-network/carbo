@@ -59,47 +59,31 @@ class User < ApplicationRecord
     user_contacts.count
   end
 
+  def registered_friends_count
+    user_contacts.joins(phone_number: :user).count
+  end
+
   def visible_ads_count
-    user_connections.select('ads.id')
-      .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
-      .joins('JOIN ads ON ads.phone_number_id = user_contacts.phone_number_id')
-      .where(ads: { deleted: false })
-      .distinct('ads.id')
-      .count('ads.id')
+    user_connections.visible_ads_count.to_a.first.count
   end
 
   def visible_ads_count_for_default_hops
-    user_connections.select('ads.id')
-      .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
-      .joins('JOIN ads ON ads.phone_number_id = user_contacts.phone_number_id')
-      .where('user_connections.hops_count <= ?', UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT)
-      .where(ads: { deleted: false })
-      .distinct('ads.id')
-      .count('ads.id')
+    user_connections.visible_ads_default_count.to_a.first.count
   end
 
   def visible_business_ads_count
-    user_connections.select('ads.id')
-      .joins('JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id')
-      .joins('JOIN ads ON ads.phone_number_id = user_contacts.phone_number_id')
-      .where(ads: { deleted: false })
-      .where("user_contacts.phone_number_id IN (#{PhoneNumber.business.select(:id).to_sql})")
-      .distinct('ads.id')
-      .count('ads.id')
+    user_connections.business_ads_count.to_a.first.count
   end
 
   def visible_friends_count
-    user_connections.select('user_contacts.phone_number_id')
-      .joins("JOIN user_contacts ON user_contacts.user_id = user_connections.connection_id")
-      .distinct('user_contacts.phone_number_id')
-      .count('user_contacts.phone_number_id')
+    user_connections.known_contacts_count.to_a.first.count
   end
 
   def current_visibility
     {
       default_hops: UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT,
       contacts_count: contacts_count,
-      registered_friends_count: user_contacts.joins(phone_number: :user).count,
+      registered_friends_count: registered_friends_count,
       visible_friends_count: visible_friends_count,
       visible_ads_count: visible_ads_count,
       visible_ads_count_for_default_hops: visible_ads_count_for_default_hops,

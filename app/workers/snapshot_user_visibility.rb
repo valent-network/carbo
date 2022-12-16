@@ -1,70 +1,48 @@
 # frozen_string_literal: true
 
 class SnapshotUserVisibility
-  BATCH_SIZE = 10
-
   include Sidekiq::Worker
 
   sidekiq_options queue: 'system', retry: true, backtrace: false
 
   def perform
-    visible_ads = UserConnection
-      .select('user_connections.user_id, COUNT(DISTINCT ads.id) AS visible_ads_count')
-      .joins(:ads)
-      .where(ads: { deleted: false })
-      .group('user_connections.user_id')
-      .map { |t| [t.user_id, t.visible_ads_count] }
-      .to_h
+    visible_ads_query = UserConnection.visible_ads_count.to_sql
 
-    visible_ads_default = UserConnection
-      .select('user_connections.user_id, COUNT(DISTINCT ads.id) AS visible_ads_count_default')
-      .joins(:ads)
-      .where(ads: { deleted: false }, user_connections: { hops_count: 0..UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT })
-      .group('user_connections.user_id')
-      .map { |t| [t.user_id, t.visible_ads_count_default] }
-      .to_h
+    visible_ads_default_query = UserConnection.visible_ads_default_count.to_sql
 
-    business_ads = UserConnection
-      .select('user_connections.user_id, COUNT(DISTINCT ads.id) AS business_ads_count')
-      .joins(:ads)
-      .where(ads: { deleted: false })
-      .where("ads.phone_number_id IN (#{PhoneNumber.business.select(:id).to_sql})")
-      .group('user_connections.user_id')
-      .map { |t| [t.user_id, t.business_ads_count] }
-      .to_h
+    business_ads_query = UserConnection.business_ads_count.to_sql
 
-    known = UserConnection
-      .select('user_connections.user_id, COUNT(DISTINCT "user_contacts"."phone_number_id") AS known_phone_numbers_count')
-      .joins(:user_contacts)
-      .group('user_connections.user_id')
-      .map { |t| [t.user_id, t.known_phone_numbers_count] }
-      .to_h
+    known_query = UserConnection.known_contacts_count.to_sql
 
-    friends = UserContact.joins(phone_number: :user).group(:user_id).count
+    friends_query = UserContact.joins(phone_number: :user).group(:user_id).select('user_contacts.user_id, COUNT(*) AS count').to_sql
 
-    users = User.select('users.id, COUNT(user_contacts.id) AS user_contacts_count')
+    users_query = User.select('users.id, COUNT(user_contacts.id) AS count')
       .joins("LEFT JOIN events ON events.user_id = users.id AND events.name = 'snapshot_user_visibility' AND events.created_at > (NOW() - INTERVAL '1 day')")
       .left_joins(:user_contacts)
       .where('events.id IS NULL')
       .group('users.id')
-      .map do |t|
-        [
-          t.id,
-          {
-            default_hops: UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT,
-            contacts_count: t.user_contacts_count.to_i,
-            registered_friends_count: friends[t.id].to_i,
-            visible_friends_count: known[t.id].to_i,
-            visible_ads_count: visible_ads[t.id].to_i,
-            visible_ads_count_for_default_hops: visible_ads_default[t.id].to_i,
-            visible_business_ads_count: business_ads[t.id].to_i,
-          }
-        ]
-      end
-      .to_h
+      .to_sql
 
-    users.each do |id, data|
-      CreateEvent.call(:snapshot_user_visibility, user: id, data: data)
-    end
+    Event.connection.execute(<<~SQL)
+      INSERT INTO events(user_id, name, data, created_at)
+      SELECT users.id AS user_id,
+             'snapshot_user_visibility',
+             jsonb_build_object(
+               'default_hops', '#{UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT}',
+               'contacts_count', COALESCE(users.count, 0),
+               'visible_ads_count', COALESCE(visible_ads.count, 0),
+               'registered_friends_count', COALESCE(friends.count, 0),
+               'visible_friends_count', COALESCE(known.count, 0),
+               'visible_ads_count_for_default_hops', COALESCE(visible_ads_default.count, 0),
+               'visible_business_ads_count', COALESCE(business_ads.count, 0)
+             ) AS data,
+             NOW()
+      FROM (#{users_query}) AS users
+      LEFT JOIN (#{visible_ads_query}) AS visible_ads ON users.id = visible_ads.user_id
+      LEFT JOIN (#{visible_ads_default_query}) AS visible_ads_default ON users.id = visible_ads_default.user_id
+      LEFT JOIN (#{business_ads_query}) AS business_ads ON users.id = business_ads.user_id
+      LEFT JOIN (#{known_query}) AS known ON users.id = known.user_id
+      LEFT JOIN (#{friends_query}) AS friends ON users.id = friends.user_id
+    SQL
   end
 end
