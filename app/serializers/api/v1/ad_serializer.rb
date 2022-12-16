@@ -2,7 +2,7 @@
 module Api
   module V1
     class AdSerializer < ActiveModel::Serializer
-      attributes :id, :deleted, :price, :options, :image, :images, :title, :description, :url, :prices, :friend_name_and_total
+      attributes :id, :deleted, :price, :options, :image, :images, :title, :description, :url, :prices, :friend_name_and_total, :short_description
 
       def options
         AdCarOptionsPresenter.new.call(object.details)
@@ -10,6 +10,10 @@ module Api
 
       def description
         object.details['description'].presence || I18n.t('ad_options.no_description')
+      end
+
+      def short_description
+        object.ad_description_short
       end
 
       def prices
