@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+resources = Ad.find_by_sql(InvisibleFilterValues.new.call) # .map { |x| [x.ad_option_type, x.option_values] }
+
+active_admin_form_for 'filters', url: make_visible_admin_filterable_values_path, method: :post do |f|
+  resources.group_by(&:ad_option_type).each do |filters|
+    h1 I18n.t("ad_options.#{filters.first}")
+    filters.last.map do |filter|
+      f.input(filter.option_value, as: :boolean, name: "filters[#{filter.ad_option_type}]", value: filter.option_value)
+    end
+  end
+
+  f.input(:ad_option_type, required: true, as: :radio, collection: resources.map(&:ad_option_type).uniq.map { |t| [I18n.t("ad_options.#{t}"), t] })
+  f.input(:group_name, required: true)
+
+  f.submit
+end
