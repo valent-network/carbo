@@ -31,7 +31,7 @@ class PutAd
 
     address = ad_params[:details][:address]
     ad = Ad.where(address: address).first_or_initialize
-    ad.ads_source_id = 1 # TODO: remove AdSource completely
+    ad.ads_source = AdsSource.where(title: 'auto.ria.com').first_or_create
 
     ad_contract = AdCarContract.new.call(ad_params)
 
