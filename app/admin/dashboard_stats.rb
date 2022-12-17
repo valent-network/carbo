@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 ActiveAdmin.register(DashboardStats) do
-  menu priority: 4, label: proc { I18n.t('active_admin.dashboard_stats') }
+  menu priority: 4, label: proc { I18n.t('active_admin.dashboard_stats') }, parent: 'other'
   actions :index, :show
 
   index do
