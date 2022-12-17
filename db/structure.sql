@@ -222,7 +222,8 @@ ALTER SEQUENCE public.ad_image_links_sets_id_seq OWNED BY public.ad_image_links_
 
 CREATE TABLE public.ad_option_types (
     id smallint NOT NULL,
-    name character varying NOT NULL
+    name character varying NOT NULL,
+    category_id bigint
 );
 
 
@@ -385,7 +386,8 @@ CREATE TABLE public.ads (
     address character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    city_id smallint
+    city_id smallint,
+    category_id bigint
 );
 
 
@@ -437,7 +439,8 @@ CREATE TABLE public.ads_sources (
     title character varying NOT NULL,
     api_token character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    native boolean DEFAULT false
 );
 
 
@@ -470,6 +473,37 @@ CREATE TABLE public.ar_internal_metadata (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.categories (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
 
 
 --
@@ -1374,6 +1408,13 @@ ALTER TABLE ONLY public.ads_sources ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
+
+
+--
 -- Name: chat_room_users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1608,6 +1649,14 @@ ALTER TABLE ONLY public.ads_sources
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
 
 
 --
@@ -1848,10 +1897,17 @@ CREATE UNIQUE INDEX index_ad_image_links_sets_on_ad_id ON public.ad_image_links_
 
 
 --
--- Name: index_ad_option_types_on_name; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ad_option_types_on_category_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_ad_option_types_on_name ON public.ad_option_types USING btree (name);
+CREATE INDEX index_ad_option_types_on_category_id ON public.ad_option_types USING btree (category_id);
+
+
+--
+-- Name: index_ad_option_types_on_name_and_category_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ad_option_types_on_name_and_category_id ON public.ad_option_types USING btree (name, category_id);
 
 
 --
@@ -1917,6 +1973,13 @@ CREATE UNIQUE INDEX index_ads_on_address ON public.ads USING btree (address);
 
 
 --
+-- Name: index_ads_on_category_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_category_id ON public.ads USING btree (category_id);
+
+
+--
 -- Name: index_ads_on_id_and_price; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1951,6 +2014,13 @@ CREATE UNIQUE INDEX index_ads_sources_on_api_token ON public.ads_sources USING b
 --
 
 CREATE UNIQUE INDEX index_ads_sources_on_title ON public.ads_sources USING btree (title);
+
+
+--
+-- Name: index_categories_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_categories_on_name ON public.categories USING btree (name);
 
 
 --
@@ -2336,6 +2406,14 @@ ALTER TABLE ONLY public.verification_requests
 
 
 --
+-- Name: ads fk_rails_b1934989b5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ads
+    ADD CONSTRAINT fk_rails_b1934989b5 FOREIGN KEY (category_id) REFERENCES public.categories(id);
+
+
+--
 -- Name: user_connections fk_rails_b58ad388f7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2421,6 +2499,14 @@ ALTER TABLE ONLY public.ad_visits
 
 ALTER TABLE ONLY public.user_connections
     ADD CONSTRAINT fk_rails_dedc44dde8 FOREIGN KEY (connection_id) REFERENCES public.users(id);
+
+
+--
+-- Name: ad_option_types fk_rails_e086518ddb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_option_types
+    ADD CONSTRAINT fk_rails_e086518ddb FOREIGN KEY (category_id) REFERENCES public.categories(id);
 
 
 --
@@ -2614,6 +2700,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221214124328'),
 ('20221214124559'),
 ('20221214234730'),
-('20221216113749');
+('20221216113749'),
+('20221216201112'),
+('20221216202521'),
+('20221216202530'),
+('20221216202806'),
+('20221216214724');
 
 
