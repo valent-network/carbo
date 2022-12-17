@@ -6,7 +6,7 @@ module Api
       before_action :require_auth
 
       def index
-        chat_room = ChatRoom.includes(ad: [:ad_image_links_set]).joins(:chat_room_users).where(chat_room_users: { user: current_user }).find(params[:chat_room_id])
+        chat_room = ChatRoom.includes(ad: [:ad_image_links_set, :ad_query]).joins(:chat_room_users).where(chat_room_users: { user: current_user }).find(params[:chat_room_id])
         messages = chat_room.messages.eager_load(:chat_room, :user).order(created_at: :desc).offset(params[:offset]).limit(20)
         chat_room_users_names = { chat_room.id => Hash[chat_room.chat_room_users.pluck(:user_id, :name)] }
 

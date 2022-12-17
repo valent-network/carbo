@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   def require_auth
     access_token = request.headers['X-User-Access-Token'] || params[:access_token]
 
-    @current_device = UserDevice.find_by(access_token: access_token) if access_token.present?
+    @current_device = UserDevice.includes(:user).find_by(access_token: access_token) if access_token.present?
     if @current_device
       @current_user = @current_device.user
       @current_device.update(locale: I18n.locale)

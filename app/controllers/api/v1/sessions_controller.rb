@@ -6,7 +6,7 @@ module Api
       before_action :require_auth, only: %w[destroy]
 
       def create
-        phone_number = PhoneNumber.by_full_number(params[:phone_number]).first_or_create
+        phone_number = PhoneNumber.includes(:demo_phone_number).by_full_number(params[:phone_number]).first_or_create
 
         if phone_number.persisted?
           unless phone_number.demo?
@@ -23,7 +23,7 @@ module Api
       end
 
       def update
-        phone_number = PhoneNumber.by_full_number(params[:phone_number]).first_or_create!
+        phone_number = PhoneNumber.includes(:demo_phone_number).by_full_number(params[:phone_number]).first_or_create!
         verification_request = VerificationRequest.where(phone_number: phone_number).first
 
         user = User.where(phone_number_id: phone_number.id).first_or_initialize
