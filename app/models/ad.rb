@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Ad < ApplicationRecord
-  AD_TYPES = %w[car real_estate].freeze
+  AD_TYPES = %w[car real_estate vehicles].freeze
 
   attr_reader :friend_name_and_total
 
@@ -15,6 +15,7 @@ class Ad < ApplicationRecord
   belongs_to :ads_source
   belongs_to :phone_number
   belongs_to :city, optional: true
+  belongs_to :category, optional: true
   has_one :region, through: :city
   has_many :ad_visits, dependent: :delete_all
   has_many :ad_favorites, dependent: :delete_all
