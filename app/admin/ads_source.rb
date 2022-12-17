@@ -2,7 +2,7 @@
 
 ActiveAdmin.register(AdsSource) do
   menu label: proc { I18n.t('active_admin.ads_sources') }, parent: 'other'
-  permit_params :title, :api_token
+  permit_params :title, :api_token, :native
 
   index do
     column :title
@@ -10,4 +10,5 @@ ActiveAdmin.register(AdsSource) do
   end
 
   filter :title
+  filter :native
 end
