@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 class FilterableValue < ApplicationRecord
-  REDIS_KEY = 'global_filter'
-  FITLERABLE_OPTIONS = %w[gear wheels carcass fuel]
+  FILTERABLE_OPTIONS = %w[gear wheels carcass fuel]
   MOBILE_MAPPING = {
     fuel: :fuels,
     gear: :gears,
     carcass: :carcasses,
     wheels: :wheels,
   }
+
   belongs_to :ad_option_type
+
   validates :name, presence: true
-  after_save :update_global_json
+
+  after_save :update_global_filter
 
   #  [ [AdOptionType#name, FilterableValue#raw_value], ... ] => { AdOptionType#name => Translation }
   #  [ ['fuel', 'Gasoline'], ... ] => { 'fuel': 'lpg' }
@@ -49,7 +51,11 @@ class FilterableValue < ApplicationRecord
   end
 
   private_class_method def self.global_json
-    JSON.parse(REDIS.get(REDIS_KEY).presence || '{}')
+    json = REDIS.get(FiltersJsonUpdater::REDIS_KEY).presence ||
+      FiltersJsonUpdater.new.call.presence ||
+      '{}'
+
+    JSON.parse(json)
   rescue StandardError => e
     Rails.logger.warn(e)
     {}
@@ -57,17 +63,7 @@ class FilterableValue < ApplicationRecord
 
   private
 
-  def update_global_json
-    json = FilterableValue
-      .includes(:ad_option_type)
-      .joins(:ad_option_type)
-      .map { |fv| [fv.ad_option_type.name, [fv.name, fv.raw_value]] }
-      .group_by(&:first)
-      .transform_values do |v|
-        v.map(&:last).group_by(&:first).transform_values { |group| group.map(&:last) }
-      end
-      .to_json
-
-    REDIS.set(REDIS_KEY, json)
+  def update_global_filter
+    FiltersJsonUpdater.new.call
   end
 end

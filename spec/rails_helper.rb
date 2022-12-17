@@ -81,10 +81,10 @@ RSpec.configure do |config|
       AdOptionType.create(name: ad_option_type)
     end
     AdsGroupedByMakerModelYear.refresh(concurrently: false)
-    FilterableValue.new.send(:update_global_json)
+    FiltersJsonUpdater.new.call
   end
 
   config.after(:all) do
-    REDIS.set(FilterableValue::REDIS_KEY, nil)
+    REDIS.set(FiltersJsonUpdater::REDIS_KEY, nil)
   end
 end

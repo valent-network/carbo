@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class InvisibleFilterValues
-  def call(option_types = FilterableValue::FITLERABLE_OPTIONS)
+  def call(option_types = FilterableValue::FILTERABLE_OPTIONS)
     option_types_clause = option_types.map do |option_type|
       <<~SQL
         SELECT DISTINCT '#{option_type}' AS ad_option_type, details->>'#{option_type}' AS option_value
