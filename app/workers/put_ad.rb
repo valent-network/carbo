@@ -30,6 +30,8 @@ class PutAd
     ad_params = JSON.parse(original_ad_params).with_indifferent_access
 
     address = ad_params[:details][:address]
+    return if NativizedProviderAd.where(address: address).exists?
+
     ad = Ad.where(address: address).first_or_initialize
     ad.ads_source = AdsSource.where(title: 'auto.ria.com').first_or_create
 
