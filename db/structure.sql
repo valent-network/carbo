@@ -2103,6 +2103,13 @@ CREATE INDEX index_demo_phone_numbers_on_phone_number_id ON public.demo_phone_nu
 
 
 --
+-- Name: index_events_on_favorited_ads; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_favorited_ads ON public.events USING btree (user_id, (((data ->> 'ad_id'::text))::integer), created_at DESC) WHERE ((name)::text = 'favorited_ad'::text);
+
+
+--
 -- Name: index_events_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2114,6 +2121,13 @@ CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
 --
 
 CREATE INDEX index_events_on_user_id_and_created_at ON public.events USING btree (user_id, created_at) WHERE ((name)::text = 'snapshot_user_visibility'::text);
+
+
+--
+-- Name: index_events_on_visited_ads; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_visited_ads ON public.events USING btree (user_id, (((data ->> 'ad_id'::text))::integer), created_at DESC) WHERE ((name)::text = 'visited_ad'::text);
 
 
 --
@@ -2730,6 +2744,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221216202806'),
 ('20221216214724'),
 ('20221217135748'),
-('20221218003013');
+('20221218003013'),
+('20221218125825');
 
 
