@@ -30,7 +30,7 @@ module Api
           ads_with_friends_sql = AdsWithFriendsQuery.new.call(current_user, ads_phone_number_ids)
           ads_with_friends = Ad.find_by_sql(ads_with_friends_sql)
 
-          ads.each { |ad| ad.associate_friends_with(ads_with_friends) }
+          ads.each { |ad| current_user.phone_number_id == ad.phone_number_id ? ad.my_add! : ad.associate_friends_with(ads_with_friends) }
         end
 
         CreateEvent.call(:get_feed, user: current_user, data: { params: params })

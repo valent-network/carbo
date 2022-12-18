@@ -40,12 +40,18 @@ class Ad < ApplicationRecord
 
   accepts_nested_attributes_for :ad_query, :ad_description, :ad_extra, :ad_image_links_set, update_only: true
 
+  attr_reader :my_add
+
   def self.by_options(opt_type, opt_val)
     joins(:ad_extra).where(%[ad_extras.details @> '{"#{opt_type}": "#{opt_val}"}'])
   end
 
   def phone=(val)
     self.phone_number = PhoneNumber.by_full_number(val).first_or_create! if val.present?
+  end
+
+  def my_add!
+    @my_add = true
   end
 
   def associate_friends_with(ads_with_friends)
@@ -86,6 +92,7 @@ class Ad < ApplicationRecord
 
   def reload
     @details = nil
+    # @my_add = nil # TODO
     super
   end
 
