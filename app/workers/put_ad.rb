@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 class PutAd
+  NATIVE_CATEGORY_NAME = 'vehicles'
+  PROVIDER_NAME = 'auto.ria.com'
+
   include Sidekiq::Worker
 
   sidekiq_options queue: 'ads', retry: true, backtrace: false
@@ -33,7 +36,8 @@ class PutAd
     return if NativizedProviderAd.where(address: address).exists?
 
     ad = Ad.where(address: address).first_or_initialize
-    ad.ads_source = AdsSource.where(title: 'auto.ria.com').first_or_create
+    ad.ads_source = AdsSource.where(title: PROVIDER_NAME).first_or_create
+    ad.category = Category.where(name: NATIVE_CATEGORY_NAME).first_or_create
 
     ad_contract = AdCarContract.new.call(ad_params)
 
