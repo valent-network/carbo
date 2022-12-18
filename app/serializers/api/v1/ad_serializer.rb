@@ -34,7 +34,7 @@ module Api
       end
 
       def url
-        object.address
+        object.address unless object.ads_source.native?
       end
     end
   end
