@@ -922,6 +922,15 @@ ALTER SEQUENCE public.filterable_values_id_seq OWNED BY public.filterable_values
 
 
 --
+-- Name: nativized_provider_ads; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.nativized_provider_ads (
+    address character varying NOT NULL
+);
+
+
+--
 -- Name: phone_numbers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1715,6 +1724,14 @@ ALTER TABLE ONLY public.messages
 
 
 --
+-- Name: nativized_provider_ads nativized_provider_ads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nativized_provider_ads
+    ADD CONSTRAINT nativized_provider_ads_pkey PRIMARY KEY (address);
+
+
+--
 -- Name: phone_numbers phone_numbers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2118,6 +2135,13 @@ CREATE INDEX index_messages_on_chat_room_id ON public.messages USING btree (chat
 --
 
 CREATE INDEX index_messages_on_user_id ON public.messages USING btree (user_id);
+
+
+--
+-- Name: index_nativized_provider_ads_on_address; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_nativized_provider_ads_on_address ON public.nativized_provider_ads USING btree (address);
 
 
 --
@@ -2705,6 +2729,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221216202530'),
 ('20221216202806'),
 ('20221216214724'),
-('20221217135748');
+('20221217135748'),
+('20221218003013');
 
 

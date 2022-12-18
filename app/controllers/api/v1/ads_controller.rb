@@ -40,6 +40,7 @@ module Api
 
         if ad.save
           render(json: ad)
+          NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
         else
           error!('AD_VALIDATION_FAIELD', :unprocessable_entity, ad.errors.as_json)
         end
@@ -51,6 +52,8 @@ module Api
         ad = current_user.ads.find(params[:id])
 
         ad.destroy
+
+        NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
 
         render(json: { message: :ok })
       end
