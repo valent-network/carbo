@@ -20,6 +20,48 @@ module Api
 
         render(json: payload)
       end
+
+      def create
+        ad = current_user.ads.new(phone_number_id: current_user.phone_number_id)
+        ad.assign_attributes(ad_params)
+
+        if ad.save
+          render(json: ad)
+        else
+          error!('AD_VALIDATION_FAIELD', :unprocessable_entity, ad.errors.as_json)
+        end
+
+        ad.save!
+      end
+
+      def update
+        ad = current_user.ads.find(params[:id])
+        ad.assign_attributes(ad_params)
+
+        if ad.save
+          render(json: ad)
+        else
+          error!('AD_VALIDATION_FAIELD', :unprocessable_entity, ad.errors.as_json)
+        end
+
+        ad.save!
+      end
+
+      def destroy
+        ad = current_user.ads.find(params[:id])
+
+        ad.destroy
+
+        render(json: { message: :ok })
+      end
+
+      private
+
+      def ad_params
+        params.require(:ad).permit(:price, :category_id, :city_id, ad_query_attributes: [:title], ad_description_attributes: [:body, :short]).tap do |para|
+          para[:ad_extra_attributes] = { details: params[:ad][:ad_extra_attributes][:details].permit! }
+        end
+      end
     end
   end
 end

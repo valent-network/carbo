@@ -6,7 +6,6 @@ FactoryBot.define do
     phone_number
     price { rand(1000..10000) }
     address { "http://example.com/ads/#{rand(1000000000)}" }
-    ad_type { Ad::AD_TYPES.sample }
     deleted { [true, false].sample }
     details do
       {
@@ -32,10 +31,6 @@ FactoryBot.define do
 
     trait :active do
       deleted { false }
-    end
-
-    trait :car do
-      ad_type { 'car' }
     end
   end
 end

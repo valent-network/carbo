@@ -4,7 +4,6 @@ class AdCarContract < Dry::Validation::Contract
     required(:price).value(:integer)
     required(:deleted).value(:bool)
     required(:phone).filled(:string)
-    required(:ad_type).filled(included_in?: Ad::AD_TYPES)
     required(:details).hash do
       required(:maker).filled(:string)
       required(:model).filled(:string)

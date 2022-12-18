@@ -382,7 +382,6 @@ CREATE TABLE public.ads (
     ads_source_id smallint NOT NULL,
     price integer NOT NULL,
     deleted boolean DEFAULT false NOT NULL,
-    ad_type character varying NOT NULL,
     address character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -2705,6 +2704,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221216202521'),
 ('20221216202530'),
 ('20221216202806'),
-('20221216214724');
+('20221216214724'),
+('20221217135748');
 
 

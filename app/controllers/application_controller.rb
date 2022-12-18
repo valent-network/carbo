@@ -41,9 +41,12 @@ class ApplicationController < ActionController::Base
     error!('NOT_AUTHORIZED', 401) unless current_user
   end
 
-  def error!(message, status = 422)
+  def error!(message, status = 422, errors = {})
     Rails.logger.debug("Unknown error code: #{message}") unless message.in?(API_ERROR_CODES)
-    render(json: { message: t("api_error_messages.#{message.downcase}") }, status: status)
+    payload = { message: t("api_error_messages.#{message.downcase}") }
+    payload[:errors] = errors if errors.present?
+
+    render(json: payload, status: status)
   end
 
   def standard_error(exception)

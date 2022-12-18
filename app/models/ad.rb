@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 class Ad < ApplicationRecord
-  AD_TYPES = %w[car real_estate vehicles].freeze
-
   attr_reader :friend_name_and_total
 
   before_update :prepare_ad_price
+  before_validation :set_native_address, :set_native_source
 
   validates :price, presence: true, numericality: { greater_than: 0, only_integer: true }
   validates :address, uniqueness: { scope: :ads_source_id }
-  validates :ad_type, inclusion: { in: AD_TYPES }
   validates :deleted, inclusion: { in: [true, false] }
 
   belongs_to :ads_source
@@ -36,6 +34,8 @@ class Ad < ApplicationRecord
   scope :active, -> { where(deleted: false) }
   scope :opts, ->(query) { by_options(query.split(';').first.strip, query.split(';').last.strip) }
   scope :known, -> { joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id') }
+
+  accepts_nested_attributes_for :ad_query, :ad_description, :ad_extra, :ad_image_links_set, update_only: true
 
   def self.by_options(opt_type, opt_val)
     joins(:ad_extra).where(%[ad_extras.details @> '{"#{opt_type}": "#{opt_val}"}'])
@@ -91,6 +91,14 @@ class Ad < ApplicationRecord
   end
 
   private
+
+  def set_native_address
+    self.address = "https://recar.io/ads/#{SecureRandom.uuid}"
+  end
+
+  def set_native_source
+    self.ads_source ||= AdsSource.find_by(native: true)
+  end
 
   def prepare_ad_price
     ad_prices.new(price: price_was) if price_changed?

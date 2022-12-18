@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe(BudgetController) do
   before do
     5.times do
-      ad = create(:ad, :active, :car)
+      ad = create(:ad, :active)
 
       ad.update!(details: ad.details.merge(maker: 'BMW', model: 'X6', year: 2022))
     end

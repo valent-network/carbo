@@ -49,7 +49,7 @@ Rails.application.routes.draw do
       end
       resource :sessions, only: %i[create update destroy]
 
-      resources :ads, only: %i[show]
+      resources :ads, only: %i[show create update destroy]
       resources :friendly_ads, only: %i[show]
 
       resources :user_contacts, only: %i[index]
