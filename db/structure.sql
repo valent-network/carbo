@@ -24,6 +24,20 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 
 
 --
+-- Name: citext; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION citext; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
+
+
+--
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -222,8 +236,8 @@ ALTER SEQUENCE public.ad_image_links_sets_id_seq OWNED BY public.ad_image_links_
 
 CREATE TABLE public.ad_option_types (
     id smallint NOT NULL,
-    name character varying NOT NULL,
-    category_id bigint
+    name public.citext NOT NULL,
+    category_id bigint NOT NULL
 );
 
 
@@ -382,11 +396,11 @@ CREATE TABLE public.ads (
     ads_source_id smallint NOT NULL,
     price integer NOT NULL,
     deleted boolean DEFAULT false NOT NULL,
-    address character varying NOT NULL,
+    address public.citext NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     city_id smallint,
-    category_id bigint
+    category_id bigint NOT NULL
 );
 
 
@@ -435,7 +449,7 @@ ALTER SEQUENCE public.ads_id_seq OWNED BY public.ads.id;
 
 CREATE TABLE public.ads_sources (
     id bigint NOT NULL,
-    title character varying NOT NULL,
+    title public.citext NOT NULL,
     api_token character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -480,7 +494,7 @@ CREATE TABLE public.ar_internal_metadata (
 
 CREATE TABLE public.categories (
     id bigint NOT NULL,
-    name character varying NOT NULL,
+    name public.citext NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -577,7 +591,7 @@ ALTER SEQUENCE public.chat_rooms_id_seq OWNED BY public.chat_rooms.id;
 
 CREATE TABLE public.cities (
     id bigint NOT NULL,
-    name character varying(255) NOT NULL,
+    name public.citext NOT NULL,
     region_id bigint,
     translations jsonb DEFAULT '{}'::jsonb
 );
@@ -894,11 +908,11 @@ ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 
 CREATE TABLE public.filterable_values (
     id bigint NOT NULL,
-    ad_option_type_id bigint,
-    name character varying NOT NULL,
+    ad_option_type_id bigint NOT NULL,
+    name public.citext NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    raw_value character varying
+    raw_value character varying NOT NULL
 );
 
 
@@ -926,7 +940,7 @@ ALTER SEQUENCE public.filterable_values_id_seq OWNED BY public.filterable_values
 --
 
 CREATE TABLE public.nativized_provider_ads (
-    address character varying NOT NULL
+    address public.citext NOT NULL
 );
 
 
@@ -955,7 +969,7 @@ ALTER SEQUENCE public.phone_numbers_id_seq OWNED BY public.phone_numbers.id;
 
 CREATE TABLE public.regions (
     id bigint NOT NULL,
-    name character varying(255) NOT NULL,
+    name public.citext NOT NULL,
     translations jsonb DEFAULT '{}'::jsonb
 );
 
@@ -2745,6 +2759,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221216214724'),
 ('20221217135748'),
 ('20221218003013'),
-('20221218125825');
+('20221218125825'),
+('20221218134212'),
+('20221218135855');
 
 

@@ -13,7 +13,7 @@ class Ad < ApplicationRecord
   belongs_to :ads_source
   belongs_to :phone_number
   belongs_to :city, optional: true
-  belongs_to :category, optional: true
+  belongs_to :category
   has_one :region, through: :city
   has_many :ad_visits, dependent: :delete_all
   has_many :ad_favorites, dependent: :delete_all

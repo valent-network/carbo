@@ -4,7 +4,7 @@ class AdOptionType < ApplicationRecord
 
   has_many :filterable_values, dependent: :destroy
 
-  belongs_to :category, optional: true
+  belongs_to :category
 
   after_save :update_global_filter
 

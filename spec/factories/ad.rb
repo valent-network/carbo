@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :ad do
     ads_source
     phone_number
+    category { Category.find_by_name('vehicles') }
     price { rand(1000..10000) }
     address { "http://example.com/ads/#{rand(1000000000)}" }
     deleted { [true, false].sample }

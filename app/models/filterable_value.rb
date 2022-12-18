@@ -10,7 +10,7 @@ class FilterableValue < ApplicationRecord
 
   belongs_to :ad_option_type
 
-  validates :name, presence: true
+  validates :name, :raw_value, presence: true
 
   after_save :update_global_filter
 
