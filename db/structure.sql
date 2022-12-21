@@ -237,7 +237,8 @@ ALTER SEQUENCE public.ad_image_links_sets_id_seq OWNED BY public.ad_image_links_
 CREATE TABLE public.ad_option_types (
     id smallint NOT NULL,
     name public.citext NOT NULL,
-    category_id bigint NOT NULL
+    category_id bigint NOT NULL,
+    filterable boolean DEFAULT false NOT NULL
 );
 
 
@@ -2761,6 +2762,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221218003013'),
 ('20221218125825'),
 ('20221218134212'),
-('20221218135855');
+('20221218135855'),
+('20221221183350');
 
 

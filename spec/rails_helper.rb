@@ -79,7 +79,7 @@ RSpec.configure do |config|
     Rpush::Client::ActiveRecord::Apnsp8::App.where(name: 'ios', connections: 2, apn_key: "BEGINEND", apn_key_id: "ID", environment: 'production', team_id: 'team', bundle_id: 'com.recar.io').first_or_create!
     Rpush::Client::ActiveRecord::Gcm::App.where(name: 'android', connections: 2, auth_key: 'INVALID').first_or_create!
     %w[fuel gear carcass wheels color].each do |ad_option_type|
-      category.ad_option_types.where(name: ad_option_type).first_or_create!
+      category.ad_option_types.where(name: ad_option_type, filterable: ad_option_type.in?(%w[gear fuel carcass wheels])).first_or_create!
     end
 
     AdsGroupedByMakerModelYear.refresh(concurrently: false)

@@ -6,6 +6,7 @@ class FiltersJsonUpdater
     json = FilterableValue
       .includes(:ad_option_type)
       .joins(:ad_option_type)
+      .where(ad_option_types: { filterable: true })
       .map { |fv| [fv.ad_option_type.name, [fv.name, fv.raw_value]] }
       .group_by(&:first)
       .transform_values do |v|

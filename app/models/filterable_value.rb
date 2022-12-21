@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 class FilterableValue < ApplicationRecord
-  FILTERABLE_OPTIONS = %w[gear wheels carcass fuel]
   MOBILE_MAPPING = {
     fuel: :fuels,
     gear: :gears,

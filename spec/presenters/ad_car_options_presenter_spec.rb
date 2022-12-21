@@ -15,10 +15,13 @@ RSpec.describe(AdCarOptionsPresenter) do
     ad.details = { 'gear' => 'g', 'wheels' => 'w', 'carcass' => 'cc', 'color' => 'Red Colour', 'images_json_array_tmp' => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: 'kh', city: 'city-kh' }
     ad.save
 
+    color_opt = AdOptionType.find_by_name('color')
+    color_opt.update(filterable: true)
+
     create(:filterable_value, ad_option_type: AdOptionType.find_by_name('gear'), name: 'auto', raw_value: 'g')
     create(:filterable_value, ad_option_type: AdOptionType.find_by_name('carcass'), name: 'coupe', raw_value: 'cc')
     create(:filterable_value, ad_option_type: AdOptionType.find_by_name('wheels'), name: 'awd', raw_value: 'w')
-    create(:filterable_value, ad_option_type: AdOptionType.find_by_name('color'), name: 'red', raw_value: 'Red Colour')
+    create(:filterable_value, ad_option_type: color_opt, name: 'red', raw_value: 'Red Colour')
 
     expect(subject).to(eq(
       gear: [I18n.t('ad_options.gear'), 'Automatic'],
