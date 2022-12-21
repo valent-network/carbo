@@ -103,7 +103,7 @@ class Ad < ApplicationRecord
   private
 
   def set_native_address
-    self.address = "https://recar.io/ads/#{SecureRandom.uuid}"
+    self.address ||= "https://recar.io/ads/#{SecureRandom.uuid}"
   end
 
   def set_native_source
