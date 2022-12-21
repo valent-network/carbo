@@ -60,23 +60,23 @@ class User < ApplicationRecord
   end
 
   def registered_friends_count
-    user_contacts.joins(phone_number: :user).count
+    user_contacts.joins(phone_number: :user).count.to_i
   end
 
   def visible_ads_count
-    user_connections.visible_ads_count.to_a.first.count
+    user_connections.visible_ads_count.to_a&.first&.count.to_i
   end
 
   def visible_ads_count_for_default_hops
-    user_connections.visible_ads_default_count.to_a.first.count
+    user_connections.visible_ads_default_count.to_a&.first&.count.to_i
   end
 
   def visible_business_ads_count
-    user_connections.business_ads_count.to_a.first.count
+    user_connections.business_ads_count.to_a&.first&.count.to_i
   end
 
   def visible_friends_count
-    user_connections.known_contacts_count.to_a.first.count
+    UserContact.select(:phone_number_id).distinct(:phone_number_id).where("user_id IN (#{user_connections.distinct(:connection_id).select(:connection_id).to_sql})").count
   end
 
   def current_visibility
