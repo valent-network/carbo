@@ -15,15 +15,17 @@ class ApplicationController < ActionController::Base
   end
 
   def cities
-    cities_grouped_by_region = City.joins(:region)
-      .select("regions.translations->>'#{I18n.locale}' AS reg, array_agg(cities.translations->>'#{I18n.locale}') AS cities")
-      .group("regions.translations->>'#{I18n.locale}'")
-      .to_a
-      .map { |x| [x.reg, AlphabetSort.call(x.cities, I18n.locale)] }
-      .to_h
+    cities_grouped_by_region = City.includes(:region).group_by(&:region)
+    regions_sorted = AlphabetSort.call(cities_grouped_by_region.keys.map { |x| x.translations[I18n.locale.to_s] }, I18n.locale)
+    cities_sorted = AlphabetSort.call(cities_grouped_by_region.values.flatten.map { |city| city.translations[I18n.locale.to_s] }, I18n.locale)
 
-    sorted_regions = AlphabetSort.call(cities_grouped_by_region.keys, I18n.locale)
-    payload = cities_grouped_by_region.sort_by { |k, _v| sorted_regions.index(k) }.to_h
+    payload = cities_grouped_by_region
+      .sort_by { |k, _v| regions_sorted.index(k.translations[I18n.locale.to_s]) }
+      .to_h
+      .transform_keys { |region| region.translations[I18n.locale.to_s] }
+      .transform_values do |cities|
+        cities.sort_by { |city| cities_sorted.index(city.translations[I18n.locale.to_s]) }.map { |city| {name: city.translations[I18n.locale.to_s], id: city.id} }
+      end
 
     render(json: payload)
   end
