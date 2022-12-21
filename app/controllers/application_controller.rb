@@ -14,6 +14,20 @@ class ApplicationController < ActionController::Base
     render(json: FilterableValue.filters.merge(hops_count: t('hops_count')))
   end
 
+  def cities
+    cities_grouped_by_region = City.joins(:region)
+      .select("regions.translations->>'#{I18n.locale}' AS reg, array_agg(cities.translations->>'#{I18n.locale}') AS cities")
+      .group("regions.translations->>'#{I18n.locale}'")
+      .to_a
+      .map { |x| [x.reg, AlphabetSort.call(x.cities, I18n.locale)] }
+      .to_h
+
+    sorted_regions = AlphabetSort.call(cities_grouped_by_region.keys, I18n.locale)
+    payload = cities_grouped_by_region.sort_by { |k, _v| sorted_regions.index(k) }.to_h
+
+    render(json: payload)
+  end
+
   def multibutton
     render('/multibutton', layout: false)
   end

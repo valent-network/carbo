@@ -42,6 +42,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     get :filters, to: '/application#filters'
+    get :cities, to: '/application#cities'
     namespace :v1 do
       resource :contact_book, only: %i[update destroy]
       resource :user, only: %i[show update] do
