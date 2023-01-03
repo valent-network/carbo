@@ -2,7 +2,7 @@
 
 ActiveAdmin.register(FilterableValue) do
   menu label: proc { I18n.t('active_admin.filterable_values') }, parent: 'filters_management'
-  permit_params :name, :raw_value, :ad_option_type_id
+  permit_params :name, :raw_value, :group, :ad_option_type_id
   config.sort_order = 'name_asc'
 
   index do
