@@ -15,23 +15,26 @@ module Api
 
         ad.associate_friends_with(ads_with_friends)
 
+        ad.my_ad! if current_user.phone_number_id == ad.phone_number_id
+
         payload = AdSerializer.new(ad).as_json
-        payload[:is_favorite] = current_user.ad_favorites.where(ad: ad).exists?
+        payload[:favorite] = current_user.ad_favorites.where(ad: ad).exists?
 
         render(json: payload)
       end
 
       def create
         ad = current_user.ads.new(phone_number_id: current_user.phone_number_id)
+        ad.ads_source = AdsSource.where(native: true).first
         ad.assign_attributes(ad_params)
 
         if ad.save
-          render(json: ad)
+          ad.my_ad!
+          serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: Api::V1::AdSerializer).as_json
+          render(json: serialized_ad)
         else
-          error!('AD_VALIDATION_FAIELD', :unprocessable_entity, ad.errors.as_json)
+          error!('AD_VALIDATION_FAILED', :unprocessable_entity, ad.errors.full_messages.join("\n"))
         end
-
-        ad.save!
       end
 
       def update
@@ -39,13 +42,13 @@ module Api
         ad.assign_attributes(ad_params)
 
         if ad.save
-          render(json: ad)
+          ad.my_ad!
+          serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: Api::V1::AdSerializer).as_json
           NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
+          render(json: serialized_ad)
         else
-          error!('AD_VALIDATION_FAIELD', :unprocessable_entity, ad.errors.as_json)
+          error!('AD_VALIDATION_FAILED', :unprocessable_entity, ad.errors.full_messages.join("\n"))
         end
-
-        ad.save!
       end
 
       def destroy
@@ -61,8 +64,8 @@ module Api
       private
 
       def ad_params
-        params.require(:ad).permit(:price, :category_id, :city_id, ad_query_attributes: [:title], ad_description_attributes: [:body, :short]).tap do |para|
-          para[:ad_extra_attributes] = { details: params[:ad][:ad_extra_attributes][:details].permit! }
+        params.require(:ad).permit(:price, :category_id, :city_id, :deleted, ad_query_attributes: [:title], ad_description_attributes: [:body, :short]).tap do |para|
+          para[:ad_extra_attributes] = { details: params[:ad][:ad_extra_attributes][:details].permit! } if params[:ad] && params[:ad][:ad_extra_attributes] && params[:ad][:ad_extra_attributes][:details]
         end
       end
     end
