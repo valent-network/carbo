@@ -54,6 +54,7 @@ module Api
       def destroy
         ad = current_user.ads.find(params[:id])
 
+        ad.chat_rooms.update_all(ad_title: ad.title)
         ad.destroy
 
         NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
