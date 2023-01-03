@@ -8,7 +8,7 @@ class InitiateChatRoom
     raise unless initiator.user_contacts.exists?(phone_number: user.phone_number)
     raise if initiator.name.blank?
 
-    chat_room = initiator.chat_rooms.new(ad: ad)
+    chat_room = initiator.chat_rooms.new(ad: ad, ad_title: ad.title)
     initiator_user = chat_room.chat_room_users.new(user: initiator, name: initiator.name)
     invited_user = chat_room.chat_room_users.new(user: user, name: user_name)
     message = chat_room.messages.new(system: true, body: "#{initiator.name} поинтересовался объявлением", extra: { type: :init, name: initiator.name })
