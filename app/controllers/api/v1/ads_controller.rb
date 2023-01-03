@@ -22,53 +22,6 @@ module Api
 
         render(json: payload)
       end
-
-      def create
-        ad = current_user.ads.new(phone_number_id: current_user.phone_number_id)
-        ad.ads_source = AdsSource.where(native: true).first
-        ad.assign_attributes(ad_params)
-
-        if ad.save
-          ad.my_ad!
-          serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: Api::V1::AdSerializer).as_json
-          render(json: serialized_ad)
-        else
-          error!('AD_VALIDATION_FAILED', :unprocessable_entity, ad.errors.full_messages.join("\n"))
-        end
-      end
-
-      def update
-        ad = current_user.ads.find(params[:id])
-        ad.assign_attributes(ad_params)
-
-        if ad.save
-          ad.my_ad!
-          serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: Api::V1::AdSerializer).as_json
-          NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
-          render(json: serialized_ad)
-        else
-          error!('AD_VALIDATION_FAILED', :unprocessable_entity, ad.errors.full_messages.join("\n"))
-        end
-      end
-
-      def destroy
-        ad = current_user.ads.find(params[:id])
-
-        ad.chat_rooms.update_all(ad_title: ad.title)
-        ad.destroy
-
-        NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
-
-        render(json: { message: :ok })
-      end
-
-      private
-
-      def ad_params
-        params.require(:ad).permit(:price, :category_id, :city_id, :deleted, ad_query_attributes: [:title], ad_description_attributes: [:body, :short]).tap do |para|
-          para[:ad_extra_attributes] = { details: params[:ad][:ad_extra_attributes][:details].permit! } if params[:ad] && params[:ad][:ad_extra_attributes] && params[:ad][:ad_extra_attributes][:details]
-        end
-      end
     end
   end
 end

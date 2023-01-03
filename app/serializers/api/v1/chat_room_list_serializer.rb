@@ -36,7 +36,7 @@ module Api
       end
 
       def titles
-        @titles ||= chat_rooms.map { |chat| [chat.ad.id, chat.ad.title] }.to_h
+        @titles ||= chat_rooms.map { |chat| [chat.ad_id, (chat.ad&.title || chat.ad_title)] }.to_h
       end
 
       def photos
