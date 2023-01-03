@@ -238,7 +238,9 @@ CREATE TABLE public.ad_option_types (
     id smallint NOT NULL,
     name public.citext NOT NULL,
     category_id bigint NOT NULL,
-    filterable boolean DEFAULT false NOT NULL
+    filterable boolean DEFAULT false NOT NULL,
+    input_type character varying DEFAULT 'text'::character varying NOT NULL,
+    translations jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -497,7 +499,9 @@ CREATE TABLE public.categories (
     id bigint NOT NULL,
     name public.citext NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    translations jsonb DEFAULT '{}'::jsonb,
+    currency character varying
 );
 
 
@@ -560,10 +564,11 @@ ALTER SEQUENCE public.chat_room_users_id_seq OWNED BY public.chat_room_users.id;
 CREATE TABLE public.chat_rooms (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
-    ad_id bigint NOT NULL,
+    ad_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    system boolean DEFAULT false NOT NULL
+    system boolean DEFAULT false NOT NULL,
+    ad_title character varying
 );
 
 
@@ -915,6 +920,39 @@ CREATE TABLE public.filterable_values (
     updated_at timestamp(6) without time zone NOT NULL,
     raw_value character varying NOT NULL
 );
+
+
+--
+-- Name: filterable_values_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.filterable_values_groups (
+    id bigint NOT NULL,
+    ad_option_type_id bigint,
+    name character varying,
+    translations jsonb DEFAULT '{}'::jsonb,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: filterable_values_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.filterable_values_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: filterable_values_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.filterable_values_groups_id_seq OWNED BY public.filterable_values_groups.id;
 
 
 --
@@ -1480,6 +1518,13 @@ ALTER TABLE ONLY public.filterable_values ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: filterable_values_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.filterable_values_groups ALTER COLUMN id SET DEFAULT nextval('public.filterable_values_groups_id_seq'::regclass);
+
+
+--
 -- Name: phone_numbers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1720,6 +1765,14 @@ ALTER TABLE ONLY public.demo_phone_numbers
 
 ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: filterable_values_groups filterable_values_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.filterable_values_groups
+    ADD CONSTRAINT filterable_values_groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -2143,6 +2196,20 @@ CREATE INDEX index_events_on_user_id_and_created_at ON public.events USING btree
 --
 
 CREATE INDEX index_events_on_visited_ads ON public.events USING btree (user_id, (((data ->> 'ad_id'::text))::integer), created_at DESC) WHERE ((name)::text = 'visited_ad'::text);
+
+
+--
+-- Name: index_filterable_values_groups_on_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_filterable_values_groups_on_ad_option_type_id ON public.filterable_values_groups USING btree (ad_option_type_id);
+
+
+--
+-- Name: index_filterable_values_groups_on_name_and_ad_option_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_filterable_values_groups_on_name_and_ad_option_type_id ON public.filterable_values_groups USING btree (name, ad_option_type_id);
 
 
 --
@@ -2763,6 +2830,13 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221218125825'),
 ('20221218134212'),
 ('20221218135855'),
-('20221221183350');
+('20221221183350'),
+('20221221224659'),
+('20221223122752'),
+('20221228172935'),
+('20221229225631'),
+('20221231011456'),
+('20230101225905'),
+('20230103092722');
 
 
