@@ -1,0 +1,73 @@
+en:
+  ad_options:
+    engine: Engine
+    race: Mileage
+    gear: Transmission
+    wheels: Drive
+    carcass: Body
+    location: Location
+    color: Color
+    year: Year
+    no_description: No description
+    race_value: "%{value}k\u00A0km"
+    hp_value: "%{value}\u00A0h.p."
+    city_value: "%{value}\u00A0city"
+    full_engine_value: "%{engine_type}\u00A0%{engine_capacity}L"
+    engine_value: "%{value}L\u00A0%{fuel_type}"
+    horse_powers: Engine output
+    fuel: Fuel
+    direction: Direction
+    maker: Maker
+    model: Model
+  filters:
+    types:
+      fuel:
+        diesel: Diesel
+        petrol: Petrol
+        lpg: LPG
+        hybrid: Hybrid
+        electro: Electric
+        other: Others
+      gear:
+        auto: Automatic
+        manual: Manual
+      carcass:
+        cabrio: Convertible
+        coupe: Coupe
+        crossover: Offroad / Crossover
+        fastback: Fastback
+        liftback: Liftback
+        hatchback: Hatchback
+        house: House on wheels
+        limo: Limousin
+        moto: Moto
+        water: Water transport
+        quattro_karting: Quattrocycle / kart
+        pickup: Pickup
+        roadster: Roadster
+        ven: Van
+        universal: Wagon
+        sedan: Sedan
+        other: Others
+      wheels:
+        awd: 4x4
+        fwd: FWD
+        rwd: RWD
+        other: Others
+      color:
+        beige: Beige
+        purple: Purple
+        green: Green
+        blue: Blue
+        black: Black
+        red: Red
+        orange: Orange
+        brown: Brown
+        grey: Grey
+        yellow: Yellow
+        white: White
+  hops_count:
+    - Friends
+    - Friends of friends
+    - 🤝🤝🤝
+    - 🤝🤝🤝🤝

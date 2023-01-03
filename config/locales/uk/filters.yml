@@ -1,0 +1,73 @@
+uk:
+  ad_options:
+    engine: Двигун
+    location: Знаходиться
+    no_description: Опис відсутній
+    race_value: "%{value}\u00A0тис.\u00A0км"
+    hp_value: "%{value}\u00A0к.с."
+    city_value: "м.\u00A0%{value}"
+    full_engine_value: "%{engine_type}\u00A0%{engine_capacity}\u00A0л"
+    engine_value: "%{value}\u00A0л\u00A0%{fuel_type}"
+    horse_powers: Потужність
+    direction: Напрямок
+    fuel: Двигун
+    race: Одометр
+    gear: Коробка
+    wheels: Привід
+    carcass: Кузов
+    maker: Виробник
+    model: Модель
+    color: Колір
+    year: Рік випуску
+  filters:
+    types:
+      fuel:
+        diesel: Дизель
+        petrol: Бензин
+        lpg: Газ
+        hybrid: Гібрид
+        electro: Електро
+        other: Інші
+      gear:
+        auto: Автомат
+        manual: Механіка
+      carcass:
+        cabrio: Кабріолет
+        coupe: Купе
+        crossover: Позашляховик / кросовер
+        fastback: Фастбек
+        liftback: Ліфтбек
+        hatchback: Хетчбек
+        house: Дім на колесах
+        limo: Лімузин
+        moto: Мотоцикл
+        water: Водяний транспорт
+        quattro_karting: Квадроцикл / карт
+        pickup: Пікап
+        roadster: Родстер
+        ven: Мінівен
+        universal: Універсал
+        sedan: Седан
+        other: Інші
+      wheels:
+        awd: Повний
+        fwd: Передній
+        rwd: Задній
+        other: Інші
+      color:
+        beige: Бежевий
+        purple: Фіолетовий
+        green: Зелений
+        blue: Синій
+        black: Чорний
+        red: Червоний
+        orange: Помаранчевий
+        brown: Коричневий
+        grey: Сірий
+        yellow: Жовтий
+        white: Білий
+  hops_count:
+    - Друзів
+    - Друзів друзів
+    - 🤝🤝🤝
+    - 🤝🤝🤝🤝

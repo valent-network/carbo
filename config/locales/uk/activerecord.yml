@@ -1,0 +1,101 @@
+uk:
+  activerecord:
+    models:
+      adextra: Деталі Оголошення
+      verificationrequest: Верифікаційний Запит
+      userdevice: Пристрій
+      usercontact: Контакти
+      user: Користувач
+      systemstat: Системний чат
+      staticpage: Сторінка
+      region: Область
+      phonenumber: Телефон
+      filterablevaluesgroup: Група Фільтрів
+      filterablevalue: Фільтр
+      event: Подія
+      demophonenumber: Демо Телефон
+      dashboardstats: Статистика
+      city: Місто
+      chatroom: Чат
+      category: Категорія
+      adssource: Джерело
+      adoptiontype: Опція
+      ad: Оголошення
+      adminuser: Адмін
+    attributes:
+      adextra:
+        details: Деталі
+        ad: Оголошення
+      verificationrequest:
+        phone_number: Телефон
+        verification_code: Код
+      userdevice:
+        user: Користувач
+        device_id: Ідентифікаційний номер
+        access_token: Токен
+        os: Операційна система
+        push_token: Пуш-токен
+        build_version: Білд
+        session_started_at: Початок сесії
+        locale: Мова
+      usercontact:
+        user: Користувач
+        phone_number: Телефон
+        name: Ім'я
+      user:
+        phone_number: Телефон
+        name: Ім'я
+        avatar: Аватар
+        referrer: Реферер
+        refcode: Код-запрошення
+      region:
+        name: Назва
+        translations: Переклад
+      phonenumber:
+        full_number: Повний номер
+      filterablevaluesgroup:
+        ad_option_type: Опція
+        name: Назва
+        translations: Переклад
+      filterablevalue:
+        ad_option_type: Опція
+        name: Назва
+        raw_value: Сира назва
+      event:
+        name: Назва
+        user: Користувач
+        data: Інформація
+      demophonenumber:
+        phone_number: Телефон
+        demo_code: Код
+      city:
+        name: Назва
+        region: Область
+        translations: Переклад
+      chatroom:
+        user: Користувач
+        ad: Оголошення
+        system: Системний
+        ad_title: Назва оголошення
+      category:
+        name: Назва
+        translations: Переклад
+        currency: Валюта
+      adssource:
+        title: Назва
+        api_token: Токен
+        native: Рідне
+      adoptiontype:
+        name: Назва
+        category: Категорія
+        filterable: Фільтроване
+        input_type: Тип поля
+        translations: Переклад
+      ad:
+        phone_number: Телефон
+        ads_source: Джерело
+        price: Ціна
+        deleted: Архівовано
+        address: Адреса
+        city: Місто
+        category: Категорія
