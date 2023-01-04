@@ -51,7 +51,7 @@ Rails.application.routes.draw do
       end
       resource :sessions, only: %i[create update destroy]
 
-      resources :ads, only: %i[show create update destroy]
+      resources :ads, only: %i[show]
       resources :friendly_ads, only: %i[show]
 
       resources :user_contacts, only: %i[index]
@@ -70,6 +70,8 @@ Rails.application.routes.draw do
 
     namespace :v2 do
       resources :friendly_ads, only: %i[show]
+      resources :feed_ads, only: %i[index]
+      resources :ads, only: %i[show create update destroy]
     end
   end
 end

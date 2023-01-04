@@ -10,7 +10,7 @@ module Api
           AdCarOptionsPresenter.new.call(object.details)
         else
           # TODO: N+1
-          FilterableValue.raw_value_to_translation_for_groups(object.ad_extra_details.to_a).map do |k, v|
+          FilterableValue.raw_value_to_translation_for_groups_v2(object.ad_extra_details.to_a).map do |k, v|
             t = AdOptionType.find_by_name(k)
             translated_key = t ? t.translations[I18n.locale.to_s] : k
 
@@ -21,7 +21,7 @@ module Api
 
       def translated_options
         details = object.ad_extra_details
-        translations = FilterableValue.raw_value_to_translation_for_groups(details.to_a).to_h
+        translations = FilterableValue.raw_value_to_translation_for_groups_v2(details.to_a).to_h
         details.to_h.map { |k, v| [k, translations.to_h[k] || v] }.to_h
       end
 

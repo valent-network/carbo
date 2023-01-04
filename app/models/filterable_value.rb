@@ -8,6 +8,8 @@ class FilterableValue < ApplicationRecord
   }
 
   belongs_to :ad_option_type
+  belongs_to :group, foreign_key: :name, primary_key: :name, class_name: 'FilterableValuesGroup', optional: true
+  has_one :category, through: :ad_option_type
 
   validates :name, :raw_value, presence: true
 
@@ -44,9 +46,24 @@ class FilterableValue < ApplicationRecord
     global_json.select { |option_type, _| MOBILE_MAPPING[option_type.to_sym].present? }.map do |option_type, option_value_groups|
       [
         MOBILE_MAPPING[option_type.to_sym],
-        option_value_groups.keys.map { |value_group| I18n.t("filters.types.#{option_type}.#{value_group}") }
+        option_value_groups.keys.map { |value_group| I18n.t("filters.types.#{option_type}.#{value_group}", default: value_group.to_s) }
       ]
     end.to_h
+  end
+
+  def self.raw_value_to_translation_for_groups_v2(groups)
+    groups.reject { |g| g.last.blank? }.map { |g| [g.first, raw_value_to_translation_v2(g.first, g.last)] }.to_h
+  end
+
+  def self.raw_value_to_translation_v2(option_type, raw_value)
+    value_group = global_json[option_type]&.detect { |group| group.last.map(&:to_s).map(&:downcase).include?(raw_value.to_s.downcase) }&.first
+    return unless value_group
+
+    fvg = find_by_name(value_group)
+
+    # TODO: N+1
+
+    fvg&.group ? fvg.group.translations[I18n.locale.to_s] : value_group
   end
 
   private_class_method def self.global_json
