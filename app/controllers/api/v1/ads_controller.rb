@@ -18,7 +18,7 @@ module Api
         ad.my_ad! if current_user.phone_number_id == ad.phone_number_id
 
         payload = AdSerializer.new(ad).as_json
-        payload[:favorite] = current_user.ad_favorites.where(ad: ad).exists?
+        payload[:is_favorite] = current_user.ad_favorites.where(ad: ad).exists?
 
         render(json: payload)
       end
