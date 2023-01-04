@@ -21,7 +21,7 @@ module Api
         object.region_display_name
       end
 
-      def favorite
+      def is_favorite
         object.ad_favorites.any? { |ad_fav| ad_fav.user_id == @instance_options[:current_user].id }
       end
     end
