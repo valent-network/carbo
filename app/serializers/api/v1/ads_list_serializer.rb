@@ -3,7 +3,7 @@
 module Api
   module V1
     class AdsListSerializer < ActiveModel::Serializer
-      attributes :id, :image, :title, :price, :short_description, :friend_name_and_total, :city, :region, :is_favorite, :my_ad, :deleted
+      attributes :id, :image, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted
 
       def price
         ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
@@ -19,10 +19,6 @@ module Api
 
       def region
         object.region_display_name
-      end
-
-      def is_favorite
-        object.ad_favorites.any? { |ad_fav| ad_fav.user_id == @instance_options[:current_user].id }
       end
     end
   end
