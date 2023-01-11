@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(Ad) do
-  menu label: proc { I18n.t('active_admin.ads') }, parent: 'filters_management'
+  menu label: proc { I18n.t('active_admin.ads') }, parent: 'other'
   actions :index
 
   index pagination_total: false do

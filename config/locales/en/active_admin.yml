@@ -18,11 +18,9 @@ en:
   active_admin:
     dashboard: Dashboard
     category: Categories
-    ad_option_types: Category Options
-    filterable_values_groups: Category Aliases
-    filterable_values: Category Values
-    filters_management: Filters Management
-    invisible_filters: Invisible Filters
+    ad_option_types: Ad Option Types
+    filterable_values_groups: Filterable Values Groups
+    sortable_filters: Sortable
     region: Region
     city: City
     other: Other

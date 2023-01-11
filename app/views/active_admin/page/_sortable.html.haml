@@ -1,0 +1,16 @@
+- opt = AdOptionType.find(params[:ad_option_type_id])
+
+.option-values-list-invisible{"data-group-name" => "#{opt.name}"}
+  - opt.known_options.each do |v|
+    %span.filterable-node.raw_value.invisible= v
+%br
+
+- opt.groups.order(:position).each do |group|
+  %span.status_tag.yes= group.name
+  %span.filterable-values-list{"data-group-name" => "#{opt.name}", "data-opt-id" => "#{opt.id}", "data-name" => group.name}
+    - group.values.where(ad_option_type: opt).each do |value|
+      %span.filterable-node.raw_value{"data-fv-id" => "#{value.id}"}= value.raw_value
+  %br/
+  %br/
+:css
+    .status_tag { margin-top: 4px; display: inline-block; }

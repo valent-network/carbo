@@ -240,7 +240,8 @@ CREATE TABLE public.ad_option_types (
     category_id bigint NOT NULL,
     filterable boolean DEFAULT false NOT NULL,
     input_type character varying DEFAULT 'text'::character varying NOT NULL,
-    translations jsonb DEFAULT '{}'::jsonb
+    translations jsonb DEFAULT '{}'::jsonb,
+    "position" integer
 );
 
 
@@ -932,7 +933,8 @@ CREATE TABLE public.filterable_values_groups (
     name character varying,
     translations jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    "position" integer
 );
 
 
@@ -972,6 +974,24 @@ CREATE SEQUENCE public.filterable_values_id_seq
 --
 
 ALTER SEQUENCE public.filterable_values_id_seq OWNED BY public.filterable_values.id;
+
+
+--
+-- Name: known_options; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.known_options AS
+ WITH options AS (
+         SELECT jsonb_object_keys(ad_extras_1.details) AS k
+           FROM public.ad_extras ad_extras_1
+          GROUP BY (jsonb_object_keys(ad_extras_1.details))
+        )
+ SELECT DISTINCT options.k,
+    (ad_extras.details ->> options.k) AS v
+   FROM (options
+     JOIN public.ad_extras ON ((((ad_extras.details ->> options.k) <> ''::text) AND (ad_extras.details IS NOT NULL))))
+  ORDER BY options.k
+  WITH NO DATA;
 
 
 --
@@ -2220,6 +2240,13 @@ CREATE INDEX index_filterable_values_on_ad_option_type_id ON public.filterable_v
 
 
 --
+-- Name: index_filterable_values_on_ad_option_type_id_and_raw_value; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_filterable_values_on_ad_option_type_id_and_raw_value ON public.filterable_values USING btree (ad_option_type_id, raw_value);
+
+
+--
 -- Name: index_messages_on_chat_room_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2837,6 +2864,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221229225631'),
 ('20221231011456'),
 ('20230101225905'),
-('20230103092722');
+('20230103092722'),
+('20230109210804'),
+('20230110195929'),
+('20230110195944'),
+('20230111212736');
 
 
