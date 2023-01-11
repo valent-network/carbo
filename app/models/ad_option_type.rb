@@ -22,7 +22,7 @@ class AdOptionType < ApplicationRecord
       .pluck(:v)
 
     existing_filterable_values = filterable_values.pluck(:raw_value)
-    options_from_translations = groups.map(&:translations).map(&:values).flatten.reject { |v| v.in?(existing_filterable_values) }
+    options_from_translations = groups.map(&:translations).map(&:values).flatten.reject { |v| v.in?(existing_filterable_values) }.compact
 
     options_from_ads + options_from_translations
   end

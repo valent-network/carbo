@@ -930,7 +930,7 @@ CREATE TABLE public.filterable_values (
 CREATE TABLE public.filterable_values_groups (
     id bigint NOT NULL,
     ad_option_type_id bigint,
-    name character varying,
+    name public.citext,
     translations jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -2868,6 +2868,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230109210804'),
 ('20230110195929'),
 ('20230110195944'),
-('20230111212736');
+('20230111212736'),
+('20230111225053');
 
 
