@@ -52,7 +52,7 @@ class FilterableValue < ApplicationRecord
   end
 
   def self.raw_value_to_translation_for_groups_v2(groups)
-    all_fv = all.includes(:group).to_a
+    all_fv = all.includes(:group).to_a # TODO: get from redis
 
     translations = groups.reject { |g| g.last.blank? }.map do |g|
       option_type = g.first

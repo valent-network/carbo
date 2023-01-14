@@ -9,14 +9,12 @@ module Api
           categories: categories,
         }
 
-        # byebug
-
         render(json: payload)
       end
 
       private
 
-      def cities
+      def cities # TODO: get from redis
         cities_grouped_by_region = City.includes(:region).group_by(&:region)
         regions_sorted = AlphabetSort.call(cities_grouped_by_region.keys.map { |x| x.translations[I18n.locale.to_s] }, I18n.locale)
         cities_sorted = AlphabetSort.call(cities_grouped_by_region.values.flatten.map { |city| city.translations[I18n.locale.to_s] }, I18n.locale)
@@ -30,7 +28,7 @@ module Api
           end
       end
 
-      def categories
+      def categories # TODO: get from redis
         categories = Category.includes(ad_option_types: [filterable_values: :group]).all
         sorted_categories = AlphabetSort.call(categories.map { |c| c.translations[I18n.locale.to_s] }, I18n.locale)
         categories.sort_by { |c| sorted_categories.index(c.translations[I18n.locale.to_s]) }.map do |c|

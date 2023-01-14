@@ -35,7 +35,7 @@ class UserFriendlyAdsQueryV2
   private
 
   def filters_from_aliases_groups(filters)
-    extra = FilterableValuesGroup
+    extra = FilterableValuesGroup # TODO: get from redis
       .joins(:ad_option_type)
       .includes(:ad_option_type, :values)
       .where(ad_option_types: { filterable: true })
