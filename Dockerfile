@@ -1,8 +1,8 @@
-FROM ruby:3.2-rc-alpine AS Builder
+FROM ruby:3.2-alpine AS Builder
 
 ENV BUILD_PACKAGES="build-base postgresql-dev shared-mime-info git nodejs"
 
-ENV BUNDLER_VERSION="2.3.3"
+ENV BUNDLER_VERSION="2.4.3"
 
 RUN apk add --no-cache $BUILD_PACKAGES && \
   gem install bundler:$BUNDLER_VERSION && \
