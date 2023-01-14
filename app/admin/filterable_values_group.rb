@@ -5,6 +5,20 @@ ActiveAdmin.register(FilterableValuesGroup) do
   permit_params :ad_option_type_id, :name, :position, translations: [:uk, :en]
   config.batch_actions = false
 
+  sidebar 'Existing Groups' do
+    FilterableValue
+      .joins(:ad_option_type)
+      .left_joins(:group)
+      .where(filterable_values_groups: { id: nil })
+      .group('ad_option_types.id')
+      .select('ad_option_types.id, ARRAY_AGG(filterable_values.name) AS values')
+      .to_a.map { |x| [x.id, x.values.uniq] }.each do |opt_id, filter_groups|
+        div(class: 'existing-filter-values-groups', 'data-ad-option-type-id' => opt_id) do
+          filter_groups.map { |v| "<span class='filterable-node'>#{v}</span>" }.join(' ').html_safe
+        end
+      end
+  end
+
   index download_links: false do
     column(:name) do |fvg|
       [

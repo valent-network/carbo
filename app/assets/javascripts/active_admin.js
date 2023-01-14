@@ -30,6 +30,8 @@ $(document).ready(function () {
     });
   });
 
+  $(document).on('change', '#filterable_values_group_ad_option_type_id', showFilterValuesGroups);
+
   $(document).on('dblclick', '.raw_value', deleteFV);
 });
 
@@ -101,4 +103,11 @@ const updateFVGroup = (e) => {
     contentType: 'application/json',
   });
 
+}
+
+const showFilterValuesGroups = (e) => {
+  const optId = $(e.target).val();
+
+  $('.existing-filter-values-groups').hide();
+  $(`.existing-filter-values-groups[data-ad-option-type-id=${optId}]`).show();
 }
