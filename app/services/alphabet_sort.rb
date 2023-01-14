@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 class AlphabetSort
+  # rubocop:disable Layout/MultilineArrayLineBreaks
   ALPHABETS = {
     uk: %w[
       а б в г ґ д е є ж з и
@@ -7,6 +8,7 @@ class AlphabetSort
       т у ф х ц ч ш щ ь ю я
     ],
   }
+  # rubocop:enable Layout/MultilineArrayLineBreaks
   def self.call(array, language = :uk)
     alphabet = ALPHABETS[language]
 

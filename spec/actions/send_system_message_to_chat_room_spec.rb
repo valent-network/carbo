@@ -20,11 +20,11 @@ RSpec.describe(SendSystemMessageToChatRoom) do
   end
 
   context "when chat room already exists" do
-    it "creates chat room", pending: true
+    # it "creates chat room", pending: true
   end
 
   context "when chat room user already exists" do
-    it "creates chat room user", pending: true
+    # it "creates chat room user", pending: true
   end
 
   context "when nothing exists" do
@@ -59,6 +59,6 @@ RSpec.describe(SendSystemMessageToChatRoom) do
     subject
   end
 
-  it "sends proper unread count", pending: true
-  it "sends proper payload", pending: true
+  # it "sends proper unread count", pending: true
+  # it "sends proper payload", pending: true
 end

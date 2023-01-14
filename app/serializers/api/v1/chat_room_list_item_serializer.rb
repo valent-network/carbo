@@ -2,11 +2,7 @@
 module Api
   module V1
     class ChatRoomListItemSerializer < ActiveModel::Serializer
-      attributes :id, :system, :ad_id, :updated_at, :messages,
-        :new_messages_count,
-        :title,
-        :photo,
-        :chat_room_users
+      attributes :id, :system, :ad_id, :updated_at, :messages, :new_messages_count, :title, :photo, :chat_room_users
 
       def updated_at
         last_message.created_at
