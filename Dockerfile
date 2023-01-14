@@ -1,4 +1,4 @@
-FROM ruby:3.2-alpine AS Builder
+FROM ruby:3.2.0-alpine AS Builder
 
 ENV BUILD_PACKAGES="build-base postgresql-dev shared-mime-info git nodejs"
 
@@ -23,7 +23,7 @@ ADD . /app
 
 RUN rm -rf node_modules tmp/cache vendor/assets lib/assets spec
 
-FROM ruby:3.2-rc-alpine
+FROM ruby:3.2.0-alpine
 
 ENV EFFECTIVE_PACKAGES="bash tzdata postgresql-client"
 
