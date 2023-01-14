@@ -18,9 +18,7 @@ module Api
           ads.each { |ad| current_user.phone_number_id == ad.phone_number_id ? ad.my_ad! : ad.associate_friends_with(ads_with_friends) }
         end
 
-        payload = ActiveModelSerializers::SerializableResource.new(ads, each_serializer: Api::V1::AdsListSerializer, current_user: current_user).as_json
-
-        render(json: payload)
+        render(json: ads, each_serializer: Api::V1::AdsListSerializer)
       end
 
       def create

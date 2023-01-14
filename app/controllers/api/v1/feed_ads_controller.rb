@@ -19,9 +19,7 @@ module Api
 
         CreateEvent.call(:get_feed, user: current_user, data: { params: params })
 
-        payload = ActiveModelSerializers::SerializableResource.new(ads, each_serializer: Api::V1::AdsListSerializer, current_user: current_user).as_json
-
-        render(json: payload)
+        render(json: ads, each_serializer: Api::V1::AdsListSerializer)
       end
 
       private

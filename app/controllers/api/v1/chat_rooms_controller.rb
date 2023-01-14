@@ -15,7 +15,7 @@ module Api
 
         serialized_chat_rooms = Api::V1::ChatRoomListSerializer.new(current_user, chat_rooms).call
 
-        render(json: serialized_chat_rooms.as_json)
+        render(json: serialized_chat_rooms.as_json, adapter: nil)
       end
 
       def create
@@ -34,7 +34,7 @@ module Api
           chats: serialized_chat_rooms.as_json,
         }
 
-        render(json: payload)
+        render(json: payload, adapter: nil)
       end
     end
   end

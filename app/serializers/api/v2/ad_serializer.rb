@@ -9,7 +9,6 @@ module Api
         when 'vehicles'
           AdCarOptionsPresenter.new.call(object.details)
         else
-          # TODO: N+1
           FilterableValue.raw_value_to_translation_for_groups_v2(object.ad_extra_details.to_a).map do |k, v|
             t = AdOptionType.find_by_name(k)
             translated_key = t ? t.translations[I18n.locale.to_s] : k

@@ -52,18 +52,24 @@ class FilterableValue < ApplicationRecord
   end
 
   def self.raw_value_to_translation_for_groups_v2(groups)
-    groups.reject { |g| g.last.blank? }.map { |g| [g.first, raw_value_to_translation_v2(g.first, g.last)] }.to_h
-  end
+    all_fv = all.includes(:group).to_a
 
-  def self.raw_value_to_translation_v2(option_type, raw_value)
-    value_group = global_json[option_type]&.detect { |group| group.last.map(&:to_s).map(&:downcase).include?(raw_value.to_s.downcase) }&.first
-    return unless value_group
+    translations = groups.reject { |g| g.last.blank? }.map do |g|
+      option_type = g.first
+      raw_value = g.last
+      value_group = global_json[option_type]&.detect { |group| group.last.map(&:to_s).map(&:downcase).include?(raw_value.to_s.downcase) }&.first
 
-    fvg = find_by_name(value_group)
+      if value_group
+        fvg = all_fv.detect { |fv| fv.name == value_group }
+        translation_or_fallback = fvg&.group ? fvg.group.translations[I18n.locale.to_s] : value_group
 
-    # TODO: N+1
+        [option_type, translation_or_fallback]
+      else
+        [option_type, nil]
+      end
+    end
 
-    fvg&.group ? fvg.group.translations[I18n.locale.to_s] : value_group
+    translations.to_h
   end
 
   private_class_method def self.global_json

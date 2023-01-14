@@ -18,7 +18,7 @@ module Api
           messages: serialized_messages,
         }
 
-        render(json: payload)
+        render(json: payload, adapter: nil)
       end
     end
   end
