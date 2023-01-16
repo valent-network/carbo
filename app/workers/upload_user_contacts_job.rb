@@ -36,7 +36,7 @@ class UploadUserContactsJob
 
     user_contacts_to_upsert.uniq! { |x| [x[:user_id], x[:phone_number_id]] }
 
-    UserContact.upsert_all(user_contacts_to_upsert, unique_by: [:phone_number_id, :user_id]) if user_contacts_to_upsert.present?
+    UserContact.upsert_all(user_contacts_to_upsert, unique_by: [:user_id, :phone_number_id]) if user_contacts_to_upsert.present?
     CreateEvent.call(:uploaded_contatcts, user: user, data: { contacts_count: full_phone_numbers.count })
 
     user.update_friends!
