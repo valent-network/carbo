@@ -22,6 +22,7 @@ class User < ApplicationRecord
   has_many :events, dependent: :delete_all
   has_many :user_connections, dependent: :delete_all
   has_many :user_blocked_phone_numbers, dependent: :delete_all
+  has_many :user_visibilities, dependent: :delete_all
 
   mount_base64_uploader :avatar, AvatarUploader
 

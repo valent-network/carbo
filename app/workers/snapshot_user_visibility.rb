@@ -24,9 +24,8 @@ class SnapshotUserVisibility
       .to_sql
 
     Event.connection.execute(<<~SQL)
-      INSERT INTO events(user_id, name, data, created_at)
+      INSERT INTO user_visibilities(user_id, data, created_at)
       SELECT users.id AS user_id,
-             'snapshot_user_visibility',
              jsonb_build_object(
                'default_hops', '#{UserFriendlyAdsQuery::DEFAULT_HOPS_COUNT}',
                'contacts_count', COALESCE(users.count, 0),
