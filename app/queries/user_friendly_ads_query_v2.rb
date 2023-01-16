@@ -41,9 +41,21 @@ class UserFriendlyAdsQueryV2
       .where(ad_option_types: { filterable: true })
       .all
       .group_by { |fvg| fvg.ad_option_type.name }
-      .transform_values { |fvgs| fvgs.map { |fvg| [fvg.id, fvg.values.select { |fv| fv.ad_option_type_id == fvg.ad_option_type_id }.map(&:raw_value)] }.to_h }
+      .transform_values do |fvgs|
+        fvgs.map do |fvg|
+          [
+            fvg.id,
+            fvg.values.select { |fv| fv.ad_option_type_id == fvg.ad_option_type_id }.map(&:raw_value)
+          ]
+        end.to_h
+      end
       .select { |opt, _| opt.to_s.in?(filters.keys.map(&:to_s)) }
-      .map { |opt, fvgs| [opt, fvgs.select { |fvg_id, _| fvg_id.to_s.in?(filters[opt].map(&:to_s)) }.values.select { |fv| fv.ad_option_type_id == fvg.ad_option_type_id }.flatten] }
+      .map do |opt, fvgs|
+        [
+          opt,
+          fvgs.select { |fvg_id, _| fvg_id.to_s.in?(filters[opt].map(&:to_s)) }.values.flatten
+        ]
+      end
       .to_h
 
     {

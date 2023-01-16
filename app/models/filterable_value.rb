@@ -8,12 +8,15 @@ class FilterableValue < ApplicationRecord
   }
 
   belongs_to :ad_option_type
-  belongs_to :group, foreign_key: :name, primary_key: :name, class_name: 'FilterableValuesGroup', optional: true
   has_one :category, through: :ad_option_type
 
   validates :name, :raw_value, presence: true
 
   after_save :update_global_filter
+
+  def group
+    ad_option_type.groups.to_a.detect { |fvg| fvg.name == name }
+  end
 
   #  [ [AdOptionType#name, FilterableValue#raw_value], ... ] => { AdOptionType#name => Translation }
   #  [ ['fuel', 'Gasoline'], ... ] => { 'fuel': 'lpg' }
@@ -52,7 +55,7 @@ class FilterableValue < ApplicationRecord
   end
 
   def self.raw_value_to_translation_for_groups_v2(groups)
-    all_fv = all.includes(:group).to_a # TODO: get from redis
+    all_fv = all.includes(ad_option_type: :groups).to_a # TODO: get from redis
 
     translations = groups.reject { |g| g.last.blank? }.map do |g|
       option_type = g.first

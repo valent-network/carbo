@@ -29,7 +29,7 @@ module Api
       end
 
       def categories # TODO: get from redis
-        categories = Category.includes(ad_option_types: [filterable_values: :group]).all
+        categories = Category.includes(ad_option_types: [filterable_values: [ad_option_type: :groups]]).all
         sorted_categories = AlphabetSort.call(categories.map { |c| c.translations[I18n.locale.to_s] }, I18n.locale)
         categories.sort_by { |c| sorted_categories.index(c.translations[I18n.locale.to_s]) }.map do |c|
           {
