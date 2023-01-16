@@ -110,7 +110,6 @@ ALTER SEQUENCE public.active_admin_comments_id_seq OWNED BY public.active_admin_
 --
 
 CREATE TABLE public.ad_descriptions (
-    id integer NOT NULL,
     ad_id integer NOT NULL,
     body text,
     short character varying(200)
@@ -118,54 +117,15 @@ CREATE TABLE public.ad_descriptions (
 
 
 --
--- Name: ad_descriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.ad_descriptions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ad_descriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.ad_descriptions_id_seq OWNED BY public.ad_descriptions.id;
-
-
---
 -- Name: ad_extras; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.ad_extras (
-    id bigint NOT NULL,
     details jsonb DEFAULT '{}'::jsonb,
-    ad_id bigint NOT NULL,
+    ad_id integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
---
--- Name: ad_extras_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.ad_extras_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ad_extras_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.ad_extras_id_seq OWNED BY public.ad_extras.id;
 
 
 --
@@ -205,29 +165,9 @@ ALTER SEQUENCE public.ad_favorites_id_seq OWNED BY public.ad_favorites.id;
 --
 
 CREATE TABLE public.ad_image_links_sets (
-    id integer NOT NULL,
     ad_id integer NOT NULL,
     value character varying[] DEFAULT '{}'::character varying[]
 );
-
-
---
--- Name: ad_image_links_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.ad_image_links_sets_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ad_image_links_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.ad_image_links_sets_id_seq OWNED BY public.ad_image_links_sets.id;
 
 
 --
@@ -300,31 +240,11 @@ ALTER SEQUENCE public.ad_prices_id_seq OWNED BY public.ad_prices.id;
 --
 
 CREATE TABLE public.ad_queries (
-    id bigint NOT NULL,
     title character varying,
-    ad_id bigint,
+    ad_id integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
---
--- Name: ad_queries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.ad_queries_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ad_queries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.ad_queries_id_seq OWNED BY public.ad_queries.id;
 
 
 --
@@ -404,7 +324,7 @@ CREATE TABLE public.ads (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     city_id smallint,
-    category_id bigint NOT NULL
+    category_id smallint NOT NULL
 );
 
 
@@ -628,9 +548,9 @@ ALTER SEQUENCE public.cities_id_seq OWNED BY public.cities.id;
 --
 
 CREATE TABLE public.events (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     name character varying,
-    user_id bigint,
+    user_id integer,
     data jsonb,
     created_at timestamp without time zone NOT NULL
 );
@@ -666,7 +586,7 @@ CREATE TABLE public.phone_numbers (
 --
 
 CREATE TABLE public.user_connections (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     user_id integer NOT NULL,
     friend_id integer NOT NULL,
     connection_id integer NOT NULL,
@@ -1354,6 +1274,17 @@ ALTER SEQUENCE public.user_devices_id_seq OWNED BY public.user_devices.id;
 
 
 --
+-- Name: user_visibilities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_visibilities (
+    user_id integer NOT NULL,
+    data jsonb DEFAULT '{}'::jsonb,
+    created_at timestamp(6) without time zone
+);
+
+
+--
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1412,31 +1343,10 @@ ALTER TABLE ONLY public.active_admin_comments ALTER COLUMN id SET DEFAULT nextva
 
 
 --
--- Name: ad_descriptions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_descriptions ALTER COLUMN id SET DEFAULT nextval('public.ad_descriptions_id_seq'::regclass);
-
-
---
--- Name: ad_extras id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_extras ALTER COLUMN id SET DEFAULT nextval('public.ad_extras_id_seq'::regclass);
-
-
---
 -- Name: ad_favorites id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ad_favorites ALTER COLUMN id SET DEFAULT nextval('public.ad_favorites_id_seq'::regclass);
-
-
---
--- Name: ad_image_links_sets id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_image_links_sets ALTER COLUMN id SET DEFAULT nextval('public.ad_image_links_sets_id_seq'::regclass);
 
 
 --
@@ -1451,13 +1361,6 @@ ALTER TABLE ONLY public.ad_option_types ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.ad_prices ALTER COLUMN id SET DEFAULT nextval('public.ad_prices_id_seq'::regclass);
-
-
---
--- Name: ad_queries id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ad_queries ALTER COLUMN id SET DEFAULT nextval('public.ad_queries_id_seq'::regclass);
 
 
 --
@@ -1648,7 +1551,7 @@ ALTER TABLE ONLY public.active_admin_comments
 --
 
 ALTER TABLE ONLY public.ad_descriptions
-    ADD CONSTRAINT ad_descriptions_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT ad_descriptions_pkey PRIMARY KEY (ad_id);
 
 
 --
@@ -1656,7 +1559,7 @@ ALTER TABLE ONLY public.ad_descriptions
 --
 
 ALTER TABLE ONLY public.ad_extras
-    ADD CONSTRAINT ad_extras_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT ad_extras_pkey PRIMARY KEY (ad_id);
 
 
 --
@@ -1672,7 +1575,7 @@ ALTER TABLE ONLY public.ad_favorites
 --
 
 ALTER TABLE ONLY public.ad_image_links_sets
-    ADD CONSTRAINT ad_image_links_sets_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT ad_image_links_sets_pkey PRIMARY KEY (ad_id);
 
 
 --
@@ -1696,7 +1599,7 @@ ALTER TABLE ONLY public.ad_prices
 --
 
 ALTER TABLE ONLY public.ad_queries
-    ADD CONSTRAINT ad_queries_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT ad_queries_pkey PRIMARY KEY (ad_id);
 
 
 --
@@ -1955,22 +1858,6 @@ CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON pub
 
 
 --
--- Name: index_ad_descriptions_on_ad_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_ad_descriptions_on_ad_id ON public.ad_descriptions USING btree (ad_id);
-
-
---
--- Name: index_ad_extras_on_ad_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_ad_extras_on_ad_id ON public.ad_extras USING btree (ad_id);
-
-ALTER TABLE public.ad_extras CLUSTER ON index_ad_extras_on_ad_id;
-
-
---
 -- Name: index_ad_extras_on_details; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1994,13 +1881,6 @@ CREATE INDEX index_ad_favorites_on_user_id ON public.ad_favorites USING btree (u
 
 
 --
--- Name: index_ad_image_links_sets_on_ad_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_ad_image_links_sets_on_ad_id ON public.ad_image_links_sets USING btree (ad_id);
-
-
---
 -- Name: index_ad_option_types_on_category_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2021,15 +1901,6 @@ CREATE UNIQUE INDEX index_ad_option_types_on_name_and_category_id ON public.ad_o
 CREATE INDEX index_ad_prices_on_ad_id ON public.ad_prices USING btree (ad_id);
 
 ALTER TABLE public.ad_prices CLUSTER ON index_ad_prices_on_ad_id;
-
-
---
--- Name: index_ad_queries_on_ad_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_ad_queries_on_ad_id ON public.ad_queries USING btree (ad_id);
-
-ALTER TABLE public.ad_queries CLUSTER ON index_ad_queries_on_ad_id;
 
 
 --
@@ -2077,17 +1948,10 @@ CREATE UNIQUE INDEX index_ads_on_address ON public.ads USING btree (address);
 
 
 --
--- Name: index_ads_on_category_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ads_on_feed_filters; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_category_id ON public.ads USING btree (category_id);
-
-
---
--- Name: index_ads_on_id_and_price; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_id_and_price ON public.ads USING btree (id DESC, price) WHERE (deleted = false);
+CREATE INDEX index_ads_on_feed_filters ON public.ads USING btree (phone_number_id, category_id, id, price) WHERE (deleted = false);
 
 
 --
@@ -2097,13 +1961,6 @@ CREATE INDEX index_ads_on_id_and_price ON public.ads USING btree (id DESC, price
 CREATE INDEX index_ads_on_phone_number_id_and_id ON public.ads USING btree (phone_number_id, id);
 
 ALTER TABLE public.ads CLUSTER ON index_ads_on_phone_number_id_and_id;
-
-
---
--- Name: index_ads_on_phone_number_id_where_deleted_false_include_price; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_ads_on_phone_number_id_where_deleted_false_include_price ON public.ads USING btree (phone_number_id, id) INCLUDE (price) WHERE (deleted = false);
 
 
 --
@@ -2205,13 +2062,6 @@ CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
 
 
 --
--- Name: index_events_on_user_id_and_created_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_events_on_user_id_and_created_at ON public.events USING btree (user_id, created_at) WHERE ((name)::text = 'snapshot_user_visibility'::text);
-
-
---
 -- Name: index_events_on_visited_ads; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2244,6 +2094,13 @@ CREATE INDEX index_filterable_values_on_ad_option_type_id ON public.filterable_v
 --
 
 CREATE UNIQUE INDEX index_filterable_values_on_ad_option_type_id_and_raw_value ON public.filterable_values USING btree (ad_option_type_id, raw_value);
+
+
+--
+-- Name: index_known_options_on_k_and_v; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_known_options_on_k_and_v ON public.known_options USING btree (k, v);
 
 
 --
@@ -2326,24 +2183,10 @@ CREATE UNIQUE INDEX index_user_connections_on_uniq ON public.user_connections US
 
 
 --
--- Name: index_user_contacts_on_phone_number_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_user_contacts_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_user_contacts_on_phone_number_id_and_user_id ON public.user_contacts USING btree (phone_number_id, user_id);
-
-
---
--- Name: index_user_contacts_on_phone_number_id_and_user_id_include_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_user_contacts_on_phone_number_id_and_user_id_include_name ON public.user_contacts USING btree (phone_number_id, user_id) INCLUDE (name);
-
-
---
--- Name: index_user_contacts_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_user_contacts_on_user_id ON public.user_contacts USING btree (user_id);
+CREATE INDEX index_user_contacts_on_phone_number_id ON public.user_contacts USING btree (phone_number_id);
 
 
 --
@@ -2374,6 +2217,13 @@ CREATE UNIQUE INDEX index_user_devices_on_device_id ON public.user_devices USING
 --
 
 CREATE INDEX index_user_devices_on_user_id ON public.user_devices USING btree (user_id);
+
+
+--
+-- Name: index_user_visibilities_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_visibilities_on_user_id ON public.user_visibilities USING btree (user_id);
 
 
 --
@@ -2411,13 +2261,6 @@ CREATE INDEX index_users_on_referrer_id ON public.users USING btree (referrer_id
 --
 
 CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.verification_requests USING btree (phone_number_id);
-
-
---
--- Name: search_budget_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX search_budget_index ON public.ads_grouped_by_maker_model_year USING btree (min_price, max_price);
 
 
 --
@@ -2512,6 +2355,14 @@ ALTER TABLE ONLY public.ad_favorites
 
 
 --
+-- Name: ads fk_rails_468ee6f236; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ads
+    ADD CONSTRAINT fk_rails_468ee6f236 FOREIGN KEY (city_id) REFERENCES public.cities(id);
+
+
+--
 -- Name: ad_descriptions fk_rails_55111271fa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2533,6 +2384,14 @@ ALTER TABLE ONLY public.user_blocked_phone_numbers
 
 ALTER TABLE ONLY public.ad_image_links_sets
     ADD CONSTRAINT fk_rails_73a21eede7 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ad_extras fk_rails_801c2dfaa6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_extras
+    ADD CONSTRAINT fk_rails_801c2dfaa6 FOREIGN KEY (ad_id) REFERENCES public.ads(id);
 
 
 --
@@ -2677,6 +2536,14 @@ ALTER TABLE ONLY public.user_devices
 
 ALTER TABLE ONLY public.user_blocked_phone_numbers
     ADD CONSTRAINT fk_rails_e9928cde2e FOREIGN KEY (phone_number_id) REFERENCES public.phone_numbers(id);
+
+
+--
+-- Name: user_visibilities fk_rails_e9daa1007b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_visibilities
+    ADD CONSTRAINT fk_rails_e9daa1007b FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -2869,6 +2736,17 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230110195929'),
 ('20230110195944'),
 ('20230111212736'),
-('20230111225053');
+('20230111225053'),
+('20230114220707'),
+('20230114225954'),
+('20230114233203'),
+('20230114233936'),
+('20230114235729'),
+('20230115121357'),
+('20230115124547'),
+('20230115130440'),
+('20230115133348'),
+('20230115133546'),
+('20230116160015');
 
 
