@@ -22,10 +22,18 @@
 
 class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
   def self.migrations
-    [CreateRapnsNotifications, CreateRapnsFeedback,
-     AddAlertIsJsonToRapnsNotifications, AddAppToRapns,
-     CreateRapnsApps, AddGcm, AddWpns, AddAdm, RenameRapnsToRpush,
-     AddFailAfterToRpushNotifications]
+    [
+      CreateRapnsNotifications,
+      CreateRapnsFeedback,
+      AddAlertIsJsonToRapnsNotifications,
+      AddAppToRapns,
+      CreateRapnsApps,
+      AddGcm,
+      AddWpns,
+      AddAdm,
+      RenameRapnsToRpush,
+      AddFailAfterToRpushNotifications
+    ]
   end
 
   def self.up
@@ -163,8 +171,8 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
 
       change_column(:rapns_notifications, :type, :string, null: false)
       change_column(:rapns_apps, :type, :string, null: false)
-      change_column(:rapns_notifications, :device_token, :string, **{ null: true, limit: 64 })
-      change_column(:rapns_notifications, :expiry, :integer, **{ null: true, default: 1.day.to_i })
+      change_column(:rapns_notifications, :device_token, :string, null: true, limit: 64)
+      change_column(:rapns_notifications, :expiry, :integer, null: true, default: 1.day.to_i)
       change_column(:rapns_apps, :environment, :string, null: true)
       change_column(:rapns_apps, :certificate, :text, null: true, default: nil)
 
