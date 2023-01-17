@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(AdminUser) do
-  menu label: proc { I18n.t('active_admin.admin_users') }, parent: 'other'
+  menu label: proc { I18n.t('active_admin.admin_users') }, parent: 'system'
   permit_params :email, :password, :password_confirmation
 
   index do

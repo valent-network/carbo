@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(Region) do
-  menu priority: 6, label: proc { I18n.t('active_admin.region') }, parent: 'other'
+  menu priority: 6, label: proc { I18n.t('active_admin.region') }, parent: 'settings'
 
   permit_params translations: [:uk, :en]
 

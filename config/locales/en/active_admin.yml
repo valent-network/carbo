@@ -18,6 +18,7 @@ en:
   active_admin:
     dashboard: Dashboard
     category: Categories
+    user_visibility: User Visibility
     ad_option_types: Ad Option Types
     filterable_values_groups: Filterable Values Groups
     sortable_filters: Sortable
@@ -41,6 +42,8 @@ en:
     phones: Phone Numbers
     all_phone_numbers: All
     demo_phone_numbers: Demo
+    settings: Settings
+    system: System
     dashboard_welcome:
       welcome: Welcome to Active Admin. This is the default dashboard page.
       call_to_action: To add dashboard sections, checkout 'app/admin/dashboard.rb'

@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(FilterableValuesGroup) do
-  menu label: proc { I18n.t('active_admin.filterable_values_groups') }
+  menu label: proc { I18n.t('active_admin.filterable_values_groups') }, parent: 'settings'
   permit_params :ad_option_type_id, :name, :position, translations: [:uk, :en]
   config.batch_actions = false
+  includes :values, :ad_option_type
 
   sidebar 'Existing Groups' do
     FilterableValue
       .joins(:ad_option_type)
-      .left_joins(:group)
+      .joins("LEFT JOIN filterable_values_groups ON filterable_values_groups.ad_option_type_id = ad_option_types.id AND filterable_values_groups.name = filterable_values.name ")
       .where(filterable_values_groups: { id: nil })
       .group('ad_option_types.id')
       .select('ad_option_types.id, ARRAY_AGG(filterable_values.name) AS values')

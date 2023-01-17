@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 ActiveAdmin.register(Rpush::Client::ActiveRecord::Apnsp8::App, as: 'Apple') do
-  menu label: proc { I18n.t('active_admin.apple') }, parent: 'other'
+  menu label: proc { I18n.t('active_admin.apple') }, parent: 'system'
   permit_params :name, :apn_key, :environment, :apn_key_id, :team_id, :bundle_id, :connections
 
   index do
