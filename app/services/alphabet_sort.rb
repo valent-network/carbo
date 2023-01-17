@@ -17,8 +17,8 @@ class AlphabetSort
     end
 
     array.sort do |a, b|
-      a_chars = a.chars.map(&:downcase).reject(&:blank?).reject { |c| alphabet.exclude?(c) }
-      b_chars = b.chars.map(&:downcase).reject(&:blank?).reject { |c| alphabet.exclude?(c) }
+      a_chars = a.to_s.chars.map(&:downcase).reject(&:blank?).reject { |c| alphabet.exclude?(c) }
+      b_chars = b.to_s.chars.map(&:downcase).reject(&:blank?).reject { |c| alphabet.exclude?(c) }
 
       while a_chars.first == b_chars.first
         break if a_chars.first.nil? || b_chars.first.nil?

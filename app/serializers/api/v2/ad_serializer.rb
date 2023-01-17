@@ -9,7 +9,7 @@ module Api
         when 'vehicles'
           AdCarOptionsPresenter.new.call(object.details)
         else
-          FilterableValue.raw_value_to_translation_for_groups_v2(object.ad_extra_details.to_a).map do |k, v|
+          details_translations.map do |k, v|
             t = AdOptionType.find_by_name(k)
             translated_key = t ? t.translations[I18n.locale.to_s] : k
 
@@ -19,9 +19,7 @@ module Api
       end
 
       def translated_options
-        details = object.ad_extra_details
-        translations = FilterableValue.raw_value_to_translation_for_groups_v2(details.to_a).to_h
-        details.to_h.map { |k, v| [k, translations.to_h[k] || v] }.to_h
+        object.ad_extra_details.to_h.map { |k, v| [k, details_translations[k] || v] }.to_h
       end
 
       def description
@@ -55,6 +53,33 @@ module Api
 
       def region
         object.region.translations[I18n.locale.to_s] if object.region
+      end
+
+      private
+
+      def details_translations
+        return @details_translations if @details_translations
+
+        groups = object.ad_extra_details.to_a
+
+        all_fv = FilterableValue.all.includes(ad_option_type: :groups).to_a # TODO: get from redis
+        filters = CachedSettings.new.filters
+
+        details_translations = groups.reject { |g| g.last.blank? }.map do |g|
+          option_type, raw_value = g
+          value_group = filters[option_type]&.detect { |group| group.last.map(&:to_s).map(&:downcase).include?(raw_value.to_s.downcase) }&.first
+
+          if value_group
+            fvg = all_fv.detect { |fv| fv.name == value_group }
+            translation_or_fallback = fvg&.group ? fvg.group.translations[I18n.locale.to_s] : value_group
+
+            [option_type, translation_or_fallback]
+          else
+            [option_type, nil]
+          end
+        end
+
+        @details_translations = details_translations.to_h
       end
     end
   end

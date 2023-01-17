@@ -12,7 +12,16 @@ class ApplicationController < ActionController::Base
 
   def filters
     # TODO: backward compat
-    render(json: FilterableValue.filters.merge(hops_count: t('hops_count')))
+    mobile_mappings = { fuel: :fuels, gear: :gears, carcass: :carcasses, wheels: :wheels }
+
+    filters = CachedSettings.new.filters.select { |option_type, _| mobile_mappings[option_type.to_sym].present? }.map do |option_type, option_value_groups|
+      [
+        mobile_mappings[option_type.to_sym],
+        option_value_groups.keys.map { |value_group| I18n.t("filters.types.#{option_type}.#{value_group}", default: value_group.to_s) }
+      ]
+    end.to_h
+
+    render(json: filters.merge(hops_count: t('hops_count')))
   end
 
   def multibutton

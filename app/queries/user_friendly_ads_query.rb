@@ -35,11 +35,18 @@ class UserFriendlyAdsQuery
   private
 
   def filters_from_aliases_groups(filters)
-    filters[:fuels] = filters[:fuels].map { |f| FilterableValue.translation_to_raw_values('fuel', f) }.flatten if filters[:fuels].present?
-    filters[:gears] = filters[:gears].map { |f| FilterableValue.translation_to_raw_values('gear', f) }.flatten if filters[:gears].present?
-    filters[:carcasses] = filters[:carcasses].map { |f| FilterableValue.translation_to_raw_values('carcass', f) }.flatten if filters[:carcasses].present?
-    filters[:wheels] = filters[:wheels].map { |f| FilterableValue.translation_to_raw_values('wheels', f) }.flatten if filters[:wheels].present?
+    settings = CachedSettings.new.filters
+
+    filters[:fuels] = filters[:fuels].map { |f| translation_to_raw_values('fuel', f, settings) }.flatten if filters[:fuels].present?
+    filters[:gears] = filters[:gears].map { |f| translation_to_raw_values('gear', f, settings) }.flatten if filters[:gears].present?
+    filters[:carcasses] = filters[:carcasses].map { |f| translation_to_raw_values('carcass', f, settings) }.flatten if filters[:carcasses].present?
+    filters[:wheels] = filters[:wheels].map { |f| translation_to_raw_values('wheels', f, settings) }.flatten if filters[:wheels].present?
 
     filters
+  end
+
+  def translation_to_raw_values(option_type, translation, settings) # TODO: Remove after V1
+    value_group = I18n.t("filters.types.#{option_type}").detect { |t| t.last.to_s.casecmp(translation.to_s).zero? }.first
+    settings[option_type].try(:[], value_group.to_s)
   end
 end

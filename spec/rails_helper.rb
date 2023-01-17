@@ -83,10 +83,10 @@ RSpec.configure do |config|
     end
 
     AdsGroupedByMakerModelYear.refresh(concurrently: false)
-    FiltersJsonUpdater.new.call
+    CachedSettings.refresh
   end
 
   config.after(:all) do
-    REDIS.set(FiltersJsonUpdater::REDIS_KEY, nil)
+    CachedSettings.clear
   end
 end

@@ -24,6 +24,23 @@ class AdCarShortDescriptionPresenter
       ['gear', details['gear']],
     ]
 
-    FilterableValue.raw_value_to_translation_for_groups(groups)
+    raw_value_to_translation_for_groups(groups)
+  end
+
+  #  [ [AdOptionType#name, FilterableValue#raw_value], ... ] => { AdOptionType#name => Translation }
+  #  [ ['fuel', 'Gasoline'], ... ] => { 'fuel': 'lpg' }
+  # assume 1:1 mapping of AdOptionType#name + FilterableValue#raw_value + Locale => Translation
+  def raw_value_to_translation_for_groups(groups)
+    filters = CachedSettings.new.filters
+
+    groups.reject { |g| g.last.blank? }.map do |g|
+      option_type, raw_value = g
+      value_group = filters[option_type]&.detect { |group| group.last.map(&:to_s).map(&:downcase).include?(raw_value.to_s.downcase) }&.first
+
+      [
+        option_type,
+        value_group ? I18n.t("filters.types.#{option_type}.#{value_group}") : nil
+      ]
+    end.to_h
   end
 end

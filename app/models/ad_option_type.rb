@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class AdOptionType < ApplicationRecord
+  include SettingsUpdateable
+
   INPUT_TYPES = %w[default number picker]
 
   validates :name, presence: true, uniqueness: true
@@ -10,8 +12,6 @@ class AdOptionType < ApplicationRecord
   has_many :groups, dependent: :destroy, class_name: 'FilterableValuesGroup'
 
   belongs_to :category
-
-  after_save :update_global_filter
 
   scope :filterable, -> { where(filterable: true) }
 
@@ -25,11 +25,5 @@ class AdOptionType < ApplicationRecord
     options_from_translations = groups.map(&:translations).map(&:values).flatten.reject { |v| v.in?(existing_filterable_values) }.compact
 
     options_from_ads + options_from_translations
-  end
-
-  private
-
-  def update_global_filter
-    FiltersJsonUpdater.new.call
   end
 end

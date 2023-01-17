@@ -35,20 +35,7 @@ class UserFriendlyAdsQueryV2
   private
 
   def filters_from_aliases_groups(filters)
-    extra = FilterableValuesGroup # TODO: get from redis
-      .joins(:ad_option_type)
-      .includes(:ad_option_type, :values)
-      .where(ad_option_types: { filterable: true })
-      .all
-      .group_by { |fvg| fvg.ad_option_type.name }
-      .transform_values do |fvgs|
-        fvgs.map do |fvg|
-          [
-            fvg.id,
-            fvg.values.select { |fv| fv.ad_option_type_id == fvg.ad_option_type_id }.map(&:raw_value)
-          ]
-        end.to_h
-      end
+    extra = CachedSettings.new.filterable_values_groups
       .select { |opt, _| opt.to_s.in?(filters.keys.map(&:to_s)) }
       .map do |opt, fvgs|
         [
