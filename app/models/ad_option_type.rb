@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class AdOptionType < ApplicationRecord
-  include SettingsUpdateable
+  include SettingsImpactable
 
   INPUT_TYPES = %w[default number picker]
 

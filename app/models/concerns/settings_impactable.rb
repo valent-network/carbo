@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-module SettingsUpdateable
+module SettingsImpactable
   extend ActiveSupport::Concern
 
   included do

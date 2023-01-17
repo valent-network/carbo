@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class Category < ApplicationRecord
-  include SettingsUpdateable
+  include SettingsImpactable
 
   CURRENCIES = %w[$ ₴]
 

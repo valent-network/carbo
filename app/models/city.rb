@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class City < ApplicationRecord
-  include SettingsUpdateable
+  include SettingsImpactable
 
   belongs_to :region
 

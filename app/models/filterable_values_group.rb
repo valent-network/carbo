@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class FilterableValuesGroup < ApplicationRecord
-  include SettingsUpdateable
+  include SettingsImpactable
 
   belongs_to :ad_option_type
 
