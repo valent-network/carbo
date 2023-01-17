@@ -18,8 +18,8 @@ ActiveAdmin.register(City) do
 
   form do |f|
     f.inputs(for: :translations) do |t|
-      t.input(:uk)
-      t.input(:en)
+      t.input(:uk, input_html: { value: f.object.translations['uk'] })
+      t.input(:en, input_html: { value: f.object.translations['en'] })
     end
     f.actions
   end

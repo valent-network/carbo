@@ -52,7 +52,7 @@ class CachedSettings
     end
 
     def _cities
-      cities_grouped_by_region = City.includes(:region).group_by(&:region)
+      cities_grouped_by_region = City.includes(:region).where("translations->>'uk' IS NOT NULL AND translations->>'en' IS NOT NULL").group_by(&:region)
       regions_sorted = AlphabetSort.call(cities_grouped_by_region.keys.map { |x| x.translations[I18n.locale.to_s] }, I18n.locale)
       cities_sorted = AlphabetSort.call(cities_grouped_by_region.values.flatten.map { |city| city.translations[I18n.locale.to_s] }, I18n.locale)
 
