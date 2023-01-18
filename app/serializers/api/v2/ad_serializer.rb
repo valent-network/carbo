@@ -2,7 +2,7 @@
 module Api
   module V2
     class AdSerializer < ActiveModel::Serializer
-      attributes :id, :deleted, :price, :options, :translated_options, :image, :images, :title, :description, :url, :prices, :friend_name_and_total, :short_description, :my_ad, :city_id, :category_id, :region
+      attributes :id, :deleted, :price, :options, :translated_options, :image, :images, :title, :description, :url, :prices, :friend_name_and_total, :short_description, :my_ad, :city_id, :category_id, :region, :category_currency
 
       def options
         case object.category.name

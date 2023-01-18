@@ -31,6 +31,7 @@ class Ad < ApplicationRecord
   delegate :title, to: :ad_query, allow_nil: true
   delegate :display_name, to: :city, prefix: true, allow_nil: true
   delegate :display_name, to: :region, prefix: true, allow_nil: true
+  delegate :currency, to: :category, prefix: true
 
   scope :active, -> { where(deleted: false) }
   scope :opts, ->(query) { by_options(query.split(';').first.strip, query.split(';').last.strip) }
