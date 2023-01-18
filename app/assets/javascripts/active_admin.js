@@ -39,11 +39,12 @@ $(document).ready(function () {
 function reorderFVG(e) {
   const getName = function() { return $(this).text() }
   const names = $(e.item).parent().find('.filterable-node').map(getName).get();
-  
+  const optId = $(e.item).parent().data('opt-id');
+
   $.ajax({
     url: '/admin/filterable_values_groups/reorder.json',
     method: 'POST',
-    data: JSON.stringify({ names }),
+    data: JSON.stringify({ names, ad_option_type_id: optId }),
     contentType: 'application/json',
   });
 }
@@ -51,11 +52,12 @@ function reorderFVG(e) {
 function reorderAOT(e) {
   const getName = function() { return $(this).text() }
   const names = $(e.item).parent().find('.filterable-node').map(getName).get();
+  const categoryId = $(e.item).parent().data('category-id');
   
   $.ajax({
     url: '/admin/ad_option_types/reorder.json',
     method: 'POST',
-    data: JSON.stringify({ names }),
+    data: JSON.stringify({ names, category_id: categoryId }),
     contentType: 'application/json',
   });
 }

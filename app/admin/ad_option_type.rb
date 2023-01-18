@@ -25,7 +25,7 @@ ActiveAdmin.register(AdOptionType) do
     column(:position)
     column(:groups) do |aot|
       "
-      <span class='filterable-values-groups-sortable-list' data-name='#{aot.name}'>
+      <span class='filterable-values-groups-sortable-list' data-name='#{aot.name}' data-opt-id='#{aot.id}'>
         #{aot.groups.order(:position).map { |fvg| "<span class='filterable-node'>#{fvg.name}</span>" }.join(' ')}
       </span>
       #{link_to(t('active_admin.edit'), admin_ad_option_type_sortable_path(aot))}
@@ -51,14 +51,16 @@ ActiveAdmin.register(AdOptionType) do
   filter :input_type, as: :select, collection: AdOptionType::INPUT_TYPES
 
   collection_action :reorder, method: :post do
-    aots = AdOptionType.where(name: params[:names])
-    aots.each do |aot|
-      aot.position = params[:names].index(aot.name)
-    end
-    AdOptionType.transaction do
-      aots.map(&:save!)
+    aots = AdOptionType.where(name: params[:names], category_id: params[:category_id])
+    to_upsert = aots.map do |aot|
+      {
+        name: aot.name,
+        category_id: aot.category_id,
+        position: params[:names].index(aot.name),
+      }
     end
 
-    head :ok
+    AdOptionType.upsert_all(to_upsert, unique_by: [:name, :category_id])
+    CachedSettings.refresh
   end
 end

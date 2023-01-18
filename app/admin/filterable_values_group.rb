@@ -49,13 +49,16 @@ ActiveAdmin.register(FilterableValuesGroup) do
   end
 
   collection_action :reorder, method: :post do
-    fvgs = FilterableValuesGroup.where(name: params[:names])
-    fvgs.each do |fvg|
-      fvg.position = params[:names].index(fvg.name)
+    to_upsert = params[:names].map.with_index.to_a.map do |h|
+      {
+        name: h.first,
+        position: h.last,
+        ad_option_type_id: params[:ad_option_type_id],
+      }
     end
-    FilterableValuesGroup.transaction do
-      fvgs.map(&:save!)
-    end
+
+    FilterableValuesGroup.upsert_all(to_upsert, unique_by: [:name, :ad_option_type_id])
+    CachedSettings.refresh
 
     head :ok
   end

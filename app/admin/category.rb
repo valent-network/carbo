@@ -12,7 +12,7 @@ ActiveAdmin.register(Category) do
     column(:currency)
     column(:ad_option_types) do |category|
       "
-      <span class='ad-option-types-sortable-list'>
+      <span class='ad-option-types-sortable-list' data-category-id='#{category.id}'>
         #{
           category.ad_option_types.order(:position).map do |aot|
             "<span class='filterable-node'>#{aot.name}</span>"
