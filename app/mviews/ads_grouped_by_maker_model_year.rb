@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class AdsGroupedByMakerModelYear < MatviewModel
+class AdsGroupedByMakerModelYear < ApplicationRecord
+  include Materializable
+
   self.table_name = 'ads_grouped_by_maker_model_year'
 
   def self.by_budget(min, max)

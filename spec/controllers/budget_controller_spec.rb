@@ -9,7 +9,7 @@ RSpec.describe(BudgetController) do
 
       ad.update!(details: ad.details.merge(maker: 'BMW', model: 'X6', year: 2022))
     end
-    AdsGroupedByMakerModelYear.refresh
+    AdsGroupedByMakerModelYear.refresh(concurrently: false)
   end
 
   describe '#search_models' do
