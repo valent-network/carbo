@@ -1,17 +1,7 @@
 # frozen_string_literal: true
 
-class AdsGroupedByMakerModelYear < ApplicationRecord
+class AdsGroupedByMakerModelYear < MatviewModel
   self.table_name = 'ads_grouped_by_maker_model_year'
-
-  def self.refresh(concurrently: false)
-    # TODO: space before CONCURRENTLY is VERY important
-    concurrently_string = concurrently ? ' CONCURRENTLY' : ''
-    connection.execute("REFRESH MATERIALIZED VIEW#{concurrently_string} #{table_name} WITH DATA")
-  end
-
-  def readonly
-    true
-  end
 
   def self.by_budget(min, max)
     where('? BETWEEN min_price AND max_price OR ? BETWEEN min_price AND max_price', min, max)

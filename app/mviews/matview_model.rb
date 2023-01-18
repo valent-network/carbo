@@ -1,8 +1,5 @@
 # frozen_string_literal: true
-
-class DashboardStats < ApplicationRecord
-  self.primary_key = 'updated_at'
-
+class MatviewModel < ApplicationRecord
   def self.refresh(concurrently: true)
     # TODO: space before CONCURRENTLY is VERY important
     concurrently_string = concurrently ? ' CONCURRENTLY' : ''
