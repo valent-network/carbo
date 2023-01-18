@@ -78,6 +78,7 @@ class CachedSettings
               {
                 name: f.group.translations[I18n.locale.to_s],
                 id: f.group.id,
+                position: f.group.position,
               }
             end.uniq { |x| x[:id] }
 
@@ -88,6 +89,7 @@ class CachedSettings
               id: opt.id,
               filterable: opt.filterable,
               values: opt.filterable ? values : [],
+              position: opt.position,
             }
           end,
         }
