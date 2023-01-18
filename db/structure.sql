@@ -240,7 +240,7 @@ ALTER SEQUENCE public.ad_prices_id_seq OWNED BY public.ad_prices.id;
 --
 
 CREATE TABLE public.ad_queries (
-    title character varying,
+    title character varying NOT NULL,
     ad_id integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -422,7 +422,7 @@ CREATE TABLE public.categories (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     translations jsonb DEFAULT '{}'::jsonb,
-    currency character varying
+    currency character varying NOT NULL
 );
 
 
@@ -519,7 +519,7 @@ ALTER SEQUENCE public.chat_rooms_id_seq OWNED BY public.chat_rooms.id;
 CREATE TABLE public.cities (
     id bigint NOT NULL,
     name public.citext NOT NULL,
-    region_id bigint,
+    region_id bigint NOT NULL,
     translations jsonb DEFAULT '{}'::jsonb
 );
 
@@ -549,8 +549,8 @@ ALTER SEQUENCE public.cities_id_seq OWNED BY public.cities.id;
 
 CREATE TABLE public.events (
     id integer NOT NULL,
-    name character varying,
-    user_id integer,
+    name character varying NOT NULL,
+    user_id integer NOT NULL,
     data jsonb,
     created_at timestamp without time zone NOT NULL
 );
@@ -849,8 +849,8 @@ CREATE TABLE public.filterable_values (
 
 CREATE TABLE public.filterable_values_groups (
     id bigint NOT NULL,
-    ad_option_type_id bigint,
-    name public.citext,
+    ad_option_type_id bigint NOT NULL,
+    name public.citext NOT NULL,
     translations jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -2315,6 +2315,14 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: events fk_rails_0cb5590091; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT fk_rails_0cb5590091 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: ads fk_rails_1957b7156c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2464,6 +2472,14 @@ ALTER TABLE ONLY public.user_contacts
 
 ALTER TABLE ONLY public.chat_rooms
     ADD CONSTRAINT fk_rails_c4bd9c10f3 FOREIGN KEY (ad_id) REFERENCES public.ads(id) ON DELETE CASCADE;
+
+
+--
+-- Name: filterable_values_groups fk_rails_c5398368c3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.filterable_values_groups
+    ADD CONSTRAINT fk_rails_c5398368c3 FOREIGN KEY (ad_option_type_id) REFERENCES public.ad_option_types(id);
 
 
 --
@@ -2747,6 +2763,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230115130440'),
 ('20230115133348'),
 ('20230115133546'),
-('20230116160015');
+('20230116160015'),
+('20230118214153');
 
 
