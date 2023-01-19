@@ -42,6 +42,7 @@ class Ad < ApplicationRecord
   scope :order_by_fav_for, ->(user) { joins(:ad_favorites).joins("JOIN events ON events.user_id = ad_favorites.user_id").where(ad_favorites: { user_id: user.id }, events: { name: 'favorited_ad' }).where("(events.data->>'ad_id')::integer = ads.id").order('events.created_at DESC') }
 
   accepts_nested_attributes_for :ad_query, :ad_description, :ad_extra, :ad_image_links_set, update_only: true
+  accepts_nested_attributes_for :ad_images, allow_destroy: true
 
   attr_reader :my_ad
 

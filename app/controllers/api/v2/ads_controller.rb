@@ -65,9 +65,24 @@ module Api
       private
 
       def ad_params
-        params.require(:ad).permit(:price, :category_id, :city_id, :deleted, ad_query_attributes: [:title], ad_description_attributes: [:body, :short]).tap do |para|
-          para[:ad_extra_attributes] = { details: params[:ad][:ad_extra_attributes][:details].permit! } if params[:ad] && params[:ad][:ad_extra_attributes] && params[:ad][:ad_extra_attributes][:details]
+        to_permit = [
+          :price,
+          :category_id,
+          :city_id,
+          :deleted,
+          ad_query_attributes: [:title],
+          ad_description_attributes: [:body, :short],
+          ad_images_attributes: [:attachment, :position],
+        ]
+
+        params.require(:ad).permit(to_permit).tap do |t|
+          if params[:ad] && params[:ad][:ad_extra_attributes] && params[:ad][:ad_extra_attributes][:details]
+            t[:ad_extra_attributes] = {
+              details: params[:ad][:ad_extra_attributes][:details].permit!
+            }
+          end
         end
+
       end
     end
   end
