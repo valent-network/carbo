@@ -8,7 +8,7 @@ module Api
       def index
         ads_ids = Ad.order_by_fav_for(current_user).limit(20).offset(params[:offset]).ids
 
-        ads = Ad.eager_load(:category, :ad_description, :ad_extra, :ad_query, :ad_image_links_set, :city, :region, :ad_favorites).where(id: ads_ids)
+        ads = Ad.eager_load(:category, :ad_favorites, :ad_description, :ad_extra, :ad_query, :ad_image_links_set, :city, :region, :ad_favorites).where(id: ads_ids)
         ads = ads.to_a.sort_by { |ad| ads_ids.index(ad.id) }
 
         if ads.present?
@@ -18,7 +18,7 @@ module Api
           ads.each { |ad| current_user.phone_number_id == ad.phone_number_id ? ad.my_ad! : ad.associate_friends_with(ads_with_friends) }
         end
 
-        render(json: ads, each_serializer: Api::V1::AdsListSerializer)
+        render(json: ads, each_serializer: Api::V1::AdsListSerializer, current_user: current_user)
       end
 
       def create
