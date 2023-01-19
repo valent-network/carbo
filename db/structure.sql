@@ -171,6 +171,39 @@ CREATE TABLE public.ad_image_links_sets (
 
 
 --
+-- Name: ad_images; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ad_images (
+    id bigint NOT NULL,
+    attachment character varying NOT NULL,
+    "position" smallint NOT NULL,
+    ad_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ad_images_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ad_images_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ad_images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ad_images_id_seq OWNED BY public.ad_images.id;
+
+
+--
 -- Name: ad_option_types; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1350,6 +1383,13 @@ ALTER TABLE ONLY public.ad_favorites ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: ad_images id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_images ALTER COLUMN id SET DEFAULT nextval('public.ad_images_id_seq'::regclass);
+
+
+--
 -- Name: ad_option_types id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1576,6 +1616,14 @@ ALTER TABLE ONLY public.ad_favorites
 
 ALTER TABLE ONLY public.ad_image_links_sets
     ADD CONSTRAINT ad_image_links_sets_pkey PRIMARY KEY (ad_id);
+
+
+--
+-- Name: ad_images ad_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ad_images
+    ADD CONSTRAINT ad_images_pkey PRIMARY KEY (id);
 
 
 --
@@ -1878,6 +1926,13 @@ ALTER TABLE public.ad_favorites CLUSTER ON index_ad_favorites_on_ad_id_and_user_
 --
 
 CREATE INDEX index_ad_favorites_on_user_id ON public.ad_favorites USING btree (user_id);
+
+
+--
+-- Name: index_ad_images_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ad_images_on_ad_id ON public.ad_images USING btree (ad_id);
 
 
 --
@@ -2764,6 +2819,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230115133348'),
 ('20230115133546'),
 ('20230116160015'),
-('20230118214153');
+('20230118214153'),
+('20230119125419');
 
 

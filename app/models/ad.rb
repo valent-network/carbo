@@ -19,6 +19,7 @@ class Ad < ApplicationRecord
   has_many :ad_favorites, dependent: :delete_all
   has_many :ad_prices, dependent: :delete_all
   has_many :chat_rooms, dependent: :nullify
+  has_many :ad_images, dependent: :destroy
   has_one :ad_description, dependent: :delete, autosave: true
   has_one :ad_image_links_set, dependent: :delete, autosave: true
   has_one :ad_extra, dependent: :delete, autosave: true
