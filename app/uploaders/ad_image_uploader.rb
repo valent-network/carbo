@@ -5,7 +5,7 @@ class AdImageUploader < CarrierWave::Uploader::Base
   end
 
   def size_range
-    0..(2.megabytes)
+    0..(4.megabytes)
   end
 
   def extension_allowlist
