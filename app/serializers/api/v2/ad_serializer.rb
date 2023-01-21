@@ -2,7 +2,7 @@
 module Api
   module V2
     class AdSerializer < ActiveModel::Serializer
-      attributes :id, :deleted, :price, :options, :translated_options, :image, :images, :title, :description, :url, :prices, :friend_name_and_total, :short_description, :my_ad, :city_id, :category_id, :region, :category_currency
+      attributes :id, :deleted, :price, :options, :translated_options, :image, :images, :ad_images, :title, :description, :url, :prices, :friend_name_and_total, :short_description, :my_ad, :city_id, :category_id, :region, :category_currency, :native
 
       def options
         case object.category.name
@@ -39,16 +39,29 @@ module Api
       end
 
       def image
-        images.first
+        ad_images.first || tmp_images.first
       end
 
       def images
+        object.ad_images.map { |ai| { id: ai.id, url: ai.attachment_url, position: ai.position } }.presence || tmp_images
+      end
+
+      def ad_images
+        images
+      end
+
+      def tmp_images
         images = object.details['images_json_array_tmp']
-        images.is_a?(String) ? JSON.parse(images) : Array.wrap(images)
+        images = images.is_a?(String) ? JSON.parse(images) : Array.wrap(images)
+        images.map.with_index.to_a.map { |h| { url: h.first, position: h.last } }
       end
 
       def url
         object.address unless object.ads_source.native?
+      end
+
+      def native
+        object.ads_source.native?
       end
 
       def region

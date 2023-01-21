@@ -3,7 +3,7 @@
 module Api
   module V1
     class AdsListSerializer < ActiveModel::Serializer
-      attributes :id, :image, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted, :category_currency, :favorite
+      attributes :id, :image, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted, :category_currency
 
       def price
         ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
@@ -21,10 +21,8 @@ module Api
         object.region_display_name
       end
 
-      def favorite
-        return unless @instance_options[:current_user]
-
-        object.ad_favorites.detect { |af| af.user_id == @instance_options[:current_user].id }.present?
+      def image
+        object.ad_images.sort_by(&:position).first&.attachment_url || Array.wrap(object.ad_image_links_set_value).first
       end
     end
   end

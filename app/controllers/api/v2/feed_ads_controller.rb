@@ -7,7 +7,7 @@ module Api
 
       def index
         ads = UserFriendlyAdsQueryV2.new.call(user: current_user, offset: params[:offset], filters: filter_params)
-        ads = Ad.where(id: ads.ids).eager_load(:category, :ad_description, :ad_extra, :ad_query, :ad_image_links_set, :city, :region, :ad_favorites).order('ads.id DESC')
+        ads = Ad.where(id: ads.ids).eager_load(:category, :ad_images, :ad_description, :ad_extra, :ad_query, :ad_image_links_set, :city, :region, :ad_favorites).order('ads.id DESC')
         ads_phone_number_ids = ads.map(&:phone_number_id)
 
         if ads_phone_number_ids.present?
@@ -19,7 +19,7 @@ module Api
 
         CreateEvent.call(:get_feed, user: current_user, data: { params: params })
 
-        render(json: ads, each_serializer: Api::V1::AdsListSerializer)
+        render(json: ads, each_serializer: AdsListSerializer)
       end
 
       private

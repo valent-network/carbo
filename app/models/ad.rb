@@ -80,10 +80,6 @@ class Ad < ApplicationRecord
     })
   end
 
-  def image
-    Array.wrap(ad_image_links_set_value).first
-  end
-
   def details=(new_details)
     @details = nil
 

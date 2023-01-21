@@ -3,7 +3,7 @@
 module Api
   module V2
     class AdsListSerializer < ActiveModel::Serializer
-      attributes :id, :image, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted
+      attributes :id, :image, :images, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted, :favorite
 
       def price
         ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
@@ -19,6 +19,30 @@ module Api
 
       def region
         object.region_display_name
+      end
+
+      def image
+        ad_images.sort_by(&:position).first.presence || tmp_images.first
+      end
+
+      def images
+        object.ad_images.sort_by(&:position).map { |ai| { id: ai.id, url: ai.attachment_url, position: ai.position } }.presence || tmp_images
+      end
+
+      def ad_images
+        images
+      end
+
+      def tmp_images
+        t = object.details['images_json_array_tmp']
+        t = t.is_a?(String) ? JSON.parse(t) : Array.wrap(t)
+        t.map.with_index.to_a.map { |h| { url: h.first, position: h.last } }
+      end
+
+      def favorite
+        return unless @instance_options[:current_user]
+
+        object.ad_favorites.detect { |af| af.user_id == @instance_options[:current_user].id }.present?
       end
     end
   end

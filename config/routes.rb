@@ -72,6 +72,9 @@ Rails.application.routes.draw do
       resources :friendly_ads, only: %i[show]
       resources :feed_ads, only: %i[index]
       resources :ads, only: %i[show create update destroy]
+      resources :my_ads, only: %i[index]
+      resources :favorite_ads, only: %i[index]
+      resources :visited_ads, only: %i[index]
     end
   end
 end
