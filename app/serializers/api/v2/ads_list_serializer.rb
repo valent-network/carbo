@@ -22,7 +22,7 @@ module Api
       end
 
       def image
-        ad_images.sort_by(&:position).first.presence || tmp_images.first
+        object.ad_images.sort_by(&:position).first.presence || tmp_images.first
       end
 
       def images
