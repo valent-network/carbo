@@ -2006,7 +2006,14 @@ CREATE UNIQUE INDEX index_ads_on_address ON public.ads USING btree (address);
 -- Name: index_ads_on_feed_filters; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ads_on_feed_filters ON public.ads USING btree (phone_number_id, category_id, id, price) WHERE (deleted = false);
+CREATE INDEX index_ads_on_feed_filters ON public.ads USING btree (id DESC, phone_number_id, category_id, price) WHERE (deleted = false);
+
+
+--
+-- Name: index_ads_on_hops; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_hops ON public.ads USING btree (id DESC, phone_number_id) WHERE (deleted = false);
 
 
 --
@@ -2820,6 +2827,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230115133546'),
 ('20230116160015'),
 ('20230118214153'),
-('20230119125419');
+('20230119125419'),
+('20230122215031');
 
 
