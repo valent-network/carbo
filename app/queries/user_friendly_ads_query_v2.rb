@@ -7,7 +7,7 @@ class UserFriendlyAdsQueryV2
     user_contacts_matched_phone_numbers = user.user_contacts.where('user_contacts.name ILIKE ?', "%#{filters[:query]}%").pluck(:phone_number_id) if filters[:query].present?
     effective_ads = FilteredAds.new.call(filters: filters_from_aliases_groups(filters), should_search_query: user_contacts_matched_phone_numbers.blank?)
 
-    hops_count = filters[:hops_count]&.first
+    hops_count = filters[:hops_count]&.first&.to_i
 
     blocked_users_ids = user.blocked_users_ids
     if blocked_users_ids.present?
