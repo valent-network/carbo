@@ -83,7 +83,7 @@ class CachedSettings
             end.uniq { |x| x[:id] }
 
             {
-              localized_name: I18n.t("ad_options.#{opt.name}"),
+              localized_name: opt.translations[I18n.locale.to_s],
               name: opt.name,
               input_type: opt.input_type,
               id: opt.id,
