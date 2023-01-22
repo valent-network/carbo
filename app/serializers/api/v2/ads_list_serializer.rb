@@ -25,7 +25,7 @@ module Api
         native_image = object.ad_images.sort_by(&:position).first
 
         if native_image
-          { id: native_image.id, url: native_image.attachment_url, position: native_image.position }
+          { id: native_image.id, url: native_image.attachment_url(:feed), position: native_image.position }
         else
           external_image = tmp_images.first
 
@@ -34,7 +34,7 @@ module Api
       end
 
       def images
-        object.ad_images.sort_by(&:position).map { |ai| { id: ai.id, url: ai.attachment_url, position: ai.position } }.presence || tmp_images
+        object.ad_images.sort_by(&:position).map { |ai| { id: ai.id, url: ai.attachment_url(:feed), position: ai.position } }.presence || tmp_images
       end
 
       def ad_images

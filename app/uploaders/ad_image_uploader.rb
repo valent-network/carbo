@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class AdImageUploader < CarrierWave::Uploader::Base
+  include CarrierWave::MiniMagick
+
   def store_dir
     "uploads/ads/#{model.ad_id}/images"
   end
@@ -18,6 +20,10 @@ class AdImageUploader < CarrierWave::Uploader::Base
 
   def filename
     "#{random_id}.#{file.extension}" if original_filename.present?
+  end
+
+  version :feed do
+    process resize_to_fill: [1000, 1000]
   end
 
   private

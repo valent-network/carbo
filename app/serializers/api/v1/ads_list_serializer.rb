@@ -25,7 +25,7 @@ module Api
         native_image = object.ad_images.sort_by(&:position).first
 
         if native_image
-          native_image.attachment_url
+          native_image.attachment_url(:feed)
         else
           tmp_images.first
         end

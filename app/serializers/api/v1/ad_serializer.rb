@@ -27,11 +27,11 @@ module Api
       def image
         native_image = object.ad_images.sort_by(&:position).first
 
-        native_image ? native_image.attachment_url : tmp_images.first
+        native_image ? native_image.attachment_url(:feed) : tmp_images.first
       end
 
       def images
-        object.ad_images.sort_by(&:position).map(&:attachment_url).presence || tmp_images
+        object.ad_images.sort_by(&:position).map { |ai| ai.attachment_url(:feed) }.presence || tmp_images
       end
 
       def url
