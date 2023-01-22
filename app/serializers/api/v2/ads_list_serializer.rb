@@ -3,7 +3,7 @@
 module Api
   module V2
     class AdsListSerializer < ActiveModel::Serializer
-      attributes :id, :image, :images, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted, :favorite
+      attributes :id, :image, :images, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted, :favorite, :category_currency
 
       def price
         ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
@@ -22,7 +22,15 @@ module Api
       end
 
       def image
-        object.ad_images.sort_by(&:position).first.presence || tmp_images.first
+        native_image = object.ad_images.sort_by(&:position).first
+
+        if native_image
+          { id: native_image.id, url: native_image.attachment_url, position: native_image.position }
+        else
+          external_image = tmp_images.first
+
+          external_image ? { url: external_image[:url], position: external_image[:position] } : {}
+        end
       end
 
       def images

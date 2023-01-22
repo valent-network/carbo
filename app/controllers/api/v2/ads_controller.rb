@@ -13,9 +13,11 @@ module Api
         ads_with_friends_sql = AdsWithFriendsQuery.new.call(current_user, [ad.phone_number_id])
         ads_with_friends = Ad.find_by_sql(ads_with_friends_sql)
 
-        ad.associate_friends_with(ads_with_friends)
-
-        ad.my_ad! if current_user.phone_number_id == ad.phone_number_id
+        if current_user.phone_number_id == ad.phone_number_id
+          ad.my_ad!
+        else
+          ad.associate_friends_with(ads_with_friends)
+        end
 
         payload = AdSerializer.new(ad).as_json
         payload[:favorite] = current_user.ad_favorites.where(ad: ad).exists?

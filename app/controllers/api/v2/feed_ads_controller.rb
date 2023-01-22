@@ -19,7 +19,7 @@ module Api
 
         CreateEvent.call(:get_feed, user: current_user, data: { params: params })
 
-        render(json: ads, each_serializer: AdsListSerializer)
+        render(json: ads, each_serializer: AdsListSerializer, current_user: current_user)
       end
 
       private

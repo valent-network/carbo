@@ -39,11 +39,19 @@ module Api
       end
 
       def image
-        ad_images.first || tmp_images.first
+        native_image = object.ad_images.sort_by(&:position).first
+
+        if native_image
+          { id: native_image.id, url: native_image.attachment_url, position: native_image.position }
+        else
+          external_image = tmp_images.first
+
+          external_image ? { url: external_image[:url], position: external_image[:position] } : {}
+        end
       end
 
       def images
-        object.ad_images.map { |ai| { id: ai.id, url: ai.attachment_url, position: ai.position } }.presence || tmp_images
+        object.ad_images.sort_by(&:position).map { |ai| { id: ai.id, url: ai.attachment_url, position: ai.position } }.presence || tmp_images
       end
 
       def ad_images
@@ -51,9 +59,9 @@ module Api
       end
 
       def tmp_images
-        images = object.details['images_json_array_tmp']
-        images = images.is_a?(String) ? JSON.parse(images) : Array.wrap(images)
-        images.map.with_index.to_a.map { |h| { url: h.first, position: h.last } }
+        t = object.details['images_json_array_tmp']
+        t = t.is_a?(String) ? JSON.parse(t) : Array.wrap(t)
+        t.map.with_index.to_a.map { |h| { url: h.first, position: h.last } }
       end
 
       def url
