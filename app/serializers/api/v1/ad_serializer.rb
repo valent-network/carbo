@@ -27,27 +27,22 @@ module Api
       def image
         native_image = object.ad_images.sort_by(&:position).first
 
-        if native_image
-          { id: native_image.id, url: native_image.attachment_url, position: native_image.position }
-        else
-          external_image = tmp_images.first
-
-          external_image ? { url: external_image[:url], position: external_image[:position] } : {}
-        end
+        native_image ? native_image.attachment_url : tmp_images.first
       end
 
       def images
-        object.ad_images.sort_by(&:position).map { |ai| { id: ai.id, url: ai.attachment_url, position: ai.position } }.presence || tmp_images
-      end
-
-      def tmp_images
-        t = object.details['images_json_array_tmp']
-        t = t.is_a?(String) ? JSON.parse(t) : Array.wrap(t)
-        t.map.with_index.to_a.map { |h| { url: h.first, position: h.last } }
+        object.ad_images.sort_by(&:position).map(&:attachment_url).presence || tmp_images
       end
 
       def url
         object.address unless object.ads_source.native?
+      end
+
+      private
+
+      def tmp_images
+        t = object.details['images_json_array_tmp']
+        t.is_a?(String) ? JSON.parse(t) : Array.wrap(t)
       end
     end
   end

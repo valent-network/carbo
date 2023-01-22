@@ -25,18 +25,15 @@ module Api
         native_image = object.ad_images.sort_by(&:position).first
 
         if native_image
-          { id: native_image.id, url: native_image.attachment_url, position: native_image.position }
+          native_image.attachment_url
         else
-          external_image = tmp_images.first
-
-          external_image ? { url: external_image[:url], position: external_image[:position] } : {}
+          tmp_images.first
         end
       end
 
       def tmp_images
         t = object.details['images_json_array_tmp']
-        t = t.is_a?(String) ? JSON.parse(t) : Array.wrap(t)
-        t.map.with_index.to_a.map { |h| { url: h.first, position: h.last } }
+        t.is_a?(String) ? JSON.parse(t) : Array.wrap(t)
       end
     end
   end
