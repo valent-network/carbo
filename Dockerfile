@@ -25,7 +25,7 @@ RUN rm -rf node_modules tmp/cache vendor/assets lib/assets spec
 
 FROM ruby:3.2.0-alpine
 
-ENV EFFECTIVE_PACKAGES="bash tzdata postgresql-client"
+ENV EFFECTIVE_PACKAGES="bash tzdata postgresql-client imagemagick"
 
 RUN apk add --no-cache $EFFECTIVE_PACKAGES
 
