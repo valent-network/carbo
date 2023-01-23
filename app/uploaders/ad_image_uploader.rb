@@ -29,6 +29,6 @@ class AdImageUploader < CarrierWave::Uploader::Base
   private
 
   def random_id
-    @random_id ||= SecureRandom.hex
+    model.random_id || model.random_id = SecureRandom.hex
   end
 end
