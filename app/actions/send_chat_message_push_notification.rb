@@ -10,9 +10,10 @@ class SendChatMessagePushNotification
     ad = chat_room_user.chat_room.ad
     unread_count = Message.unread_messages_for(chat_room_user.user_id).count
     user_devices_to_receive_notification = chat_room_user.user.user_devices.where.not(push_token: ['', nil]).where(os: %w[ios android])
+    ad_title = ad ? ad.title : chat_room_user.chat_room.ad_title
     user_devices_to_receive_notification.each do |device|
       app = APPS[device.os]
-      title = chat_room_user.chat_room.system? ? "#{I18n.t('recario', locale: device.locale)} 🌀" : ad.title
+      title = chat_room_user.chat_room.system? ? "#{I18n.t('recario', locale: device.locale)} 🌀" : ad_title
 
       case device.os
       when 'ios'
