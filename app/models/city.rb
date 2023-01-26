@@ -9,6 +9,7 @@ class City < ApplicationRecord
   validates :region, uniqueness: { scope: :name }
 
   def display_name
+    # Translated with https://www.grafiati.com/en/transliteration
     translations[I18n.locale.to_s].presence || name
   end
 end
