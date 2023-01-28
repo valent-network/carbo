@@ -19,7 +19,7 @@ class AdImageUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    "#{random_id}.#{file.extension}" if original_filename.present?
+    "#{random_id}.#{model.file_ext}" if original_filename.present?
   end
 
   version :feed do

@@ -66,6 +66,7 @@ Rails.application.routes.draw do
       resources :referrers, only: %i[show]
       resources :blocked_user_contacts, only: %i[update]
       resource :system_chat_room, only: %i[show]
+      resource :presigner, only: %i[create]
     end
 
     namespace :v2 do

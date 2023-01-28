@@ -33,6 +33,9 @@ module Api
         if ad.save
           ad.my_ad!
           serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: AdSerializer).as_json
+          params[:ad][:tmp_images].each do |tmp_image|
+            FinalizeAdImage.perform_async(ad.id, tmp_image[:key], tmp_image[:position])
+          end
           render(json: serialized_ad)
         else
           error!('AD_VALIDATION_FAILED', :unprocessable_entity, ad.errors.full_messages.join("\n"))
@@ -47,6 +50,9 @@ module Api
           ad.my_ad!
           serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: AdSerializer).as_json
           NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
+          params[:ad][:tmp_images].each do |tmp_image|
+            FinalizeAdImage.perform_async(ad.id, tmp_image[:key], tmp_image[:position])
+          end
           render(json: serialized_ad)
         else
           error!('AD_VALIDATION_FAILED', :unprocessable_entity, ad.errors.full_messages.join("\n"))
@@ -74,7 +80,7 @@ module Api
           :deleted,
           ad_query_attributes: [:title],
           ad_description_attributes: [:body, :short],
-          ad_images_attributes: [:attachment, :position, :id, :_destroy], # TODO: scope?
+          ad_images_attributes: [:id, :_destroy], # TODO: scope?
         ]
 
         params.require(:ad).permit(to_permit).tap do |t|
