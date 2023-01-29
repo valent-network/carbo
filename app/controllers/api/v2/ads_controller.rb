@@ -80,7 +80,7 @@ module Api
           :deleted,
           ad_query_attributes: [:title],
           ad_description_attributes: [:body, :short],
-          ad_images_attributes: [:id, :_destroy], # TODO: scope?
+          ad_images_attributes: [:id, :position, :_destroy], # TODO: scope?
         ]
 
         params.require(:ad).permit(to_permit).tap do |t|
