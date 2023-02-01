@@ -594,7 +594,7 @@ CREATE TABLE public.events (
 --
 
 CREATE TABLE public.messages (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     body character varying NOT NULL,
     system boolean DEFAULT false NOT NULL,
     user_id bigint,
