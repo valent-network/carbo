@@ -6,7 +6,7 @@ module Api
         settings = CachedSettings.new
 
         payload = {
-          filters: { hops_count: t('hops_count').map.with_index.to_a.map { |h| { name: h.first, id: h.last } } },
+          hops_options: t('hops_count').map.with_index.to_a.map { |h| { name: h.first, id: h.last } },
           cities: settings.cities,
           categories: settings.categories,
         }
