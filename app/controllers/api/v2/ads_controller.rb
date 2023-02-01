@@ -50,7 +50,7 @@ module Api
           ad.my_ad!
           serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: AdSerializer).as_json
           NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
-          params[:ad][:tmp_images].each do |tmp_image|
+          params[:ad][:tmp_images]&.each do |tmp_image|
             FinalizeAdImage.perform_async(ad.id, tmp_image[:key], tmp_image[:position])
           end
           render(json: serialized_ad)
