@@ -3,7 +3,7 @@
 module Api
   module V2
     class AdsListSerializer < ActiveModel::Serializer
-      attributes :id, :image, :images, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted, :favorite, :category_currency
+      attributes :id, :image, :images, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted, :favorite, :category_currency, :updated_at
 
       def price
         ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
@@ -51,6 +51,10 @@ module Api
         return unless @instance_options[:current_user]
 
         object.ad_favorites.detect { |af| af.user_id == @instance_options[:current_user].id }.present?
+      end
+
+      def updated_at
+        object.updated_at.strftime('%-d.%-m.%Y')
       end
     end
   end
