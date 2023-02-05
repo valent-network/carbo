@@ -52,10 +52,6 @@ module Api
 
         object.ad_favorites.detect { |af| af.user_id == @instance_options[:current_user].id }.present?
       end
-
-      def updated_at
-        object.updated_at.strftime('%-d.%-m.%Y')
-      end
     end
   end
 end
