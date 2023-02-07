@@ -13,9 +13,9 @@ module Api
           'referrers_users.refcode AS referrer_refcode',
           'referrers_users.name AS referrer_name',
         ]
-        u = User.select(select_columns).eager_load(:phone_number, :referrer, referrer_contact: :phone_number).find(current_user.id)
+        u = User.select(select_columns).eager_load(:phone_number, :referrer, referrer_contacts: :phone_number).find(current_user.id)
 
-        render(json: u, serializer: ProfileUserSerializer)
+        render(json: u, serializer: ProfileUserSerializer, current_user: current_user)
       end
 
       def update

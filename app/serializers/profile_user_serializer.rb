@@ -15,11 +15,14 @@ class ProfileUserSerializer < ActiveModel::Serializer
   end
 
   def referrer
+    return unless @instance_options[:current_user]
+
+    ref_c = object.referrer_contacts.detect { |rc| rc.user_id == @instance_options[:current_user].id }
     {
       refcode: object.referrer_refcode,
       name: object.referrer_name,
-      contact_name: object.referrer_contact&.name,
-      phone: object.referrer_contact&.phone_number&.to_s,
+      contact_name: ref_c&.name,
+      phone: ref_c&.phone_number&.to_s,
       avatar: User.select(:id, :avatar).find_by(id: object.referrer_id)&.avatar&.url,
     }
   end
