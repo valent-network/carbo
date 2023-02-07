@@ -39,7 +39,7 @@ class Ad < ApplicationRecord
   scope :known, -> { joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id') }
 
   scope :order_by_visit_for, ->(user) { Ad.from("(#{select('id, MAX(created_at) AS created_at').from("(#{user.events.ad_visits_ordered.to_sql}) AS ads").group('id').to_sql}) AS ads").order('created_at DESC') }
-  scope :order_by_fav_for, ->(user) { joins(:ad_favorites).where(ad_favorites: { user_id: user.id }).order('ad_favorites.updated_at') }
+  scope :order_by_fav_for, ->(user) { joins(:ad_favorites).where(ad_favorites: { user_id: user.id }).order('ad_favorites.updated_at DESC') }
 
   accepts_nested_attributes_for :ad_query, :ad_description, :ad_extra, :ad_image_links_set, update_only: true
   accepts_nested_attributes_for :ad_images, allow_destroy: true
