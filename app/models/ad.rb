@@ -38,8 +38,8 @@ class Ad < ApplicationRecord
   scope :opts, ->(query) { by_options(query.split(';').first.strip, query.split(';').last.strip) }
   scope :known, -> { joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id') }
 
-  scope :order_by_visit_for, ->(user) { joins(:ad_visits).joins("JOIN events ON events.user_id = ad_visits.user_id").where(ad_visits: { user_id: user.id }, events: { name: 'visited_ad' }).where("(events.data->>'ad_id')::integer = ads.id").order('events.created_at DESC') }
-  scope :order_by_fav_for, ->(user) { joins(:ad_favorites).joins("JOIN events ON events.user_id = ad_favorites.user_id").where(ad_favorites: { user_id: user.id }, events: { name: 'favorited_ad' }).where("(events.data->>'ad_id')::integer = ads.id").order('events.created_at DESC') }
+  scope :order_by_visit_for, ->(user) { Ad.from("(#{select('id, MAX(created_at) AS created_at').from("(#{user.events.ad_visits_ordered.to_sql}) AS ads").group('id').to_sql}) AS ads").order('created_at DESC') }
+  scope :order_by_fav_for, ->(user) { Ad.from("(#{select('id, MAX(created_at) AS created_at').from("(#{user.events.ad_favorites_ordered.to_sql}) AS ads").group('id').to_sql}) AS ads").order('created_at DESC') }
 
   accepts_nested_attributes_for :ad_query, :ad_description, :ad_extra, :ad_image_links_set, update_only: true
   accepts_nested_attributes_for :ad_images, allow_destroy: true

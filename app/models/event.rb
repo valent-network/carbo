@@ -11,6 +11,9 @@ class Event < ApplicationRecord
   validates :name, inclusion: { in: EVENT_TYPES }
   validates :data, exclusion: { in: [nil] }
 
+  scope :ad_visits_ordered, -> { where(name: 'visited_ad').order('created_at DESC').select("(events.data->>'ad_id')::integer AS id, created_at") }
+  scope :ad_favorites_ordered, -> { where(name: 'favorited_ad').order('created_at DESC').select("(events.data->>'ad_id')::integer AS id, created_at") }
+
   def self.stats_for(event_type_name)
     where(name: event_type_name).where('created_at > ?', 6.month.ago).order('date(created_at)').group('date(created_at)').count
   end
