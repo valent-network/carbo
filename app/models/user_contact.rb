@@ -24,7 +24,7 @@ class UserContact < ApplicationRecord
       .group('user_contacts.id')
     friends_contacts = UserContact.select('user_contacts.*, t.hops_count').joins("JOIN (#{t.to_sql}) AS t ON t.id = user_contacts.id")
 
-    friends = find_by_sql("#{my_contacts.to_sql} UNION #{friends_contacts.to_sql}")
+    friends = find_by_sql("#{my_contacts.to_sql} UNION #{friends_contacts.to_sql}") # TODO: duplicates with different hops
     ActiveRecord::Associations::Preloader.new(records: friends, associations: [phone_number: :user]).call
     friends
   end
