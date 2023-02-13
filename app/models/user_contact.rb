@@ -21,6 +21,7 @@ class UserContact < ApplicationRecord
       .joins('JOIN user_contacts AS friends_contacts ON friends_contacts.user_id = user_connections.connection_id')
       .where(user_connections: { user_id: user.id }, user_contacts: { user_id: user.id })
       .where('friends_contacts.phone_number_id = ?', ad.phone_number_id)
+      .where.not('friends_contacts.phone_number_id = ? OR user_contacts.phone_number_id = ?', user.phone_number_id, user.phone_number_id)
       .group('user_contacts.id')
     friends_contacts = UserContact.select('user_contacts.*, t.hops_count').joins("JOIN (#{t.to_sql}) AS t ON t.id = user_contacts.id")
 
