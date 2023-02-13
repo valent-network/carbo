@@ -7,7 +7,7 @@ module Api
 
         payload = {
           cities: settings.cities,
-          categories: settings.categories,
+          categories: settings.categories.sort_by { |c| c['id'] },
         }
 
         render(json: payload)
