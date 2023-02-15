@@ -73,7 +73,7 @@ class CachedSettings
           name: c.translations[I18n.locale.to_s],
           currency: c.currency,
           id: c.id,
-          position: c.position,
+          position: c.try(:position),
           ad_option_types: c.ad_option_types.map do |opt|
             values = opt.filterable_values.select { |fv| fv.group.present? }.map do |f|
               {
