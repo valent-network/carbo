@@ -11,8 +11,16 @@ class FilteredAds
 
     filters['extra'].each do |opt_type, raw_values|
       filter_clause = raw_values.map do |raw_value|
-        %[(ad_extras.details @> '{"#{opt_type}": "#{raw_value}"}')]
-      end.join(" OR\n")
+        # TODO: temporary workaround because year can be either string or integer
+        if opt_type == 'year'
+          [
+            %[(ad_extras.details @> '{"#{opt_type}": "#{raw_value}"}')],
+            %[(ad_extras.details @> '{"#{opt_type}": #{raw_value.to_i}}')]
+          ]
+        else
+          %[(ad_extras.details @> '{"#{opt_type}": "#{raw_value}"}')]
+        end
+      end.flatten.join(" OR\n")
 
       ads = ads.where(filter_clause)
     end
