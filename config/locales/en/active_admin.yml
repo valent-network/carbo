@@ -20,6 +20,7 @@ en:
     category: Categories
     user_visibility: User Visibility
     ad_option_types: Ad Option Types
+    filterable_values: "Filterable Values"
     filterable_values_groups: Filterable Values Groups
     sortable_filters: Sortable
     region: Region
