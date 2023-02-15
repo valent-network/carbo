@@ -2,7 +2,7 @@
 
 ActiveAdmin.register(Category) do
   menu label: proc { I18n.t('active_admin.category') }, parent: 'settings'
-  permit_params :name, :currency, translations: [:uk, :en]
+  permit_params :name, :currency, :position, translations: [:uk, :en]
 
   index do
     selectable_column
@@ -21,6 +21,7 @@ ActiveAdmin.register(Category) do
       </span>
       ".html_safe
     end
+    column :position
     actions
   end
 
@@ -31,6 +32,7 @@ ActiveAdmin.register(Category) do
       t.input(:uk, input_html: { value: f.object.translations['uk'] })
       t.input(:en, input_html: { value: f.object.translations['en'] })
     end
+    f.input(:position)
     f.actions
   end
 end

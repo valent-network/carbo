@@ -7,4 +7,5 @@ class Category < ApplicationRecord
   has_many :ad_option_types
 
   validates :currency, inclusion: { in: CURRENCIES }, presence: true
+  validates :position, presence: true
 end

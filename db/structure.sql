@@ -455,7 +455,8 @@ CREATE TABLE public.categories (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     translations jsonb DEFAULT '{}'::jsonb,
-    currency character varying NOT NULL
+    currency character varying NOT NULL,
+    "position" integer
 );
 
 
@@ -594,7 +595,7 @@ CREATE TABLE public.events (
 --
 
 CREATE TABLE public.messages (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     body character varying NOT NULL,
     system boolean DEFAULT false NOT NULL,
     user_id bigint,
@@ -2326,6 +2327,13 @@ CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.ver
 
 
 --
+-- Name: t0; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX t0 ON public.known_options USING btree (k, v);
+
+
+--
 -- Name: uniq_set_referrer_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2828,6 +2836,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230116160015'),
 ('20230118214153'),
 ('20230119125419'),
-('20230122215031');
+('20230122215031'),
+('20230215110221');
 
 
