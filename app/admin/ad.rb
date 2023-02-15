@@ -12,5 +12,5 @@ ActiveAdmin.register(Ad) do
   end
 
   filter :price
-  filter :opts, as: :string
+  filter :ads_source
 end
