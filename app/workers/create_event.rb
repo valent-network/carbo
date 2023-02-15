@@ -20,7 +20,6 @@ class CreateEvent
     event = Event.new(params)
 
     if event.save
-      logger.warn("[CreateEvent][#{event_type}]") unless event_type.to_s == 'snapshot_user_visibility'
       event
     else
       logger.error("[CreateEventFailed] errors=#{event.errors.to_json}")

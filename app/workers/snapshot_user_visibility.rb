@@ -17,9 +17,7 @@ class SnapshotUserVisibility
     friends_query = UserContact.joins(phone_number: :user).group(:user_id).select('user_contacts.user_id, COUNT(*) AS count').to_sql
 
     users_query = User.select('users.id, COUNT(user_contacts.id) AS count')
-      .joins("LEFT JOIN events ON events.user_id = users.id AND events.name = 'snapshot_user_visibility' AND events.created_at > (NOW() - INTERVAL '1 day')")
       .left_joins(:user_contacts)
-      .where('events.id IS NULL')
       .group('users.id')
       .to_sql
 
