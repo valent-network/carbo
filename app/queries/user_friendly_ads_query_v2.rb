@@ -7,6 +7,8 @@ class UserFriendlyAdsQueryV2
     user_contacts_matched_phone_numbers = user.user_contacts.where('user_contacts.name ILIKE ?', "%#{filters[:query]}%").pluck(:phone_number_id) if filters[:query].present?
     effective_ads = FilteredAds.new.call(filters: filters_from_aliases_groups(filters), should_search_query: user_contacts_matched_phone_numbers.blank?)
 
+    my_friends_ads = effective_ads.where(phone_number_id: user.user_contacts.where.not(phone_number: user.phone_number).select(:phone_number_id))
+
     hops_count = filters[:hops_count]&.first&.to_i
 
     blocked_users_ids = user.blocked_users_ids
@@ -15,7 +17,7 @@ class UserFriendlyAdsQueryV2
     end
 
     if hops_count == 0 || filters[:contacts_mode] == 'directFriends'
-      effective_ads = effective_ads.where(phone_number_id: user.user_contacts.where.not(phone_number: user.phone_number).select(:phone_number_id))
+      effective_ads = my_friends_ads
     elsif user_contacts_matched_phone_numbers.present?
       known_numbers_filtered = KnownNumbersFiltered.new.call(user.id, filtered_friends_phone_number_ids: user_contacts_matched_phone_numbers)
       effective_ads = effective_ads.where("ads.phone_number_id IN (#{known_numbers_filtered})")
@@ -29,7 +31,7 @@ class UserFriendlyAdsQueryV2
     query = query.order('ads.id DESC')
     query = query.limit(limit) if limit > 0
 
-    query
+    Ad.find_by_sql("(#{my_friends_ads.to_sql}) UNION (#{query.to_sql})")
   end
 
   private
