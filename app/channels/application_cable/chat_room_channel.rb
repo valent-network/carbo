@@ -7,17 +7,26 @@ module ApplicationCable
 
       # TODO: user can't receive this from UserChannel if ChatRoomChannel
       # subscription fired before UserChannel subscription
-      @chat_room_user.touch
+      @chat_room_user&.touch
       payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
       ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload)
+
+      if @chat_room.system? && current_user.admin?
+        @chat_room.update(admin_seen_at: Time.zone.now)
+        ApplicationCable::UserChannel.broadcast_to(current_user, type: 'unread_update', count: Message.unread_messages_for(current_user.id).count, system_count: Message.unread_system_messages.values.sum)
+      end
 
       stream_for(@chat_room)
     end
 
     def read(_data)
-      @chat_room_user.touch
+      @chat_room_user&.touch
       payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
       ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload)
+      if @chat_room.system? && current_user.admin?
+        @chat_room.update(admin_seen_at: Time.zone.now)
+        ApplicationCable::UserChannel.broadcast_to(current_user, type: 'unread_update', count: Message.unread_messages_for(current_user.id).count, system_count: Message.unread_system_messages.values.sum)
+      end
     end
 
     def destroy(data)
@@ -35,8 +44,19 @@ module ApplicationCable
       end
     end
 
+    # TODO: Here we don't handle a case when admin sends message to a system chat
+    # (to himself)
     def receive(data)
-      PostMessage.new.call(sender: current_user, message: data.with_indifferent_access[:message])
+      raise if !current_user.admin? && @chat_room.system? && @chat_room_user.nil?
+
+      if current_user.admin? && @chat_room.system? && @chat_room_user.nil?
+        chat_room = ChatRoom.find(data['message']['chat_room_id'])
+        SendSystemMessageToChatRoom.new.call(user_id: chat_room.user_id, message_text: data['message']['text'], message_id: data['message']['_id'])
+        payload = Api::V1::ChatRoomListSerializer.new(current_user, chat_room).first
+        ApplicationCable::UserChannel.broadcast_to(current_user, type: 'admin_chat', chat: payload)
+      else
+        PostMessage.new.call(sender: current_user, message: data.with_indifferent_access[:message])
+      end
     end
   end
 end

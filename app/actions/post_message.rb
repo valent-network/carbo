@@ -23,6 +23,14 @@ class PostMessage
       end
     end
 
+    if message.chat_room.system?
+      User.where(admin: true).each do |admin|
+        payload = Api::V1::ChatRoomListSerializer.new(admin, message.chat_room, true).first
+        ApplicationCable::UserChannel.broadcast_to(admin, type: 'admin_chat', chat: payload)
+        ApplicationCable::UserChannel.broadcast_to(admin, type: 'unread_update', count: Message.unread_messages_for(admin.id).count, system_count: Message.unread_system_messages.values.sum)
+      end
+    end
+
     CreateEvent.call('message_posted', user: sender, data: {})
 
     message

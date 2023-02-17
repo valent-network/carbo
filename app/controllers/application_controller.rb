@@ -51,6 +51,10 @@ class ApplicationController < ActionController::Base
     error!('NOT_AUTHORIZED', 401) unless current_user
   end
 
+  def require_admin
+    error!('NOT_AUTHORIZED', 401) unless current_user.admin?
+  end
+
   def error!(message, status = 422, errors = {})
     Rails.logger.debug("Unknown error code: #{message}") unless message.in?(API_ERROR_CODES)
     payload = { message: t("api_error_messages.#{message.downcase}") }

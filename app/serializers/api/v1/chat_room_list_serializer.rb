@@ -2,11 +2,12 @@
 module Api
   module V1
     class ChatRoomListSerializer
-      attr_reader :current_user, :chat_rooms
+      attr_reader :current_user, :chat_rooms, :admin
 
-      def initialize(current_user, chat_rooms)
+      def initialize(current_user, chat_rooms, admin = false)
         @current_user = current_user
         @chat_rooms = Array.wrap(chat_rooms)
+        @admin = admin
       end
 
       def call
@@ -32,7 +33,11 @@ module Api
       end
 
       def new_messages_counts
-        @new_messages_counts ||= Message.unread_messages_for(current_user.id).where(chat_room: chat_rooms).group('messages.chat_room_id').count
+        @new_messages_counts ||= if admin
+          Message.where(chat_room: chat_rooms).unread_system_messages
+        else
+          Message.unread_messages_for(current_user.id).where(chat_room: chat_rooms).group('messages.chat_room_id').count
+        end
       end
 
       def titles

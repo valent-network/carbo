@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class SendSystemMessageToChatRoom
-  def call(user_id:, message_text:, async: true)
+  def call(user_id:, message_text:, async: true, message_id: nil)
     user = User.find(user_id)
 
     # We need this workaround to make system notifications work like regular chats
@@ -11,6 +11,7 @@ class SendSystemMessageToChatRoom
     chat_room = user.chat_rooms.where(user: user, system: true).first_or_initialize(ad: random_ad)
     target_user = chat_room.chat_room_users.where(user: user).first_or_initialize(name: user.name.presence || 'system')
     message = chat_room.messages.new(body: message_text)
+    message.id = message_id if message_id
 
     ChatRoom.transaction do
       chat_room.save!

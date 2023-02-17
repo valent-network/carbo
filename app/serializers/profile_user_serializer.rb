@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class ProfileUserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :avatar, :phone_number, :refcode, :referrer, :user_contacts_count, :unread_messages_count
+  attributes :id, :name, :avatar, :phone_number, :refcode, :referrer, :user_contacts_count, :unread_messages_count, :unread_admin_messages_count, :admin
 
   # TODO: name attribute should be considered private. So that when privacy
   # policy will be implemented for User through Settings, name could be hidden
@@ -12,6 +12,10 @@ class ProfileUserSerializer < ActiveModel::Serializer
 
   def phone_number
     object.phone_number.to_s
+  end
+
+  def unread_admin_messages_count
+    object.admin? ? Message.unread_system_messages.values.sum : 0
   end
 
   def referrer

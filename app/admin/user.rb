@@ -13,6 +13,7 @@ ActiveAdmin.register(User) do
 
   index do
     column :id
+    column :admin
     column :name
     column :phone_number
     column :created_at
@@ -22,6 +23,7 @@ ActiveAdmin.register(User) do
 
   show do
     attributes_table do
+      row :admin
       row :name
       row :phone_number
       row :created_at

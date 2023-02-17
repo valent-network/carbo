@@ -523,7 +523,8 @@ CREATE TABLE public.chat_rooms (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     system boolean DEFAULT false NOT NULL,
-    ad_title character varying
+    ad_title character varying,
+    admin_seen_at timestamp(6) without time zone
 );
 
 
@@ -671,7 +672,8 @@ CREATE TABLE public.users (
     updated_at timestamp(6) without time zone NOT NULL,
     avatar json,
     referrer_id integer,
-    refcode character varying
+    refcode character varying,
+    admin boolean DEFAULT false NOT NULL
 );
 
 
@@ -2837,6 +2839,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230118214153'),
 ('20230119125419'),
 ('20230122215031'),
-('20230215110221');
+('20230215110221'),
+('20230217145727'),
+('20230217172825');
 
 
