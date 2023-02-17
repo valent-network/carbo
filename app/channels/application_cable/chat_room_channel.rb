@@ -52,7 +52,7 @@ module ApplicationCable
     end
 
     def receive(data)
-      if current_user.admin? && @chat_room.system? && data[:from] == 'admin'
+      if current_user.admin? && @chat_room.system? && params[:from] == 'admin'
         chat_room = ChatRoom.find(data['message']['chat_room_id'])
         SendSystemMessageToChatRoom.new.call(user_id: chat_room.user_id, message_text: data['message']['text'], message_id: data['message']['_id'])
         payload = Api::V1::ChatRoomListSerializer.new(current_user, chat_room).first
