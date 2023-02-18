@@ -28,6 +28,7 @@ class PostMessage
         payload = Api::V1::ChatRoomListSerializer.new(admin, message.chat_room, true).first
         ApplicationCable::UserChannel.broadcast_to(admin, type: 'admin_chat', chat: payload)
         ApplicationCable::UserChannel.broadcast_to(admin, type: 'unread_update', count: Message.unread_messages_for(admin.id).count, system_count: Message.unread_system_messages.values.sum)
+        SystemMessageAdminNotification.new.call(admin: admin, message_body: message.body, chat_room_id: message.chat_room_id, sender_name: sender.name || sender_chat_room_user.name)
       end
     end
 
