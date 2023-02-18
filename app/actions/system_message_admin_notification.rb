@@ -18,7 +18,7 @@ class SystemMessageAdminNotification
           device_token: device.push_token,
           alert: "#{title}\n#{message_body}",
           sound: 'default',
-          data: { chat_room_id: chat_room_id, notification_action: 'open_chat_room' },
+          data: { chat_room_id: chat_room_id, notification_action: 'open_admin_chat_room' },
         }
 
         Rpush::Client::ActiveRecord::Apnsp8::Notification.create!(notification_params)
@@ -28,7 +28,7 @@ class SystemMessageAdminNotification
           registration_ids: [device.push_token],
           priority: 'high',
           data: {
-            notification_action: 'open_chat_room',
+            notification_action: 'open_admin_chat_room',
             chat_room_id: chat_room_id,
             title: title,
             message: message_body,
