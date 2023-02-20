@@ -27,11 +27,13 @@ class UserFriendlyAdsQueryV2
         .joins(%[JOIN user_connections ON user_contacts.user_id = user_connections.connection_id AND "user_connections"."user_id" = #{user.id} AND (user_connections.hops_count <= #{hops_count || DEFAULT_HOPS_COUNT})])
     end
 
+    # TODO: How does it work when hops_count is nil ?
+
     query = effective_ads.offset(offset)
     query = query.order('ads.id DESC')
     query = query.limit(limit) if limit > 0
 
-    Ad.find_by_sql("(#{my_friends_ads.to_sql}) UNION (#{query.to_sql})")
+    Ad.find_by_sql("(#{my_friends_ads.to_sql}) UNION (#{query.to_sql})") # TODO: Add myself to my connections in order to avoid UNION
   end
 
   private
