@@ -357,7 +357,8 @@ CREATE TABLE public.ads (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     city_id smallint,
-    category_id smallint NOT NULL
+    category_id smallint NOT NULL,
+    stats jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -673,7 +674,8 @@ CREATE TABLE public.users (
     avatar json,
     referrer_id integer,
     refcode character varying,
-    admin boolean DEFAULT false NOT NULL
+    admin boolean DEFAULT false NOT NULL,
+    stats jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2841,6 +2843,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230122215031'),
 ('20230215110221'),
 ('20230217145727'),
-('20230217172825');
+('20230217172825'),
+('20230219162651'),
+('20230219162656');
 
 

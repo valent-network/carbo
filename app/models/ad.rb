@@ -46,6 +46,27 @@ class Ad < ApplicationRecord
 
   attr_reader :my_ad
 
+  def self.with_stats
+    select_clause = <<~SQL
+      DISTINCT ads.id,
+      jsonb_build_object(
+        'chat_rooms_count',
+        COUNT(DISTINCT chat_rooms.id),
+        'messages_count',
+        COUNT(DISTINCT messages.id),
+        'visits_count',
+        COUNT(DISTINCT events.id),
+        'favorites_count',
+        COUNT(DISTINCT ad_favorites.id)
+      ) AS stats
+    SQL
+    left_join_events_clause = <<~SQL
+      LEFT JOIN events ON events.name = 'visited_ad' AND (events.data->>'ad_id')::integer = ads.id
+    SQL
+
+    select(select_clause).left_joins(:ad_favorites, chat_rooms: :messages).joins(left_join_events_clause).group('ads.id')
+  end
+
   def self.by_options(opt_type, opt_val)
     joins(:ad_extra).where(%[ad_extras.details @> '{"#{opt_type}": "#{opt_val}"}'])
   end
