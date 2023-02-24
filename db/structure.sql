@@ -106,6 +106,51 @@ ALTER SEQUENCE public.active_admin_comments_id_seq OWNED BY public.active_admin_
 
 
 --
+-- Name: ads; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ads (
+    id integer NOT NULL,
+    phone_number_id integer NOT NULL,
+    ads_source_id smallint NOT NULL,
+    price integer NOT NULL,
+    deleted boolean DEFAULT false NOT NULL,
+    address public.citext NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    city_id smallint,
+    category_id smallint NOT NULL,
+    stats jsonb DEFAULT '{}'::jsonb
+);
+
+
+--
+-- Name: user_contacts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_contacts (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    phone_number_id integer NOT NULL,
+    name character varying(100) NOT NULL
+);
+
+
+--
+-- Name: active_known_ads; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.active_known_ads AS
+ SELECT ads.id,
+    ads.city_id,
+    ads.phone_number_id
+   FROM public.ads
+  WHERE ((ads.deleted = false) AND (ads.phone_number_id IN ( SELECT user_contacts.phone_number_id
+           FROM public.user_contacts)))
+  WITH NO DATA;
+
+
+--
 -- Name: ad_descriptions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -341,25 +386,6 @@ CREATE SEQUENCE public.admin_users_id_seq
 --
 
 ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
-
-
---
--- Name: ads; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ads (
-    id integer NOT NULL,
-    phone_number_id integer NOT NULL,
-    ads_source_id smallint NOT NULL,
-    price integer NOT NULL,
-    deleted boolean DEFAULT false NOT NULL,
-    address public.citext NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    city_id smallint,
-    category_id smallint NOT NULL,
-    stats jsonb DEFAULT '{}'::jsonb
-);
 
 
 --
@@ -627,18 +653,6 @@ CREATE TABLE public.user_connections (
     friend_id integer NOT NULL,
     connection_id integer NOT NULL,
     hops_count smallint
-);
-
-
---
--- Name: user_contacts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.user_contacts (
-    id integer NOT NULL,
-    user_id integer NOT NULL,
-    phone_number_id integer NOT NULL,
-    name character varying(100) NOT NULL
 );
 
 
@@ -1342,6 +1356,31 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: users_known_ads; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.users_known_ads AS
+ SELECT user_contacts.user_id,
+    ads.id
+   FROM (public.active_known_ads ads
+     JOIN public.user_contacts ON ((user_contacts.phone_number_id = ads.phone_number_id)))
+  GROUP BY user_contacts.user_id, ads.id
+  WITH NO DATA;
+
+
+--
+-- Name: users_known_users; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.users_known_users AS
+ SELECT user_connections.user_id,
+    user_connections.connection_id
+   FROM public.user_connections
+  GROUP BY user_connections.user_id, user_connections.connection_id
+  WITH NO DATA;
+
+
+--
 -- Name: verification_requests; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2022,12 +2061,26 @@ CREATE INDEX index_ads_on_hops ON public.ads USING btree (id DESC, phone_number_
 
 
 --
+-- Name: index_ads_on_id_and_city_id_where_deleted_false; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_id_and_city_id_where_deleted_false ON public.ads USING btree (id, city_id) WHERE (deleted = false);
+
+
+--
 -- Name: index_ads_on_phone_number_id_and_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_ads_on_phone_number_id_and_id ON public.ads USING btree (phone_number_id, id);
 
 ALTER TABLE public.ads CLUSTER ON index_ads_on_phone_number_id_and_id;
+
+
+--
+-- Name: index_ads_on_phone_number_id_include_id_where_deleted_false; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_phone_number_id_include_id_where_deleted_false ON public.ads USING btree (phone_number_id) INCLUDE (id) WHERE (deleted = false);
 
 
 --
@@ -2328,13 +2381,6 @@ CREATE INDEX index_users_on_referrer_id ON public.users USING btree (referrer_id
 --
 
 CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.verification_requests USING btree (phone_number_id);
-
-
---
--- Name: t0; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX t0 ON public.known_options USING btree (k, v);
 
 
 --
@@ -2845,6 +2891,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230217145727'),
 ('20230217172825'),
 ('20230219162651'),
-('20230219162656');
+('20230219162656'),
+('20230222213959'),
+('20230224141725');
 
 

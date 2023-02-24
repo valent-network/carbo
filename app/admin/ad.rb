@@ -7,6 +7,7 @@ ActiveAdmin.register(Ad) do
   index pagination_total: false do
     column :price
     column :address
+    column :stats
     column :created_at
     column :updated_at
   end

@@ -17,7 +17,7 @@ end
 module Clockwork
   every(1.day, 'Snapshot User Visibility', at: '03:00', skip_first_run: true, tz: 'UTC') { enqueue('class' => 'SnapshotUserVisibility') }
 
-  every(1.day, 'Update User statistics', at: '01:00', skip_first_run: true, tz: 'UTC') { enqueue('class' => 'UpdateUserStats') }
+  every(1.day, 'Update User statistics', at: '00:00', skip_first_run: true, tz: 'UTC') { enqueue('class' => 'UpdateUserStats') }
 
   every(1.day, 'Mark old ads as deleted', at: '05:00', skip_first_run: true, tz: 'UTC') { enqueue('class' => 'MarkOldAdsAsDeleted') }
 

@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 class ProfileUserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :avatar, :phone_number, :refcode, :referrer, :user_contacts_count, :unread_messages_count, :unread_admin_messages_count, :admin
+  attributes :id,
+    :name,
+    :avatar,
+    :phone_number,
+    :refcode,
+    :referrer,
+    :user_contacts_count,
+    :unread_messages_count,
+    :unread_admin_messages_count,
+    :admin,
+    :stats
 
   # TODO: name attribute should be considered private. So that when privacy
   # policy will be implemented for User through Settings, name could be hidden
@@ -16,6 +26,19 @@ class ProfileUserSerializer < ActiveModel::Serializer
 
   def unread_admin_messages_count
     object.admin? ? Message.unread_system_messages.values.sum : 0
+  end
+
+  def stats
+    return {} unless @instance_options[:current_user]&.id == object.id
+
+    regions = Region.where(name: object.stats['top_regions'])
+    res = object.stats.tap do |stats|
+      stats['top_regions'] = Array.wrap(stats['top_regions']).filter_map { |region_name| regions.detect { |r| r.name == region_name }.translations[I18n.locale.to_s] }
+    end
+
+    no_stats = res.except('updated_at', 'top_regions').values.all?(&:blank?) && res['top_regions'].blank?
+
+    no_stats ? {} : res
   end
 
   def referrer

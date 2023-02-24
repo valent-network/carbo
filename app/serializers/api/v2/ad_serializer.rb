@@ -2,7 +2,28 @@
 module Api
   module V2
     class AdSerializer < ActiveModel::Serializer
-      attributes :id, :deleted, :price, :options, :translated_options, :image, :images, :ad_images, :title, :description, :url, :prices, :friend_name_and_total, :short_description, :my_ad, :city_id, :category_id, :region, :category_currency, :native, :updated_at
+      attributes :id,
+        :deleted,
+        :price,
+        :options,
+        :translated_options,
+        :image,
+        :images,
+        :ad_images,
+        :title,
+        :description,
+        :url,
+        :prices,
+        :friend_name_and_total,
+        :short_description,
+        :my_ad,
+        :city_id,
+        :category_id,
+        :region,
+        :category_currency,
+        :native,
+        :updated_at,
+        :stats
 
       def options
         case object.category.name
@@ -74,6 +95,10 @@ module Api
 
       def region
         object.region.translations[I18n.locale.to_s] if object.region
+      end
+
+      def stats
+        object.my_ad ? object.stats : {}
       end
 
       private

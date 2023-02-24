@@ -3,28 +3,28 @@ class UpdateUserStatTopRegions
   def call
     <<~SQL
       UPDATE users
-      SET stats['top_regions'] = t.top_regions::jsonb
-      FROM (
-          SELECT users.id,
-                 JSON_AGG(regions.name ORDER BY ads_count DESC) AS top_regions
-          FROM users
-          CROSS JOIN LATERAL (
-              SELECT ads.city_id, COUNT(DISTINCT ads.id) AS ads_count
-              FROM (SELECT id, phone_number_id, city_id FROM ads WHERE deleted = FALSE) AS ads
-              WHERE ads.id IN (
-                  SELECT ad_id
-                  FROM user_known_ads
-                  WHERE user_id = users.id
-                  )
-              GROUP BY ads.city_id
-              ORDER BY ads_count DESC
-              LIMIT 3
-          ) t
-          JOIN cities on t.city_id = cities.id
-          JOIN regions on regions.id = cities.region_id
-          GROUP BY users.id
+      SET stats['top_regions'] = to_jsonb(t.top_regions)
+      FROM
+      (
+        SELECT user_id AS id,
+               ARRAY_AGG(regions.name) AS top_regions
+        FROM
+        (
+            SELECT user_connections.user_id,
+                   ads.city_id,
+                   (ROW_NUMBER() OVER(PARTITION BY user_connections.user_id ORDER BY COUNT(DISTINCT ads.id) DESC)) AS rank
+            FROM users_known_users AS user_connections
+            JOIN users_known_ads ON users_known_ads.user_id = user_connections.connection_id
+            JOIN active_known_ads AS ads ON ads.id = users_known_ads.id
+            GROUP BY user_connections.user_id, ads.city_id
+            ORDER BY COUNT(DISTINCT ads.id) DESC
+        ) AS t
+        JOIN cities ON cities.id = t.city_id
+        JOIN regions ON regions.id = cities.region_id
+        WHERE t.rank <= 3
+        GROUP BY t.user_id
       ) t
-      WHERE t.id = users.id
+      WHERE users.id = t.id
     SQL
   end
 end

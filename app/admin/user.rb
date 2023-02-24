@@ -13,17 +13,19 @@ ActiveAdmin.register(User) do
 
   index do
     column :id
+    actions
     column :admin
     column :name
     column :phone_number
     column :created_at
     column :updated_at
-    actions
+    column :stats
   end
 
   show do
     attributes_table do
       row :admin
+      row :stats
       row :name
       row :phone_number
       row :created_at
