@@ -1950,6 +1950,13 @@ CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON pub
 
 
 --
+-- Name: index_active_known_ads_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_active_known_ads_on_id ON public.active_known_ads USING btree (id);
+
+
+--
 -- Name: index_ad_extras_on_details; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2347,6 +2354,20 @@ CREATE INDEX index_user_visibilities_on_user_id ON public.user_visibilities USIN
 
 
 --
+-- Name: index_users_known_ads_on_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_known_ads_on_id_and_user_id ON public.users_known_ads USING btree (id, user_id);
+
+
+--
+-- Name: index_users_known_users_on_user_id_and_connection_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_known_users_on_user_id_and_connection_id ON public.users_known_users USING btree (user_id, connection_id);
+
+
+--
 -- Name: index_users_on_phone_number_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2381,6 +2402,13 @@ CREATE INDEX index_users_on_referrer_id ON public.users USING btree (referrer_id
 --
 
 CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.verification_requests USING btree (phone_number_id);
+
+
+--
+-- Name: t0; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX t0 ON public.active_known_ads USING btree (id);
 
 
 --
@@ -2893,6 +2921,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230219162651'),
 ('20230219162656'),
 ('20230222213959'),
-('20230224141725');
+('20230224141725'),
+('20230224143109');
 
 
