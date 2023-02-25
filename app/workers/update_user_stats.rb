@@ -5,7 +5,7 @@ class UpdateUserStats
   sidekiq_options queue: 'system', retry: true, backtrace: false
 
   def perform
-    conn = ActiveRecord::Base.connection
+    connection = ActiveRecord::Base.connection
 
     queries = [
       UpdateUserStatTopRegions.new.call,
@@ -19,7 +19,7 @@ class UpdateUserStats
     ]
 
     User.transaction(isolation: :read_committed) do
-      queries.each { |q| conn.execute(q) }
+      queries.each { |q| connection.execute(q) }
     end
   end
 end
