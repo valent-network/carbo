@@ -5,18 +5,20 @@ module ApplicationCable
       @chat_room = ChatRoom.eager_load(chat_room_users: [user: :phone_number], ad: [:ad_description, :ad_image_links_set, :city, :ad_query, :ad_extra], messages: [:user, :chat_room]).find(params[:chat_room_id])
       @chat_room_user = @chat_room.chat_room_users.find_by(user: current_user)
 
-      if params[:from] == 'admin' && current_user.admin? && @chat_room.system?
-        @chat_room.update(admin_seen_at: Time.zone.now)
-        payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
+      # TODO: user can't receive this from UserChannel if ChatRoomChannel
+      # subscription fired before UserChannel subscription
+      @chat_room_user&.touch # chat_room_user won't exist in admin chats with other users
+
+      @chat_room.update(admin_seen_at: Time.zone.now) if admin?
+
+      payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
+
+      if admin?
         ApplicationCable::UserChannel.broadcast_to(current_user, type: 'admin_read_update', chat: payload)
         ApplicationCable::UserChannel.broadcast_to(current_user, type: 'unread_update', count: Message.unread_messages_for(current_user.id).count, system_count: Message.unread_system_messages.values.sum)
-      else
-        # TODO: user can't receive this from UserChannel if ChatRoomChannel
-        # subscription fired before UserChannel subscription
-        @chat_room_user.touch
-        payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
-        ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload)
       end
+
+      ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload)
 
       stream_for(@chat_room)
     end
@@ -60,6 +62,12 @@ module ApplicationCable
       else
         PostMessage.new.call(sender: current_user, message: data.with_indifferent_access[:message])
       end
+    end
+
+    private
+
+    def admin?
+      params[:from] == 'admin' && current_user.admin? && @chat_room.system?
     end
   end
 end

@@ -26,6 +26,8 @@ class SendSystemMessageToChatRoom
       SendChatMessagePushNotification.new.call(message: message, chat_room_user: target_user)
     end
 
+    # TODO: notify admins via ws
+
     chat_room
   end
 end
