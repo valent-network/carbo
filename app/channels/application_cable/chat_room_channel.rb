@@ -18,7 +18,7 @@ module ApplicationCable
         ApplicationCable::UserChannel.broadcast_to(current_user, type: 'unread_update', count: Message.unread_messages_for(current_user.id).count, system_count: Message.unread_system_messages.values.sum)
       end
 
-      ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload)
+      ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload) if @chat_room_user
 
       stream_for(@chat_room)
     end
