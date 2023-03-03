@@ -36,8 +36,6 @@ Rails.application.routes.draw do
   get '/budget/:maker/:model/:year', to: 'budget#show_model_year', as: :show_model_year
   get '/budget/(:price)', to: 'budget#search_models', as: :search_models
 
-  get :go, to: 'application#multibutton'
-
   resources :ads, only: %i[show]
 
   namespace :api do

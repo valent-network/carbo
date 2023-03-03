@@ -160,7 +160,7 @@ ActiveAdmin.setup do |config|
 
   # == Setting a Favicon
   #
-  # config.favicon = 'favicon.ico'
+  config.favicon = '/admin/favicon.png'
 
   meta_tags_options = { viewport: 'width=device-width, initial-scale=1' }
   # == Meta Tags
