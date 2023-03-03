@@ -1176,40 +1176,6 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: static_pages; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.static_pages (
-    id bigint NOT NULL,
-    title character varying NOT NULL,
-    slug character varying NOT NULL,
-    body text,
-    meta jsonb,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: static_pages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.static_pages_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: static_pages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.static_pages_id_seq OWNED BY public.static_pages.id;
-
-
---
 -- Name: system_stats; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1567,13 +1533,6 @@ ALTER TABLE ONLY public.rpush_notifications ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
--- Name: static_pages id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.static_pages ALTER COLUMN id SET DEFAULT nextval('public.static_pages_id_seq'::regclass);
-
-
---
 -- Name: system_stats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1862,14 +1821,6 @@ ALTER TABLE ONLY public.rpush_notifications
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: static_pages static_pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.static_pages
-    ADD CONSTRAINT static_pages_pkey PRIMARY KEY (id);
 
 
 --
@@ -2277,13 +2228,6 @@ CREATE INDEX index_rpush_feedback_on_device_token ON public.rpush_feedback USING
 --
 
 CREATE INDEX index_rpush_notifications_multi ON public.rpush_notifications USING btree (delivered, failed, processing, deliver_after, created_at) WHERE ((NOT delivered) AND (NOT failed));
-
-
---
--- Name: index_static_pages_on_slug; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_static_pages_on_slug ON public.static_pages USING btree (slug);
 
 
 --
@@ -2922,6 +2866,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230219162656'),
 ('20230222213959'),
 ('20230224141725'),
-('20230224143109');
+('20230224143109'),
+('20230303181038');
 
 

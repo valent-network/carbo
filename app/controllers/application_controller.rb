@@ -28,13 +28,6 @@ class ApplicationController < ActionController::Base
     render('/multibutton', layout: false)
   end
 
-  def static_page
-    @page = StaticPage.find_by(slug: params[:slug])
-    raise ActiveRecord::RecordNotFound unless @page
-
-    @meta_title = JSON.parse(@page.meta)['title']
-  end
-
   protected
 
   attr_reader :current_user, :current_device, :current_ads_source
