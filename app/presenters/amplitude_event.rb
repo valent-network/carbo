@@ -17,7 +17,7 @@ class AmplitudeEvent
       event_type: event.name,
       event_id: event.id,
       insert_id: event.id,
-      event_properties: event.data.to_json,
+      event_properties: event.data.transform_values(&:to_s),
       user_properties: (event.user.admin? ? { 'Cohort' => 'Admins' } : {}),
       time: (event.created_at.to_i * 1000),
     }
@@ -25,7 +25,7 @@ class AmplitudeEvent
     return @data unless device
 
     @data.merge!({
-      device_id: device.id,
+      device_id: Digest::MD5.hexdigest(device.id.to_s),
       app_version: device.build_version,
       os_name: device.os,
       language: device.locale,
