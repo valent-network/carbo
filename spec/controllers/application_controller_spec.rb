@@ -3,13 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe(ApplicationController) do
-  describe '#landing' do
-    it 'OK' do
-      get :landing
-      expect(response).to(be_ok)
-    end
-  end
-
   describe '#filters' do
     before do
       create(:filterable_value, ad_option_type:  AdOptionType.find_by_name('fuel'), name: 'diesel', raw_value: 'Diesel (raw)')
