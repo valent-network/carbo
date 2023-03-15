@@ -20,6 +20,7 @@ class CreateEvent
     event = Event.new(params)
 
     if event.save
+      AMPLITUDE_CLIENT.send_event(AmplitudeEvent.new(event)) if AMPLITUDE_CLIENT.ready?
       event
     else
       logger.error("[CreateEventFailed] errors=#{event.errors.to_json}")
