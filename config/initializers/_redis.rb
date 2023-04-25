@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-redis_configuration = if ENV['REDIS_SENTINEL_ENABLED'].present?
+REDIS_CONFIGURATION = if ENV['REDIS_SENTINEL_ENABLED'].present?
   sentinels = ENV['REDIS_SENTINELS'].to_s.split(',').map(&:strip).map { |s| s.split(':') }.map { |s| { host: s.first, port: s.last, password: ENV['REDIS_PASSWORD'] } }
   {
     name: ENV['REDIS_MASTER_SET'],
@@ -17,8 +17,10 @@ else
   }
 end
 
-REDIS = Redis.new(redis_configuration)
+REDIS = Redis.new(REDIS_CONFIGURATION)
 
 REDIS_KEYS = [
   'provider.proxy.pool'
 ]
+
+Redis.exists_returns_integer = true
