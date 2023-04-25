@@ -5,6 +5,7 @@ require 'redis'
 require 'sidekiq'
 require 'sidekiq/api'
 
+require './config/initializers/_redis'
 require './config/initializers/sidekiq'
 
 def enqueue(job_params)
