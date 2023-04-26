@@ -44,10 +44,12 @@ class UserFriendsGraph
     # TODO: Do we need it?
     # q("MATCH (me:User {id: #{user.id}})-[r:KNOWS]->(friend:User) WHERE NOT friend.id IN #{friends_ids} DELETE r")
 
-    statements = friends_ids.map do |id|
-      "MATCH (me:User {id: #{user.id}}) MATCH (friend:User {id: #{id}}) MERGE (me)-[:KNOWS]->(friend) RETURN 1"
-    end
-    query = statements.join("\nUNION\n")
+    query = <<~QUERY
+      UNWIND #{friends_ids} AS friend_id
+      MATCH (me:User { id: #{user.id} })
+      MATCH (friend:User { id: friend_id })
+      MERGE (me)-[:KNOWS]->(friend)
+    QUERY
 
     q(query)
   end
