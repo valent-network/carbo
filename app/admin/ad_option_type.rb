@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(AdOptionType) do
-  menu label: proc { I18n.t('active_admin.ad_option_types') }, parent: 'settings'
+  menu priority: 14, label: proc { I18n.t('active_admin.ad_option_types') }, parent: 'settings'
   permit_params :category_id, :name, :filterable, :input_type, :position, translations: [:uk, :en]
   config.sort_order = 'position_asc'
   config.batch_actions = false

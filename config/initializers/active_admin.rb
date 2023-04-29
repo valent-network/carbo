@@ -253,9 +253,7 @@ ActiveAdmin.setup do |config|
     # admin.download_links = proc { can?(:view_download_links) }
     admin.build_menu do |menu|
       menu.add(id: 'other', label: proc { I18n.t('active_admin.other') })
-      menu.add(id: 'phones', label: proc { I18n.t('active_admin.phones') })
       menu.add(id: 'settings', label: proc { I18n.t('active_admin.settings') })
-      menu.add(id: 'system', label: proc { I18n.t('active_admin.system') })
     end
   end
 

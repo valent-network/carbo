@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(FilterableValuesGroup) do
-  menu label: proc { I18n.t('active_admin.filterable_values_groups') }, parent: 'settings'
+  menu priority: 15, label: proc { I18n.t('active_admin.filterable_values_groups') }, parent: 'settings'
   permit_params :ad_option_type_id, :name, :position, translations: [:uk, :en]
   config.batch_actions = false
   includes :values, :ad_option_type

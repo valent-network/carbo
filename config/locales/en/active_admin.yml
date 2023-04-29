@@ -41,8 +41,8 @@ en:
     events: Events
     static_pages: Static Pages
     phones: Phone Numbers
-    all_phone_numbers: All
-    demo_phone_numbers: Demo
+    all_phone_numbers: Phone Numbers
+    demo_phone_numbers: Demo Phone Numbers
     settings: Settings
     system: System
     dashboard_welcome:
