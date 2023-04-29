@@ -32,8 +32,6 @@ module Clockwork
 
   every(1.hour, 'Provider.crawl', skip_first_run: true, tz: 'UTC') { enqueue('AutoRia::IndexCrawler', 'queue' => 'provider', 'lock' => 'until_expired', 'lock_ttl' => 3600) }
 
-  every(5.minutes, 'Refresh dashboard_stats mview', tz: 'UTC')
-
   every(1.minute, 'Request Provider to Actualize Ads', skip_first_run: true, tz: 'UTC') { enqueue('ActualizeAd', 'queue' => 'ads', 'lock' => 'until_expired', 'lock_ttl' => 3600) }
 
   # Postgres maintenance
