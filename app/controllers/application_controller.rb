@@ -5,11 +5,6 @@ class ApplicationController < ActionController::Base
   rescue_from StandardError, with: :standard_error
   around_action :switch_locale
 
-  def landing
-    @total_count = Ad.known.active.distinct('ads.id').count
-    render('/landing', layout: false)
-  end
-
   def filters
     # TODO: backward compat
     mobile_mappings = { fuel: :fuels, gear: :gears, carcass: :carcasses, wheels: :wheels }

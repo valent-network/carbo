@@ -6,8 +6,6 @@ require 'sidekiq/web'
 git_commit = ENV.fetch('GIT_COMMIT') { %x(git rev-parse --short HEAD).strip }
 
 Rails.application.routes.draw do
-  root to: 'application#landing'
-
   get '/ios', to: redirect('https://apps.apple.com/us/app/id1458212603')
   get '/apk', to: redirect('https://assets.recar.io/recario.apk')
   get '/android', to: redirect('https://play.google.com/store/apps/details?id=com.viktorvsk.recario')
