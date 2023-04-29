@@ -44,7 +44,7 @@ module Clockwork
   every(5.minutes, '[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY dashboard_stats', tz: 'UTC', skip_first_run: true) { enqueue('PgRefreshMview', 'args' => ['dashboard_stats']) }
   every(10.minutes, '[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY known_options', tz: 'UTC', skip_first_run: true) { enqueue('PgRefreshMview', 'args' => ['known_options']) }
   every(1.hour, '[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY ads_grouped_by_maker_model_year', tz: 'UTC', skip_first_run: true) { enqueue('PgRefreshMview', 'args' => ['ads_grouped_by_maker_model_year']) }
-  every(1.hour, '[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY active_known_ads', at: '*:25', if: lambad { |t| t.hour.in?([6, 9, 12, 15, 18, 21]) }, tz: 'UTC', skip_first_run: true) { enqueue('PgRefreshMview', 'args' => ['active_known_ads']) }
-  every(1.hour, '[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY users_known_ads', at: '*:35', if: lambad { |t| t.hour.in?([6, 9, 12, 15, 18, 21]) }, tz: 'UTC', skip_first_run: true) { enqueue('PgRefreshMview', 'args' => ['users_known_ads']) }
-  every(1.hour, '[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY users_known_users', at: '*:45', if: lambad { |t| t.hour.in?([6, 9, 12, 15, 18, 21]) }, tz: 'UTC', skip_first_run: true) { enqueue('PgRefreshMview', 'args' => ['users_known_users']) }
+  every(1.hour, '[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY active_known_ads', at: '*:25', if: lambda { |t| t.hour.in?([6, 9, 12, 15, 18, 21]) }, tz: 'UTC', skip_first_run: true) { enqueue('PgRefreshMview', 'args' => ['active_known_ads']) }
+  every(1.hour, '[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY users_known_ads', at: '*:35', if: lambda { |t| t.hour.in?([6, 9, 12, 15, 18, 21]) }, tz: 'UTC', skip_first_run: true) { enqueue('PgRefreshMview', 'args' => ['users_known_ads']) }
+  every(1.hour, '[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY users_known_users', at: '*:45', if: lambda { |t| t.hour.in?([6, 9, 12, 15, 18, 21]) }, tz: 'UTC', skip_first_run: true) { enqueue('PgRefreshMview', 'args' => ['users_known_users']) }
 end
