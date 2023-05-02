@@ -1205,6 +1205,26 @@ ALTER SEQUENCE public.system_stats_id_seq OWNED BY public.system_stats.id;
 
 
 --
+-- Name: ttt; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.ttt AS
+ SELECT t.phone_number_id,
+    array_agg(DISTINCT user_contacts.name) AS array_agg,
+    max(t.count) AS max
+   FROM (( SELECT user_contacts_1.phone_number_id,
+            count(*) AS count
+           FROM public.user_contacts user_contacts_1
+          GROUP BY user_contacts_1.phone_number_id
+         HAVING ((count(*) >= 10) AND (count(*) <= 150))
+          ORDER BY (count(*))) t
+     JOIN public.user_contacts ON ((t.phone_number_id = user_contacts.phone_number_id)))
+  GROUP BY t.phone_number_id
+  ORDER BY (max(t.count)) DESC
+  WITH NO DATA;
+
+
+--
 -- Name: user_blocked_phone_numbers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1998,6 +2018,13 @@ CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_us
 
 
 --
+-- Name: index_ads_grouped_by_maker_model_year_on_uniq; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ads_grouped_by_maker_model_year_on_uniq ON public.ads_grouped_by_maker_model_year USING btree (maker, model, year);
+
+
+--
 -- Name: index_ads_on_address; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2353,6 +2380,13 @@ CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.ver
 --
 
 CREATE UNIQUE INDEX t0 ON public.active_known_ads USING btree (id);
+
+
+--
+-- Name: t111; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX t111 ON public.ads_grouped_by_maker_model_year USING btree (model, maker, year);
 
 
 --
@@ -2867,6 +2901,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230222213959'),
 ('20230224141725'),
 ('20230224143109'),
-('20230303181038');
+('20230303181038'),
+('20230502151814');
 
 
