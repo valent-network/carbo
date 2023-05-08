@@ -14,7 +14,7 @@ ActiveAdmin.register(FilterableValuesGroup) do
       .group("ad_option_types.id")
       .select("ad_option_types.id, ARRAY_AGG(filterable_values.name) AS values")
       .to_a.map { |x| [x.id, x.values.uniq] }.each do |opt_id, filter_groups|
-        div(class: "existing-filter-values-groups", "data-ad-option-type-id" => opt_id) do
+        div("class" => "existing-filter-values-groups", "data-ad-option-type-id" => opt_id) do
           filter_groups.map { |v| "<span class='filterable-node'>#{v}</span>" }.join(" ").html_safe
         end
       end

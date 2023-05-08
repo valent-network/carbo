@@ -12,7 +12,7 @@ module ApplicationCable
 
     def find_verified_user
       verified_user = UserDevice.includes(:user).where(access_token: request.params["access_token"]).first&.user
-      verified_user ? verified_user : reject_unauthorized_connection
+      verified_user || reject_unauthorized_connection
     end
   end
 end

@@ -34,13 +34,13 @@ ActiveAdmin.register_page("Dashboard") do
         columns do
           column do
             panel "Ads" do
-              pie_chart({"Known (#{@known_ads_percentage}%)" => @dashboard.known_ads_count, "Unknown": @dashboard.ads_count - @dashboard.known_ads_count})
+              pie_chart({"Known (#{@known_ads_percentage}%)" => @dashboard.known_ads_count, "Unknown" => @dashboard.ads_count - @dashboard.known_ads_count})
             end
           end
 
           column do
             panel "Active Ads" do
-              pie_chart({"Effective (#{@effective_ads_percentage}%)": @dashboard.effective_ads_count, "Other": @dashboard.active_ads_count - @dashboard.effective_ads_count})
+              pie_chart({"Effective (#{@effective_ads_percentage}%)" => @dashboard.effective_ads_count, "Other" => @dashboard.active_ads_count - @dashboard.effective_ads_count})
             end
           end
         end
@@ -48,13 +48,13 @@ ActiveAdmin.register_page("Dashboard") do
         columns do
           column do
             panel "Users" do
-              pie_chart({"With contacts (#{@users_with_contacts_percentage}%)": @dashboard.users_count - @dashboard.users_with_no_contacts_count, "Without contacts": @dashboard.users_with_no_contacts_count})
+              pie_chart({"With contacts (#{@users_with_contacts_percentage}%)" => @dashboard.users_count - @dashboard.users_with_no_contacts_count, "Without contacts" => @dashboard.users_with_no_contacts_count})
             end
           end
 
           column do
             panel "Users With Contacts" do
-              pie_chart({"Have connections": @users_with_connections_count, "No connections": @dashboard.users_with_no_connections_count})
+              pie_chart({"Have connections" => @users_with_connections_count, "No connections" => @dashboard.users_with_no_connections_count})
             end
           end
         end
@@ -68,7 +68,7 @@ ActiveAdmin.register_page("Dashboard") do
 
           column do
             panel "User Contacts" do
-              pie_chart({"Unique": @dashboard.uniq_user_contacts_count, "Duplicate": @dashboard.user_contacts_count - @dashboard.uniq_user_contacts_count})
+              pie_chart({"Unique" => @dashboard.uniq_user_contacts_count, "Duplicate" => @dashboard.user_contacts_count - @dashboard.uniq_user_contacts_count})
             end
           end
         end

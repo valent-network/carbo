@@ -33,7 +33,7 @@ RSpec.describe(UploadUserContactsJob) do
 
   it "changes existing contacts names" do
     user_contact = create(:user_contact, user: user)
-    new_user_contacts = [{"phoneNumbers" => [user_contact.phone_number.to_s], name: "New Name"}].to_json
+    new_user_contacts = [{"phoneNumbers" => [user_contact.phone_number.to_s], "name" => "New Name"}].to_json
     allow_any_instance_of(User).to(receive(:update_connections!).and_return(nil))
     expect { subject.perform(user.id, Base64.urlsafe_encode64(Zlib.deflate(new_user_contacts))) }.to(change { user_contact.reload.name }.from(user_contact.name).to("New Name"))
   end

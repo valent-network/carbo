@@ -12,7 +12,7 @@ RSpec.describe(AdCarOptionsPresenter) do
   it { is_expected.to(be_a(Hash)) }
 
   it "returns raw values" do
-    ad.details = {"gear" => "g", "wheels" => "w", "carcass" => "cc", "color" => "Red Colour", "images_json_array_tmp" => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: "kh", city: "city-kh"}
+    ad.details = {"gear" => "g", "wheels" => "w", "carcass" => "cc", "color" => "Red Colour", "images_json_array_tmp" => ["#{FFaker::Image.url}#{SecureRandom.hex}"], :region => "kh", :city => "city-kh"}
     ad.save
 
     color_opt = AdOptionType.find_by_name("color")
@@ -33,7 +33,7 @@ RSpec.describe(AdCarOptionsPresenter) do
   end
 
   it "transforms engine_capacity + fuel => engine" do
-    ad.details = {engine_capacity: "1400", fuel: "Diesel (raw)", "images_json_array_tmp" => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: "kh", city: "city-kh"}
+    ad.details = {"engine_capacity" => "1400", "fuel" => "Diesel (raw)", "images_json_array_tmp" => ["#{FFaker::Image.url}#{SecureRandom.hex}"], "region" => "kh", "city" => "city-kh"}
     ad.save
 
     create(:filterable_value, ad_option_type: AdOptionType.find_by_name("fuel"), name: "diesel", raw_value: "Diesel (raw)")
@@ -45,7 +45,7 @@ RSpec.describe(AdCarOptionsPresenter) do
   end
 
   it "transforms race" do
-    ad.details = {race: 100_000, "images_json_array_tmp" => ["#{FFaker::Image.url}#{SecureRandom.hex}"], region: "kh", city: "city-kh"}
+    ad.details = {:race => 100_000, "images_json_array_tmp" => ["#{FFaker::Image.url}#{SecureRandom.hex}"], :region => "kh", :city => "city-kh"}
     ad.save
     expect(subject).to(eq(
       race: [I18n.t("ad_options.race"), I18n.t("ad_options.race_value", value: 100)],

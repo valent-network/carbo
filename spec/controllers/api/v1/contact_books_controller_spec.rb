@@ -17,7 +17,7 @@ RSpec.describe(Api::V1::ContactBooksController) do
     end
 
     it "OK with existing contacts" do
-      put :update, params: {id: ad.id, contacts: [{name: "Viktor", "phoneNumbers": ["+380932345678"]}]}
+      put :update, params: {id: ad.id, contacts: [{name: "Viktor", phoneNumbers: ["+380932345678"]}]}
       expect(response).to(be_ok)
     end
 
