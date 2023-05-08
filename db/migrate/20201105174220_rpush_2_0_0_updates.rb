@@ -23,10 +23,8 @@ class Rpush200Updates < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migr
       if index_name_exists?(:rpush_notifications, :index_rpush_notifications_multi)
         remove_index(:rpush_notifications, name: :index_rpush_notifications_multi)
       end
-    else
-      if index_name_exists?(:rpush_notifications, :index_rpush_notifications_multi, true) # rubocop:disable Style/IfInsideElse
-        remove_index(:rpush_notifications, name: :index_rpush_notifications_multi)
-      end
+    elsif index_name_exists?(:rpush_notifications, :index_rpush_notifications_multi, true)
+      remove_index(:rpush_notifications, name: :index_rpush_notifications_multi)
     end
 
     add_index(:rpush_notifications, [:delivered, :failed], name: "index_rpush_notifications_multi", where: "NOT delivered AND NOT failed")
@@ -58,10 +56,8 @@ class Rpush200Updates < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migr
       if index_name_exists?(:rpush_notifications, :index_rpush_notifications_multi)
         remove_index(:rpush_notifications, name: :index_rpush_notifications_multi)
       end
-    else
-      if index_name_exists?(:rpush_notifications, :index_rpush_notifications_multi, true) # rubocop:disable Style/IfInsideElse
-        remove_index(:rpush_notifications, name: :index_rpush_notifications_multi)
-      end
+    elsif index_name_exists?(:rpush_notifications, :index_rpush_notifications_multi, true)
+      remove_index(:rpush_notifications, name: :index_rpush_notifications_multi)
     end
 
     add_index(:rpush_notifications, [:app_id, :delivered, :failed, :deliver_after], name: "index_rpush_notifications_multi")

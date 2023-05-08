@@ -37,7 +37,7 @@ module Api
         false
       end
 
-      def createdAt # rubocop:disable Naming/MethodName
+      def createdAt
         object.created_at
       end
 
