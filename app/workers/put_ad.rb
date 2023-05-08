@@ -42,7 +42,7 @@ class PutAd
     ad_contract = AdCarContract.new.call(ad_params)
 
     if ad_contract.failure?
-      logger.warn("[PutAd][ValidationErrors] id=#{ad&.id} address=#{address} errors=#{ad_contract.errors.to_h.to_json}")
+      Sentry.capture_message("[PutAd][ValidationErrors] id=#{ad&.id} address=#{address} errors=#{ad_contract.errors.to_h.to_json}", level: :warning)
     else
       ad.assign_attributes(ad_params.slice(:price, :phone))
       ad.updated_at = Time.zone.now
@@ -51,14 +51,16 @@ class PutAd
       begin
         retries ||= 0
         if ad.save
-          Rails.logger.warn("[PutAd][AdSaved] data=#{{ address: address, id: ad.id }.to_json}")
+          Sentry.capture_message("[PutAd][AdSaved] data=#{{ address: address, id: ad.id }.to_json}")
         else
-          logger.warn("[PutAd][AdNotSaved] id=#{ad&.id} address=#{address} errors=#{ad.errors.to_hash.to_json}")
+          Sentry.capture_message("[PutAd][AdNotSaved] id=#{ad&.id} address=#{address} errors=#{ad.errors.to_hash.to_json}", level: :warning)
         end
-      rescue PG::TRDeadlockDetected
+      rescue PG::TRDeadlockDetected => e
+        Sentry.capture_exception(e)
         retry if (retries += 1) < MAX_RETRIES_ON_DEADLOCK
-      rescue ActiveRecord::RecordNotUnique, PG::UniqueViolation
-        logger.warn("[PutAd][DuplicateRaceCondition] id=#{ad&.id} address=#{address}")
+      rescue ActiveRecord::RecordNotUnique, PG::UniqueViolation => e
+        Sentry.capture_exception(e)
+        Sentry.capture_message("[PutAd][DuplicateRaceCondition] id=#{ad&.id} address=#{address}", level: :warning)
       end
     end
   end

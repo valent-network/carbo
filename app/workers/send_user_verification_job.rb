@@ -14,13 +14,14 @@ class SendUserVerificationJob
     request.save!
     body = I18n.t('send_verification.sms_text', verification_code: verification_code)
 
-    Rails.logger.warn("[SendUserVerificationJob][sms_send_attempt] data=#{{ phone_number_id: phone_number_id }.to_json}")
+    Sentry.capture_message("[SendUserVerificationJob][sms_send_attempt] data=#{{ phone_number_id: phone_number_id }.to_json}")
 
     begin
       TurboSMS.send_sms(phone_number_for_sms, body)
-    rescue StandardError
+    rescue StandardError => e
       TurboSMS.send(:authorize)
       TurboSMS.send_sms(phone_number_for_sms, body)
+      Sentry.capture_exception(e)
     end
   end
 end

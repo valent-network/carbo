@@ -27,6 +27,7 @@ gem 'turbosms'
 gem 'aws-sdk-s3'
 gem "sentry-ruby"
 gem "sentry-rails"
+gem "sentry-sidekiq"
 
 # Other
 gem 'bootsnap', '~> 1.9', require: false

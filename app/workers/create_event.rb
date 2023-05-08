@@ -23,7 +23,7 @@ class CreateEvent
       AMPLITUDE_CLIENT.send_event(AmplitudeEvent.new(event)) if AMPLITUDE_CLIENT.ready?
       event
     else
-      logger.error("[CreateEventFailed] errors=#{event.errors.to_json}")
+      Sentry.capture_message("[CreateEventFailed] errors=#{event.errors.to_json}", level: :error)
     end
   end
 end

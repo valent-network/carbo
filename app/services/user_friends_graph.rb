@@ -86,9 +86,7 @@ class UserFriendsGraph
 
   def q(query_string)
     unless graph
-      msg = '[UserFriendsGraph] OFF'
-      Rails.logger.warn(msg)
-      Sidekiq.logger.warn(msg)
+      Sentry.capture_message('[UserFriendsGraph] OFF', level: :error)
       return false
     end
 
@@ -105,9 +103,7 @@ class UserFriendsGraph
 
   def explain(query)
     unless graph
-      msg = '[UserFriendsGraph] OFF'
-      Rails.logger.warn(msg)
-      Sidekiq.logger.warn(msg)
+      Sentry.capture_message('[UserFriendsGraph] OFF', level: :error)
       return false
     end
 
@@ -116,6 +112,5 @@ class UserFriendsGraph
 
   def debug(message)
     Rails.logger.info(ActiveSupport::LogSubscriber.new.send(:color, message, :red))
-    Sidekiq.logger.info(ActiveSupport::LogSubscriber.new.send(:color, message, :red))
   end
 end

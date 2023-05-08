@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
   end
 
   def error!(message, status = 422, errors = {})
-    Rails.logger.debug("Unknown error code: #{message}") unless message.in?(API_ERROR_CODES)
+    Sentry.capture_message("Unknown error code: #{message}", level: :debug) unless message.in?(API_ERROR_CODES)
     payload = { message: t("api_error_messages.#{message.downcase}") }
     payload[:errors] = errors if errors.present?
 
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   def standard_error(exception)
     raise exception if Rails.env.development? || Rails.env.test?
 
-    Rails.logger.error(exception)
+    Sentry.capture_exception(exception)
     render(json: { message: t("api_error_messages.unknown") }, status: 500)
   end
 

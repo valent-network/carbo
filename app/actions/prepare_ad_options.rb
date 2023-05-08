@@ -33,8 +33,7 @@ class PrepareAdOptions
         city_record = City.where(name: r.last, region: region_record).first_or_create
         ad.city = city_record
       rescue => e
-        Rails.logger.error(e)
-        Sidekiq.logger.error(e)
+        Sentry.capture_exception(e)
       end
     end
 
@@ -44,8 +43,7 @@ class PrepareAdOptions
     when Array
       images_links
     else
-      Rails.logger.error("[PrepareAdOptions][NoImages]#{images_links}")
-      Sidekiq.logger.error("[PrepareAdOptions][NoImages]#{images_links}")
+      Sentry.capture_message("[PrepareAdOptions][NoImages]#{images_links}", level: :error)
       []
     end
 

@@ -36,7 +36,7 @@ Rpush.reflect do |on|
   # from the APNs that a notification has failed to be delivered.
   # Further notifications should not be sent to the device.
   on.apns_feedback do |feedback|
-    Rails.logger.info("[apns_feedback] feeedback=#{feedback} push_token=#{feedback.device_token}")
+    Sentry.capture_message("[apns_feedback] feeedback=#{feedback} push_token=#{feedback.device_token}")
     UserDevice.where(push_token: feedback.device_token).update_all(push_token: nil, os: 'ios')
   end
 
@@ -53,7 +53,7 @@ Rpush.reflect do |on|
 
   # Called when a notification is successfully delivered.
   on.notification_delivered do |notification|
-    Rails.logger.info("[notification_delivered] notification_id=#{notification.id}")
+    Sentry.capture_message("[notification_delivered] notification_id=#{notification.id}")
 
     notification.destroy
   end
@@ -61,14 +61,13 @@ Rpush.reflect do |on|
   # Called when notification delivery failed.
   # Call 'error_code' and 'error_description' on the notification for the cause.
   on.notification_failed do |notification|
-    Rails.logger.error("[notification_failed] error=#{notification.error} error_description=#{notification.error_description}")
-    # Airbrake.notify(notification.error_description)
+    Sentry.capture_message("[notification_failed] error=#{notification.error} error_description=#{notification.error_description}", level: :error)
   end
 
   # Called when the notification delivery failed and only the notification ID
   # is present in memory.
   on.notification_id_failed do |app, notification_id, error_code, error_description|
-    Rails.logger.error("[notification_id_failed] app_name=#{app.name} notification_id=#{notification_id} error_code=#{error_code} error_description=#{error_description}")
+    Sentry.capture_message("[notification_id_failed] app_name=#{app.name} notification_id=#{notification_id} error_code=#{error_code} error_description=#{error_description}", level: :error)
   end
 
   # Called when a notification will be retried at a later date.
@@ -84,54 +83,50 @@ Rpush.reflect do |on|
 
   # Called when a TCP connection is lost and will be reconnected.
   on.tcp_connection_lost do |app, error|
-    Rails.logger.info("[tcp_reconnet] app_name=#{app.name} error=#{error}")
+    Sentry.capture_message("[tcp_reconnet] app_name=#{app.name} error=#{error}", level: :warning)
   end
 
   # Called for each recipient which successfully receives a notification. This
   # can occur more than once for the same notification when there are multiple
   # recipients.
   on.gcm_delivered_to_recipient do |notification, registration_id|
-    Rails.logger.info("[gcm_delivered_to_recipient] notification_id=#{notification.id} registration_id=#{registration_id}")
+    Sentry.capture_message("[gcm_delivered_to_recipient] notification_id=#{notification.id} registration_id=#{registration_id}")
   end
 
   # Called for each recipient which fails to receive a notification. This
   # can occur more than once for the same notification when there are multiple
   # recipients. (do not handle invalid registration IDs here)
   on.gcm_failed_to_recipient do |notification, error, registration_id|
-    Rails.logger.error("[gcm_failed_to_recipient] notification_id=#{notification.id} error=#{error} registration_id=#{registration_id}")
-    # Airbrake.notify(error)
-    # UserDevice.where(push_token: registration_id).update_all(push_token: nil)
+    Sentry.capture_message("[gcm_failed_to_recipient] notification_id=#{notification.id} error=#{error} registration_id=#{registration_id}", level: :error)
   end
 
   # Called when the GCM returns a canonical registration ID.
   # You will need to replace old_id with canonical_id in your records.
   on.gcm_canonical_id do |old_id, canonical_id|
-    Rails.logger.info("[gcm_canonical_id] old_id=#{old_id} canonical_id=#{canonical_id}")
+    Sentry.capture_message("[gcm_canonical_id] old_id=#{old_id} canonical_id=#{canonical_id}")
     UserDevice.where(push_token: old_id).update_all(push_token: canonical_id)
   end
 
   # Called when the GCM returns a failure that indicates an invalid registration id.
   # You will need to delete the registration_id from your records.
   on.gcm_invalid_registration_id do |app, error, registration_id|
-    Rails.logger.warn("[gcm_invalid_registration_id] app_name=#{app.name} error=#{error} registration_id=#{registration_id}")
-    # Airbrake.notify(error)
+    Sentry.capture_message("[gcm_invalid_registration_id] app_name=#{app.name} error=#{error} registration_id=#{registration_id}", level: :warning)
     UserDevice.where(push_token: registration_id).update_all(push_token: nil, os: 'android')
   end
 
   # Called when an SSL certificate will expire within 1 month.
   # Implement on.error to catch errors raised when the certificate expires.
   on.ssl_certificate_will_expire do |app, expiration_time|
-    Rails.logger.info("[ssl_certificate_will_expire] app_name=#{app.name} expiration_time=#{expiration_time}")
+    Sentry.capture_message("[ssl_certificate_will_expire] app_name=#{app.name} expiration_time=#{expiration_time}")
   end
 
   # Called when an SSL certificate has been revoked.
   on.ssl_certificate_revoked do |app, error|
-    Rails.logger.error("[ssl_certificate_revoked] app_name=#{app.name} error=#{error}")
-    # Airbrake.notify(error)
+    Sentry.capture_message("[ssl_certificate_revoked] app_name=#{app.name} error=#{error}")
   end
 
   # Called when an exception is raised.
   on.error do |error|
-    # Airbrake.notify(error)
+    Sentry.capture_exception(error)
   end
 end
