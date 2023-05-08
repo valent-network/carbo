@@ -24,9 +24,9 @@ gem 'fog-aws'
 
 # 3-rd party gems
 gem 'turbosms'
-gem 'airbrake'
-gem 'newrelic_rpm'
 gem 'aws-sdk-s3'
+gem "sentry-ruby"
+gem "sentry-rails"
 
 # Other
 gem 'bootsnap', '~> 1.9', require: false

@@ -9,8 +9,7 @@ workspace {
         
         thridPartyAdsProviders = softwareSystem "3rd-party" "" "Support"
         
-        newRelic = softwareSystem "New Relic" "APM, logs and dashboards" "Support"
-        airbrake = softwareSystem "Airbrake" "Exceptions" "Support"
+        # TODO: +sentry
         turboSMS = softwareSystem "SMS Provider" "TurboSMS" "External"
         s3 = softwareSystem "S3" "Digital Ocean Spaces" "Database"
         
@@ -57,8 +56,7 @@ workspace {
         borax -> redis "Populates Ads"
         borax -> thridPartyAdsProviders "Collects Ads"
         
-        carbo -> newRelic "Logs/Metrics"
-        carbo -> airbrake "Exceptions"
+        # TODO: +sentry
         carbo -> s3 "Saves User Avatars"
         carbo -> postgres "Stores Data"
         carbo -> redis "Sidekiq"

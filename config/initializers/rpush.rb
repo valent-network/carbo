@@ -62,7 +62,7 @@ Rpush.reflect do |on|
   # Call 'error_code' and 'error_description' on the notification for the cause.
   on.notification_failed do |notification|
     Rails.logger.error("[notification_failed] error=#{notification.error} error_description=#{notification.error_description}")
-    Airbrake.notify(notification.error_description)
+    # Airbrake.notify(notification.error_description)
   end
 
   # Called when the notification delivery failed and only the notification ID
@@ -127,11 +127,11 @@ Rpush.reflect do |on|
   # Called when an SSL certificate has been revoked.
   on.ssl_certificate_revoked do |app, error|
     Rails.logger.error("[ssl_certificate_revoked] app_name=#{app.name} error=#{error}")
-    Airbrake.notify(error)
+    # Airbrake.notify(error)
   end
 
   # Called when an exception is raised.
   on.error do |error|
-    Airbrake.notify(error)
+    # Airbrake.notify(error)
   end
 end
