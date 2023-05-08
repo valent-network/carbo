@@ -11,6 +11,6 @@ class CreateFilterableValueTranslations < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_index(:filterable_value_translations, [:name, :ad_option_type_id, :locale], unique: :true, name: :index_filterable_value_translations_on_uniq)
+    add_index(:filterable_value_translations, [:name, :ad_option_type_id, :locale], unique: true, name: :index_filterable_value_translations_on_uniq)
   end
 end

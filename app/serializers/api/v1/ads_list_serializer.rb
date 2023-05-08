@@ -22,7 +22,7 @@ module Api
       end
 
       def image
-        native_image = object.ad_images.sort_by(&:position).first
+        native_image = object.ad_images.min_by(&:position)
 
         if native_image
           native_image.attachment_url(:feed)
