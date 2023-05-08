@@ -1,0 +1,70 @@
+name: Ruby on Rails CI
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: recario
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
+
+      - name: Install Postgres dependencies
+        run: sudo apt-get install postgresql-client -y
+
+      - name: Install Redis dependencies
+        run: sudo apt-get install redis -y
+
+      - name: Bundle Install
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Run StandardRB
+        run: bin/standardrb --fix
+
+      - name: Run RSpec
+        env:
+          RAILS_ENV: test
+          POSTGRES_PASSWORD: postgres
+          RSPEC_RETRY_LIMIT: 3
+        run: bin/rspec
+
+      - name: Merge to master
+        uses: octokit/request-action@v2.4.0
+        with:
+          method: POST
+          headers: '{"Accept": "application/vnd.github.v3+json", "Authorization": "Bearer ${{ secrets.GITHUB_TOKEN }}"}'
+          url: https://api.github.com/repos/${{ github.repository }}/merges
+          data: '{"head": "${{ github.ref }}", "base": "master"}'
