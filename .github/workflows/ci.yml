@@ -60,6 +60,8 @@ jobs:
           POSTGRES_PASSWORD: postgres
           DO_SPACE_KEY: secret
           DO_SPACE_SECRET: secret
+          DO_SPACE_NAME: fake
+          DO_SPACE_REGION: fake
           RSPEC_RETRY_LIMIT: 3
         run: bin/rspec
 
