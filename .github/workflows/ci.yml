@@ -62,7 +62,7 @@ jobs:
         run: bin/rspec
 
       - name: Merge to master
-        uses: octokit/request-action@v2.4.0
+        uses: octokit/request-action@v2.x
         with:
           method: POST
           headers: '{"Accept": "application/vnd.github.v3+json", "Authorization": "Bearer ${{ secrets.GITHUB_TOKEN }}"}'
