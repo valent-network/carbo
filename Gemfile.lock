@@ -280,6 +280,8 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    language_server-protocol (3.17.0.3)
+    lint_roller (1.0.0)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -330,8 +332,8 @@ GEM
       racc (~> 1.4)
     nori (2.6.0)
     orm_adapter (0.5.0)
-    parallel (1.22.1)
-    parser (3.2.0.0)
+    parallel (1.23.0)
+    parser (3.2.2.1)
       ast (~> 2.4.1)
     pg (1.4.5)
     phonelib (0.7.6)
@@ -386,7 +388,7 @@ GEM
       connection_pool
     redisgraph (2.0.3)
       redis (~> 4)
-    regexp_parser (2.6.2)
+    regexp_parser (2.8.0)
     request_store (1.5.1)
       rack (>= 1.4)
     responders (3.0.1)
@@ -422,29 +424,22 @@ GEM
     rspec-retry (0.6.2)
       rspec-core (> 3.3)
     rspec-support (3.12.0)
-    rubocop (1.44.0)
+    rubocop (1.50.2)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.2.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.24.1, < 2.0)
+      rubocop-ast (>= 1.28.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.24.1)
-      parser (>= 3.1.1.0)
-    rubocop-capybara (2.17.0)
-      rubocop (~> 1.41)
-    rubocop-performance (1.15.2)
+    rubocop-ast (1.28.1)
+      parser (>= 3.2.1.0)
+    rubocop-performance (1.16.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
-    rubocop-rspec (2.18.1)
-      rubocop (~> 1.33)
-      rubocop-capybara (~> 2.17)
-    rubocop-shopify (2.11.1)
-      rubocop (~> 1.42)
-    ruby-progressbar (1.11.0)
+    ruby-progressbar (1.13.0)
     ruby-statistics (3.0.1)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
@@ -495,6 +490,19 @@ GEM
       sprockets (>= 3.0.0)
     ssrf_filter (1.1.1)
     stackprof (0.2.23)
+    standard (1.28.2)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.50.2)
+      standard-custom (~> 1.0.0)
+      standard-performance (~> 1.0.1)
+    standard-custom (1.0.0)
+      lint_roller (~> 1.0)
+    standard-performance (1.0.1)
+      lint_roller (~> 1.0)
+      rubocop-performance (~> 1.16.0)
+    standardrb (1.0.1)
+      standard
     temple (0.10.0)
     thor (1.2.1)
     tilt (2.0.11)
@@ -559,10 +567,6 @@ DEPENDENCIES
   rpush (~> 7)
   rspec-rails
   rspec-retry
-  rubocop
-  rubocop-performance
-  rubocop-rspec
-  rubocop-shopify
   sassc-rails
   sentry-rails
   sentry-ruby
@@ -571,6 +575,7 @@ DEPENDENCIES
   simplecov
   spring
   stackprof
+  standardrb
   turbosms
 
 RUBY VERSION
