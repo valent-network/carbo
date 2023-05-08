@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Api
   module V1
     class MessageSerializer < ActiveModel::Serializer
@@ -20,7 +21,7 @@ module Api
       # System notification chat if user_id is nil
       def user
         user_name = if object.user_id.blank?
-          I18n.t('recario')
+          I18n.t("recario")
         elsif @instance_options[:chat_room_users_names]
           @instance_options[:chat_room_users_names][object.chat_room_id][object.user_id]
         end
@@ -28,7 +29,7 @@ module Api
         {
           _id: object.user_id,
           avatar: object.user&.avatar&.url,
-          name: user_name,
+          name: user_name
         }
       end
 

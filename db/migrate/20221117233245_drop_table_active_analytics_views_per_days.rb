@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class DropTableActiveAnalyticsViewsPerDays < ActiveRecord::Migration[7.0]
   def up
     drop_table(:active_analytics_views_per_days)

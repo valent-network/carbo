@@ -1,9 +1,10 @@
 # frozen_string_literal: true
+
 module ActiveAdmin
   module Views
     class PaginatedCollection < ActiveAdmin::Component
       def build_pagination
-        options = { theme: @display_total ? "active_admin" : "active_admin_countless" }
+        options = {theme: @display_total ? "active_admin" : "active_admin_countless"}
         options[:params] = @params if @params
         options[:param_name] = @param_name if @param_name
 

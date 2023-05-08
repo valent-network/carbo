@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateEffectiveAdsMatView < ActiveRecord::Migration[6.1]
   def up
     execute(<<~SQL)
@@ -11,13 +12,13 @@ class CreateEffectiveAdsMatView < ActiveRecord::Migration[6.1]
       WITH DATA
     SQL
 
-    add_index(:effective_ads, :id, unique: true, order: { id: :desc })
-    add_index(:effective_ads, %w[phone_number_id id], order: { id: :desc })
+    add_index(:effective_ads, :id, unique: true, order: {id: :desc})
+    add_index(:effective_ads, %w[phone_number_id id], order: {id: :desc})
     add_index(:effective_ads, :price)
     # add_index(:effective_ads, :details)
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW effective_ads')
+    execute("DROP MATERIALIZED VIEW effective_ads")
   end
 end

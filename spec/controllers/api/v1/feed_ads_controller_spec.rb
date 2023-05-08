@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe(Api::V1::FeedAdsController) do
   let!(:user) { create(:user) }
@@ -13,30 +13,30 @@ RSpec.describe(Api::V1::FeedAdsController) do
     allow(subject).to(receive(:current_user).and_return(user))
   end
 
-  describe '#index' do
-    it 'OK' do
+  describe "#index" do
+    it "OK" do
       get :index
       expect(response).to(be_ok)
     end
 
-    it 'returns friend_name_and_total in serialzier' do
+    it "returns friend_name_and_total in serialzier" do
       create(:user_connection, user: user, friend: user, connection: user, hops_count: 1)
 
       get :index
       ads = json_body
       ad = ads.first
       expect(ads.count).to(eq(1))
-      expect(ad['friend_name_and_total']['count']).to(eq(0))
-      expect(ad['friend_name_and_total']['name']).to(eq(friend_contact.name))
+      expect(ad["friend_name_and_total"]["count"]).to(eq(0))
+      expect(ad["friend_name_and_total"]["name"]).to(eq(friend_contact.name))
     end
 
-    it 'filters ads' do
-      get :index, params: { filters: { min_price: ad.price + 1000 } }
+    it "filters ads" do
+      get :index, params: {filters: {min_price: ad.price + 1000}}
       expect(json_body.count).to(eq(0))
     end
 
-    context 'Not authenticated' do
-      it 'fails with 401' do
+    context "Not authenticated" do
+      it "fails with 401" do
         allow(subject).to(receive(:current_user).and_return(nil))
         get :index
         expect(response).to(be_unauthorized)

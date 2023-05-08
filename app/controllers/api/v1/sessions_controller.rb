@@ -13,12 +13,12 @@ module Api
             if Phonelib.valid?(phone_number.full_number)
               SendUserVerificationJob.perform_async(phone_number.id)
             else
-              return error!('PHONE_NUMBER_NOT_MOBILE')
+              return error!("PHONE_NUMBER_NOT_MOBILE")
             end
           end
-          render(json: { message: :ok })
+          render(json: {message: :ok})
         else
-          render(json: { message: :error, errors: phone_number.errors.to_hash }, status: 422)
+          render(json: {message: :error, errors: phone_number.errors.to_hash}, status: 422)
         end
       end
 
@@ -41,11 +41,11 @@ module Api
 
         if phone_number.demo?
           demo_code = phone_number.demo_phone_number.demo_code || DemoPhoneNumber::DEMO_CODE
-          return error!('WRONG_VERIFICATION_CODE') if params[:verification_code].to_i != demo_code
+          return error!("WRONG_VERIFICATION_CODE") if params[:verification_code].to_i != demo_code
         else
-          return error!('MISSING_VERIFICATION_CODE') unless verification_request
+          return error!("MISSING_VERIFICATION_CODE") unless verification_request
 
-          return error!('WRONG_VERIFICATION_CODE') if verification_request.verification_code != params[:verification_code].to_i
+          return error!("WRONG_VERIFICATION_CODE") if verification_request.verification_code != params[:verification_code].to_i
         end
 
         device = UserDevice.where(device_id: params[:device_id]).first_or_initialize
@@ -57,15 +57,15 @@ module Api
           verification_request.destroy! unless phone_number.demo?
         end
 
-        CreateEvent.call(:sign_in, user: user, data: { os: device.os, build_version: device.build_version })
+        CreateEvent.call(:sign_in, user: user, data: {os: device.os, build_version: device.build_version})
 
-        render(json: { access_token: device.access_token })
+        render(json: {access_token: device.access_token})
       end
 
       def destroy
         params[:all] ? current_user.user_devices.destroy_all : current_device.destroy
         CreateEvent.call(:sign_out, user: current_user)
-        render(json: { message: :ok })
+        render(json: {message: :ok})
       end
     end
   end

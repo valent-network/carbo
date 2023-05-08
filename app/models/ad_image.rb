@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class AdImage < ApplicationRecord
   mount_uploader :attachment, AdImageUploader
   belongs_to :ad

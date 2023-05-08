@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
 def chartify(data)
-  hash_data = Hash[data.to_a.map { |x| [x['date'], x['count']] }]
-  res = ((1.month.ago + 1.day).to_date..Time.now.to_date).map(&:to_s).map do |date|
+  hash_data = data.to_a.map { |x| [x["date"], x["count"]] }.to_h
+  ((1.month.ago + 1.day).to_date..Time.now.to_date).map(&:to_s).map do |date|
     hash_data[date] ? [date, hash_data[date]] : [date, 0]
   end
-
-  res
 end
 
-ActiveAdmin.register_page('Dashboard') do
-  menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
+ActiveAdmin.register_page("Dashboard") do
+  menu priority: 1, label: proc { I18n.t("active_admin.dashboard") }
 
   content do
     @dashboard = DashboardStats.first
@@ -21,13 +19,13 @@ ActiveAdmin.register_page('Dashboard') do
 
     columns do
       column do
-        panel 'MAU' do
-          area_chart @dashboard.mau_chart_data.map { |x| ["#{x['date']}-01", x['count']] }
+        panel "MAU" do
+          area_chart @dashboard.mau_chart_data.map { |x| ["#{x["date"]}-01", x["count"]] }
         end
-        panel 'DAU' do
+        panel "DAU" do
           area_chart chartify(@dashboard.user_activity_chart_data)
         end
-        panel 'Daliy Visited Ads' do
+        panel "Daliy Visited Ads" do
           area_chart chartify(@dashboard.visited_ad_chart_data)
         end
       end
@@ -36,13 +34,13 @@ ActiveAdmin.register_page('Dashboard') do
         columns do
           column do
             panel "Ads" do
-              pie_chart({ "Known (#{@known_ads_percentage}%)" => @dashboard.known_ads_count, 'Unknown': @dashboard.ads_count - @dashboard.known_ads_count })
+              pie_chart({"Known (#{@known_ads_percentage}%)" => @dashboard.known_ads_count, "Unknown": @dashboard.ads_count - @dashboard.known_ads_count})
             end
           end
 
           column do
             panel "Active Ads" do
-              pie_chart({ "Effective (#{@effective_ads_percentage}%)": @dashboard.effective_ads_count, 'Other': @dashboard.active_ads_count - @dashboard.effective_ads_count })
+              pie_chart({"Effective (#{@effective_ads_percentage}%)": @dashboard.effective_ads_count, "Other": @dashboard.active_ads_count - @dashboard.effective_ads_count})
             end
           end
         end
@@ -50,13 +48,13 @@ ActiveAdmin.register_page('Dashboard') do
         columns do
           column do
             panel "Users" do
-              pie_chart({ "With contacts (#{@users_with_contacts_percentage}%)": @dashboard.users_count - @dashboard.users_with_no_contacts_count, 'Without contacts': @dashboard.users_with_no_contacts_count })
+              pie_chart({"With contacts (#{@users_with_contacts_percentage}%)": @dashboard.users_count - @dashboard.users_with_no_contacts_count, "Without contacts": @dashboard.users_with_no_contacts_count})
             end
           end
 
           column do
             panel "Users With Contacts" do
-              pie_chart({ 'Have connections': @users_with_connections_count, 'No connections': @dashboard.users_with_no_connections_count })
+              pie_chart({"Have connections": @users_with_connections_count, "No connections": @dashboard.users_with_no_connections_count})
             end
           end
         end
@@ -64,13 +62,13 @@ ActiveAdmin.register_page('Dashboard') do
         columns do
           column do
             panel "Devices" do
-              pie_chart @dashboard.user_devices_os_data.map { |x| { x['os_title'] => x['count'].to_i } }.inject(:merge)
+              pie_chart @dashboard.user_devices_os_data.map { |x| {x["os_title"] => x["count"].to_i} }.inject(:merge)
             end
           end
 
           column do
             panel "User Contacts" do
-              pie_chart({ 'Unique': @dashboard.uniq_user_contacts_count, 'Duplicate': @dashboard.user_contacts_count - @dashboard.uniq_user_contacts_count })
+              pie_chart({"Unique": @dashboard.uniq_user_contacts_count, "Duplicate": @dashboard.user_contacts_count - @dashboard.uniq_user_contacts_count})
             end
           end
         end

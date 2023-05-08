@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class BudgetWidgetMustOnlyShowNotDeletedAds < ActiveRecord::Migration[6.1]
   def up
-    execute('DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year')
+    execute("DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW ads_grouped_by_maker_model_year AS (
         SELECT maker,
@@ -31,11 +32,11 @@ class BudgetWidgetMustOnlyShowNotDeletedAds < ActiveRecord::Migration[6.1]
         ORDER BY maker, model, year
       )
     SQL
-    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: 'search_budget_index')
+    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: "search_budget_index")
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year')
+    execute("DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW ads_grouped_by_maker_model_year AS (
         SELECT maker,
@@ -65,6 +66,6 @@ class BudgetWidgetMustOnlyShowNotDeletedAds < ActiveRecord::Migration[6.1]
         ORDER BY maker, model, year
       )
     SQL
-    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: 'search_budget_index')
+    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: "search_budget_index")
   end
 end

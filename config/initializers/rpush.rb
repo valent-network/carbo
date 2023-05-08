@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Rpush.configure do |config|
   # Supported clients are :active_record and :redis
   config.client = :active_record
@@ -13,10 +14,10 @@ Rpush.configure do |config|
   config.batch_size = 100
 
   # Path to write PID file. Relative to current directory unless absolute.
-  config.pid_file = 'tmp/rpush.pid'
+  config.pid_file = "tmp/rpush.pid"
 
   # Path to log file. Relative to current directory unless absolute.
-  config.log_file = 'log/rpush.log'
+  config.log_file = "log/rpush.log"
 
   config.log_level = Rails.logger ? Rails.logger.level : Logger::Severity::INFO
 
@@ -37,7 +38,7 @@ Rpush.reflect do |on|
   # Further notifications should not be sent to the device.
   on.apns_feedback do |feedback|
     Sentry.capture_message("[apns_feedback] feeedback=#{feedback} push_token=#{feedback.device_token}")
-    UserDevice.where(push_token: feedback.device_token).update_all(push_token: nil, os: 'ios')
+    UserDevice.where(push_token: feedback.device_token).update_all(push_token: nil, os: "ios")
   end
 
   # Called when a notification is queued internally for delivery.
@@ -111,7 +112,7 @@ Rpush.reflect do |on|
   # You will need to delete the registration_id from your records.
   on.gcm_invalid_registration_id do |app, error, registration_id|
     Sentry.capture_message("[gcm_invalid_registration_id] app_name=#{app.name} error=#{error} registration_id=#{registration_id}", level: :warning)
-    UserDevice.where(push_token: registration_id).update_all(push_token: nil, os: 'android')
+    UserDevice.where(push_token: registration_id).update_all(push_token: nil, os: "android")
   end
 
   # Called when an SSL certificate will expire within 1 month.

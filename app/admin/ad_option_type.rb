@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(AdOptionType) do
-  menu priority: 14, label: proc { I18n.t('active_admin.ad_option_types') }, parent: 'settings'
+  menu priority: 14, label: proc { I18n.t("active_admin.ad_option_types") }, parent: "settings"
   permit_params :category_id, :name, :filterable, :input_type, :position, translations: [:uk, :en]
-  config.sort_order = 'position_asc'
+  config.sort_order = "position_asc"
   config.batch_actions = false
 
   Category.all.each do |category|
@@ -17,7 +17,7 @@ ActiveAdmin.register(AdOptionType) do
       [
         "<b>#{aot.name}</b>".html_safe,
         aot.translations.map { |k, v| "#{k}: #{v}" }
-      ].flatten.join('<br>').html_safe
+      ].flatten.join("<br>").html_safe
     end
     column(:category)
     column(:filterable)
@@ -26,9 +26,9 @@ ActiveAdmin.register(AdOptionType) do
     column(:groups) do |aot|
       "
       <span class='filterable-values-groups-sortable-list' data-name='#{aot.name}' data-opt-id='#{aot.id}'>
-        #{aot.groups.order(:position).map { |fvg| "<span class='filterable-node'>#{fvg.name}</span>" }.join(' ')}
+        #{aot.groups.order(:position).map { |fvg| "<span class='filterable-node'>#{fvg.name}</span>" }.join(" ")}
       </span>
-      #{link_to(t('active_admin.edit'), admin_ad_option_type_sortable_path(aot))}
+      #{link_to(t("active_admin.edit"), admin_ad_option_type_sortable_path(aot))}
       ".html_safe
     end
     actions
@@ -41,8 +41,8 @@ ActiveAdmin.register(AdOptionType) do
     f.input(:position)
     f.input(:input_type, as: :select, include_blank: false, collection: AdOptionType::INPUT_TYPES)
     f.inputs(for: :translations) do |t|
-      t.input(:uk, input_html: { value: f.object.translations['uk'] })
-      t.input(:en, input_html: { value: f.object.translations['en'] })
+      t.input(:uk, input_html: {value: f.object.translations["uk"]})
+      t.input(:en, input_html: {value: f.object.translations["en"]})
     end
     f.actions
   end
@@ -56,7 +56,7 @@ ActiveAdmin.register(AdOptionType) do
       {
         name: aot.name,
         category_id: aot.category_id,
-        position: params[:names].index(aot.name),
+        position: params[:names].index(aot.name)
       }
     end
 

@@ -8,7 +8,7 @@ module Api
       def index
         chat_rooms = ChatRoom.includes(ad: [:ad_image_links_set, :ad_query, :ad_extra])
           .joins(:chat_room_users)
-          .where(chat_room_users: { user: current_user })
+          .where(chat_room_users: {user: current_user})
           .order(updated_at: :desc)
           .offset(params[:offset])
           .limit(20)
@@ -21,7 +21,7 @@ module Api
       def create
         ad = Ad.find(params[:ad_id])
         friends = UserContact.ad_friends_for_user(ad, current_user)
-        ad_chat_rooms = ChatRoom.includes(ad: [:ad_image_links_set]).joins(:chat_room_users).where(chat_room_users: { user: current_user }, ad: ad)
+        ad_chat_rooms = ChatRoom.includes(ad: [:ad_image_links_set]).joins(:chat_room_users).where(chat_room_users: {user: current_user}, ad: ad)
         chat_room = InitiateChatRoom.new.call(ad_id: ad.id, initiator_user_id: current_user.id, user_id: params[:user_id], user_name: params[:name])
 
         serialized_chat_room = Api::V1::ChatRoomListSerializer.new(current_user, chat_room).first
@@ -31,7 +31,7 @@ module Api
         payload = {
           chat_room: serialized_chat_room,
           friends: serialized_friends,
-          chats: serialized_chat_rooms.as_json,
+          chats: serialized_chat_rooms.as_json
         }
 
         render(json: payload, adapter: nil)

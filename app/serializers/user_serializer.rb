@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class UserSerializer < ActiveModel::Serializer
   attributes :id, :name, :avatar, :phone_number, :refcode, :referrer, :user_contacts_count, :unread_messages_count, :unread_admin_messages_count
 
@@ -35,7 +36,7 @@ class UserSerializer < ActiveModel::Serializer
       refcode: object.referrer.refcode,
       name: object.referrer.name,
       contact_name: contact&.name,
-      phone: contact&.phone_number&.to_s,
+      phone: contact&.phone_number&.to_s
     }
   end
 end

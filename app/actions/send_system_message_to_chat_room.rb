@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class SendSystemMessageToChatRoom
   def call(user_id:, message_text:, async: true, message_id: nil)
     user = User.find(user_id)
@@ -9,7 +10,7 @@ class SendSystemMessageToChatRoom
     raise unless random_ad
 
     chat_room = user.chat_rooms.where(user: user, system: true).first_or_initialize(ad: random_ad)
-    target_user = chat_room.chat_room_users.where(user: user).first_or_initialize(name: user.name.presence || 'system')
+    target_user = chat_room.chat_room_users.where(user: user).first_or_initialize(name: user.name.presence || "system")
     message = chat_room.messages.new(body: message_text)
     message.id = message_id if message_id
 
@@ -21,8 +22,8 @@ class SendSystemMessageToChatRoom
 
     if async
       user_payload = Api::V1::ChatRoomListSerializer.new(user, chat_room).first
-      ApplicationCable::UserChannel.broadcast_to(user, type: 'chat', chat: user_payload)
-      ApplicationCable::UserChannel.broadcast_to(user, type: 'unread_update', count: Message.unread_messages_for(user.id).count)
+      ApplicationCable::UserChannel.broadcast_to(user, type: "chat", chat: user_payload)
+      ApplicationCable::UserChannel.broadcast_to(user, type: "unread_update", count: Message.unread_messages_for(user.id).count)
       SendChatMessagePushNotification.new.call(message: message, chat_room_user: target_user)
     end
 

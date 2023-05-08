@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class AdjustUserContactsIndexes < ActiveRecord::Migration[7.0]
   def up
     remove_index(:user_contacts, :user_id)
@@ -10,7 +11,7 @@ class AdjustUserContactsIndexes < ActiveRecord::Migration[7.0]
   def down
     add_index(:user_contacts, :user_id)
     add_index(:user_contacts, [:phone_number_id, :user_id], unique: true)
-    execute('CREATE INDEX index_user_contacts_on_phone_number_id_and_user_id_include_name ON user_contacts(phone_number_id, user_id) INCLUDE(name)')
+    execute("CREATE INDEX index_user_contacts_on_phone_number_id_and_user_id_include_name ON user_contacts(phone_number_id, user_id) INCLUDE(name)")
     remove_index(:user_contacts, :phone_number_id)
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(DemoPhoneNumber) do
-  menu priority: 17, label: proc { I18n.t('active_admin.demo_phone_numbers') }, parent: 'settings'
+  menu priority: 17, label: proc { I18n.t("active_admin.demo_phone_numbers") }, parent: "settings"
   permit_params :phone, :demo_code
   includes :phone_number
 

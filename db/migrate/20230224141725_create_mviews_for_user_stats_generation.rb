@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateMviewsForUserStatsGeneration < ActiveRecord::Migration[7.0]
   def up
     execute(<<~SQL)
@@ -23,8 +24,8 @@ class CreateMviewsForUserStatsGeneration < ActiveRecord::Migration[7.0]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW users_known_ads')
-    execute('DROP MATERIALIZED VIEW active_known_ads')
-    execute('DROP MATERIALIZED VIEW users_known_users')
+    execute("DROP MATERIALIZED VIEW users_known_ads")
+    execute("DROP MATERIALIZED VIEW active_known_ads")
+    execute("DROP MATERIALIZED VIEW users_known_users")
   end
 end

@@ -12,7 +12,7 @@ module Api
           UploadUserContactsJob.perform_async(current_user.id, base64_zipped_contacts)
         end
 
-        render(json: { message: :ok })
+        render(json: {message: :ok})
       end
 
       def destroy

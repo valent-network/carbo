@@ -3,7 +3,7 @@
 class SnapshotUserVisibility
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'system', retry: true, backtrace: false
+  sidekiq_options queue: "system", retry: true, backtrace: false
 
   def perform
     visible_ads_query = UserConnection.visible_ads_count.to_sql
@@ -14,11 +14,11 @@ class SnapshotUserVisibility
 
     known_query = UserConnection.known_contacts_count.to_sql
 
-    friends_query = UserContact.joins(phone_number: :user).group(:user_id).select('user_contacts.user_id, COUNT(*) AS count').to_sql
+    friends_query = UserContact.joins(phone_number: :user).group(:user_id).select("user_contacts.user_id, COUNT(*) AS count").to_sql
 
-    users_query = User.select('users.id, COUNT(user_contacts.id) AS count')
+    users_query = User.select("users.id, COUNT(user_contacts.id) AS count")
       .left_joins(:user_contacts)
-      .group('users.id')
+      .group("users.id")
       .to_sql
 
     Event.connection.execute(<<~SQL)

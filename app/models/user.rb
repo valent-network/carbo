@@ -3,12 +3,12 @@
 class User < ApplicationRecord
   validates_associated :phone_number
   validates :phone_number, :refcode, uniqueness: true
-  validates :name, length: { maximum: 50 }, if: proc { |user| user.name.present? }
+  validates :name, length: {maximum: 50}, if: proc { |user| user.name.present? }
 
   belongs_to :phone_number
-  belongs_to :referrer, foreign_key: :referrer_id, class_name: 'User', optional: true
+  belongs_to :referrer, foreign_key: :referrer_id, class_name: "User", optional: true
 
-  has_one :ref_c, class_name: 'UserContact', foreign_key: :phone_number_id, primary_key: :phone_number_id
+  has_one :ref_c, class_name: "UserContact", foreign_key: :phone_number_id, primary_key: :phone_number_id
   has_many :referrer_contacts, through: :referrer, source: :ref_c, primary_key: :phone_number_id, foreign_key: :phone_number_id
 
   has_many :user_contacts, dependent: :delete_all
@@ -26,16 +26,16 @@ class User < ApplicationRecord
 
   mount_base64_uploader :avatar, AvatarUploader
 
-  scope :no_contacts, -> () { where.not('EXISTS (SELECT 1 FROM user_contacts WHERE user_contacts.user_id = users.id)') }
-  scope :no_connections, -> () { where.not('EXISTS (SELECT 1 FROM user_connections WHERE user_connections.user_id = users.id AND user_connections.friend_id != users.id)') }
-  scope :with_referrer, -> () { where.not(referrer_id: nil) }
+  scope :no_contacts, -> { where.not("EXISTS (SELECT 1 FROM user_contacts WHERE user_contacts.user_id = users.id)") }
+  scope :no_connections, -> { where.not("EXISTS (SELECT 1 FROM user_connections WHERE user_connections.user_id = users.id AND user_connections.friend_id != users.id)") }
+  scope :with_referrer, -> { where.not(referrer_id: nil) }
 
   def update_friends!
     USER_FRIENDS_GRAPH.update_friends_for(self)
   end
 
   def blocked_users_ids
-    user_blocked_phone_numbers.joins(phone_number: :user).pluck('users.id')
+    user_blocked_phone_numbers.joins(phone_number: :user).pluck("users.id")
   end
 
   def update_connections!
@@ -49,7 +49,7 @@ class User < ApplicationRecord
 
     connections.reject!(&:blank?)
 
-    connections_to_upsert = connections.map { |conn| { user_id: id, friend_id: conn[0], connection_id: conn[1], hops_count: conn[2] } }
+    connections_to_upsert = connections.map { |conn| {user_id: id, friend_id: conn[0], connection_id: conn[1], hops_count: conn[2]} }
 
     UserConnection.transaction do
       UserConnection.upsert_all(connections_to_upsert, unique_by: [:user_id, :connection_id, :friend_id], returning: false)
@@ -88,7 +88,7 @@ class User < ApplicationRecord
       visible_friends_count: visible_friends_count,
       visible_ads_count: visible_ads_count,
       visible_ads_count_for_default_hops: visible_ads_count_for_default_hops,
-      visible_business_ads_count: visible_business_ads_count,
+      visible_business_ads_count: visible_business_ads_count
     }
   end
 end

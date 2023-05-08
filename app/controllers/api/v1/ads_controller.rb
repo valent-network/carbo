@@ -8,7 +8,7 @@ module Api
       def show
         ad = Ad.eager_load(:ads_source, :ad_description, :ad_extra, :ad_query, :ad_image_links_set, :ad_prices, :city, :region).find(params[:id])
         AdVisitedJob.perform_async(current_user.id, ad.id)
-        CreateEvent.call(:visited_ad, user: current_user, data: { ad_id: ad.id })
+        CreateEvent.call(:visited_ad, user: current_user, data: {ad_id: ad.id})
 
         ads_with_friends_sql = AdsWithFriendsQuery.new.call(current_user, [ad.phone_number_id])
         ads_with_friends = Ad.find_by_sql(ads_with_friends_sql)

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CachedSettings
   SETTINGS = %i[filters filterable_values_groups cities categories]
 
@@ -6,7 +7,7 @@ class CachedSettings
 
   def initialize(locale = I18n.locale.to_s)
     @locale = locale
-    @json = REDIS.get("settings.#{locale}") || '{}'
+    @json = REDIS.get("settings.#{locale}") || "{}"
   end
 
   SETTINGS.each do |setting|
@@ -35,7 +36,7 @@ class CachedSettings
         filters: _filters,
         cities: _cities,
         categories: _categories,
-        filterable_values_groups: _filterable_values_groups,
+        filterable_values_groups: _filterable_values_groups
       }
     end
 
@@ -43,7 +44,7 @@ class CachedSettings
       FilterableValue
         .includes(:ad_option_type)
         .joins(:ad_option_type)
-        .where(ad_option_types: { filterable: true })
+        .where(ad_option_types: {filterable: true})
         .map { |fv| [fv.ad_option_type.name, [fv.name, fv.raw_value]] }
         .group_by(&:first)
         .transform_values do |v|
@@ -61,7 +62,7 @@ class CachedSettings
         .to_h
         .transform_keys { |region| region.translations[I18n.locale.to_s] }
         .transform_values do |cities|
-          cities.sort_by { |city| cities_sorted.index(city.translations[I18n.locale.to_s]) }.map { |city| { name: city.translations[I18n.locale.to_s], id: city.id } }
+          cities.sort_by { |city| cities_sorted.index(city.translations[I18n.locale.to_s]) }.map { |city| {name: city.translations[I18n.locale.to_s], id: city.id} }
         end
     end
 
@@ -79,7 +80,7 @@ class CachedSettings
               {
                 name: f.group.translations[I18n.locale.to_s],
                 id: f.group.id,
-                position: f.group.position,
+                position: f.group.position
               }
             end.uniq { |x| x[:id] }
 
@@ -90,9 +91,9 @@ class CachedSettings
               id: opt.id,
               filterable: opt.filterable,
               values: opt.filterable ? values : [],
-              position: opt.position,
+              position: opt.position
             }
-          end,
+          end
         }
       end
     end
@@ -101,7 +102,7 @@ class CachedSettings
       FilterableValuesGroup
         .joins(:ad_option_type)
         .includes(:ad_option_type, :values)
-        .where(ad_option_types: { filterable: true })
+        .where(ad_option_types: {filterable: true})
         .all
         .group_by { |fvg| fvg.ad_option_type.name }
         .transform_values do |fvgs|

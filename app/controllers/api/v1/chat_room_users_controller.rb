@@ -12,7 +12,7 @@ module Api
         friends = UserContact.ad_friends_for_user(chat_room.ad, current_user)
         payload = {
           friends: ActiveModelSerializers::SerializableResource.new(friends, each_serializer: Api::V1::AdFriendSerializer),
-          chat_room: Api::V1::ChatRoomListSerializer.new(current_user, chat_room).first,
+          chat_room: Api::V1::ChatRoomListSerializer.new(current_user, chat_room).first
         }
 
         render(json: payload)
@@ -20,7 +20,7 @@ module Api
 
       def destroy
         LeaveChatRoom.new.call(current_user.id, params[:id])
-        render(json: { message: :ok })
+        render(json: {message: :ok})
       end
     end
   end

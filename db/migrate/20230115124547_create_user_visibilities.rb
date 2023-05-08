@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateUserVisibilities < ActiveRecord::Migration[7.0]
   def change
     create_table(:user_visibilities, id: false) do |t|

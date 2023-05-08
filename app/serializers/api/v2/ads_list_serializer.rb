@@ -6,7 +6,7 @@ module Api
       attributes :id, :image, :images, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted, :favorite, :category_currency, :updated_at
 
       def price
-        ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
+        ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: " ")
       end
 
       def short_description
@@ -14,7 +14,7 @@ module Api
       end
 
       def city
-        I18n.t('ad_options.city_value', value: object.city_display_name)
+        I18n.t("ad_options.city_value", value: object.city_display_name)
       end
 
       def region
@@ -25,16 +25,16 @@ module Api
         native_image = object.ad_images.sort_by(&:position).first
 
         if native_image
-          { id: native_image.id, url: native_image.attachment_url(:feed), position: native_image.position }
+          {id: native_image.id, url: native_image.attachment_url(:feed), position: native_image.position}
         else
           external_image = tmp_images.first
 
-          external_image ? { url: external_image[:url], position: external_image[:position] } : {}
+          external_image ? {url: external_image[:url], position: external_image[:position]} : {}
         end
       end
 
       def images
-        object.ad_images.sort_by(&:position).map { |ai| { id: ai.id, url: ai.attachment_url(:feed), position: ai.position } }.presence || tmp_images
+        object.ad_images.sort_by(&:position).map { |ai| {id: ai.id, url: ai.attachment_url(:feed), position: ai.position} }.presence || tmp_images
       end
 
       def ad_images
@@ -42,9 +42,9 @@ module Api
       end
 
       def tmp_images
-        t = object.details['images_json_array_tmp']
+        t = object.details["images_json_array_tmp"]
         t = t.is_a?(String) ? JSON.parse(t) : Array.wrap(t)
-        t.map.with_index.to_a.map { |h| { url: h.first, position: h.last } }
+        t.map.with_index.to_a.map { |h| {url: h.first, position: h.last} }
       end
 
       def favorite

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(City) do
-  menu priority: 11, label: proc { I18n.t('active_admin.city') }, parent: 'settings'
+  menu priority: 11, label: proc { I18n.t("active_admin.city") }, parent: "settings"
 
   permit_params translations: [:uk, :en]
 
@@ -18,8 +18,8 @@ ActiveAdmin.register(City) do
 
   form do |f|
     f.inputs(for: :translations) do |t|
-      t.input(:uk, input_html: { value: f.object.translations['uk'] })
-      t.input(:en, input_html: { value: f.object.translations['en'] })
+      t.input(:uk, input_html: {value: f.object.translations["uk"]})
+      t.input(:en, input_html: {value: f.object.translations["en"]})
     end
     f.actions
   end

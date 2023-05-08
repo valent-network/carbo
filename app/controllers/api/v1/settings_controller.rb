@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Api
   module V1
     class SettingsController < ApplicationController
@@ -7,7 +8,7 @@ module Api
 
         payload = {
           cities: settings.cities,
-          categories: settings.categories.sort_by { |c| c['position'] },
+          categories: settings.categories.sort_by { |c| c["position"] }
         }
 
         render(json: payload)

@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :ad do
     ads_source
     phone_number
-    category { Category.find_by_name('vehicles') }
+    category { Category.find_by_name("vehicles") }
     price { rand(1000..10000) }
     address { "http://example.com/ads/#{rand(1000000000)}" }
     deleted { [true, false].sample }
@@ -22,7 +22,7 @@ FactoryBot.define do
         region: FFaker::AddressRU.province,
         city: FFaker::AddressRU.city,
         color: FFaker::Vehicle.mfg_color(0),
-        images_json_array_tmp: (0..rand(1..5)).to_a.map { |_i| "#{FFaker::Image.url}#{SecureRandom.hex}" },
+        images_json_array_tmp: (0..rand(1..5)).to_a.map { |_i| "#{FFaker::Image.url}#{SecureRandom.hex}" }
       }
     end
 

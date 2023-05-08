@@ -6,7 +6,7 @@ ActiveAdmin.setup do |config|
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  config.site_title = I18n.t('recario', locale: :en)
+  config.site_title = I18n.t("recario", locale: :en)
 
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.
@@ -160,9 +160,9 @@ ActiveAdmin.setup do |config|
 
   # == Setting a Favicon
   #
-  config.favicon = '/admin/favicon.png'
+  config.favicon = "/admin/favicon.png"
 
-  meta_tags_options = { viewport: 'width=device-width, initial-scale=1' }
+  meta_tags_options = {viewport: "width=device-width, initial-scale=1"}
   # == Meta Tags
   #
   # Add additional meta tags to the head element of active admin pages.
@@ -252,8 +252,8 @@ ActiveAdmin.setup do |config|
     #   (for example, with cancan)
     # admin.download_links = proc { can?(:view_download_links) }
     admin.build_menu do |menu|
-      menu.add(id: 'other', label: proc { I18n.t('active_admin.other') })
-      menu.add(id: 'settings', label: proc { I18n.t('active_admin.settings') })
+      menu.add(id: "other", label: proc { I18n.t("active_admin.other") })
+      menu.add(id: "settings", label: proc { I18n.t("active_admin.settings") })
     end
   end
 

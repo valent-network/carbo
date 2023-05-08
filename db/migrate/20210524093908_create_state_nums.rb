@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateStateNums < ActiveRecord::Migration[6.1]
   def change
     create_table(:state_nums, id: false) do |t|

@@ -6,7 +6,7 @@ module Api
       attributes :id, :image, :title, :price, :short_description, :friend_name_and_total, :city, :region, :my_ad, :deleted
 
       def price
-        ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
+        ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: " ")
       end
 
       def short_description
@@ -14,7 +14,7 @@ module Api
       end
 
       def city
-        I18n.t('ad_options.city_value', value: object.city_display_name)
+        I18n.t("ad_options.city_value", value: object.city_display_name)
       end
 
       def region
@@ -32,7 +32,7 @@ module Api
       end
 
       def tmp_images
-        t = object.details['images_json_array_tmp']
+        t = object.details["images_json_array_tmp"]
         t.is_a?(String) ? JSON.parse(t) : Array.wrap(t)
       end
     end

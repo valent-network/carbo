@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 class SendSystemMessageToAdmins
-  ADMIN_USERS_IDS = ENV['ADMIN_USERS_IDS'].to_s.split
+  ADMIN_USERS_IDS = ENV["ADMIN_USERS_IDS"].to_s.split
 
   def call(message_text)
     sender = SendSystemMessageToChatRoom.new

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class AdjustPromoMatview < ActiveRecord::Migration[6.1]
   def down
-    execute('DROP MATERIALIZED VIEW promo_events_matview')
+    execute("DROP MATERIALIZED VIEW promo_events_matview")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW promo_events_matview AS (
         SELECT ROW_NUMBER() OVER(ORDER BY events.created_at) AS id,
@@ -19,7 +20,7 @@ class AdjustPromoMatview < ActiveRecord::Migration[6.1]
   end
 
   def up
-    execute('DROP MATERIALIZED VIEW promo_events_matview')
+    execute("DROP MATERIALIZED VIEW promo_events_matview")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW promo_events_matview AS (
         SELECT ROW_NUMBER() OVER(ORDER BY events.created_at) AS id,

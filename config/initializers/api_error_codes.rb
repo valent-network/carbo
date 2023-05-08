@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 API_ERROR_CODES = %w[
   NOT_AUTHORIZED
   WRONG_VERIFICATION_CODE

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreatePromoEventsMatview < ActiveRecord::Migration[6.1]
   def up
     execute(<<~SQL)
@@ -18,6 +19,6 @@ class CreatePromoEventsMatview < ActiveRecord::Migration[6.1]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW promo_events_matview')
+    execute("DROP MATERIALIZED VIEW promo_events_matview")
   end
 end

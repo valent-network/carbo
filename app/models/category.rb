@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Category < ApplicationRecord
   include SettingsImpactable
 
@@ -6,6 +7,6 @@ class Category < ApplicationRecord
 
   has_many :ad_option_types
 
-  validates :currency, inclusion: { in: CURRENCIES }, presence: true
+  validates :currency, inclusion: {in: CURRENCIES}, presence: true
   validates :position, presence: true
 end

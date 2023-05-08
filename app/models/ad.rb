@@ -6,9 +6,9 @@ class Ad < ApplicationRecord
   before_update :prepare_ad_price
   before_validation :set_native_address, :set_native_source
 
-  validates :price, presence: true, numericality: { greater_than: 0, only_integer: true }
-  validates :address, uniqueness: { scope: :ads_source_id }
-  validates :deleted, inclusion: { in: [true, false] }
+  validates :price, presence: true, numericality: {greater_than: 0, only_integer: true}
+  validates :address, uniqueness: {scope: :ads_source_id}
+  validates :deleted, inclusion: {in: [true, false]}
 
   belongs_to :ads_source
   belongs_to :phone_number
@@ -35,11 +35,11 @@ class Ad < ApplicationRecord
   delegate :currency, to: :category, prefix: true
 
   scope :active, -> { where(deleted: false) }
-  scope :opts, ->(query) { by_options(query.split(';').first.strip, query.split(';').last.strip) }
-  scope :known, -> { joins('JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id') }
+  scope :opts, ->(query) { by_options(query.split(";").first.strip, query.split(";").last.strip) }
+  scope :known, -> { joins("JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id") }
 
-  scope :order_by_visit_for, ->(user) { Ad.from("(#{select('id, MAX(created_at) AS created_at').from("(#{user.events.ad_visits_ordered.to_sql}) AS ads").group('id').to_sql}) AS ads").joins("JOIN ads AS existing_ads ON ads.id = existing_ads.id").order('ads.created_at DESC') }
-  scope :order_by_fav_for, ->(user) { joins(:ad_favorites).where(ad_favorites: { user_id: user.id }).order('ad_favorites.updated_at DESC') }
+  scope :order_by_visit_for, ->(user) { Ad.from("(#{select("id, MAX(created_at) AS created_at").from("(#{user.events.ad_visits_ordered.to_sql}) AS ads").group("id").to_sql}) AS ads").joins("JOIN ads AS existing_ads ON ads.id = existing_ads.id").order("ads.created_at DESC") }
+  scope :order_by_fav_for, ->(user) { joins(:ad_favorites).where(ad_favorites: {user_id: user.id}).order("ad_favorites.updated_at DESC") }
 
   accepts_nested_attributes_for :ad_query, :ad_description, :ad_extra, :ad_image_links_set, update_only: true
   accepts_nested_attributes_for :ad_images, allow_destroy: true
@@ -64,11 +64,11 @@ class Ad < ApplicationRecord
       LEFT JOIN events ON events.name = 'visited_ad' AND (events.data->>'ad_id')::integer = ads.id
     SQL
 
-    select(select_clause).left_joins(:ad_favorites, chat_rooms: :messages).joins(left_join_events_clause).group('ads.id')
+    select(select_clause).left_joins(:ad_favorites, chat_rooms: :messages).joins(left_join_events_clause).group("ads.id")
   end
 
   def self.by_options(opt_type, opt_val)
-    joins(:ad_extra).where(%[ad_extras.details @> '{"#{opt_type}": "#{opt_val}"}'])
+    joins(:ad_extra).where(%(ad_extras.details @> '{"#{opt_type}": "#{opt_val}"}'))
   end
 
   def phone=(val)
@@ -88,16 +88,16 @@ class Ad < ApplicationRecord
     @friend_name_and_total = {
       name: friend.friend_name,
       friend_hands: friend.hops_count,
-      count: (associated.count - 1),
+      count: (associated.count - 1)
     }
   end
 
   def details
     @details ||= (ad_extra_details || {}).merge({
-      'description' => ad_description_body,
-      'images_json_array_tmp' => ad_image_links_set_value,
-      'city' => city_display_name,
-      'region' => region_display_name,
+      "description" => ad_description_body,
+      "images_json_array_tmp" => ad_image_links_set_value,
+      "city" => city_display_name,
+      "region" => region_display_name
     })
   end
 

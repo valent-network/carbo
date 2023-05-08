@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe(ApplicationCable::UserChannel) do
   let(:user) { create(:user) }
@@ -9,7 +9,7 @@ RSpec.describe(ApplicationCable::UserChannel) do
     stub_connection current_user: user
   end
 
-  it 'Subscribed for User specific stream' do
+  it "Subscribed for User specific stream" do
     subscribe
 
     expect(subscription).to(be_confirmed)

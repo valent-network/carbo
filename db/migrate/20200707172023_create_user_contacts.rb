@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateUserContacts < ActiveRecord::Migration[6.0]
   def change
     create_table(:user_contacts) do |t|

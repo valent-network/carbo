@@ -1,22 +1,23 @@
 # frozen_string_literal: true
+
 class ChangeColumnTypesToOptimizeMemory < ActiveRecord::Migration[6.1]
   def up
-    execute('DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year')
-    execute('DROP MATERIALIZED VIEW effective_user_contacts')
-    execute('DROP MATERIALIZED VIEW effective_ads')
+    execute("DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year")
+    execute("DROP MATERIALIZED VIEW effective_user_contacts")
+    execute("DROP MATERIALIZED VIEW effective_ads")
 
-    change_column(:ad_option_values, :id, 'integer')
+    change_column(:ad_option_values, :id, "integer")
 
-    change_column(:ad_options, :ad_id, 'integer')
-    change_column(:ad_options, :ad_option_type_id, 'smallint')
-    change_column(:ad_options, :ad_option_value_id, 'integer')
+    change_column(:ad_options, :ad_id, "integer")
+    change_column(:ad_options, :ad_option_type_id, "smallint")
+    change_column(:ad_options, :ad_option_value_id, "integer")
 
-    change_column(:user_contacts, :id, 'integer')
-    change_column(:user_contacts, :user_id, 'integer')
-    change_column(:user_contacts, :phone_number_id, 'integer')
+    change_column(:user_contacts, :id, "integer")
+    change_column(:user_contacts, :user_id, "integer")
+    change_column(:user_contacts, :phone_number_id, "integer")
 
-    change_column(:ads, :id, 'integer')
-    change_column(:ads, :phone_number_id, 'integer')
+    change_column(:ads, :id, "integer")
+    change_column(:ads, :phone_number_id, "integer")
 
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW ads_grouped_by_maker_model_year AS (
@@ -43,7 +44,7 @@ class ChangeColumnTypesToOptimizeMemory < ActiveRecord::Migration[6.1]
         ORDER BY maker, model, year
       )
     SQL
-    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: 'search_budget_index')
+    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: "search_budget_index")
 
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW effective_ads AS (
@@ -54,8 +55,8 @@ class ChangeColumnTypesToOptimizeMemory < ActiveRecord::Migration[6.1]
       )
       WITH DATA
     SQL
-    add_index(:effective_ads, :id, unique: true, order: { id: :desc })
-    add_index(:effective_ads, %w[phone_number_id id], order: { id: :desc })
+    add_index(:effective_ads, :id, unique: true, order: {id: :desc})
+    add_index(:effective_ads, %w[phone_number_id id], order: {id: :desc})
     add_index(:effective_ads, :price)
 
     execute(<<~SQL)
@@ -74,22 +75,22 @@ class ChangeColumnTypesToOptimizeMemory < ActiveRecord::Migration[6.1]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year')
-    execute('DROP MATERIALIZED VIEW effective_user_contacts')
-    execute('DROP MATERIALIZED VIEW effective_ads')
+    execute("DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year")
+    execute("DROP MATERIALIZED VIEW effective_user_contacts")
+    execute("DROP MATERIALIZED VIEW effective_ads")
 
-    change_column(:ad_option_values, :id, 'bigint')
+    change_column(:ad_option_values, :id, "bigint")
 
-    change_column(:ad_options, :ad_id, 'bigint')
-    change_column(:ad_options, :ad_option_type_id, 'bigint')
-    change_column(:ad_options, :ad_option_value_id, 'bigint')
+    change_column(:ad_options, :ad_id, "bigint")
+    change_column(:ad_options, :ad_option_type_id, "bigint")
+    change_column(:ad_options, :ad_option_value_id, "bigint")
 
-    change_column(:user_contacts, :id, 'bigint')
-    change_column(:user_contacts, :user_id, 'bigint')
-    change_column(:user_contacts, :phone_number_id, 'bigint')
+    change_column(:user_contacts, :id, "bigint")
+    change_column(:user_contacts, :user_id, "bigint")
+    change_column(:user_contacts, :phone_number_id, "bigint")
 
-    change_column(:ads, :id, 'bigint')
-    change_column(:ads, :phone_number_id, 'bigint')
+    change_column(:ads, :id, "bigint")
+    change_column(:ads, :phone_number_id, "bigint")
 
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW ads_grouped_by_maker_model_year AS (
@@ -116,7 +117,7 @@ class ChangeColumnTypesToOptimizeMemory < ActiveRecord::Migration[6.1]
         ORDER BY maker, model, year
       )
     SQL
-    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: 'search_budget_index')
+    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: "search_budget_index")
 
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW effective_ads AS (
@@ -127,8 +128,8 @@ class ChangeColumnTypesToOptimizeMemory < ActiveRecord::Migration[6.1]
       )
       WITH DATA
     SQL
-    add_index(:effective_ads, :id, unique: true, order: { id: :desc })
-    add_index(:effective_ads, %w[phone_number_id id], order: { id: :desc })
+    add_index(:effective_ads, :id, unique: true, order: {id: :desc})
+    add_index(:effective_ads, %w[phone_number_id id], order: {id: :desc})
     add_index(:effective_ads, :price)
 
     execute(<<~SQL)

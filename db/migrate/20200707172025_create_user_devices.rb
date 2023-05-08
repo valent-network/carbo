@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateUserDevices < ActiveRecord::Migration[6.0]
   def change
     create_table(:user_devices) do |t|

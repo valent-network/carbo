@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class RefcodeGenerator
   # rubocop:disable Layout/MultilineArrayLineBreaks
   SYMBOLS = %w[

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 class CreateEvent
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'default', retry: true, backtrace: false
+  sidekiq_options queue: "default", retry: true, backtrace: false
 
   def self.call(event_type, user:, data: {})
     uid = user.is_a?(User) ? user.id : user
@@ -14,7 +15,7 @@ class CreateEvent
       user_id: user_id,
       name: event_type,
       data: JSON.parse(data),
-      created_at: Time.at(created_at),
+      created_at: Time.at(created_at)
     }
 
     event = Event.new(params)

@@ -9,7 +9,7 @@ FactoryBot.define do
     push_token { SecureRandom.hex }
 
     before(:create) do |user_device|
-      user_device.build_version ||= user_device.os == 'ios' ? '1.9' : '26'
+      user_device.build_version ||= (user_device.os == "ios") ? "1.9" : "26"
     end
   end
 end

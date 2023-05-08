@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-require 'simplecov'
-SimpleCov.start('rails') do
-  add_filter '/app/admin/'
-  add_filter '/vendor/'
-  add_filter '/lib/api_tasters/'
-  add_filter '/app/services/push_service.rb'
+require "simplecov"
+SimpleCov.start("rails") do
+  add_filter "/app/admin/"
+  add_filter "/vendor/"
+  add_filter "/lib/api_tasters/"
+  add_filter "/app/services/push_service.rb"
 end
 
-ENV['RAILS_ENV'] = 'test'
-require File.expand_path('../config/environment', __dir__)
+ENV["RAILS_ENV"] = "test"
+require File.expand_path("../config/environment", __dir__)
 # Prevent database truncation if the environment is production
-abort('The Rails environment is running in production mode!') if Rails.env.production?
-require 'rspec/rails'
-require 'rspec/retry'
+abort("The Rails environment is running in production mode!") if Rails.env.production?
+require "rspec/rails"
+require "rspec/retry"
 # require 'action_cable/testing/rspec'
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -57,29 +57,29 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.run_all_when_everything_filtered = true
-  config.filter_run(:focus) unless ENV['CI']
+  config.filter_run(:focus) unless ENV["CI"]
 
   config.after do
     if Rails.env.test?
-      FileUtils.rm_rf(Dir[Rails.root.join('public/uploads')])
+      FileUtils.rm_rf(Dir[Rails.root.join("public/uploads")])
     end
   end
 
-  retry_limit = ENV['RSPEC_RETRY_LIMIT'].to_i
+  retry_limit = ENV["RSPEC_RETRY_LIMIT"].to_i
   if retry_limit > 0
     config.around do |ex|
       ex.run_with_retry(retry: retry_limit)
     end
   end
 
-  config.before { controller.request.headers['X-User-Locale'] = 'en' if defined?(controller) }
+  config.before { controller.request.headers["X-User-Locale"] = "en" if defined?(controller) }
 
   config.before(:all) do
-    category = Category.where(name: 'vehicles', currency: '$', position: 0).first_or_create!
-    Rpush::Client::ActiveRecord::Apnsp8::App.where(name: 'ios', connections: 2, apn_key: "BEGINEND", apn_key_id: "ID", environment: 'production', team_id: 'team', bundle_id: 'com.recar.io').first_or_create!
-    Rpush::Client::ActiveRecord::Gcm::App.where(name: 'android', connections: 2, auth_key: 'INVALID').first_or_create!
+    category = Category.where(name: "vehicles", currency: "$", position: 0).first_or_create!
+    Rpush::Client::ActiveRecord::Apnsp8::App.where(name: "ios", connections: 2, apn_key: "BEGINEND", apn_key_id: "ID", environment: "production", team_id: "team", bundle_id: "com.recar.io").first_or_create!
+    Rpush::Client::ActiveRecord::Gcm::App.where(name: "android", connections: 2, auth_key: "INVALID").first_or_create!
     %w[fuel gear carcass wheels color].each do |ad_option_type|
-      category.ad_option_types.where(name: ad_option_type, filterable: ad_option_type.in?(%w[gear fuel carcass wheels]), input_type: 'picker').first_or_create!
+      category.ad_option_types.where(name: ad_option_type, filterable: ad_option_type.in?(%w[gear fuel carcass wheels]), input_type: "picker").first_or_create!
     end
 
     AdsGroupedByMakerModelYear.refresh(concurrently: false)

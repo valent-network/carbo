@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # NOTE TO THE CURIOUS.
 #
 # Congratulations on being a diligent developer and vetting the migrations
@@ -20,7 +21,7 @@
 # approach. The constituent parts of this migration have been executed
 # many times, by many people!
 
-class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+class AddRpush < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
   def self.migrations
     [
       CreateRapnsNotifications,
@@ -48,16 +49,16 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
   end
 
-  class CreateRapnsNotifications < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class CreateRapnsNotifications < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     def self.up
       create_table(:rapns_notifications) do |t|
         t.integer(:badge, null: true)
-        t.string(:device_token,          null: false, limit: 64)
-        t.string(:sound,                 null: true,  default: "1.aiff")
-        t.string(:alert,                 null: true)
+        t.string(:device_token, null: false, limit: 64)
+        t.string(:sound, null: true, default: "1.aiff")
+        t.string(:alert, null: true)
         t.text(:attributes_for_device, null: true)
-        t.integer(:expiry,                null: false, default: 1.day.to_i)
-        t.boolean(:delivered,             null: false, default: false)
+        t.integer(:expiry, null: false, default: 1.day.to_i)
+        t.boolean(:delivered, null: false, default: false)
         t.timestamp(:delivered_at, null: true)
         t.boolean(:failed, null: false, default: false)
         t.timestamp(:failed_at, null: true)
@@ -67,17 +68,17 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
         t.timestamps
       end
 
-      add_index(:rapns_notifications, [:delivered, :failed, :deliver_after], name: 'index_rapns_notifications_multi')
+      add_index(:rapns_notifications, [:delivered, :failed, :deliver_after], name: "index_rapns_notifications_multi")
     end
 
     def self.down
-      if ActiveRecord.version >= Gem::Version.new('5.1')
-        if index_name_exists?(:rapns_notifications, 'index_rapns_notifications_multi')
-          remove_index(:rapns_notifications, name: 'index_rapns_notifications_multi')
+      if ActiveRecord.version >= Gem::Version.new("5.1")
+        if index_name_exists?(:rapns_notifications, "index_rapns_notifications_multi")
+          remove_index(:rapns_notifications, name: "index_rapns_notifications_multi")
         end
       else
-        if index_name_exists?(:rapns_notifications, 'index_rapns_notifications_multi', true) # rubocop:disable Style/IfInsideElse
-          remove_index(:rapns_notifications, name: 'index_rapns_notifications_multi')
+        if index_name_exists?(:rapns_notifications, "index_rapns_notifications_multi", true) # rubocop:disable Style/IfInsideElse
+          remove_index(:rapns_notifications, name: "index_rapns_notifications_multi")
         end
       end
 
@@ -85,7 +86,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
   end
 
-  class CreateRapnsFeedback < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class CreateRapnsFeedback < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     def self.up
       create_table(:rapns_feedback) do |t|
         t.string(:device_token, null: false, limit: 64)
@@ -97,7 +98,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
 
     def self.down
-      if ActiveRecord.version >= Gem::Version.new('5.1')
+      if ActiveRecord.version >= Gem::Version.new("5.1")
         if index_name_exists?(:rapns_feedback, :index_rapns_feedback_on_device_token)
           remove_index(:rapns_feedback, name: :index_rapns_feedback_on_device_token)
         end
@@ -111,7 +112,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
   end
 
-  class AddAlertIsJsonToRapnsNotifications < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class AddAlertIsJsonToRapnsNotifications < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     def self.up
       add_column(:rapns_notifications, :alert_is_json, :boolean, null: true, default: false)
     end
@@ -121,7 +122,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
   end
 
-  class AddAppToRapns < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class AddAppToRapns < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     def self.up
       add_column(:rapns_notifications, :app, :string, null: true)
       add_column(:rapns_feedback, :app, :string, null: true)
@@ -133,11 +134,11 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
   end
 
-  class CreateRapnsApps < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class CreateRapnsApps < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     def self.up
       create_table(:rapns_apps) do |t|
-        t.string(:key,             null: false)
-        t.string(:environment,     null: false)
+        t.string(:key, null: false)
+        t.string(:environment, null: false)
         t.text(:certificate, null: false)
         t.string(:password, null: true)
         t.integer(:connections, null: false, default: 1)
@@ -150,15 +151,15 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
   end
 
-  class AddGcm < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class AddGcm < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     module Rapns
       class App < ActiveRecord::Base
-        self.table_name = 'rapns_apps'
+        self.table_name = "rapns_apps"
       end
 
       class Notification < ActiveRecord::Base
         belongs_to :app
-        self.table_name = 'rapns_notifications'
+        self.table_name = "rapns_notifications"
       end
     end
 
@@ -166,8 +167,8 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
       add_column(:rapns_notifications, :type, :string, null: true)
       add_column(:rapns_apps, :type, :string, null: true)
 
-      AddGcm::Rapns::Notification.update_all(type: 'Rapns::Apns::Notification')
-      AddGcm::Rapns::App.update_all(type: 'Rapns::Apns::App')
+      AddGcm::Rapns::Notification.update_all(type: "Rapns::Apns::Notification")
+      AddGcm::Rapns::App.update_all(type: "Rapns::Apns::App")
 
       change_column(:rapns_notifications, :type, :string, null: false)
       change_column(:rapns_apps, :type, :string, null: false)
@@ -177,7 +178,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
       change_column(:rapns_apps, :certificate, :text, null: true, default: nil)
 
       change_column(:rapns_notifications, :error_description, :text, null: true, default: nil)
-      change_column(:rapns_notifications, :sound, :string, default: 'default')
+      change_column(:rapns_notifications, :sound, :string, default: "default")
 
       rename_column(:rapns_notifications, :attributes_for_device, :data)
       rename_column(:rapns_apps, :key, :name)
@@ -187,7 +188,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
       add_column(:rapns_notifications, :collapse_key, :string, null: true)
       add_column(:rapns_notifications, :delay_while_idle, :boolean, null: false, default: false)
 
-      reg_ids_type = ActiveRecord::Base.connection.adapter_name.include?('Mysql') ? :mediumtext : :text
+      reg_ids_type = ActiveRecord::Base.connection.adapter_name.include?("Mysql") ? :mediumtext : :text
       add_column(:rapns_notifications, :registration_ids, reg_ids_type, null: true)
       add_column(:rapns_notifications, :app_id, :integer, null: true)
       add_column(:rapns_notifications, :retries, :integer, null: true, default: 0)
@@ -202,7 +203,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
       change_column(:rapns_notifications, :app_id, :integer, null: false)
       remove_column(:rapns_notifications, :app)
 
-      if ActiveRecord.version >= Gem::Version.new('5.1')
+      if ActiveRecord.version >= Gem::Version.new("5.1")
         if index_name_exists?(:rapns_notifications, "index_rapns_notifications_multi")
           remove_index(:rapns_notifications, name: "index_rapns_notifications_multi")
         elsif index_name_exists?(:rapns_notifications, "index_rapns_notifications_on_delivered_failed_deliver_after")
@@ -220,18 +221,18 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
 
     def self.down
-      AddGcm::Rapns::Notification.where(type: 'Rapns::Gcm::Notification').delete_all
+      AddGcm::Rapns::Notification.where(type: "Rapns::Gcm::Notification").delete_all
 
       remove_column(:rapns_notifications, :type)
       remove_column(:rapns_apps, :type)
 
-      change_column(:rapns_notifications, :device_token, :string, { null: false, limit: 64 })
-      change_column(:rapns_notifications, :expiry, :integer, { null: false, default: 1.day.to_i })
+      change_column(:rapns_notifications, :device_token, :string, {null: false, limit: 64})
+      change_column(:rapns_notifications, :expiry, :integer, {null: false, default: 1.day.to_i})
       change_column(:rapns_apps, :environment, :string, null: false)
       change_column(:rapns_apps, :certificate, :text, null: false)
 
       change_column(:rapns_notifications, :error_description, :string, null: true, default: nil)
-      change_column(:rapns_notifications, :sound, :string, default: '1.aiff')
+      change_column(:rapns_notifications, :sound, :string, default: "1.aiff")
 
       rename_column(:rapns_notifications, :data, :attributes_for_device)
       rename_column(:rapns_apps, :name, :key)
@@ -252,7 +253,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
         AddGcm::Rapns::Notification.where(app_id: app.id).update_all(app: app.key)
       end
 
-      if ActiveRecord.version >= Gem::Version.new('5.1')
+      if ActiveRecord.version >= Gem::Version.new("5.1")
         if index_name_exists?(:rapns_notifications, :index_rapns_notifications_multi)
           remove_index(:rapns_notifications, name: :index_rapns_notifications_multi)
         end
@@ -268,10 +269,10 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
   end
 
-  class AddWpns < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class AddWpns < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     module Rapns
       class Notification < ActiveRecord::Base
-        self.table_name = 'rapns_notifications'
+        self.table_name = "rapns_notifications"
       end
     end
 
@@ -280,15 +281,15 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
 
     def self.down
-      AddWpns::Rapns::Notification.where(type: 'Rapns::Wpns::Notification').delete_all
+      AddWpns::Rapns::Notification.where(type: "Rapns::Wpns::Notification").delete_all
       remove_column(:rapns_notifications, :uri)
     end
   end
 
-  class AddAdm < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class AddAdm < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     module Rapns
       class Notification < ActiveRecord::Base
-        self.table_name = 'rapns_notifications'
+        self.table_name = "rapns_notifications"
       end
     end
 
@@ -300,7 +301,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
 
     def self.down
-      AddAdm::Rapns::Notification.where(type: 'Rapns::Adm::Notification').delete_all
+      AddAdm::Rapns::Notification.where(type: "Rapns::Adm::Notification").delete_all
 
       remove_column(:rapns_apps, :client_id)
       remove_column(:rapns_apps, :client_secret)
@@ -309,14 +310,14 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
   end
 
-  class RenameRapnsToRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class RenameRapnsToRpush < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     module Rpush
       class App < ActiveRecord::Base
-        self.table_name = 'rpush_apps'
+        self.table_name = "rpush_apps"
       end
 
       class Notification < ActiveRecord::Base
-        self.table_name = 'rpush_notifications'
+        self.table_name = "rpush_notifications"
       end
     end
 
@@ -329,7 +330,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
       rename_table(:rapns_apps, :rpush_apps)
       rename_table(:rapns_feedback, :rpush_feedback)
 
-      if ActiveRecord.version >= Gem::Version.new('5.1')
+      if ActiveRecord.version >= Gem::Version.new("5.1")
         if index_name_exists?(:rpush_notifications, :index_rapns_notifications_multi)
           rename_index(:rpush_notifications, :index_rapns_notifications_multi, :index_rpush_notifications_multi)
         end
@@ -339,7 +340,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
         end
       end
 
-      if ActiveRecord.version >= Gem::Version.new('5.1')
+      if ActiveRecord.version >= Gem::Version.new("5.1")
         if index_name_exists?(:rpush_feedback, :index_rapns_feedback_on_device_token)
           rename_index(:rpush_feedback, :index_rapns_feedback_on_device_token, :index_rpush_feedback_on_device_token)
         end
@@ -349,29 +350,29 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
         end
       end
 
-      update_type(RenameRapnsToRpush::Rpush::Notification, 'Rapns::Apns::Notification', 'Rpush::Apns::Notification')
-      update_type(RenameRapnsToRpush::Rpush::Notification, 'Rapns::Gcm::Notification', 'Rpush::Gcm::Notification')
-      update_type(RenameRapnsToRpush::Rpush::Notification, 'Rapns::Adm::Notification', 'Rpush::Adm::Notification')
-      update_type(RenameRapnsToRpush::Rpush::Notification, 'Rapns::Wpns::Notification', 'Rpush::Wpns::Notification')
+      update_type(RenameRapnsToRpush::Rpush::Notification, "Rapns::Apns::Notification", "Rpush::Apns::Notification")
+      update_type(RenameRapnsToRpush::Rpush::Notification, "Rapns::Gcm::Notification", "Rpush::Gcm::Notification")
+      update_type(RenameRapnsToRpush::Rpush::Notification, "Rapns::Adm::Notification", "Rpush::Adm::Notification")
+      update_type(RenameRapnsToRpush::Rpush::Notification, "Rapns::Wpns::Notification", "Rpush::Wpns::Notification")
 
-      update_type(RenameRapnsToRpush::Rpush::App, 'Rapns::Apns::App', 'Rpush::Apns::App')
-      update_type(RenameRapnsToRpush::Rpush::App, 'Rapns::Gcm::App', 'Rpush::Gcm::App')
-      update_type(RenameRapnsToRpush::Rpush::App, 'Rapns::Adm::App', 'Rpush::Adm::App')
-      update_type(RenameRapnsToRpush::Rpush::App, 'Rapns::Wpns::App', 'Rpush::Wpns::App')
+      update_type(RenameRapnsToRpush::Rpush::App, "Rapns::Apns::App", "Rpush::Apns::App")
+      update_type(RenameRapnsToRpush::Rpush::App, "Rapns::Gcm::App", "Rpush::Gcm::App")
+      update_type(RenameRapnsToRpush::Rpush::App, "Rapns::Adm::App", "Rpush::Adm::App")
+      update_type(RenameRapnsToRpush::Rpush::App, "Rapns::Wpns::App", "Rpush::Wpns::App")
     end
 
     def self.down
-      update_type(RenameRapnsToRpush::Rpush::Notification, 'Rpush::Apns::Notification', 'Rapns::Apns::Notification')
-      update_type(RenameRapnsToRpush::Rpush::Notification, 'Rpush::Gcm::Notification', 'Rapns::Gcm::Notification')
-      update_type(RenameRapnsToRpush::Rpush::Notification, 'Rpush::Adm::Notification', 'Rapns::Adm::Notification')
-      update_type(RenameRapnsToRpush::Rpush::Notification, 'Rpush::Wpns::Notification', 'Rapns::Wpns::Notification')
+      update_type(RenameRapnsToRpush::Rpush::Notification, "Rpush::Apns::Notification", "Rapns::Apns::Notification")
+      update_type(RenameRapnsToRpush::Rpush::Notification, "Rpush::Gcm::Notification", "Rapns::Gcm::Notification")
+      update_type(RenameRapnsToRpush::Rpush::Notification, "Rpush::Adm::Notification", "Rapns::Adm::Notification")
+      update_type(RenameRapnsToRpush::Rpush::Notification, "Rpush::Wpns::Notification", "Rapns::Wpns::Notification")
 
-      update_type(RenameRapnsToRpush::Rpush::App, 'Rpush::Apns::App', 'Rapns::Apns::App')
-      update_type(RenameRapnsToRpush::Rpush::App, 'Rpush::Gcm::App', 'Rapns::Gcm::App')
-      update_type(RenameRapnsToRpush::Rpush::App, 'Rpush::Adm::App', 'Rapns::Adm::App')
-      update_type(RenameRapnsToRpush::Rpush::App, 'Rpush::Wpns::App', 'Rapns::Wpns::App')
+      update_type(RenameRapnsToRpush::Rpush::App, "Rpush::Apns::App", "Rapns::Apns::App")
+      update_type(RenameRapnsToRpush::Rpush::App, "Rpush::Gcm::App", "Rapns::Gcm::App")
+      update_type(RenameRapnsToRpush::Rpush::App, "Rpush::Adm::App", "Rapns::Adm::App")
+      update_type(RenameRapnsToRpush::Rpush::App, "Rpush::Wpns::App", "Rapns::Wpns::App")
 
-      if ActiveRecord.version >= Gem::Version.new('5.1')
+      if ActiveRecord.version >= Gem::Version.new("5.1")
         if index_name_exists?(:rpush_notifications, :index_rpush_notifications_multi)
           rename_index(:rpush_notifications, :index_rpush_notifications_multi, :index_rapns_notifications_multi)
         end
@@ -381,7 +382,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
         end
       end
 
-      if ActiveRecord.version >= Gem::Version.new('5.1')
+      if ActiveRecord.version >= Gem::Version.new("5.1")
         if index_name_exists?(:rpush_feedback, :index_rpush_feedback_on_device_token)
           rename_index(:rpush_feedback, :index_rpush_feedback_on_device_token, :index_rapns_feedback_on_device_token)
         end
@@ -397,7 +398,7 @@ class AddRpush < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0
     end
   end
 
-  class AddFailAfterToRpushNotifications < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+  class AddFailAfterToRpushNotifications < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
     def self.up
       add_column(:rpush_notifications, :fail_after, :timestamp, null: true)
     end

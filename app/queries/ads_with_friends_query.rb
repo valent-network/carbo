@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class AdsWithFriendsQuery
   def call(user, ads_phone_number_ids)
-    phones = ads_phone_number_ids.sort.join(', ')
+    phones = ads_phone_number_ids.sort.join(", ")
 
     <<~SQL
       WITH my_contacts AS (

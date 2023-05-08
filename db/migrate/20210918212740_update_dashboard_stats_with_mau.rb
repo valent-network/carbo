@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class UpdateDashboardStatsWithMau < ActiveRecord::Migration[6.1]
   def up
-    execute('DROP MATERIALIZED VIEW dashboard_stats')
+    execute("DROP MATERIALIZED VIEW dashboard_stats")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW dashboard_stats AS (
         SELECT
@@ -117,7 +118,7 @@ class UpdateDashboardStatsWithMau < ActiveRecord::Migration[6.1]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW dashboard_stats')
+    execute("DROP MATERIALIZED VIEW dashboard_stats")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW dashboard_stats AS (
         SELECT

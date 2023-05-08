@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class ChangeAdsGroupedByMakerModelYear < ActiveRecord::Migration[6.0]
   def up
-    execute('DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year')
+    execute("DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW ads_grouped_by_maker_model_year AS (
         SELECT details->>'maker' AS maker,
@@ -20,11 +21,11 @@ class ChangeAdsGroupedByMakerModelYear < ActiveRecord::Migration[6.0]
       )
     SQL
 
-    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: 'search_budget_index')
+    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: "search_budget_index")
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year')
+    execute("DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW ads_grouped_by_maker_model_year AS (
         SELECT details->>'maker' AS maker,

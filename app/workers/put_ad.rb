@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 class PutAd
-  NATIVE_CATEGORY_NAME = 'vehicles'
-  PROVIDER_NAME = 'auto.ria.com'
+  NATIVE_CATEGORY_NAME = "vehicles"
+  PROVIDER_NAME = "auto.ria.com"
 
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'ads', retry: true, backtrace: false
+  sidekiq_options queue: "ads", retry: true, backtrace: false
 
   AD_DETAILS_PARAMS = %i[
     maker
@@ -51,7 +52,7 @@ class PutAd
       begin
         retries ||= 0
         if ad.save
-          Sentry.capture_message("[PutAd][AdSaved] data=#{{ address: address, id: ad.id }.to_json}")
+          Sentry.capture_message("[PutAd][AdSaved] data=#{{address: address, id: ad.id}.to_json}")
         else
           Sentry.capture_message("[PutAd][AdNotSaved] id=#{ad&.id} address=#{address} errors=#{ad.errors.to_hash.to_json}", level: :warning)
         end

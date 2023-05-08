@@ -1,12 +1,13 @@
 # frozen_string_literal: true
-class Rpush200Updates < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
+
+class Rpush200Updates < (ActiveRecord::VERSION::MAJOR >= 5) ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
   module Rpush
     class App < ActiveRecord::Base
-      self.table_name = 'rpush_apps'
+      self.table_name = "rpush_apps"
     end
 
     class Notification < ActiveRecord::Base
-      self.table_name = 'rpush_notifications'
+      self.table_name = "rpush_notifications"
     end
   end
 
@@ -18,7 +19,7 @@ class Rpush200Updates < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migrat
     add_column(:rpush_notifications, :processing, :boolean, null: false, default: false)
     add_column(:rpush_notifications, :priority, :integer, null: true)
 
-    if ActiveRecord.version >= Gem::Version.new('5.1')
+    if ActiveRecord.version >= Gem::Version.new("5.1")
       if index_name_exists?(:rpush_notifications, :index_rpush_notifications_multi)
         remove_index(:rpush_notifications, name: :index_rpush_notifications_multi)
       end
@@ -28,12 +29,12 @@ class Rpush200Updates < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migrat
       end
     end
 
-    add_index(:rpush_notifications, [:delivered, :failed], name: 'index_rpush_notifications_multi', where: 'NOT delivered AND NOT failed')
+    add_index(:rpush_notifications, [:delivered, :failed], name: "index_rpush_notifications_multi", where: "NOT delivered AND NOT failed")
 
     rename_column(:rpush_feedback, :app, :app_id)
 
     if postgresql?
-      execute('ALTER TABLE rpush_feedback ALTER COLUMN app_id TYPE integer USING (trim(app_id)::integer)')
+      execute("ALTER TABLE rpush_feedback ALTER COLUMN app_id TYPE integer USING (trim(app_id)::integer)")
     else
       change_column(:rpush_feedback, :app_id, :integer)
     end
@@ -53,7 +54,7 @@ class Rpush200Updates < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migrat
     change_column(:rpush_feedback, :app_id, :string)
     rename_column(:rpush_feedback, :app_id, :app)
 
-    if ActiveRecord.version >= Gem::Version.new('5.1')
+    if ActiveRecord.version >= Gem::Version.new("5.1")
       if index_name_exists?(:rpush_notifications, :index_rpush_notifications_multi)
         remove_index(:rpush_notifications, name: :index_rpush_notifications_multi)
       end
@@ -63,14 +64,14 @@ class Rpush200Updates < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migrat
       end
     end
 
-    add_index(:rpush_notifications, [:app_id, :delivered, :failed, :deliver_after], name: 'index_rpush_notifications_multi')
+    add_index(:rpush_notifications, [:app_id, :delivered, :failed, :deliver_after], name: "index_rpush_notifications_multi")
 
     remove_column(:rpush_notifications, :priority)
     remove_column(:rpush_notifications, :processing)
   end
 
   def self.adapter_name
-    env = defined?(Rails) && Rails.env ? Rails.env : 'development'
+    env = (defined?(Rails) && Rails.env) ? Rails.env : "development"
     ActiveRecord::Base.configurations.configs_for.detect { |c| c.env_name == env }.configuration_hash[:adapter]
   end
 

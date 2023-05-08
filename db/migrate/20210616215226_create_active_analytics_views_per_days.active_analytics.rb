@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from active_analytics (originally 20210303094108)
 class CreateActiveAnalyticsViewsPerDays < ActiveRecord::Migration[5.2]
   def up

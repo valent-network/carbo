@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class UpdateUserStatAdoptionPercentage
   def call
     <<~SQL

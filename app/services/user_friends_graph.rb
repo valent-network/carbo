@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 class UserFriendsGraph
-  BASE_GRAPH_NAME = 'UserFriends'
+  BASE_GRAPH_NAME = "UserFriends"
   REDIS_OPTIONS = {
-    host: ENV.fetch('REDISGRAPH_SERVICE_HOST', 'localhost'),
-    port: ENV.fetch('REDISGRAPH_SERVICE_PORT', '6379'),
-    password: ENV.fetch('REDISGRAPH_SERVICE_PASSWORD', nil),
+    host: ENV.fetch("REDISGRAPH_SERVICE_HOST", "localhost"),
+    port: ENV.fetch("REDISGRAPH_SERVICE_PORT", "6379"),
+    password: ENV.fetch("REDISGRAPH_SERVICE_PASSWORD", nil)
   }
 
   attr_reader :graph
@@ -63,7 +64,7 @@ class UserFriendsGraph
 
   # @return [friend.id, connection.id, hops_count]
   def get_friends_connections(user, hops = 1)
-    blocked_users_ids = user.blocked_users_ids.join(', ')
+    blocked_users_ids = user.blocked_users_ids.join(", ")
 
     cypher_query = <<~CYPHER_QUERY
       MATCH p=(me:User{id: #{user.id}})-[:KNOWS*1..#{hops}]->(connection:User)
@@ -86,7 +87,7 @@ class UserFriendsGraph
 
   def q(query_string)
     unless graph
-      Sentry.capture_message('[UserFriendsGraph] OFF', level: :error)
+      Sentry.capture_message("[UserFriendsGraph] OFF", level: :error)
       return false
     end
 
@@ -103,7 +104,7 @@ class UserFriendsGraph
 
   def explain(query)
     unless graph
-      Sentry.capture_message('[UserFriendsGraph] OFF', level: :error)
+      Sentry.capture_message("[UserFriendsGraph] OFF", level: :error)
       return false
     end
 

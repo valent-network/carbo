@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class AddReferrerIdToUsers < ActiveRecord::Migration[6.1]
   def change
     add_column(:users, :referrer_id, :integer)

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Api
   module V1
     class AdSerializer < ActiveModel::Serializer
@@ -9,7 +10,7 @@ module Api
       end
 
       def description
-        object.details['description'].presence || I18n.t('ad_options.no_description')
+        object.details["description"].presence || I18n.t("ad_options.no_description")
       end
 
       def short_description
@@ -21,7 +22,7 @@ module Api
       end
 
       def price
-        ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: ' ')
+        ActiveSupport::NumberHelper.number_to_delimited(object.price, delimiter: " ")
       end
 
       def image
@@ -41,7 +42,7 @@ module Api
       private
 
       def tmp_images
-        t = object.details['images_json_array_tmp']
+        t = object.details["images_json_array_tmp"]
         t.is_a?(String) ? JSON.parse(t) : Array.wrap(t)
       end
     end

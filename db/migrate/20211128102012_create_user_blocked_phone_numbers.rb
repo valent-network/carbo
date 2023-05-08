@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateUserBlockedPhoneNumbers < ActiveRecord::Migration[6.1]
   def change
     create_table(:user_blocked_phone_numbers) do |t|

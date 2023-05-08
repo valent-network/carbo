@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateStaticPages < ActiveRecord::Migration[6.0]
   def change
     create_table(:static_pages) do |t|

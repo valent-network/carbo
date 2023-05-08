@@ -12,10 +12,10 @@ module Api
           key = "tmp/ad-images/user-#{current_user.id}-#{SecureRandom.uuid}.#{image[:ext]}"
           presigned_url = signer.presigned_url(
             :put_object,
-            bucket: ENV['DO_SPACE_NAME'],
+            bucket: ENV["DO_SPACE_NAME"],
             key: key,
             expires_in: 300,
-            content_type: image[:content_type],
+            content_type: image[:content_type]
           )
 
           image.merge(presigned_url: presigned_url, key: key)

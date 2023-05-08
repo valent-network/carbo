@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ProfileUserSerializer < ActiveModel::Serializer
   attributes :id,
     :name,
@@ -31,12 +32,12 @@ class ProfileUserSerializer < ActiveModel::Serializer
   def stats
     return {} unless @instance_options[:current_user]&.id == object.id
 
-    regions = Region.where(name: object.stats['top_regions'])
+    regions = Region.where(name: object.stats["top_regions"])
     res = object.stats.tap do |stats|
-      stats['top_regions'] = Array.wrap(stats['top_regions']).filter_map { |region_name| regions.detect { |r| r.name == region_name }.translations[I18n.locale.to_s] }
+      stats["top_regions"] = Array.wrap(stats["top_regions"]).filter_map { |region_name| regions.detect { |r| r.name == region_name }.translations[I18n.locale.to_s] }
     end
 
-    no_stats = res.except('updated_at', 'top_regions').values.all?(&:blank?) && res['top_regions'].blank?
+    no_stats = res.except("updated_at", "top_regions").values.all?(&:blank?) && res["top_regions"].blank?
 
     no_stats ? {} : res
   end
@@ -50,7 +51,7 @@ class ProfileUserSerializer < ActiveModel::Serializer
       name: object.referrer_name,
       contact_name: ref_c&.name,
       phone: ref_c&.phone_number&.to_s,
-      avatar: User.select(:id, :avatar).find_by(id: object.referrer_id)&.avatar&.url,
+      avatar: User.select(:id, :avatar).find_by(id: object.referrer_id)&.avatar&.url
     }
   end
 end

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class AdjustDashboardStatsMatviewToNotUseEffectiveAdsMatview < ActiveRecord::Migration[7.0]
   def up
-    execute('DROP MATERIALIZED VIEW dashboard_stats')
+    execute("DROP MATERIALIZED VIEW dashboard_stats")
 
     new_query = <<~SQL
       CREATE MATERIALIZED VIEW dashboard_stats AS (
@@ -123,7 +124,7 @@ class AdjustDashboardStatsMatviewToNotUseEffectiveAdsMatview < ActiveRecord::Mig
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW dashboard_stats')
+    execute("DROP MATERIALIZED VIEW dashboard_stats")
 
     old_query = <<~SQL
       CREATE MATERIALIZED VIEW dashboard_stats AS (

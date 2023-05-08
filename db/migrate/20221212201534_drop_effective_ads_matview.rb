@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class DropEffectiveAdsMatview < ActiveRecord::Migration[7.0]
   def up
-    execute('DROP MATERIALIZED VIEW effective_ads')
+    execute("DROP MATERIALIZED VIEW effective_ads")
   end
 
   def down
@@ -32,8 +33,8 @@ class DropEffectiveAdsMatview < ActiveRecord::Migration[7.0]
       )
     SQL
 
-    add_index(:effective_ads, :id, unique: true, order: { id: :desc })
-    add_index(:effective_ads, %w[phone_number_id id], order: { id: :desc })
-    add_index(:effective_ads, :search_query, using: :gin, opclass: { title: :gin_trgm_ops })
+    add_index(:effective_ads, :id, unique: true, order: {id: :desc})
+    add_index(:effective_ads, %w[phone_number_id id], order: {id: :desc})
+    add_index(:effective_ads, :search_query, using: :gin, opclass: {title: :gin_trgm_ops})
   end
 end

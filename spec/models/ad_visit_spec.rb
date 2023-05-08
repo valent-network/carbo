@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe(AdVisit) do
-  it 'belongs_to #user'
-  it 'belongs_to #ad'
-  it 'is unique for ad + user'
+  it "belongs_to #user"
+  it "belongs_to #ad"
+  it "is unique for ad + user"
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class DropStaticPages < ActiveRecord::Migration[7.0]
   def up
     drop_table(:static_pages)

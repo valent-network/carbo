@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class AdCarContract < Dry::Validation::Contract
   params do
     required(:price).value(:integer)
@@ -25,20 +26,20 @@ class AdCarContract < Dry::Validation::Contract
   end
 
   rule(:price) do
-    key.failure('must be greater than 0') if value.to_i <= 0
+    key.failure("must be greater than 0") if value.to_i <= 0
   end
 
   rule(:phone) do
-    key.failure('is invalid') unless Phonelib.parse(value).valid?
+    key.failure("is invalid") unless Phonelib.parse(value).valid?
   end
 
   rule(details: :images_json_array_tmp) do
     valid_json = begin
       JSON.parse(value)
-    rescue StandardError
+    rescue
       false
     end
-    key.failure('failed to JSON.parse') unless valid_json
-    key.failure('is not JSON array') if valid_json && !JSON.parse(value).is_a?(Array)
+    key.failure("failed to JSON.parse") unless valid_json
+    key.failure("is not JSON array") if valid_json && !JSON.parse(value).is_a?(Array)
   end
 end

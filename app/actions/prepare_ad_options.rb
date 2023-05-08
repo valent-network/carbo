@@ -1,13 +1,14 @@
 # frozen_string_literal: true
+
 class PrepareAdOptions
   def call(ad, details)
     details = details.dup.stringify_keys
 
-    details.delete('address')
+    details.delete("address")
 
-    if details['region'].blank? || details['city'].blank?
-      if details['region'].is_a?(Array)
-        details['region'], details['city'] = details['region']
+    if details["region"].blank? || details["city"].blank?
+      if details["region"].is_a?(Array)
+        details["region"], details["city"] = details["region"]
         # TODO: FIX
         # Rails.logger.warn("[PrepareAdOptions][region-old] #{details}")
         # Sidekiq.logger.warn("[PrepareAdOptions][region-old] #{details}")
@@ -17,10 +18,10 @@ class PrepareAdOptions
       end
     end
 
-    description_body = details.delete('description')
-    images_links = details.delete('images_json_array_tmp')
-    region = details['region'].to_s.strip
-    city = details['city'].to_s.strip
+    description_body = details.delete("description")
+    images_links = details.delete("images_json_array_tmp")
+    region = details["region"].to_s.strip
+    city = details["city"].to_s.strip
 
     if region.present? && city.present?
       region_record = Region.where(name: region).first_or_create
@@ -47,17 +48,17 @@ class PrepareAdOptions
       []
     end
 
-    details.delete('region')
-    details.delete('city')
+    details.delete("region")
+    details.delete("city")
 
     ad_extra = ad.ad_extra || ad.build_ad_extra
     ad_extra.details = details
 
-    details.delete('state_num')
-    details.delete('seller_name')
+    details.delete("state_num")
+    details.delete("seller_name")
 
     ad_query = ad.ad_query || ad.build_ad_query
-    ad_query.title = [details['maker'], details['model'], details['year']].join(' ')
+    ad_query.title = [details["maker"], details["model"], details["year"]].join(" ")
 
     ad_description = ad.ad_description || ad.build_ad_description
 

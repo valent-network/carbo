@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 class UpdateAdStats
   include Sidekiq::Worker
 
-  sidekiq_options queue: 'system', retry: true, backtrace: false
+  sidekiq_options queue: "system", retry: true, backtrace: false
 
   def perform
     conn = ActiveRecord::Base.connection

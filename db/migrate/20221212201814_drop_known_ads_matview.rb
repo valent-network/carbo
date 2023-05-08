@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class DropKnownAdsMatview < ActiveRecord::Migration[7.0]
   def up
-    execute('DROP MATERIALIZED VIEW known_ads')
+    execute("DROP MATERIALIZED VIEW known_ads")
   end
 
   def down

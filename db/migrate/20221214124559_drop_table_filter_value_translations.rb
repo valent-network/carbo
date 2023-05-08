@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class DropTableFilterValueTranslations < ActiveRecord::Migration[7.0]
   def up
     drop_table(:filterable_value_translations)

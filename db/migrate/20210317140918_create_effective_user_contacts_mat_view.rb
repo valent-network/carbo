@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateEffectiveUserContactsMatView < ActiveRecord::Migration[6.1]
   def up
     execute(<<~SQL)
@@ -21,6 +22,6 @@ class CreateEffectiveUserContactsMatView < ActiveRecord::Migration[6.1]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW effective_user_contacts')
+    execute("DROP MATERIALIZED VIEW effective_user_contacts")
   end
 end

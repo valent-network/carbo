@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 class AddAdOptionsDetailsToEffectiveAds < ActiveRecord::Migration[6.1]
   def up
-    execute('DROP MATERIALIZED VIEW effective_user_contacts')
-    execute('DROP MATERIALIZED VIEW effective_ads')
+    execute("DROP MATERIALIZED VIEW effective_user_contacts")
+    execute("DROP MATERIALIZED VIEW effective_ads")
 
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW effective_ads AS (
@@ -38,9 +39,9 @@ class AddAdOptionsDetailsToEffectiveAds < ActiveRecord::Migration[6.1]
       )
     SQL
 
-    add_index(:effective_ads, :id, unique: true, order: { id: :desc })
-    add_index(:effective_ads, %w[phone_number_id id], order: { id: :desc })
-    add_index(:effective_ads, :search_query, using: :gin, opclass: { title: :gin_trgm_ops })
+    add_index(:effective_ads, :id, unique: true, order: {id: :desc})
+    add_index(:effective_ads, %w[phone_number_id id], order: {id: :desc})
+    add_index(:effective_ads, :search_query, using: :gin, opclass: {title: :gin_trgm_ops})
 
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW effective_user_contacts AS
@@ -58,8 +59,8 @@ class AddAdOptionsDetailsToEffectiveAds < ActiveRecord::Migration[6.1]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW effective_user_contacts')
-    execute('DROP MATERIALIZED VIEW effective_ads')
+    execute("DROP MATERIALIZED VIEW effective_user_contacts")
+    execute("DROP MATERIALIZED VIEW effective_ads")
 
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW effective_ads AS (
@@ -70,8 +71,8 @@ class AddAdOptionsDetailsToEffectiveAds < ActiveRecord::Migration[6.1]
       )
       WITH DATA
     SQL
-    add_index(:effective_ads, :id, unique: true, order: { id: :desc })
-    add_index(:effective_ads, %w[phone_number_id id], order: { id: :desc })
+    add_index(:effective_ads, :id, unique: true, order: {id: :desc})
+    add_index(:effective_ads, %w[phone_number_id id], order: {id: :desc})
     add_index(:effective_ads, :price)
 
     execute(<<~SQL)

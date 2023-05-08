@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateAdImages < ActiveRecord::Migration[7.0]
   def change
     create_table(:ad_images) do |t|

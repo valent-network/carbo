@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateDashboardStatsMatview < ActiveRecord::Migration[6.1]
   def up
     execute(<<~SQL)
@@ -107,6 +108,6 @@ class CreateDashboardStatsMatview < ActiveRecord::Migration[6.1]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW dashboard_stats')
+    execute("DROP MATERIALIZED VIEW dashboard_stats")
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateKnownOptionsMatview < ActiveRecord::Migration[7.0]
   def up
     execute(<<~SQL)
@@ -12,6 +13,6 @@ class CreateKnownOptionsMatview < ActiveRecord::Migration[7.0]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW known_options')
+    execute("DROP MATERIALIZED VIEW known_options")
   end
 end

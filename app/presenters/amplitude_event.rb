@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class AmplitudeEvent
   attr_reader :event
 
@@ -18,8 +19,8 @@ class AmplitudeEvent
       event_id: event.id,
       insert_id: event.id,
       event_properties: event.data.transform_values(&:to_s),
-      user_properties: (event.user.admin? ? { 'Cohort' => 'Admins' } : {}),
-      time: (event.created_at.to_i * 1000),
+      user_properties: (event.user.admin? ? {"Cohort" => "Admins"} : {}),
+      time: (event.created_at.to_i * 1000)
     }
 
     return @data unless device
@@ -29,7 +30,7 @@ class AmplitudeEvent
       app_version: device.build_version,
       os_name: device.os,
       language: device.locale,
-      session_id: (device.session_started_at ? (device.session_started_at.to_i * 1000) : -1),
+      session_id: (device.session_started_at ? (device.session_started_at.to_i * 1000) : -1)
     })
   end
 end

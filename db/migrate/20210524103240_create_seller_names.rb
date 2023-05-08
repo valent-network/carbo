@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateSellerNames < ActiveRecord::Migration[6.1]
   def change
     create_table(:seller_names) do |t|

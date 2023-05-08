@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register(FilterableValuesGroup) do
-  menu priority: 15, label: proc { I18n.t('active_admin.filterable_values_groups') }, parent: 'settings'
+  menu priority: 15, label: proc { I18n.t("active_admin.filterable_values_groups") }, parent: "settings"
   permit_params :ad_option_type_id, :name, :position, translations: [:uk, :en]
   config.batch_actions = false
   includes :values, :ad_option_type
 
-  sidebar 'Existing Groups' do
+  sidebar "Existing Groups" do
     FilterableValue
       .joins(:ad_option_type)
       .joins("LEFT JOIN filterable_values_groups ON filterable_values_groups.ad_option_type_id = ad_option_types.id AND filterable_values_groups.name = filterable_values.name ")
-      .where(filterable_values_groups: { id: nil })
-      .group('ad_option_types.id')
-      .select('ad_option_types.id, ARRAY_AGG(filterable_values.name) AS values')
+      .where(filterable_values_groups: {id: nil})
+      .group("ad_option_types.id")
+      .select("ad_option_types.id, ARRAY_AGG(filterable_values.name) AS values")
       .to_a.map { |x| [x.id, x.values.uniq] }.each do |opt_id, filter_groups|
-        div(class: 'existing-filter-values-groups', 'data-ad-option-type-id' => opt_id) do
-          filter_groups.map { |v| "<span class='filterable-node'>#{v}</span>" }.join(' ').html_safe
+        div(class: "existing-filter-values-groups", "data-ad-option-type-id" => opt_id) do
+          filter_groups.map { |v| "<span class='filterable-node'>#{v}</span>" }.join(" ").html_safe
         end
       end
   end
@@ -25,11 +25,11 @@ ActiveAdmin.register(FilterableValuesGroup) do
       [
         "<b>#{fvg.name}</b>".html_safe,
         fvg.translations.map { |k, v| "#{k}: #{v}" }
-      ].flatten.join('<br>').html_safe
+      ].flatten.join("<br>").html_safe
     end
 
     column(:values) do |fvg|
-      fvg.values.map { |v| "<span class='filterable-node'>#{v.raw_value}</span>" }.join(' ').html_safe
+      fvg.values.map { |v| "<span class='filterable-node'>#{v.raw_value}</span>" }.join(" ").html_safe
     end
     actions
   end
@@ -42,8 +42,8 @@ ActiveAdmin.register(FilterableValuesGroup) do
     f.input(:ad_option_type)
     f.input(:name)
     f.inputs(for: :translations) do |t|
-      t.input(:uk, input_html: { value: f.object.translations['uk'] })
-      t.input(:en, input_html: { value: f.object.translations['en'] })
+      t.input(:uk, input_html: {value: f.object.translations["uk"]})
+      t.input(:en, input_html: {value: f.object.translations["en"]})
     end
     f.actions
   end
@@ -53,7 +53,7 @@ ActiveAdmin.register(FilterableValuesGroup) do
       {
         name: h.first,
         position: h.last,
-        ad_option_type_id: params[:ad_option_type_id],
+        ad_option_type_id: params[:ad_option_type_id]
       }
     end
 

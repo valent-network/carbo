@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Api
   module V1
     class ChatRoomListSerializer
@@ -36,7 +37,7 @@ module Api
         @new_messages_counts ||= if admin
           Message.where(chat_room: chat_rooms).unread_system_messages
         else
-          Message.unread_messages_for(current_user.id).where(chat_room: chat_rooms).group('messages.chat_room_id').count
+          Message.unread_messages_for(current_user.id).where(chat_room: chat_rooms).group("messages.chat_room_id").count
         end
       end
 
@@ -45,7 +46,7 @@ module Api
       end
 
       def photos
-        @photos ||= Hash[AdImageLinksSet.where(ad_id: chat_rooms.map(&:ad_id)).pluck(:ad_id, :value)]
+        @photos ||= AdImageLinksSet.where(ad_id: chat_rooms.map(&:ad_id)).pluck(:ad_id, :value).to_h
       end
 
       def names
@@ -63,7 +64,7 @@ module Api
           known: known,
           new_messages_counts: new_messages_counts,
           chat_room_users: chat_room_users,
-          each_serializer: Api::V1::ChatRoomListItemSerializer,
+          each_serializer: Api::V1::ChatRoomListItemSerializer
         }
       end
     end

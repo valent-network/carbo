@@ -6,17 +6,17 @@
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 #
-max_threads_count = ENV.fetch('RAILS_MAX_THREADS', 5)
-min_threads_count = ENV.fetch('RAILS_MIN_THREADS') { max_threads_count }
+max_threads_count = ENV.fetch("RAILS_MAX_THREADS", 5)
+min_threads_count = ENV.fetch("RAILS_MIN_THREADS") { max_threads_count }
 threads(min_threads_count, max_threads_count)
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-port(ENV.fetch('PUMA_PORT') { 3000 })
+port(ENV.fetch("PUMA_PORT") { 3000 })
 
 # Specifies the `environment` that Puma will run in.
 #
-environment(ENV.fetch('RAILS_ENV', 'development'))
+environment(ENV.fetch("RAILS_ENV", "development"))
 
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked web server processes. If using threads and workers together
@@ -24,7 +24,7 @@ environment(ENV.fetch('RAILS_ENV', 'development'))
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers(ENV.fetch('PUMA_WEB_CONCURRENCY') { 2 })
+workers(ENV.fetch("PUMA_WEB_CONCURRENCY") { 2 })
 
 # https://www.rubydoc.info/gems/puma/Puma%2FDSL:raise_exception_on_sigterm
 # https://www.gitmemory.com/issue/puma/puma/1438/510094837

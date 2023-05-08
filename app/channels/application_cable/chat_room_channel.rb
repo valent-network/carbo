@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ApplicationCable
   class ChatRoomChannel < ApplicationChannel
     def subscribed
@@ -14,11 +15,11 @@ module ApplicationCable
       payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
 
       if admin?
-        ApplicationCable::UserChannel.broadcast_to(current_user, type: 'admin_read_update', chat: payload)
-        ApplicationCable::UserChannel.broadcast_to(current_user, type: 'unread_update', count: Message.unread_messages_for(current_user.id).count, system_count: Message.unread_system_messages.values.sum)
+        ApplicationCable::UserChannel.broadcast_to(current_user, type: "admin_read_update", chat: payload)
+        ApplicationCable::UserChannel.broadcast_to(current_user, type: "unread_update", count: Message.unread_messages_for(current_user.id).count, system_count: Message.unread_system_messages.values.sum)
       end
 
-      ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload) if @chat_room_user
+      ApplicationCable::UserChannel.broadcast_to(current_user, type: "read_update", chat: payload) if @chat_room_user
 
       stream_for(@chat_room)
     end
@@ -26,15 +27,15 @@ module ApplicationCable
     def read(_data)
       @chat_room_user&.touch
       payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
-      ApplicationCable::UserChannel.broadcast_to(current_user, type: 'read_update', chat: payload)
+      ApplicationCable::UserChannel.broadcast_to(current_user, type: "read_update", chat: payload)
     end
 
     def admin_read(_data)
       payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
-      ApplicationCable::UserChannel.broadcast_to(current_user, type: 'admin_read_update', chat: payload)
+      ApplicationCable::UserChannel.broadcast_to(current_user, type: "admin_read_update", chat: payload)
       if @chat_room.system? && current_user.admin?
         @chat_room.update(admin_seen_at: Time.zone.now)
-        ApplicationCable::UserChannel.broadcast_to(current_user, type: 'unread_update', count: Message.unread_messages_for(current_user.id).count, system_count: Message.unread_system_messages.values.sum)
+        ApplicationCable::UserChannel.broadcast_to(current_user, type: "unread_update", count: Message.unread_messages_for(current_user.id).count, system_count: Message.unread_system_messages.values.sum)
       end
     end
 
@@ -47,18 +48,18 @@ module ApplicationCable
       @chat_room.reload
       @chat_room.users.each do |u|
         payload = Api::V1::ChatRoomListSerializer.new(current_user, @chat_room).first
-        ApplicationCable::UserChannel.broadcast_to(u, type: 'chat', chat: payload)
-        ApplicationCable::UserChannel.broadcast_to(u, type: 'unread_update', count: Message.unread_messages_for(u.id).count)
-        ApplicationCable::UserChannel.broadcast_to(u, type: 'delete_message', id: id, chat_room_id: message.chat_room_id, updated_at: updated_at)
+        ApplicationCable::UserChannel.broadcast_to(u, type: "chat", chat: payload)
+        ApplicationCable::UserChannel.broadcast_to(u, type: "unread_update", count: Message.unread_messages_for(u.id).count)
+        ApplicationCable::UserChannel.broadcast_to(u, type: "delete_message", id: id, chat_room_id: message.chat_room_id, updated_at: updated_at)
       end
     end
 
     def receive(data)
-      if current_user.admin? && @chat_room.system? && params[:from] == 'admin'
-        chat_room = ChatRoom.find(data['message']['chat_room_id'])
-        SendSystemMessageToChatRoom.new.call(user_id: chat_room.user_id, message_text: data['message']['text'], message_id: data['message']['_id'])
+      if current_user.admin? && @chat_room.system? && params[:from] == "admin"
+        chat_room = ChatRoom.find(data["message"]["chat_room_id"])
+        SendSystemMessageToChatRoom.new.call(user_id: chat_room.user_id, message_text: data["message"]["text"], message_id: data["message"]["_id"])
         payload = Api::V1::ChatRoomListSerializer.new(current_user, chat_room).first
-        ApplicationCable::UserChannel.broadcast_to(current_user, type: 'admin_chat', chat: payload)
+        ApplicationCable::UserChannel.broadcast_to(current_user, type: "admin_chat", chat: payload)
       else
         PostMessage.new.call(sender: current_user, message: data.with_indifferent_access[:message])
       end
@@ -67,7 +68,7 @@ module ApplicationCable
     private
 
     def admin?
-      params[:from] == 'admin' && current_user.admin? && @chat_room.system?
+      params[:from] == "admin" && current_user.admin? && @chat_room.system?
     end
   end
 end

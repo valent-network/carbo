@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails'
+require "rails"
 # Pick the frameworks you want:
-require 'active_model/railtie'
+require "active_model/railtie"
 # require 'active_job/railtie'
-require 'active_record/railtie'
-require 'action_controller/railtie'
-require 'action_view/railtie'
+require "active_record/railtie"
+require "action_controller/railtie"
+require "action_view/railtie"
 # require 'sprockets/railtie'
 # require 'active_storage/engine'
 # require 'action_mailer/railtie'
-require 'action_cable/engine'
+require "action_cable/engine"
 # require 'rails/test_unit/railtie'
 
 # Require the gems listed in Gemfile, including any gems
@@ -43,6 +43,6 @@ module Recario
     config.middleware.use(Rack::MethodOverride)
     config.middleware.use(ActionDispatch::Cookies)
     config.middleware.use(ActionDispatch::Session::CookieStore)
-    config.time_zone = 'Europe/Kiev'
+    config.time_zone = "Europe/Kiev"
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ChatRoom < ApplicationRecord
   belongs_to :ad, optional: true
   belongs_to :user

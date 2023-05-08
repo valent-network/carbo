@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class AvatarUploader < CarrierWave::Uploader::Base
   def store_dir
     "uploads/users/#{model.id}/avatars"

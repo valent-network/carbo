@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class ChangeEffectiveAdsMatview < ActiveRecord::Migration[6.1]
   def up
-    execute('DROP MATERIALIZED VIEW effective_ads CASCADE')
+    execute("DROP MATERIALIZED VIEW effective_ads CASCADE")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW effective_ads AS (
         SELECT DISTINCT ads.id, ads.phone_number_id, ads.price
@@ -12,8 +13,8 @@ class ChangeEffectiveAdsMatview < ActiveRecord::Migration[6.1]
       WITH DATA
     SQL
 
-    add_index(:effective_ads, :id, unique: true, order: { id: :desc })
-    add_index(:effective_ads, %w[phone_number_id id], order: { id: :desc })
+    add_index(:effective_ads, :id, unique: true, order: {id: :desc})
+    add_index(:effective_ads, %w[phone_number_id id], order: {id: :desc})
     add_index(:effective_ads, :price)
 
     execute(<<~SQL)
@@ -33,7 +34,7 @@ class ChangeEffectiveAdsMatview < ActiveRecord::Migration[6.1]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW effective_ads CASCADE')
+    execute("DROP MATERIALIZED VIEW effective_ads CASCADE")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW effective_ads AS (
         SELECT DISTINCT ads.id, ads.phone_number_id, ads.price, ads.details
@@ -44,8 +45,8 @@ class ChangeEffectiveAdsMatview < ActiveRecord::Migration[6.1]
       WITH DATA
     SQL
 
-    add_index(:effective_ads, :id, unique: true, order: { id: :desc })
-    add_index(:effective_ads, %w[phone_number_id id], order: { id: :desc })
+    add_index(:effective_ads, :id, unique: true, order: {id: :desc})
+    add_index(:effective_ads, %w[phone_number_id id], order: {id: :desc})
     add_index(:effective_ads, :price)
 
     execute(<<~SQL)

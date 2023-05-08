@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateAdOptionTypes < ActiveRecord::Migration[6.1]
   def change
     create_table(:ad_option_types) do |t|

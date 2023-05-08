@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateBusinessPhoneNumbersMatview < ActiveRecord::Migration[6.1]
   def up
     execute(<<~SQL)
@@ -16,6 +17,6 @@ class CreateBusinessPhoneNumbersMatview < ActiveRecord::Migration[6.1]
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW business_phone_numbers')
+    execute("DROP MATERIALIZED VIEW business_phone_numbers")
   end
 end

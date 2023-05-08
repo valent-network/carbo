@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Api
   module V1
     class ChatRoomListItemSerializer < ActiveModel::Serializer
@@ -10,7 +11,7 @@ module Api
 
       def messages
         [
-          Api::V1::MessageSerializer.new(last_message, chat_room_users_names: @instance_options[:names]).as_json,
+          Api::V1::MessageSerializer.new(last_message, chat_room_users_names: @instance_options[:names]).as_json
         ]
       end
 

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class AddSomeForeignKeys < ActiveRecord::Migration[6.1]
   def change
     add_foreign_key(:ad_descriptions, :ads, on_delete: :cascade)

@@ -1,2 +1,3 @@
 # frozen_string_literal: true
-Phonelib.default_country = 'UA'
+
+Phonelib.default_country = "UA"

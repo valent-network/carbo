@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Rack
   class Attack
     ### Configure Cache ###
@@ -25,8 +26,8 @@ module Rack
     # Throttle all requests by IP (60rpm)
     #
     # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-    throttle('req/ip', limit: 1000, period: 5.minutes) do |req|
-      req.ip if !req.path.start_with?('/assets') && !req.path.start_with?('/api/v1/provider_ads')
+    throttle("req/ip", limit: 1000, period: 5.minutes) do |req|
+      req.ip if !req.path.start_with?("/assets") && !req.path.start_with?("/api/v1/provider_ads")
     end
 
     ### Prevent Brute-Force Login Attacks ###
@@ -41,8 +42,8 @@ module Rack
     # Throttle POST requests to /login by IP address
     #
     # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
-    throttle('logins/ip', limit: 5, period: 20.seconds) do |req|
-      if req.path == '/api/v1/sessions'
+    throttle("logins/ip", limit: 5, period: 20.seconds) do |req|
+      if req.path == "/api/v1/sessions"
         req.ip
       end
     end
@@ -77,15 +78,15 @@ module Rack
     #    ['']] # body
     # end
 
-    blocklist('fail2ban pentesters') do |req|
+    blocklist("fail2ban pentesters") do |req|
       # `filter` returns truthy value if request fails, or if it's from a previously banned IP
       # so the request is blocked
       Fail2Ban.filter("pentesters-#{req.ip}", maxretry: 3, findtime: 10.minutes, bantime: 5.minutes) do
         # The count for the IP is incremented if the return value is truthy
-        CGI.unescape(req.query_string).include?('/etc/passwd') ||
-          req.path.include?('/etc/passwd') ||
-          req.path.include?('wp-admin') ||
-          req.path.include?('wp-login')
+        CGI.unescape(req.query_string).include?("/etc/passwd") ||
+          req.path.include?("/etc/passwd") ||
+          req.path.include?("wp-admin") ||
+          req.path.include?("wp-login")
       end
     end
   end

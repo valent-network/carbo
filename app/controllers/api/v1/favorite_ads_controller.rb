@@ -15,7 +15,7 @@ module Api
           ads_with_friends_sql = AdsWithFriendsQuery.new.call(current_user, ads.pluck(:phone_number_id))
           ads_with_friends = Ad.find_by_sql(ads_with_friends_sql)
 
-          ads.each { |ad| current_user.phone_number_id == ad.phone_number_id ? ad.my_ad! : ad.associate_friends_with(ads_with_friends) }
+          ads.each { |ad| (current_user.phone_number_id == ad.phone_number_id) ? ad.my_ad! : ad.associate_friends_with(ads_with_friends) }
         end
 
         render(json: ads, each_serializer: Api::V1::AdsListSerializer, current_user: current_user)
@@ -24,21 +24,21 @@ module Api
       def create
         ad_favorite = current_user.ad_favorites.where(ad_id: params[:id]).first_or_initialize
         if ad_favorite.save
-          CreateEvent.call(:favorited_ad, user: current_user, data: { ad_id: ad_favorite.ad_id })
-          render(json: { message: :ok })
+          CreateEvent.call(:favorited_ad, user: current_user, data: {ad_id: ad_favorite.ad_id})
+          render(json: {message: :ok})
         else
-          render(json: { message: :error, errors: ad_favorite.errors.to_a }, status: 422)
+          render(json: {message: :error, errors: ad_favorite.errors.to_a}, status: 422)
         end
       end
 
       def destroy
         ad_favorite = current_user.ad_favorites.where(ad_id: params[:id]).first
 
-        return render(json: { message: :error, errors: ['Ad must exist'] }, status: 422) unless ad_favorite
+        return render(json: {message: :error, errors: ["Ad must exist"]}, status: 422) unless ad_favorite
 
         ad_favorite.destroy
-        CreateEvent.call(:unfavorited_ad, user: current_user, data: { ad_id: ad_favorite.ad_id })
-        render(json: { message: :ok })
+        CreateEvent.call(:unfavorited_ad, user: current_user, data: {ad_id: ad_favorite.ad_id})
+        render(json: {message: :ok})
       end
     end
   end

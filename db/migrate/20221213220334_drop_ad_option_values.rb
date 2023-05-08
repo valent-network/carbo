@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class DropAdOptionValues < ActiveRecord::Migration[7.0]
   def up
     drop_table(:ad_option_values)

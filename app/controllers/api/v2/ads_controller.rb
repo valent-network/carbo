@@ -8,7 +8,7 @@ module Api
       def show
         ad = Ad.eager_load(:ads_source, :ad_images, :ad_image_links_set, :ad_description, :ad_extra, :ad_query, :ad_image_links_set, :ad_prices, :city, :region, :category).find(params[:id])
         AdVisitedJob.perform_async(current_user.id, ad.id)
-        CreateEvent.call(:visited_ad, user: current_user, data: { ad_id: ad.id })
+        CreateEvent.call(:visited_ad, user: current_user, data: {ad_id: ad.id})
 
         ads_with_friends_sql = AdsWithFriendsQuery.new.call(current_user, [ad.phone_number_id])
         ads_with_friends = Ad.find_by_sql(ads_with_friends_sql)
@@ -38,7 +38,7 @@ module Api
           end
           render(json: serialized_ad)
         else
-          error!('AD_VALIDATION_FAILED', :unprocessable_entity, ad.errors.full_messages.join("\n"))
+          error!("AD_VALIDATION_FAILED", :unprocessable_entity, ad.errors.full_messages.join("\n"))
         end
       end
 
@@ -55,7 +55,7 @@ module Api
           end
           render(json: serialized_ad)
         else
-          error!('AD_VALIDATION_FAILED', :unprocessable_entity, ad.errors.full_messages.join("\n"))
+          error!("AD_VALIDATION_FAILED", :unprocessable_entity, ad.errors.full_messages.join("\n"))
         end
       end
 
@@ -67,7 +67,7 @@ module Api
 
         NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
 
-        render(json: { message: :ok })
+        render(json: {message: :ok})
       end
 
       private
@@ -80,13 +80,13 @@ module Api
           :deleted,
           ad_query_attributes: [:title],
           ad_description_attributes: [:body, :short],
-          ad_images_attributes: [:id, :position, :_destroy], # TODO: scope?
+          ad_images_attributes: [:id, :position, :_destroy] # TODO: scope?
         ]
 
         params.require(:ad).permit(to_permit).tap do |t|
           if params[:ad] && params[:ad][:ad_extra_attributes] && params[:ad][:ad_extra_attributes][:details]
             t[:ad_extra_attributes] = {
-              details: params[:ad][:ad_extra_attributes][:details].permit!,
+              details: params[:ad][:ad_extra_attributes][:details].permit!
             }
           end
         end

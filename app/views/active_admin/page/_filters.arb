@@ -1,12 +1,13 @@
 # frozen_string_literal: true
+
 resources = Ad.find_by_sql(InvisibleFilterValues.new.call) # .map { |x| [x.ad_option_type, x.option_values] }
 
-active_admin_form_for 'filters', url: make_visible_admin_filterable_values_path, method: :post do |f|
+active_admin_form_for "filters", url: make_visible_admin_filterable_values_path, method: :post do |f|
   resources.group_by(&:ad_option_type).each do |opt_type, values|
-    f.inputs('Invisible Filters', for: [:invisible_filters]) do |ff|
+    f.inputs("Invisible Filters", for: [:invisible_filters]) do |ff|
       ff.inputs(opt_type, for: [opt_type]) do |fff|
         values.map do |value|
-          fff.input(value.option_value, as: :boolean, label: link_to(value.option_value, admin_ads_path(q: { opts: [opt_type, value.option_value].join(';') })))
+          fff.input(value.option_value, as: :boolean, label: link_to(value.option_value, admin_ads_path(q: {opts: [opt_type, value.option_value].join(";")})))
         end
       end
     end

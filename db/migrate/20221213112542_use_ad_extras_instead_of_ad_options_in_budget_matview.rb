@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 class UseAdExtrasInsteadOfAdOptionsInBudgetMatview < ActiveRecord::Migration[7.0]
   def up
-    execute('DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year')
+    execute("DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW ads_grouped_by_maker_model_year AS (
         SELECT
@@ -19,11 +20,11 @@ class UseAdExtrasInsteadOfAdOptionsInBudgetMatview < ActiveRecord::Migration[7.0
         ORDER BY ad_extras.details->>'maker', ad_extras.details->>'model', ad_extras.details->>'year'
       )
     SQL
-    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: 'search_budget_index')
+    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: "search_budget_index")
   end
 
   def down
-    execute('DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year')
+    execute("DROP MATERIALIZED VIEW ads_grouped_by_maker_model_year")
     execute(<<~SQL)
       CREATE MATERIALIZED VIEW ads_grouped_by_maker_model_year AS (
         SELECT maker,
@@ -53,6 +54,6 @@ class UseAdExtrasInsteadOfAdOptionsInBudgetMatview < ActiveRecord::Migration[7.0
         ORDER BY maker, model, year
       )
     SQL
-    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: 'search_budget_index')
+    add_index(:ads_grouped_by_maker_model_year, %w[min_price max_price], name: "search_budget_index")
   end
 end

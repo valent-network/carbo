@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateAdVisits < ActiveRecord::Migration[6.0]
   def change
     create_table(:ad_visits) do |t|

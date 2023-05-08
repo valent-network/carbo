@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateFilterableValuesGroups < ActiveRecord::Migration[7.0]
   def change
     create_table(:filterable_values_groups) do |t|

@@ -1,16 +1,17 @@
 # frozen_string_literal: true
+
 class EffectiveAds
   FILTERS_COLUMNS_MAPPING = {
     fuels: :fuel,
     gears: :gear,
     wheels: :wheels,
-    carcasses: :carcass,
+    carcasses: :carcass
   }
   def call(filters:, should_search_query:)
     ads = Ad.active.distinct(:id)
 
-    ads = ads.where('price >= ?', filters[:min_price].to_i) if filters[:min_price].present?
-    ads = ads.where('price <= ?', filters[:max_price].to_i) if filters[:max_price].present?
+    ads = ads.where("price >= ?", filters[:min_price].to_i) if filters[:min_price].present?
+    ads = ads.where("price <= ?", filters[:max_price].to_i) if filters[:max_price].present?
 
     if %i[fuels gears wheels carcasses min_year max_year].any? { |t| filters[t].present? }
       ads = ads.joins(:ad_extra)
@@ -36,7 +37,7 @@ class EffectiveAds
     end
 
     if filters[:query].present? && should_search_query
-      ads = ads.joins(:ad_query).where('ad_queries.title ILIKE ?', "%#{filters[:query].strip}%")
+      ads = ads.joins(:ad_query).where("ad_queries.title ILIKE ?", "%#{filters[:query].strip}%")
     end
 
     ads

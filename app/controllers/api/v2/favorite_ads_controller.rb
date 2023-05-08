@@ -15,7 +15,7 @@ module Api
           ads_with_friends_sql = AdsWithFriendsQuery.new.call(current_user, ads.pluck(:phone_number_id))
           ads_with_friends = Ad.find_by_sql(ads_with_friends_sql)
 
-          ads.each { |ad| current_user.phone_number_id == ad.phone_number_id ? ad.my_ad! : ad.associate_friends_with(ads_with_friends) }
+          ads.each { |ad| (current_user.phone_number_id == ad.phone_number_id) ? ad.my_ad! : ad.associate_friends_with(ads_with_friends) }
         end
 
         render(json: ads, each_serializer: AdsListSerializer, current_user: current_user)

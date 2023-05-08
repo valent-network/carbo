@@ -1,43 +1,44 @@
 # frozen_string_literal: true
-require 'sidekiq/web'
+
+require "sidekiq/web"
 
 # frozen_string_literal: true
 
-git_commit = ENV.fetch('GIT_COMMIT') { %x(git rev-parse --short HEAD).strip }
+git_commit = ENV.fetch("GIT_COMMIT") { `git rev-parse --short HEAD`.strip }
 
 Rails.application.routes.draw do
-  get '/ios', to: redirect('https://apps.apple.com/us/app/id1458212603')
-  get '/apk', to: redirect('https://assets.recar.io/recario.apk')
-  get '/android', to: redirect('https://play.google.com/store/apps/details?id=com.viktorvsk.recario')
-  get '/news', to: redirect('https://t.me/recar_io')
-  get '/chat', to: redirect('https://t.me/recar_io_chat')
-  get '/whitepaper', to: redirect('https://assets.recar.io/Whitepaper.pdf')
+  get "/ios", to: redirect("https://apps.apple.com/us/app/id1458212603")
+  get "/apk", to: redirect("https://assets.recar.io/recario.apk")
+  get "/android", to: redirect("https://play.google.com/store/apps/details?id=com.viktorvsk.recario")
+  get "/news", to: redirect("https://t.me/recar_io")
+  get "/chat", to: redirect("https://t.me/recar_io_chat")
+  get "/whitepaper", to: redirect("https://assets.recar.io/Whitepaper.pdf")
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  mount ActionCable.server, at: '/cable'
+  mount ActionCable.server, at: "/cable"
 
   authenticate :admin_user do
-    mount Sidekiq::Web, at: 'sidekiq'
+    mount Sidekiq::Web, at: "sidekiq"
   end
 
-  get :health, to: ->(_env) { [200, {}, [{ build: ENV.fetch('GIT_COMMIT') { git_commit } }.to_json]] }
+  get :health, to: ->(_env) { [200, {}, [{build: ENV.fetch("GIT_COMMIT") { git_commit }}.to_json]] }
 
   # TODO: temporary hardcode static pages links here to let serve static content
   # via Rails (instead of nginx)
-  get '/tos', to: 'application#static_page', slug: :tos
-  get '/privacy', to: 'application#static_page', slug: :privacy
+  get "/tos", to: "application#static_page", slug: :tos
+  get "/privacy", to: "application#static_page", slug: :privacy
 
-  get '/budget/show_ads', to: 'budget#show_ads', as: :show_budget_ads
-  get '/budget/:maker/:model', to: 'budget#show_model', as: :show_model
-  get '/budget/:maker/:model/:year', to: 'budget#show_model_year', as: :show_model_year
-  get '/budget/(:price)', to: 'budget#search_models', as: :search_models
+  get "/budget/show_ads", to: "budget#show_ads", as: :show_budget_ads
+  get "/budget/:maker/:model", to: "budget#show_model", as: :show_model
+  get "/budget/:maker/:model/:year", to: "budget#show_model_year", as: :show_model_year
+  get "/budget/(:price)", to: "budget#search_models", as: :search_models
 
   resources :ads, only: %i[show]
 
   namespace :api do
-    get :filters, to: '/application#filters'
+    get :filters, to: "/application#filters"
 
     namespace :v1 do
       resource :settings, only: %i[show]

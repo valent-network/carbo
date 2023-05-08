@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateAds < ActiveRecord::Migration[6.0]
   def change
     create_table(:ads) do |t|
@@ -16,7 +17,7 @@ class CreateAds < ActiveRecord::Migration[6.0]
     end
 
     add_index(:ads, %w[address ads_source_id], unique: true)
-    add_index(:ads, %w[phone_number_id updated_at ads_source_id], where: '(deleted = false) AND (stale = false)')
+    add_index(:ads, %w[phone_number_id updated_at ads_source_id], where: "(deleted = false) AND (stale = false)")
 
     add_foreign_key(:ads, :phone_numbers, on_delete: :cascade)
     add_foreign_key(:ads, :ads_sources, on_delete: :cascade)
