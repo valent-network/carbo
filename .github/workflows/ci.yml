@@ -58,6 +58,8 @@ jobs:
         env:
           RAILS_ENV: test
           POSTGRES_PASSWORD: postgres
+          DO_SPACE_KEY: secret
+          DO_SPACE_SECRET: secret
           RSPEC_RETRY_LIMIT: 3
         run: bin/rspec
 
