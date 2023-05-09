@@ -51,6 +51,9 @@ jobs:
       - name: Bundle Install
         run: bundle install --jobs 4 --retry 3
 
+      - name: Install RBS collection
+        run: bundle exec rbs collection install
+
       - name: Run StandardRB
         run: bin/standardrb --fix
 
