@@ -67,6 +67,8 @@ jobs:
 
       - name: Merge to master
         uses: octokit/request-action@v2.x
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           method: POST
           headers: '{"Accept": "application/vnd.github.v3+json", "Authorization": "Bearer ${{ secrets.GITHUB_TOKEN }}"}'
