@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
 class SystemMessageAdminNotification
-  APPS = {
-    "ios" => Rpush::Client::ActiveRecord::Apnsp8::App.find_by_name("ios"),
-    "android" => Rpush::Client::ActiveRecord::Gcm::App.find_by_name("android")
-  }
-
   def call(admin:, message_body:, sender_name:, chat_room_id:)
     devices = admin.user_devices.where.not(push_token: ["", nil]).where(os: %w[ios android])
     devices.each do |device|
-      app = APPS[device.os]
       title = "#{I18n.t("support_request", locale: device.locale)} 🌀 #{sender_name}"
 
       case device.os
       when "ios"
         notification_params = {
-          app: app,
+          app: Rpush::Client::ActiveRecord::Apnsp8::App.find_by_name("ios"),
           device_token: device.push_token,
           alert: "#{title}\n#{message_body}",
           sound: "default",
@@ -25,7 +19,7 @@ class SystemMessageAdminNotification
         Rpush::Client::ActiveRecord::Apnsp8::Notification.create!(notification_params)
       when "android"
         notification_params = {
-          app: app,
+          app: Rpush::Client::ActiveRecord::Gcm::App.find_by_name("android"),
           registration_ids: [device.push_token],
           priority: "high",
           data: {

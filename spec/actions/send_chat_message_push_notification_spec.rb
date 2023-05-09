@@ -16,9 +16,6 @@ RSpec.describe(SendChatMessagePushNotification) do
     user.reload.user_devices.destroy_all
     create(:user_device, user: user, os: "ios", push_token: SecureRandom.hex)
     create(:user_device, user: user, os: "android", push_token: SecureRandom.hex)
-
-    # allow(SendChatMessagePushNotification::APPS).to(receive(:[]).with('ios').and_return(Rpush::Apnsp8::App.create(name: 'ios', apn_key: '1', environment: 'development', apn_key_id: '1', team_id: '1', bundle_id: '1', connections: '1')))
-    # allow(SendChatMessagePushNotification::APPS).to(receive(:[]).with('android').and_return(Rpush::Gcm::App.create(name: 'android', auth_key: 'invalid', connections: 1)))
   end
 
   def send_valid_message
