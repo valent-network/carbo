@@ -1,0 +1,7 @@
+class CreateEvent
+  include Sidekiq::Worker
+
+  def self.call: (String event_type, user: User, ?data: ::Hash[String, String]) -> void
+
+  def perform: (Integer user_id, String event_type, String created_at, String data) -> Event?
+end

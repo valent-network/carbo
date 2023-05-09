@@ -1,0 +1,243 @@
+class UserConnection < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[UserConnection, ActiveRecord_Relation, Integer]
+
+  module GeneratedAttributeMethods
+    def id: () -> Integer
+
+    def id=: (Integer) -> Integer
+
+    def id?: () -> bool
+
+    def id_changed?: () -> bool
+
+    def id_change: () -> [ Integer?, Integer? ]
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> Integer?
+
+    def id_previously_changed?: () -> bool
+
+    def id_previous_change: () -> Array[Integer?]?
+
+    def id_previously_was: () -> Integer?
+
+    def id_before_last_save: () -> Integer?
+
+    def id_change_to_be_saved: () -> Array[Integer?]?
+
+    def id_in_database: () -> Integer?
+
+    def saved_change_to_id: () -> Array[Integer?]?
+
+    def saved_change_to_id?: () -> bool
+
+    def will_save_change_to_id?: () -> bool
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def user_id: () -> Integer
+
+    def user_id=: (Integer) -> Integer
+
+    def user_id?: () -> bool
+
+    def user_id_changed?: () -> bool
+
+    def user_id_change: () -> [ Integer?, Integer? ]
+
+    def user_id_will_change!: () -> void
+
+    def user_id_was: () -> Integer?
+
+    def user_id_previously_changed?: () -> bool
+
+    def user_id_previous_change: () -> Array[Integer?]?
+
+    def user_id_previously_was: () -> Integer?
+
+    def user_id_before_last_save: () -> Integer?
+
+    def user_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def user_id_in_database: () -> Integer?
+
+    def saved_change_to_user_id: () -> Array[Integer?]?
+
+    def saved_change_to_user_id?: () -> bool
+
+    def will_save_change_to_user_id?: () -> bool
+
+    def restore_user_id!: () -> void
+
+    def clear_user_id_change: () -> void
+
+    def friend_id: () -> Integer
+
+    def friend_id=: (Integer) -> Integer
+
+    def friend_id?: () -> bool
+
+    def friend_id_changed?: () -> bool
+
+    def friend_id_change: () -> [ Integer?, Integer? ]
+
+    def friend_id_will_change!: () -> void
+
+    def friend_id_was: () -> Integer?
+
+    def friend_id_previously_changed?: () -> bool
+
+    def friend_id_previous_change: () -> Array[Integer?]?
+
+    def friend_id_previously_was: () -> Integer?
+
+    def friend_id_before_last_save: () -> Integer?
+
+    def friend_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def friend_id_in_database: () -> Integer?
+
+    def saved_change_to_friend_id: () -> Array[Integer?]?
+
+    def saved_change_to_friend_id?: () -> bool
+
+    def will_save_change_to_friend_id?: () -> bool
+
+    def restore_friend_id!: () -> void
+
+    def clear_friend_id_change: () -> void
+
+    def connection_id: () -> Integer
+
+    def connection_id=: (Integer) -> Integer
+
+    def connection_id?: () -> bool
+
+    def connection_id_changed?: () -> bool
+
+    def connection_id_change: () -> [ Integer?, Integer? ]
+
+    def connection_id_will_change!: () -> void
+
+    def connection_id_was: () -> Integer?
+
+    def connection_id_previously_changed?: () -> bool
+
+    def connection_id_previous_change: () -> Array[Integer?]?
+
+    def connection_id_previously_was: () -> Integer?
+
+    def connection_id_before_last_save: () -> Integer?
+
+    def connection_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def connection_id_in_database: () -> Integer?
+
+    def saved_change_to_connection_id: () -> Array[Integer?]?
+
+    def saved_change_to_connection_id?: () -> bool
+
+    def will_save_change_to_connection_id?: () -> bool
+
+    def restore_connection_id!: () -> void
+
+    def clear_connection_id_change: () -> void
+
+    def hops_count: () -> Integer?
+
+    def hops_count=: (Integer?) -> Integer?
+
+    def hops_count?: () -> bool
+
+    def hops_count_changed?: () -> bool
+
+    def hops_count_change: () -> [ Integer?, Integer? ]
+
+    def hops_count_will_change!: () -> void
+
+    def hops_count_was: () -> Integer?
+
+    def hops_count_previously_changed?: () -> bool
+
+    def hops_count_previous_change: () -> Array[Integer?]?
+
+    def hops_count_previously_was: () -> Integer?
+
+    def hops_count_before_last_save: () -> Integer?
+
+    def hops_count_change_to_be_saved: () -> Array[Integer?]?
+
+    def hops_count_in_database: () -> Integer?
+
+    def saved_change_to_hops_count: () -> Array[Integer?]?
+
+    def saved_change_to_hops_count?: () -> bool
+
+    def will_save_change_to_hops_count?: () -> bool
+
+    def restore_hops_count!: () -> void
+
+    def clear_hops_count_change: () -> void
+  end
+  include GeneratedAttributeMethods
+  def user_contacts: () -> UserContact::ActiveRecord_Associations_CollectionProxy
+  def user_contacts=: (UserContact::ActiveRecord_Associations_CollectionProxy | Array[UserContact]) -> (UserContact::ActiveRecord_Associations_CollectionProxy | Array[UserContact])
+  def user_contact_ids: () -> Array[Integer]
+  def user_contact_ids=: (Array[Integer]) -> Array[Integer]
+  def phone_numbers: () -> PhoneNumber::ActiveRecord_Associations_CollectionProxy
+  def phone_numbers=: (PhoneNumber::ActiveRecord_Associations_CollectionProxy | Array[PhoneNumber]) -> (PhoneNumber::ActiveRecord_Associations_CollectionProxy | Array[PhoneNumber])
+  def phone_number_ids: () -> Array[Integer]
+  def phone_number_ids=: (Array[Integer]) -> Array[Integer]
+  def ads: () -> Ad::ActiveRecord_Associations_CollectionProxy
+  def ads=: (Ad::ActiveRecord_Associations_CollectionProxy | Array[Ad]) -> (Ad::ActiveRecord_Associations_CollectionProxy | Array[Ad])
+  def ad_ids: () -> Array[Integer]
+  def ad_ids=: (Array[Integer]) -> Array[Integer]
+
+  def user: () -> User
+  def user=: (User?) -> User?
+  def reload_user: () -> User?
+  def build_user: (untyped) -> User
+  def create_user: (untyped) -> User
+  def create_user!: (untyped) -> User
+  def connection: () -> User
+  def connection=: (User?) -> User?
+  def reload_connection: () -> User?
+  def build_connection: (untyped) -> User
+  def create_connection: (untyped) -> User
+  def create_connection!: (untyped) -> User
+  def friend: () -> User
+  def friend=: (User?) -> User?
+  def reload_friend: () -> User?
+  def build_friend: (untyped) -> User
+  def create_friend: (untyped) -> User
+  def create_friend!: (untyped) -> User
+
+  def self.visible_ads_count: () -> ActiveRecord_Relation
+  def self.visible_ads_default_count: () -> ActiveRecord_Relation
+  def self.business_ads_count: () -> ActiveRecord_Relation
+  def self.known_contacts_count: () -> ActiveRecord_Relation
+
+  module GeneratedRelationMethods
+    def visible_ads_count: () -> ActiveRecord_Relation
+
+    def visible_ads_default_count: () -> ActiveRecord_Relation
+
+    def business_ads_count: () -> ActiveRecord_Relation
+
+    def known_contacts_count: () -> ActiveRecord_Relation
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[UserConnection, Integer]
+    include Enumerable[UserConnection]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[UserConnection, Integer]
+  end
+end

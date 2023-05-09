@@ -1,0 +1,35 @@
+module Api
+  module V1
+    class ChatRoomListSerializer
+      attr_reader current_user: User
+
+      attr_reader chat_rooms: Array[ChatRoom]
+
+      attr_reader admin: bool
+
+      def initialize: (User current_user, Array[ChatRoom] chat_rooms, ?bool admin) -> void
+
+      def call: () -> ActiveModelSerializers::SerializableResource
+
+      def first: () -> Api::V1::ChatRoomListItemSerializer
+
+      private
+
+      def chat_room_users: () -> Array[ChatRoomUser]
+
+      def last_messages: () -> Hash[Integer, Array[Message]]
+
+      def known: () -> Array[String]
+
+      def new_messages_counts: () -> Integer
+
+      def titles: () -> Hash[Integer, String]
+
+      def photos: () -> Hash[Integer, String]
+
+      def names: () -> Hash[Integer, String]
+
+      def instance_options: () -> { last_messages: Hash[Integer, Array[Message]], names: Hash[Integer, String], titles: Hash[Integer, String], photos: Hash[Integer, String], known: Array[String], new_messages_counts: Integer, chat_room_users: Array[ChatRoomUser], each_serializer: Api::V1::ChatRoomListItemSerializer }
+    end
+  end
+end

@@ -1,0 +1,240 @@
+class AdsSource < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[AdsSource, ActiveRecord_Relation, Integer]
+
+  module GeneratedAttributeMethods
+    def id: () -> Integer
+
+    def id=: (Integer) -> Integer
+
+    def id?: () -> bool
+
+    def id_changed?: () -> bool
+
+    def id_change: () -> [ Integer?, Integer? ]
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> Integer?
+
+    def id_previously_changed?: () -> bool
+
+    def id_previous_change: () -> Array[Integer?]?
+
+    def id_previously_was: () -> Integer?
+
+    def id_before_last_save: () -> Integer?
+
+    def id_change_to_be_saved: () -> Array[Integer?]?
+
+    def id_in_database: () -> Integer?
+
+    def saved_change_to_id: () -> Array[Integer?]?
+
+    def saved_change_to_id?: () -> bool
+
+    def will_save_change_to_id?: () -> bool
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def title: () -> String
+
+    def title=: (String) -> String
+
+    def title?: () -> bool
+
+    def title_changed?: () -> bool
+
+    def title_change: () -> [ String?, String? ]
+
+    def title_will_change!: () -> void
+
+    def title_was: () -> String?
+
+    def title_previously_changed?: () -> bool
+
+    def title_previous_change: () -> Array[String?]?
+
+    def title_previously_was: () -> String?
+
+    def title_before_last_save: () -> String?
+
+    def title_change_to_be_saved: () -> Array[String?]?
+
+    def title_in_database: () -> String?
+
+    def saved_change_to_title: () -> Array[String?]?
+
+    def saved_change_to_title?: () -> bool
+
+    def will_save_change_to_title?: () -> bool
+
+    def restore_title!: () -> void
+
+    def clear_title_change: () -> void
+
+    def api_token: () -> String
+
+    def api_token=: (String) -> String
+
+    def api_token?: () -> bool
+
+    def api_token_changed?: () -> bool
+
+    def api_token_change: () -> [ String?, String? ]
+
+    def api_token_will_change!: () -> void
+
+    def api_token_was: () -> String?
+
+    def api_token_previously_changed?: () -> bool
+
+    def api_token_previous_change: () -> Array[String?]?
+
+    def api_token_previously_was: () -> String?
+
+    def api_token_before_last_save: () -> String?
+
+    def api_token_change_to_be_saved: () -> Array[String?]?
+
+    def api_token_in_database: () -> String?
+
+    def saved_change_to_api_token: () -> Array[String?]?
+
+    def saved_change_to_api_token?: () -> bool
+
+    def will_save_change_to_api_token?: () -> bool
+
+    def restore_api_token!: () -> void
+
+    def clear_api_token_change: () -> void
+
+    def created_at: () -> ActiveSupport::TimeWithZone
+
+    def created_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+    def created_at?: () -> bool
+
+    def created_at_changed?: () -> bool
+
+    def created_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+    def created_at_will_change!: () -> void
+
+    def created_at_was: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_previously_changed?: () -> bool
+
+    def created_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def created_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def created_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+    def saved_change_to_created_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def saved_change_to_created_at?: () -> bool
+
+    def will_save_change_to_created_at?: () -> bool
+
+    def restore_created_at!: () -> void
+
+    def clear_created_at_change: () -> void
+
+    def updated_at: () -> ActiveSupport::TimeWithZone
+
+    def updated_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+    def updated_at?: () -> bool
+
+    def updated_at_changed?: () -> bool
+
+    def updated_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+    def updated_at_will_change!: () -> void
+
+    def updated_at_was: () -> ActiveSupport::TimeWithZone?
+
+    def updated_at_previously_changed?: () -> bool
+
+    def updated_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def updated_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+    def updated_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+    def updated_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def updated_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+    def saved_change_to_updated_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def saved_change_to_updated_at?: () -> bool
+
+    def will_save_change_to_updated_at?: () -> bool
+
+    def restore_updated_at!: () -> void
+
+    def clear_updated_at_change: () -> void
+
+    def native: () -> bool?
+
+    def native=: (bool?) -> bool?
+
+    def native?: () -> bool
+
+    def native_changed?: () -> bool
+
+    def native_change: () -> [ bool?, bool? ]
+
+    def native_will_change!: () -> void
+
+    def native_was: () -> bool?
+
+    def native_previously_changed?: () -> bool
+
+    def native_previous_change: () -> Array[bool?]?
+
+    def native_previously_was: () -> bool?
+
+    def native_before_last_save: () -> bool?
+
+    def native_change_to_be_saved: () -> Array[bool?]?
+
+    def native_in_database: () -> bool?
+
+    def saved_change_to_native: () -> Array[bool?]?
+
+    def saved_change_to_native?: () -> bool
+
+    def will_save_change_to_native?: () -> bool
+
+    def restore_native!: () -> void
+
+    def clear_native_change: () -> void
+  end
+  include GeneratedAttributeMethods
+  def ads: () -> Ad::ActiveRecord_Associations_CollectionProxy
+  def ads=: (Ad::ActiveRecord_Associations_CollectionProxy | Array[Ad]) -> (Ad::ActiveRecord_Associations_CollectionProxy | Array[Ad])
+  def ad_ids: () -> Array[Integer]
+  def ad_ids=: (Array[Integer]) -> Array[Integer]
+
+  module GeneratedRelationMethods
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[AdsSource, Integer]
+    include Enumerable[AdsSource]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[AdsSource, Integer]
+  end
+end

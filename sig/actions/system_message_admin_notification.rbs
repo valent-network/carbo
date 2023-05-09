@@ -1,0 +1,3 @@
+class SystemMessageAdminNotification
+  def call: (admin: User, message_body: String, sender_name: String, chat_room_id: Integer) -> Array[UserDevice]
+end

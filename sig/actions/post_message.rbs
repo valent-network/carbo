@@ -1,0 +1,3 @@
+class PostMessage
+  def call: (sender: User, message: Message) -> Message
+end

@@ -1,0 +1,290 @@
+class AdOptionType < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[AdOptionType, ActiveRecord_Relation, Integer]
+
+  module GeneratedAttributeMethods
+    def id: () -> Integer
+
+    def id=: (Integer) -> Integer
+
+    def id?: () -> bool
+
+    def id_changed?: () -> bool
+
+    def id_change: () -> [ Integer?, Integer? ]
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> Integer?
+
+    def id_previously_changed?: () -> bool
+
+    def id_previous_change: () -> Array[Integer?]?
+
+    def id_previously_was: () -> Integer?
+
+    def id_before_last_save: () -> Integer?
+
+    def id_change_to_be_saved: () -> Array[Integer?]?
+
+    def id_in_database: () -> Integer?
+
+    def saved_change_to_id: () -> Array[Integer?]?
+
+    def saved_change_to_id?: () -> bool
+
+    def will_save_change_to_id?: () -> bool
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def name: () -> String
+
+    def name=: (String) -> String
+
+    def name?: () -> bool
+
+    def name_changed?: () -> bool
+
+    def name_change: () -> [ String?, String? ]
+
+    def name_will_change!: () -> void
+
+    def name_was: () -> String?
+
+    def name_previously_changed?: () -> bool
+
+    def name_previous_change: () -> Array[String?]?
+
+    def name_previously_was: () -> String?
+
+    def name_before_last_save: () -> String?
+
+    def name_change_to_be_saved: () -> Array[String?]?
+
+    def name_in_database: () -> String?
+
+    def saved_change_to_name: () -> Array[String?]?
+
+    def saved_change_to_name?: () -> bool
+
+    def will_save_change_to_name?: () -> bool
+
+    def restore_name!: () -> void
+
+    def clear_name_change: () -> void
+
+    def category_id: () -> Integer
+
+    def category_id=: (Integer) -> Integer
+
+    def category_id?: () -> bool
+
+    def category_id_changed?: () -> bool
+
+    def category_id_change: () -> [ Integer?, Integer? ]
+
+    def category_id_will_change!: () -> void
+
+    def category_id_was: () -> Integer?
+
+    def category_id_previously_changed?: () -> bool
+
+    def category_id_previous_change: () -> Array[Integer?]?
+
+    def category_id_previously_was: () -> Integer?
+
+    def category_id_before_last_save: () -> Integer?
+
+    def category_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def category_id_in_database: () -> Integer?
+
+    def saved_change_to_category_id: () -> Array[Integer?]?
+
+    def saved_change_to_category_id?: () -> bool
+
+    def will_save_change_to_category_id?: () -> bool
+
+    def restore_category_id!: () -> void
+
+    def clear_category_id_change: () -> void
+
+    def filterable: () -> bool
+
+    def filterable=: (bool) -> bool
+
+    def filterable?: () -> bool
+
+    def filterable_changed?: () -> bool
+
+    def filterable_change: () -> [ bool?, bool? ]
+
+    def filterable_will_change!: () -> void
+
+    def filterable_was: () -> bool?
+
+    def filterable_previously_changed?: () -> bool
+
+    def filterable_previous_change: () -> Array[bool?]?
+
+    def filterable_previously_was: () -> bool?
+
+    def filterable_before_last_save: () -> bool?
+
+    def filterable_change_to_be_saved: () -> Array[bool?]?
+
+    def filterable_in_database: () -> bool?
+
+    def saved_change_to_filterable: () -> Array[bool?]?
+
+    def saved_change_to_filterable?: () -> bool
+
+    def will_save_change_to_filterable?: () -> bool
+
+    def restore_filterable!: () -> void
+
+    def clear_filterable_change: () -> void
+
+    def input_type: () -> String
+
+    def input_type=: (String) -> String
+
+    def input_type?: () -> bool
+
+    def input_type_changed?: () -> bool
+
+    def input_type_change: () -> [ String?, String? ]
+
+    def input_type_will_change!: () -> void
+
+    def input_type_was: () -> String?
+
+    def input_type_previously_changed?: () -> bool
+
+    def input_type_previous_change: () -> Array[String?]?
+
+    def input_type_previously_was: () -> String?
+
+    def input_type_before_last_save: () -> String?
+
+    def input_type_change_to_be_saved: () -> Array[String?]?
+
+    def input_type_in_database: () -> String?
+
+    def saved_change_to_input_type: () -> Array[String?]?
+
+    def saved_change_to_input_type?: () -> bool
+
+    def will_save_change_to_input_type?: () -> bool
+
+    def restore_input_type!: () -> void
+
+    def clear_input_type_change: () -> void
+
+    def translations: () -> untyped?
+
+    def translations=: (untyped?) -> untyped?
+
+    def translations?: () -> bool
+
+    def translations_changed?: () -> bool
+
+    def translations_change: () -> [ untyped?, untyped? ]
+
+    def translations_will_change!: () -> void
+
+    def translations_was: () -> untyped?
+
+    def translations_previously_changed?: () -> bool
+
+    def translations_previous_change: () -> Array[untyped?]?
+
+    def translations_previously_was: () -> untyped?
+
+    def translations_before_last_save: () -> untyped?
+
+    def translations_change_to_be_saved: () -> Array[untyped?]?
+
+    def translations_in_database: () -> untyped?
+
+    def saved_change_to_translations: () -> Array[untyped?]?
+
+    def saved_change_to_translations?: () -> bool
+
+    def will_save_change_to_translations?: () -> bool
+
+    def restore_translations!: () -> void
+
+    def clear_translations_change: () -> void
+
+    def position: () -> Integer?
+
+    def position=: (Integer?) -> Integer?
+
+    def position?: () -> bool
+
+    def position_changed?: () -> bool
+
+    def position_change: () -> [ Integer?, Integer? ]
+
+    def position_will_change!: () -> void
+
+    def position_was: () -> Integer?
+
+    def position_previously_changed?: () -> bool
+
+    def position_previous_change: () -> Array[Integer?]?
+
+    def position_previously_was: () -> Integer?
+
+    def position_before_last_save: () -> Integer?
+
+    def position_change_to_be_saved: () -> Array[Integer?]?
+
+    def position_in_database: () -> Integer?
+
+    def saved_change_to_position: () -> Array[Integer?]?
+
+    def saved_change_to_position?: () -> bool
+
+    def will_save_change_to_position?: () -> bool
+
+    def restore_position!: () -> void
+
+    def clear_position_change: () -> void
+  end
+  include GeneratedAttributeMethods
+  def filterable_values: () -> FilterableValue::ActiveRecord_Associations_CollectionProxy
+  def filterable_values=: (FilterableValue::ActiveRecord_Associations_CollectionProxy | Array[FilterableValue]) -> (FilterableValue::ActiveRecord_Associations_CollectionProxy | Array[FilterableValue])
+  def filterable_value_ids: () -> Array[Integer]
+  def filterable_value_ids=: (Array[Integer]) -> Array[Integer]
+  def groups: () -> FilterableValuesGroup::ActiveRecord_Associations_CollectionProxy
+  def groups=: (FilterableValuesGroup::ActiveRecord_Associations_CollectionProxy | Array[FilterableValuesGroup]) -> (FilterableValuesGroup::ActiveRecord_Associations_CollectionProxy | Array[FilterableValuesGroup])
+  def group_ids: () -> Array[Integer]
+  def group_ids=: (Array[Integer]) -> Array[Integer]
+
+  def category: () -> Category
+  def category=: (Category?) -> Category?
+  def reload_category: () -> Category?
+  def build_category: (untyped) -> Category
+  def create_category: (untyped) -> Category
+  def create_category!: (untyped) -> Category
+
+  def self.filterable: () -> ActiveRecord_Relation
+
+  module GeneratedRelationMethods
+    def filterable: () -> ActiveRecord_Relation
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[AdOptionType, Integer]
+    include Enumerable[AdOptionType]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[AdOptionType, Integer]
+  end
+end

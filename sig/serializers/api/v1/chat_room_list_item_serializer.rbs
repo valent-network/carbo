@@ -1,0 +1,21 @@
+module Api
+  module V1
+    class ChatRoomListItemSerializer < ActiveModel::Serializer
+      def updated_at: () -> DateTime
+
+      def messages: () -> ::Array[untyped]
+
+      def new_messages_count: () -> Integer
+
+      def title: () -> String
+
+      def photo: () -> String?
+
+      def chat_room_users: () -> untyped
+
+      private
+
+      def last_message: () -> untyped
+    end
+  end
+end

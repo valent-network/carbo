@@ -1,0 +1,251 @@
+module Rpush
+  module Client
+    module ActiveRecord
+      module Apns
+        class Feedback < ::ActiveRecord::Base
+          extend _ActiveRecord_Relation_ClassMethods[Rpush::Client::ActiveRecord::Apns::Feedback, ActiveRecord_Relation, Integer]
+
+          module GeneratedAttributeMethods
+            def id: () -> Integer
+
+            def id=: (Integer) -> Integer
+
+            def id?: () -> bool
+
+            def id_changed?: () -> bool
+
+            def id_change: () -> [ Integer?, Integer? ]
+
+            def id_will_change!: () -> void
+
+            def id_was: () -> Integer?
+
+            def id_previously_changed?: () -> bool
+
+            def id_previous_change: () -> Array[Integer?]?
+
+            def id_previously_was: () -> Integer?
+
+            def id_before_last_save: () -> Integer?
+
+            def id_change_to_be_saved: () -> Array[Integer?]?
+
+            def id_in_database: () -> Integer?
+
+            def saved_change_to_id: () -> Array[Integer?]?
+
+            def saved_change_to_id?: () -> bool
+
+            def will_save_change_to_id?: () -> bool
+
+            def restore_id!: () -> void
+
+            def clear_id_change: () -> void
+
+            def device_token: () -> String?
+
+            def device_token=: (String?) -> String?
+
+            def device_token?: () -> bool
+
+            def device_token_changed?: () -> bool
+
+            def device_token_change: () -> [ String?, String? ]
+
+            def device_token_will_change!: () -> void
+
+            def device_token_was: () -> String?
+
+            def device_token_previously_changed?: () -> bool
+
+            def device_token_previous_change: () -> Array[String?]?
+
+            def device_token_previously_was: () -> String?
+
+            def device_token_before_last_save: () -> String?
+
+            def device_token_change_to_be_saved: () -> Array[String?]?
+
+            def device_token_in_database: () -> String?
+
+            def saved_change_to_device_token: () -> Array[String?]?
+
+            def saved_change_to_device_token?: () -> bool
+
+            def will_save_change_to_device_token?: () -> bool
+
+            def restore_device_token!: () -> void
+
+            def clear_device_token_change: () -> void
+
+            def failed_at: () -> ActiveSupport::TimeWithZone
+
+            def failed_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+            def failed_at?: () -> bool
+
+            def failed_at_changed?: () -> bool
+
+            def failed_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+            def failed_at_will_change!: () -> void
+
+            def failed_at_was: () -> ActiveSupport::TimeWithZone?
+
+            def failed_at_previously_changed?: () -> bool
+
+            def failed_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def failed_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+            def failed_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+            def failed_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def failed_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+            def saved_change_to_failed_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def saved_change_to_failed_at?: () -> bool
+
+            def will_save_change_to_failed_at?: () -> bool
+
+            def restore_failed_at!: () -> void
+
+            def clear_failed_at_change: () -> void
+
+            def created_at: () -> ActiveSupport::TimeWithZone
+
+            def created_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+            def created_at?: () -> bool
+
+            def created_at_changed?: () -> bool
+
+            def created_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+            def created_at_will_change!: () -> void
+
+            def created_at_was: () -> ActiveSupport::TimeWithZone?
+
+            def created_at_previously_changed?: () -> bool
+
+            def created_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def created_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+            def created_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+            def created_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def created_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+            def saved_change_to_created_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def saved_change_to_created_at?: () -> bool
+
+            def will_save_change_to_created_at?: () -> bool
+
+            def restore_created_at!: () -> void
+
+            def clear_created_at_change: () -> void
+
+            def updated_at: () -> ActiveSupport::TimeWithZone
+
+            def updated_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+            def updated_at?: () -> bool
+
+            def updated_at_changed?: () -> bool
+
+            def updated_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+            def updated_at_will_change!: () -> void
+
+            def updated_at_was: () -> ActiveSupport::TimeWithZone?
+
+            def updated_at_previously_changed?: () -> bool
+
+            def updated_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def updated_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+            def updated_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+            def updated_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def updated_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+            def saved_change_to_updated_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def saved_change_to_updated_at?: () -> bool
+
+            def will_save_change_to_updated_at?: () -> bool
+
+            def restore_updated_at!: () -> void
+
+            def clear_updated_at_change: () -> void
+
+            def app_id: () -> Integer?
+
+            def app_id=: (Integer?) -> Integer?
+
+            def app_id?: () -> bool
+
+            def app_id_changed?: () -> bool
+
+            def app_id_change: () -> [ Integer?, Integer? ]
+
+            def app_id_will_change!: () -> void
+
+            def app_id_was: () -> Integer?
+
+            def app_id_previously_changed?: () -> bool
+
+            def app_id_previous_change: () -> Array[Integer?]?
+
+            def app_id_previously_was: () -> Integer?
+
+            def app_id_before_last_save: () -> Integer?
+
+            def app_id_change_to_be_saved: () -> Array[Integer?]?
+
+            def app_id_in_database: () -> Integer?
+
+            def saved_change_to_app_id: () -> Array[Integer?]?
+
+            def saved_change_to_app_id?: () -> bool
+
+            def will_save_change_to_app_id?: () -> bool
+
+            def restore_app_id!: () -> void
+
+            def clear_app_id_change: () -> void
+          end
+          include GeneratedAttributeMethods
+
+          def app: () -> Rpush::Client::ActiveRecord::App
+          def app=: (Rpush::Client::ActiveRecord::App?) -> Rpush::Client::ActiveRecord::App?
+          def reload_app: () -> Rpush::Client::ActiveRecord::App?
+          def build_app: (untyped) -> Rpush::Client::ActiveRecord::App
+          def create_app: (untyped) -> Rpush::Client::ActiveRecord::App
+          def create_app!: (untyped) -> Rpush::Client::ActiveRecord::App
+
+          module GeneratedRelationMethods
+          end
+
+          class ActiveRecord_Relation < ::ActiveRecord::Relation
+            include GeneratedRelationMethods
+            include _ActiveRecord_Relation[Rpush::Client::ActiveRecord::Apns::Feedback, Integer]
+            include Enumerable[Rpush::Client::ActiveRecord::Apns::Feedback]
+          end
+
+          class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+            include GeneratedRelationMethods
+            include _ActiveRecord_Relation[Rpush::Client::ActiveRecord::Apns::Feedback, Integer]
+          end
+        end
+      end
+    end
+  end
+end

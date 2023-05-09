@@ -1,0 +1,135 @@
+class AdDescription < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[AdDescription, ActiveRecord_Relation, Integer]
+
+  module GeneratedAttributeMethods
+    def ad_id: () -> Integer
+
+    def ad_id=: (Integer) -> Integer
+
+    def ad_id?: () -> bool
+
+    def ad_id_changed?: () -> bool
+
+    def ad_id_change: () -> [ Integer?, Integer? ]
+
+    def ad_id_will_change!: () -> void
+
+    def ad_id_was: () -> Integer?
+
+    def ad_id_previously_changed?: () -> bool
+
+    def ad_id_previous_change: () -> Array[Integer?]?
+
+    def ad_id_previously_was: () -> Integer?
+
+    def ad_id_before_last_save: () -> Integer?
+
+    def ad_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def ad_id_in_database: () -> Integer?
+
+    def saved_change_to_ad_id: () -> Array[Integer?]?
+
+    def saved_change_to_ad_id?: () -> bool
+
+    def will_save_change_to_ad_id?: () -> bool
+
+    def restore_ad_id!: () -> void
+
+    def clear_ad_id_change: () -> void
+
+    def body: () -> String?
+
+    def body=: (String?) -> String?
+
+    def body?: () -> bool
+
+    def body_changed?: () -> bool
+
+    def body_change: () -> [ String?, String? ]
+
+    def body_will_change!: () -> void
+
+    def body_was: () -> String?
+
+    def body_previously_changed?: () -> bool
+
+    def body_previous_change: () -> Array[String?]?
+
+    def body_previously_was: () -> String?
+
+    def body_before_last_save: () -> String?
+
+    def body_change_to_be_saved: () -> Array[String?]?
+
+    def body_in_database: () -> String?
+
+    def saved_change_to_body: () -> Array[String?]?
+
+    def saved_change_to_body?: () -> bool
+
+    def will_save_change_to_body?: () -> bool
+
+    def restore_body!: () -> void
+
+    def clear_body_change: () -> void
+
+    def short: () -> String?
+
+    def short=: (String?) -> String?
+
+    def short?: () -> bool
+
+    def short_changed?: () -> bool
+
+    def short_change: () -> [ String?, String? ]
+
+    def short_will_change!: () -> void
+
+    def short_was: () -> String?
+
+    def short_previously_changed?: () -> bool
+
+    def short_previous_change: () -> Array[String?]?
+
+    def short_previously_was: () -> String?
+
+    def short_before_last_save: () -> String?
+
+    def short_change_to_be_saved: () -> Array[String?]?
+
+    def short_in_database: () -> String?
+
+    def saved_change_to_short: () -> Array[String?]?
+
+    def saved_change_to_short?: () -> bool
+
+    def will_save_change_to_short?: () -> bool
+
+    def restore_short!: () -> void
+
+    def clear_short_change: () -> void
+  end
+  include GeneratedAttributeMethods
+
+  def ad: () -> Ad
+  def ad=: (Ad?) -> Ad?
+  def reload_ad: () -> Ad?
+  def build_ad: (untyped) -> Ad
+  def create_ad: (untyped) -> Ad
+  def create_ad!: (untyped) -> Ad
+
+  module GeneratedRelationMethods
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[AdDescription, Integer]
+    include Enumerable[AdDescription]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[AdDescription, Integer]
+  end
+end

@@ -1,0 +1,130 @@
+class PhoneNumber < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[PhoneNumber, ActiveRecord_Relation, Integer]
+
+  module GeneratedAttributeMethods
+    def id: () -> Integer
+
+    def id=: (Integer) -> Integer
+
+    def id?: () -> bool
+
+    def id_changed?: () -> bool
+
+    def id_change: () -> [ Integer?, Integer? ]
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> Integer?
+
+    def id_previously_changed?: () -> bool
+
+    def id_previous_change: () -> Array[Integer?]?
+
+    def id_previously_was: () -> Integer?
+
+    def id_before_last_save: () -> Integer?
+
+    def id_change_to_be_saved: () -> Array[Integer?]?
+
+    def id_in_database: () -> Integer?
+
+    def saved_change_to_id: () -> Array[Integer?]?
+
+    def saved_change_to_id?: () -> bool
+
+    def will_save_change_to_id?: () -> bool
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def full_number: () -> String
+
+    def full_number=: (String) -> String
+
+    def full_number?: () -> bool
+
+    def full_number_changed?: () -> bool
+
+    def full_number_change: () -> [ String?, String? ]
+
+    def full_number_will_change!: () -> void
+
+    def full_number_was: () -> String?
+
+    def full_number_previously_changed?: () -> bool
+
+    def full_number_previous_change: () -> Array[String?]?
+
+    def full_number_previously_was: () -> String?
+
+    def full_number_before_last_save: () -> String?
+
+    def full_number_change_to_be_saved: () -> Array[String?]?
+
+    def full_number_in_database: () -> String?
+
+    def saved_change_to_full_number: () -> Array[String?]?
+
+    def saved_change_to_full_number?: () -> bool
+
+    def will_save_change_to_full_number?: () -> bool
+
+    def restore_full_number!: () -> void
+
+    def clear_full_number_change: () -> void
+  end
+  include GeneratedAttributeMethods
+  def ads: () -> Ad::ActiveRecord_Associations_CollectionProxy
+  def ads=: (Ad::ActiveRecord_Associations_CollectionProxy | Array[Ad]) -> (Ad::ActiveRecord_Associations_CollectionProxy | Array[Ad])
+  def ad_ids: () -> Array[Integer]
+  def ad_ids=: (Array[Integer]) -> Array[Integer]
+  def user_contacts: () -> UserContact::ActiveRecord_Associations_CollectionProxy
+  def user_contacts=: (UserContact::ActiveRecord_Associations_CollectionProxy | Array[UserContact]) -> (UserContact::ActiveRecord_Associations_CollectionProxy | Array[UserContact])
+  def user_contact_ids: () -> Array[Integer]
+  def user_contact_ids=: (Array[Integer]) -> Array[Integer]
+  def user: () -> User?
+  def user=: (User?) -> User?
+  def build_user: (untyped) -> User
+  def create_user: (untyped) -> User
+  def create_user!: (untyped) -> User
+  def reload_user: () -> User?
+  def demo_phone_number: () -> DemoPhoneNumber?
+  def demo_phone_number=: (DemoPhoneNumber?) -> DemoPhoneNumber?
+  def build_demo_phone_number: (untyped) -> DemoPhoneNumber
+  def create_demo_phone_number: (untyped) -> DemoPhoneNumber
+  def create_demo_phone_number!: (untyped) -> DemoPhoneNumber
+  def reload_demo_phone_number: () -> DemoPhoneNumber?
+
+  def self.having_one_ad: () -> ActiveRecord_Relation
+  def self.having_two_or_three_ads: () -> ActiveRecord_Relation
+  def self.having_four_to_ten_ads: () -> ActiveRecord_Relation
+  def self.having_more_ten_ads: () -> ActiveRecord_Relation
+  def self.by_full_number: (untyped phone_number) -> ActiveRecord_Relation
+  def self.business: (?untyped business_factor) -> ActiveRecord_Relation
+
+  module GeneratedRelationMethods
+    def having_one_ad: () -> ActiveRecord_Relation
+
+    def having_two_or_three_ads: () -> ActiveRecord_Relation
+
+    def having_four_to_ten_ads: () -> ActiveRecord_Relation
+
+    def having_more_ten_ads: () -> ActiveRecord_Relation
+
+    def by_full_number: (untyped phone_number) -> ActiveRecord_Relation
+
+    def business: (?untyped business_factor) -> ActiveRecord_Relation
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[PhoneNumber, Integer]
+    include Enumerable[PhoneNumber]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[PhoneNumber, Integer]
+  end
+end

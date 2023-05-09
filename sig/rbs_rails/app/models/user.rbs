@@ -1,0 +1,459 @@
+class User < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[User, ActiveRecord_Relation, Integer]
+
+  module GeneratedAttributeMethods
+    def id: () -> Integer
+
+    def id=: (Integer) -> Integer
+
+    def id?: () -> bool
+
+    def id_changed?: () -> bool
+
+    def id_change: () -> [ Integer?, Integer? ]
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> Integer?
+
+    def id_previously_changed?: () -> bool
+
+    def id_previous_change: () -> Array[Integer?]?
+
+    def id_previously_was: () -> Integer?
+
+    def id_before_last_save: () -> Integer?
+
+    def id_change_to_be_saved: () -> Array[Integer?]?
+
+    def id_in_database: () -> Integer?
+
+    def saved_change_to_id: () -> Array[Integer?]?
+
+    def saved_change_to_id?: () -> bool
+
+    def will_save_change_to_id?: () -> bool
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def phone_number_id: () -> Integer
+
+    def phone_number_id=: (Integer) -> Integer
+
+    def phone_number_id?: () -> bool
+
+    def phone_number_id_changed?: () -> bool
+
+    def phone_number_id_change: () -> [ Integer?, Integer? ]
+
+    def phone_number_id_will_change!: () -> void
+
+    def phone_number_id_was: () -> Integer?
+
+    def phone_number_id_previously_changed?: () -> bool
+
+    def phone_number_id_previous_change: () -> Array[Integer?]?
+
+    def phone_number_id_previously_was: () -> Integer?
+
+    def phone_number_id_before_last_save: () -> Integer?
+
+    def phone_number_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def phone_number_id_in_database: () -> Integer?
+
+    def saved_change_to_phone_number_id: () -> Array[Integer?]?
+
+    def saved_change_to_phone_number_id?: () -> bool
+
+    def will_save_change_to_phone_number_id?: () -> bool
+
+    def restore_phone_number_id!: () -> void
+
+    def clear_phone_number_id_change: () -> void
+
+    def name: () -> String?
+
+    def name=: (String?) -> String?
+
+    def name?: () -> bool
+
+    def name_changed?: () -> bool
+
+    def name_change: () -> [ String?, String? ]
+
+    def name_will_change!: () -> void
+
+    def name_was: () -> String?
+
+    def name_previously_changed?: () -> bool
+
+    def name_previous_change: () -> Array[String?]?
+
+    def name_previously_was: () -> String?
+
+    def name_before_last_save: () -> String?
+
+    def name_change_to_be_saved: () -> Array[String?]?
+
+    def name_in_database: () -> String?
+
+    def saved_change_to_name: () -> Array[String?]?
+
+    def saved_change_to_name?: () -> bool
+
+    def will_save_change_to_name?: () -> bool
+
+    def restore_name!: () -> void
+
+    def clear_name_change: () -> void
+
+    def created_at: () -> ActiveSupport::TimeWithZone
+
+    def created_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+    def created_at?: () -> bool
+
+    def created_at_changed?: () -> bool
+
+    def created_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+    def created_at_will_change!: () -> void
+
+    def created_at_was: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_previously_changed?: () -> bool
+
+    def created_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def created_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def created_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+    def saved_change_to_created_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def saved_change_to_created_at?: () -> bool
+
+    def will_save_change_to_created_at?: () -> bool
+
+    def restore_created_at!: () -> void
+
+    def clear_created_at_change: () -> void
+
+    def updated_at: () -> ActiveSupport::TimeWithZone
+
+    def updated_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+    def updated_at?: () -> bool
+
+    def updated_at_changed?: () -> bool
+
+    def updated_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+    def updated_at_will_change!: () -> void
+
+    def updated_at_was: () -> ActiveSupport::TimeWithZone?
+
+    def updated_at_previously_changed?: () -> bool
+
+    def updated_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def updated_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+    def updated_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+    def updated_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def updated_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+    def saved_change_to_updated_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def saved_change_to_updated_at?: () -> bool
+
+    def will_save_change_to_updated_at?: () -> bool
+
+    def restore_updated_at!: () -> void
+
+    def clear_updated_at_change: () -> void
+
+    def avatar: () -> untyped?
+
+    def avatar=: (untyped?) -> untyped?
+
+    def avatar?: () -> bool
+
+    def avatar_changed?: () -> bool
+
+    def avatar_change: () -> [ untyped?, untyped? ]
+
+    def avatar_will_change!: () -> void
+
+    def avatar_was: () -> untyped?
+
+    def avatar_previously_changed?: () -> bool
+
+    def avatar_previous_change: () -> Array[untyped?]?
+
+    def avatar_previously_was: () -> untyped?
+
+    def avatar_before_last_save: () -> untyped?
+
+    def avatar_change_to_be_saved: () -> Array[untyped?]?
+
+    def avatar_in_database: () -> untyped?
+
+    def saved_change_to_avatar: () -> Array[untyped?]?
+
+    def saved_change_to_avatar?: () -> bool
+
+    def will_save_change_to_avatar?: () -> bool
+
+    def restore_avatar!: () -> void
+
+    def clear_avatar_change: () -> void
+
+    def referrer_id: () -> Integer?
+
+    def referrer_id=: (Integer?) -> Integer?
+
+    def referrer_id?: () -> bool
+
+    def referrer_id_changed?: () -> bool
+
+    def referrer_id_change: () -> [ Integer?, Integer? ]
+
+    def referrer_id_will_change!: () -> void
+
+    def referrer_id_was: () -> Integer?
+
+    def referrer_id_previously_changed?: () -> bool
+
+    def referrer_id_previous_change: () -> Array[Integer?]?
+
+    def referrer_id_previously_was: () -> Integer?
+
+    def referrer_id_before_last_save: () -> Integer?
+
+    def referrer_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def referrer_id_in_database: () -> Integer?
+
+    def saved_change_to_referrer_id: () -> Array[Integer?]?
+
+    def saved_change_to_referrer_id?: () -> bool
+
+    def will_save_change_to_referrer_id?: () -> bool
+
+    def restore_referrer_id!: () -> void
+
+    def clear_referrer_id_change: () -> void
+
+    def refcode: () -> String?
+
+    def refcode=: (String?) -> String?
+
+    def refcode?: () -> bool
+
+    def refcode_changed?: () -> bool
+
+    def refcode_change: () -> [ String?, String? ]
+
+    def refcode_will_change!: () -> void
+
+    def refcode_was: () -> String?
+
+    def refcode_previously_changed?: () -> bool
+
+    def refcode_previous_change: () -> Array[String?]?
+
+    def refcode_previously_was: () -> String?
+
+    def refcode_before_last_save: () -> String?
+
+    def refcode_change_to_be_saved: () -> Array[String?]?
+
+    def refcode_in_database: () -> String?
+
+    def saved_change_to_refcode: () -> Array[String?]?
+
+    def saved_change_to_refcode?: () -> bool
+
+    def will_save_change_to_refcode?: () -> bool
+
+    def restore_refcode!: () -> void
+
+    def clear_refcode_change: () -> void
+
+    def admin: () -> bool
+
+    def admin=: (bool) -> bool
+
+    def admin?: () -> bool
+
+    def admin_changed?: () -> bool
+
+    def admin_change: () -> [ bool?, bool? ]
+
+    def admin_will_change!: () -> void
+
+    def admin_was: () -> bool?
+
+    def admin_previously_changed?: () -> bool
+
+    def admin_previous_change: () -> Array[bool?]?
+
+    def admin_previously_was: () -> bool?
+
+    def admin_before_last_save: () -> bool?
+
+    def admin_change_to_be_saved: () -> Array[bool?]?
+
+    def admin_in_database: () -> bool?
+
+    def saved_change_to_admin: () -> Array[bool?]?
+
+    def saved_change_to_admin?: () -> bool
+
+    def will_save_change_to_admin?: () -> bool
+
+    def restore_admin!: () -> void
+
+    def clear_admin_change: () -> void
+
+    def stats: () -> untyped?
+
+    def stats=: (untyped?) -> untyped?
+
+    def stats?: () -> bool
+
+    def stats_changed?: () -> bool
+
+    def stats_change: () -> [ untyped?, untyped? ]
+
+    def stats_will_change!: () -> void
+
+    def stats_was: () -> untyped?
+
+    def stats_previously_changed?: () -> bool
+
+    def stats_previous_change: () -> Array[untyped?]?
+
+    def stats_previously_was: () -> untyped?
+
+    def stats_before_last_save: () -> untyped?
+
+    def stats_change_to_be_saved: () -> Array[untyped?]?
+
+    def stats_in_database: () -> untyped?
+
+    def saved_change_to_stats: () -> Array[untyped?]?
+
+    def saved_change_to_stats?: () -> bool
+
+    def will_save_change_to_stats?: () -> bool
+
+    def restore_stats!: () -> void
+
+    def clear_stats_change: () -> void
+  end
+  include GeneratedAttributeMethods
+  def referrer_contacts: () -> UserContact::ActiveRecord_Associations_CollectionProxy
+  def referrer_contacts=: (UserContact::ActiveRecord_Associations_CollectionProxy | Array[UserContact]) -> (UserContact::ActiveRecord_Associations_CollectionProxy | Array[UserContact])
+  def referrer_contact_ids: () -> Array[Integer]
+  def referrer_contact_ids=: (Array[Integer]) -> Array[Integer]
+  def user_contacts: () -> UserContact::ActiveRecord_Associations_CollectionProxy
+  def user_contacts=: (UserContact::ActiveRecord_Associations_CollectionProxy | Array[UserContact]) -> (UserContact::ActiveRecord_Associations_CollectionProxy | Array[UserContact])
+  def user_contact_ids: () -> Array[Integer]
+  def user_contact_ids=: (Array[Integer]) -> Array[Integer]
+  def user_devices: () -> UserDevice::ActiveRecord_Associations_CollectionProxy
+  def user_devices=: (UserDevice::ActiveRecord_Associations_CollectionProxy | Array[UserDevice]) -> (UserDevice::ActiveRecord_Associations_CollectionProxy | Array[UserDevice])
+  def user_device_ids: () -> Array[Integer]
+  def user_device_ids=: (Array[Integer]) -> Array[Integer]
+  def ad_visits: () -> AdVisit::ActiveRecord_Associations_CollectionProxy
+  def ad_visits=: (AdVisit::ActiveRecord_Associations_CollectionProxy | Array[AdVisit]) -> (AdVisit::ActiveRecord_Associations_CollectionProxy | Array[AdVisit])
+  def ad_visit_ids: () -> Array[Integer]
+  def ad_visit_ids=: (Array[Integer]) -> Array[Integer]
+  def ad_favorites: () -> AdFavorite::ActiveRecord_Associations_CollectionProxy
+  def ad_favorites=: (AdFavorite::ActiveRecord_Associations_CollectionProxy | Array[AdFavorite]) -> (AdFavorite::ActiveRecord_Associations_CollectionProxy | Array[AdFavorite])
+  def ad_favorite_ids: () -> Array[Integer]
+  def ad_favorite_ids=: (Array[Integer]) -> Array[Integer]
+  def ads: () -> Ad::ActiveRecord_Associations_CollectionProxy
+  def ads=: (Ad::ActiveRecord_Associations_CollectionProxy | Array[Ad]) -> (Ad::ActiveRecord_Associations_CollectionProxy | Array[Ad])
+  def ad_ids: () -> Array[Integer]
+  def ad_ids=: (Array[Integer]) -> Array[Integer]
+  def chat_rooms: () -> ChatRoom::ActiveRecord_Associations_CollectionProxy
+  def chat_rooms=: (ChatRoom::ActiveRecord_Associations_CollectionProxy | Array[ChatRoom]) -> (ChatRoom::ActiveRecord_Associations_CollectionProxy | Array[ChatRoom])
+  def chat_room_ids: () -> Array[Integer]
+  def chat_room_ids=: (Array[Integer]) -> Array[Integer]
+  def chat_room_users: () -> ChatRoomUser::ActiveRecord_Associations_CollectionProxy
+  def chat_room_users=: (ChatRoomUser::ActiveRecord_Associations_CollectionProxy | Array[ChatRoomUser]) -> (ChatRoomUser::ActiveRecord_Associations_CollectionProxy | Array[ChatRoomUser])
+  def chat_room_user_ids: () -> Array[Integer]
+  def chat_room_user_ids=: (Array[Integer]) -> Array[Integer]
+  def messages: () -> Message::ActiveRecord_Associations_CollectionProxy
+  def messages=: (Message::ActiveRecord_Associations_CollectionProxy | Array[Message]) -> (Message::ActiveRecord_Associations_CollectionProxy | Array[Message])
+  def message_ids: () -> Array[Integer]
+  def message_ids=: (Array[Integer]) -> Array[Integer]
+  def events: () -> Event::ActiveRecord_Associations_CollectionProxy
+  def events=: (Event::ActiveRecord_Associations_CollectionProxy | Array[Event]) -> (Event::ActiveRecord_Associations_CollectionProxy | Array[Event])
+  def event_ids: () -> Array[Integer]
+  def event_ids=: (Array[Integer]) -> Array[Integer]
+  def user_connections: () -> UserConnection::ActiveRecord_Associations_CollectionProxy
+  def user_connections=: (UserConnection::ActiveRecord_Associations_CollectionProxy | Array[UserConnection]) -> (UserConnection::ActiveRecord_Associations_CollectionProxy | Array[UserConnection])
+  def user_connection_ids: () -> Array[Integer]
+  def user_connection_ids=: (Array[Integer]) -> Array[Integer]
+  def user_blocked_phone_numbers: () -> UserBlockedPhoneNumber::ActiveRecord_Associations_CollectionProxy
+  def user_blocked_phone_numbers=: (UserBlockedPhoneNumber::ActiveRecord_Associations_CollectionProxy | Array[UserBlockedPhoneNumber]) -> (UserBlockedPhoneNumber::ActiveRecord_Associations_CollectionProxy | Array[UserBlockedPhoneNumber])
+  def user_blocked_phone_number_ids: () -> Array[Integer]
+  def user_blocked_phone_number_ids=: (Array[Integer]) -> Array[Integer]
+  def user_visibilities: () -> UserVisibility::ActiveRecord_Associations_CollectionProxy
+  def user_visibilities=: (UserVisibility::ActiveRecord_Associations_CollectionProxy | Array[UserVisibility]) -> (UserVisibility::ActiveRecord_Associations_CollectionProxy | Array[UserVisibility])
+  def user_visibility_ids: () -> Array[Integer]
+  def user_visibility_ids=: (Array[Integer]) -> Array[Integer]
+  def ref_c: () -> UserContact?
+  def ref_c=: (UserContact?) -> UserContact?
+  def build_ref_c: (untyped) -> UserContact
+  def create_ref_c: (untyped) -> UserContact
+  def create_ref_c!: (untyped) -> UserContact
+  def reload_ref_c: () -> UserContact?
+  def phone_number: () -> PhoneNumber
+  def phone_number=: (PhoneNumber?) -> PhoneNumber?
+  def reload_phone_number: () -> PhoneNumber?
+  def build_phone_number: (untyped) -> PhoneNumber
+  def create_phone_number: (untyped) -> PhoneNumber
+  def create_phone_number!: (untyped) -> PhoneNumber
+  def referrer: () -> User?
+  def referrer=: (User?) -> User?
+  def reload_referrer: () -> User?
+  def build_referrer: (untyped) -> User
+  def create_referrer: (untyped) -> User
+  def create_referrer!: (untyped) -> User
+
+  def self.no_contacts: () -> ActiveRecord_Relation
+  def self.no_connections: () -> ActiveRecord_Relation
+  def self.with_referrer: () -> ActiveRecord_Relation
+
+  module GeneratedRelationMethods
+    def no_contacts: () -> ActiveRecord_Relation
+
+    def no_connections: () -> ActiveRecord_Relation
+
+    def with_referrer: () -> ActiveRecord_Relation
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[User, Integer]
+    include Enumerable[User]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[User, Integer]
+  end
+end

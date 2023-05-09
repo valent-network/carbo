@@ -1,0 +1,1331 @@
+module Rpush
+  module Client
+    module ActiveRecord
+      module Apnsp8
+        class Notification < ::Rpush::Client::ActiveRecord::Apns::Notification
+          extend _ActiveRecord_Relation_ClassMethods[Rpush::Client::ActiveRecord::Apnsp8::Notification, ActiveRecord_Relation, Integer]
+
+          module GeneratedAttributeMethods
+            def id: () -> Integer
+
+            def id=: (Integer) -> Integer
+
+            def id?: () -> bool
+
+            def id_changed?: () -> bool
+
+            def id_change: () -> [ Integer?, Integer? ]
+
+            def id_will_change!: () -> void
+
+            def id_was: () -> Integer?
+
+            def id_previously_changed?: () -> bool
+
+            def id_previous_change: () -> Array[Integer?]?
+
+            def id_previously_was: () -> Integer?
+
+            def id_before_last_save: () -> Integer?
+
+            def id_change_to_be_saved: () -> Array[Integer?]?
+
+            def id_in_database: () -> Integer?
+
+            def saved_change_to_id: () -> Array[Integer?]?
+
+            def saved_change_to_id?: () -> bool
+
+            def will_save_change_to_id?: () -> bool
+
+            def restore_id!: () -> void
+
+            def clear_id_change: () -> void
+
+            def badge: () -> Integer?
+
+            def badge=: (Integer?) -> Integer?
+
+            def badge?: () -> bool
+
+            def badge_changed?: () -> bool
+
+            def badge_change: () -> [ Integer?, Integer? ]
+
+            def badge_will_change!: () -> void
+
+            def badge_was: () -> Integer?
+
+            def badge_previously_changed?: () -> bool
+
+            def badge_previous_change: () -> Array[Integer?]?
+
+            def badge_previously_was: () -> Integer?
+
+            def badge_before_last_save: () -> Integer?
+
+            def badge_change_to_be_saved: () -> Array[Integer?]?
+
+            def badge_in_database: () -> Integer?
+
+            def saved_change_to_badge: () -> Array[Integer?]?
+
+            def saved_change_to_badge?: () -> bool
+
+            def will_save_change_to_badge?: () -> bool
+
+            def restore_badge!: () -> void
+
+            def clear_badge_change: () -> void
+
+            def device_token: () -> String?
+
+            def device_token=: (String?) -> String?
+
+            def device_token?: () -> bool
+
+            def device_token_changed?: () -> bool
+
+            def device_token_change: () -> [ String?, String? ]
+
+            def device_token_will_change!: () -> void
+
+            def device_token_was: () -> String?
+
+            def device_token_previously_changed?: () -> bool
+
+            def device_token_previous_change: () -> Array[String?]?
+
+            def device_token_previously_was: () -> String?
+
+            def device_token_before_last_save: () -> String?
+
+            def device_token_change_to_be_saved: () -> Array[String?]?
+
+            def device_token_in_database: () -> String?
+
+            def saved_change_to_device_token: () -> Array[String?]?
+
+            def saved_change_to_device_token?: () -> bool
+
+            def will_save_change_to_device_token?: () -> bool
+
+            def restore_device_token!: () -> void
+
+            def clear_device_token_change: () -> void
+
+            def sound: () -> String?
+
+            def sound=: (String?) -> String?
+
+            def sound?: () -> bool
+
+            def sound_changed?: () -> bool
+
+            def sound_change: () -> [ String?, String? ]
+
+            def sound_will_change!: () -> void
+
+            def sound_was: () -> String?
+
+            def sound_previously_changed?: () -> bool
+
+            def sound_previous_change: () -> Array[String?]?
+
+            def sound_previously_was: () -> String?
+
+            def sound_before_last_save: () -> String?
+
+            def sound_change_to_be_saved: () -> Array[String?]?
+
+            def sound_in_database: () -> String?
+
+            def saved_change_to_sound: () -> Array[String?]?
+
+            def saved_change_to_sound?: () -> bool
+
+            def will_save_change_to_sound?: () -> bool
+
+            def restore_sound!: () -> void
+
+            def clear_sound_change: () -> void
+
+            def alert: () -> String?
+
+            def alert=: (String?) -> String?
+
+            def alert?: () -> bool
+
+            def alert_changed?: () -> bool
+
+            def alert_change: () -> [ String?, String? ]
+
+            def alert_will_change!: () -> void
+
+            def alert_was: () -> String?
+
+            def alert_previously_changed?: () -> bool
+
+            def alert_previous_change: () -> Array[String?]?
+
+            def alert_previously_was: () -> String?
+
+            def alert_before_last_save: () -> String?
+
+            def alert_change_to_be_saved: () -> Array[String?]?
+
+            def alert_in_database: () -> String?
+
+            def saved_change_to_alert: () -> Array[String?]?
+
+            def saved_change_to_alert?: () -> bool
+
+            def will_save_change_to_alert?: () -> bool
+
+            def restore_alert!: () -> void
+
+            def clear_alert_change: () -> void
+
+            def data: () -> String?
+
+            def data=: (String?) -> String?
+
+            def data?: () -> bool
+
+            def data_changed?: () -> bool
+
+            def data_change: () -> [ String?, String? ]
+
+            def data_will_change!: () -> void
+
+            def data_was: () -> String?
+
+            def data_previously_changed?: () -> bool
+
+            def data_previous_change: () -> Array[String?]?
+
+            def data_previously_was: () -> String?
+
+            def data_before_last_save: () -> String?
+
+            def data_change_to_be_saved: () -> Array[String?]?
+
+            def data_in_database: () -> String?
+
+            def saved_change_to_data: () -> Array[String?]?
+
+            def saved_change_to_data?: () -> bool
+
+            def will_save_change_to_data?: () -> bool
+
+            def restore_data!: () -> void
+
+            def clear_data_change: () -> void
+
+            def expiry: () -> Integer?
+
+            def expiry=: (Integer?) -> Integer?
+
+            def expiry?: () -> bool
+
+            def expiry_changed?: () -> bool
+
+            def expiry_change: () -> [ Integer?, Integer? ]
+
+            def expiry_will_change!: () -> void
+
+            def expiry_was: () -> Integer?
+
+            def expiry_previously_changed?: () -> bool
+
+            def expiry_previous_change: () -> Array[Integer?]?
+
+            def expiry_previously_was: () -> Integer?
+
+            def expiry_before_last_save: () -> Integer?
+
+            def expiry_change_to_be_saved: () -> Array[Integer?]?
+
+            def expiry_in_database: () -> Integer?
+
+            def saved_change_to_expiry: () -> Array[Integer?]?
+
+            def saved_change_to_expiry?: () -> bool
+
+            def will_save_change_to_expiry?: () -> bool
+
+            def restore_expiry!: () -> void
+
+            def clear_expiry_change: () -> void
+
+            def delivered: () -> bool
+
+            def delivered=: (bool) -> bool
+
+            def delivered?: () -> bool
+
+            def delivered_changed?: () -> bool
+
+            def delivered_change: () -> [ bool?, bool? ]
+
+            def delivered_will_change!: () -> void
+
+            def delivered_was: () -> bool?
+
+            def delivered_previously_changed?: () -> bool
+
+            def delivered_previous_change: () -> Array[bool?]?
+
+            def delivered_previously_was: () -> bool?
+
+            def delivered_before_last_save: () -> bool?
+
+            def delivered_change_to_be_saved: () -> Array[bool?]?
+
+            def delivered_in_database: () -> bool?
+
+            def saved_change_to_delivered: () -> Array[bool?]?
+
+            def saved_change_to_delivered?: () -> bool
+
+            def will_save_change_to_delivered?: () -> bool
+
+            def restore_delivered!: () -> void
+
+            def clear_delivered_change: () -> void
+
+            def delivered_at: () -> ActiveSupport::TimeWithZone?
+
+            def delivered_at=: (ActiveSupport::TimeWithZone?) -> ActiveSupport::TimeWithZone?
+
+            def delivered_at?: () -> bool
+
+            def delivered_at_changed?: () -> bool
+
+            def delivered_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+            def delivered_at_will_change!: () -> void
+
+            def delivered_at_was: () -> ActiveSupport::TimeWithZone?
+
+            def delivered_at_previously_changed?: () -> bool
+
+            def delivered_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def delivered_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+            def delivered_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+            def delivered_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def delivered_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+            def saved_change_to_delivered_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def saved_change_to_delivered_at?: () -> bool
+
+            def will_save_change_to_delivered_at?: () -> bool
+
+            def restore_delivered_at!: () -> void
+
+            def clear_delivered_at_change: () -> void
+
+            def failed: () -> bool
+
+            def failed=: (bool) -> bool
+
+            def failed?: () -> bool
+
+            def failed_changed?: () -> bool
+
+            def failed_change: () -> [ bool?, bool? ]
+
+            def failed_will_change!: () -> void
+
+            def failed_was: () -> bool?
+
+            def failed_previously_changed?: () -> bool
+
+            def failed_previous_change: () -> Array[bool?]?
+
+            def failed_previously_was: () -> bool?
+
+            def failed_before_last_save: () -> bool?
+
+            def failed_change_to_be_saved: () -> Array[bool?]?
+
+            def failed_in_database: () -> bool?
+
+            def saved_change_to_failed: () -> Array[bool?]?
+
+            def saved_change_to_failed?: () -> bool
+
+            def will_save_change_to_failed?: () -> bool
+
+            def restore_failed!: () -> void
+
+            def clear_failed_change: () -> void
+
+            def failed_at: () -> ActiveSupport::TimeWithZone?
+
+            def failed_at=: (ActiveSupport::TimeWithZone?) -> ActiveSupport::TimeWithZone?
+
+            def failed_at?: () -> bool
+
+            def failed_at_changed?: () -> bool
+
+            def failed_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+            def failed_at_will_change!: () -> void
+
+            def failed_at_was: () -> ActiveSupport::TimeWithZone?
+
+            def failed_at_previously_changed?: () -> bool
+
+            def failed_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def failed_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+            def failed_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+            def failed_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def failed_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+            def saved_change_to_failed_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def saved_change_to_failed_at?: () -> bool
+
+            def will_save_change_to_failed_at?: () -> bool
+
+            def restore_failed_at!: () -> void
+
+            def clear_failed_at_change: () -> void
+
+            def error_code: () -> Integer?
+
+            def error_code=: (Integer?) -> Integer?
+
+            def error_code?: () -> bool
+
+            def error_code_changed?: () -> bool
+
+            def error_code_change: () -> [ Integer?, Integer? ]
+
+            def error_code_will_change!: () -> void
+
+            def error_code_was: () -> Integer?
+
+            def error_code_previously_changed?: () -> bool
+
+            def error_code_previous_change: () -> Array[Integer?]?
+
+            def error_code_previously_was: () -> Integer?
+
+            def error_code_before_last_save: () -> Integer?
+
+            def error_code_change_to_be_saved: () -> Array[Integer?]?
+
+            def error_code_in_database: () -> Integer?
+
+            def saved_change_to_error_code: () -> Array[Integer?]?
+
+            def saved_change_to_error_code?: () -> bool
+
+            def will_save_change_to_error_code?: () -> bool
+
+            def restore_error_code!: () -> void
+
+            def clear_error_code_change: () -> void
+
+            def error_description: () -> String?
+
+            def error_description=: (String?) -> String?
+
+            def error_description?: () -> bool
+
+            def error_description_changed?: () -> bool
+
+            def error_description_change: () -> [ String?, String? ]
+
+            def error_description_will_change!: () -> void
+
+            def error_description_was: () -> String?
+
+            def error_description_previously_changed?: () -> bool
+
+            def error_description_previous_change: () -> Array[String?]?
+
+            def error_description_previously_was: () -> String?
+
+            def error_description_before_last_save: () -> String?
+
+            def error_description_change_to_be_saved: () -> Array[String?]?
+
+            def error_description_in_database: () -> String?
+
+            def saved_change_to_error_description: () -> Array[String?]?
+
+            def saved_change_to_error_description?: () -> bool
+
+            def will_save_change_to_error_description?: () -> bool
+
+            def restore_error_description!: () -> void
+
+            def clear_error_description_change: () -> void
+
+            def deliver_after: () -> ActiveSupport::TimeWithZone?
+
+            def deliver_after=: (ActiveSupport::TimeWithZone?) -> ActiveSupport::TimeWithZone?
+
+            def deliver_after?: () -> bool
+
+            def deliver_after_changed?: () -> bool
+
+            def deliver_after_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+            def deliver_after_will_change!: () -> void
+
+            def deliver_after_was: () -> ActiveSupport::TimeWithZone?
+
+            def deliver_after_previously_changed?: () -> bool
+
+            def deliver_after_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def deliver_after_previously_was: () -> ActiveSupport::TimeWithZone?
+
+            def deliver_after_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+            def deliver_after_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def deliver_after_in_database: () -> ActiveSupport::TimeWithZone?
+
+            def saved_change_to_deliver_after: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def saved_change_to_deliver_after?: () -> bool
+
+            def will_save_change_to_deliver_after?: () -> bool
+
+            def restore_deliver_after!: () -> void
+
+            def clear_deliver_after_change: () -> void
+
+            def created_at: () -> ActiveSupport::TimeWithZone
+
+            def created_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+            def created_at?: () -> bool
+
+            def created_at_changed?: () -> bool
+
+            def created_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+            def created_at_will_change!: () -> void
+
+            def created_at_was: () -> ActiveSupport::TimeWithZone?
+
+            def created_at_previously_changed?: () -> bool
+
+            def created_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def created_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+            def created_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+            def created_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def created_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+            def saved_change_to_created_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def saved_change_to_created_at?: () -> bool
+
+            def will_save_change_to_created_at?: () -> bool
+
+            def restore_created_at!: () -> void
+
+            def clear_created_at_change: () -> void
+
+            def updated_at: () -> ActiveSupport::TimeWithZone
+
+            def updated_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+            def updated_at?: () -> bool
+
+            def updated_at_changed?: () -> bool
+
+            def updated_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+            def updated_at_will_change!: () -> void
+
+            def updated_at_was: () -> ActiveSupport::TimeWithZone?
+
+            def updated_at_previously_changed?: () -> bool
+
+            def updated_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def updated_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+            def updated_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+            def updated_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def updated_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+            def saved_change_to_updated_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def saved_change_to_updated_at?: () -> bool
+
+            def will_save_change_to_updated_at?: () -> bool
+
+            def restore_updated_at!: () -> void
+
+            def clear_updated_at_change: () -> void
+
+            def alert_is_json: () -> bool
+
+            def alert_is_json=: (bool) -> bool
+
+            def alert_is_json?: () -> bool
+
+            def alert_is_json_changed?: () -> bool
+
+            def alert_is_json_change: () -> [ bool?, bool? ]
+
+            def alert_is_json_will_change!: () -> void
+
+            def alert_is_json_was: () -> bool?
+
+            def alert_is_json_previously_changed?: () -> bool
+
+            def alert_is_json_previous_change: () -> Array[bool?]?
+
+            def alert_is_json_previously_was: () -> bool?
+
+            def alert_is_json_before_last_save: () -> bool?
+
+            def alert_is_json_change_to_be_saved: () -> Array[bool?]?
+
+            def alert_is_json_in_database: () -> bool?
+
+            def saved_change_to_alert_is_json: () -> Array[bool?]?
+
+            def saved_change_to_alert_is_json?: () -> bool
+
+            def will_save_change_to_alert_is_json?: () -> bool
+
+            def restore_alert_is_json!: () -> void
+
+            def clear_alert_is_json_change: () -> void
+
+            def type: () -> String
+
+            def type=: (String) -> String
+
+            def type?: () -> bool
+
+            def type_changed?: () -> bool
+
+            def type_change: () -> [ String?, String? ]
+
+            def type_will_change!: () -> void
+
+            def type_was: () -> String?
+
+            def type_previously_changed?: () -> bool
+
+            def type_previous_change: () -> Array[String?]?
+
+            def type_previously_was: () -> String?
+
+            def type_before_last_save: () -> String?
+
+            def type_change_to_be_saved: () -> Array[String?]?
+
+            def type_in_database: () -> String?
+
+            def saved_change_to_type: () -> Array[String?]?
+
+            def saved_change_to_type?: () -> bool
+
+            def will_save_change_to_type?: () -> bool
+
+            def restore_type!: () -> void
+
+            def clear_type_change: () -> void
+
+            def collapse_key: () -> String?
+
+            def collapse_key=: (String?) -> String?
+
+            def collapse_key?: () -> bool
+
+            def collapse_key_changed?: () -> bool
+
+            def collapse_key_change: () -> [ String?, String? ]
+
+            def collapse_key_will_change!: () -> void
+
+            def collapse_key_was: () -> String?
+
+            def collapse_key_previously_changed?: () -> bool
+
+            def collapse_key_previous_change: () -> Array[String?]?
+
+            def collapse_key_previously_was: () -> String?
+
+            def collapse_key_before_last_save: () -> String?
+
+            def collapse_key_change_to_be_saved: () -> Array[String?]?
+
+            def collapse_key_in_database: () -> String?
+
+            def saved_change_to_collapse_key: () -> Array[String?]?
+
+            def saved_change_to_collapse_key?: () -> bool
+
+            def will_save_change_to_collapse_key?: () -> bool
+
+            def restore_collapse_key!: () -> void
+
+            def clear_collapse_key_change: () -> void
+
+            def delay_while_idle: () -> bool
+
+            def delay_while_idle=: (bool) -> bool
+
+            def delay_while_idle?: () -> bool
+
+            def delay_while_idle_changed?: () -> bool
+
+            def delay_while_idle_change: () -> [ bool?, bool? ]
+
+            def delay_while_idle_will_change!: () -> void
+
+            def delay_while_idle_was: () -> bool?
+
+            def delay_while_idle_previously_changed?: () -> bool
+
+            def delay_while_idle_previous_change: () -> Array[bool?]?
+
+            def delay_while_idle_previously_was: () -> bool?
+
+            def delay_while_idle_before_last_save: () -> bool?
+
+            def delay_while_idle_change_to_be_saved: () -> Array[bool?]?
+
+            def delay_while_idle_in_database: () -> bool?
+
+            def saved_change_to_delay_while_idle: () -> Array[bool?]?
+
+            def saved_change_to_delay_while_idle?: () -> bool
+
+            def will_save_change_to_delay_while_idle?: () -> bool
+
+            def restore_delay_while_idle!: () -> void
+
+            def clear_delay_while_idle_change: () -> void
+
+            def registration_ids: () -> String?
+
+            def registration_ids=: (String?) -> String?
+
+            def registration_ids?: () -> bool
+
+            def registration_ids_changed?: () -> bool
+
+            def registration_ids_change: () -> [ String?, String? ]
+
+            def registration_ids_will_change!: () -> void
+
+            def registration_ids_was: () -> String?
+
+            def registration_ids_previously_changed?: () -> bool
+
+            def registration_ids_previous_change: () -> Array[String?]?
+
+            def registration_ids_previously_was: () -> String?
+
+            def registration_ids_before_last_save: () -> String?
+
+            def registration_ids_change_to_be_saved: () -> Array[String?]?
+
+            def registration_ids_in_database: () -> String?
+
+            def saved_change_to_registration_ids: () -> Array[String?]?
+
+            def saved_change_to_registration_ids?: () -> bool
+
+            def will_save_change_to_registration_ids?: () -> bool
+
+            def restore_registration_ids!: () -> void
+
+            def clear_registration_ids_change: () -> void
+
+            def app_id: () -> Integer
+
+            def app_id=: (Integer) -> Integer
+
+            def app_id?: () -> bool
+
+            def app_id_changed?: () -> bool
+
+            def app_id_change: () -> [ Integer?, Integer? ]
+
+            def app_id_will_change!: () -> void
+
+            def app_id_was: () -> Integer?
+
+            def app_id_previously_changed?: () -> bool
+
+            def app_id_previous_change: () -> Array[Integer?]?
+
+            def app_id_previously_was: () -> Integer?
+
+            def app_id_before_last_save: () -> Integer?
+
+            def app_id_change_to_be_saved: () -> Array[Integer?]?
+
+            def app_id_in_database: () -> Integer?
+
+            def saved_change_to_app_id: () -> Array[Integer?]?
+
+            def saved_change_to_app_id?: () -> bool
+
+            def will_save_change_to_app_id?: () -> bool
+
+            def restore_app_id!: () -> void
+
+            def clear_app_id_change: () -> void
+
+            def retries: () -> Integer?
+
+            def retries=: (Integer?) -> Integer?
+
+            def retries?: () -> bool
+
+            def retries_changed?: () -> bool
+
+            def retries_change: () -> [ Integer?, Integer? ]
+
+            def retries_will_change!: () -> void
+
+            def retries_was: () -> Integer?
+
+            def retries_previously_changed?: () -> bool
+
+            def retries_previous_change: () -> Array[Integer?]?
+
+            def retries_previously_was: () -> Integer?
+
+            def retries_before_last_save: () -> Integer?
+
+            def retries_change_to_be_saved: () -> Array[Integer?]?
+
+            def retries_in_database: () -> Integer?
+
+            def saved_change_to_retries: () -> Array[Integer?]?
+
+            def saved_change_to_retries?: () -> bool
+
+            def will_save_change_to_retries?: () -> bool
+
+            def restore_retries!: () -> void
+
+            def clear_retries_change: () -> void
+
+            def uri: () -> String?
+
+            def uri=: (String?) -> String?
+
+            def uri?: () -> bool
+
+            def uri_changed?: () -> bool
+
+            def uri_change: () -> [ String?, String? ]
+
+            def uri_will_change!: () -> void
+
+            def uri_was: () -> String?
+
+            def uri_previously_changed?: () -> bool
+
+            def uri_previous_change: () -> Array[String?]?
+
+            def uri_previously_was: () -> String?
+
+            def uri_before_last_save: () -> String?
+
+            def uri_change_to_be_saved: () -> Array[String?]?
+
+            def uri_in_database: () -> String?
+
+            def saved_change_to_uri: () -> Array[String?]?
+
+            def saved_change_to_uri?: () -> bool
+
+            def will_save_change_to_uri?: () -> bool
+
+            def restore_uri!: () -> void
+
+            def clear_uri_change: () -> void
+
+            def fail_after: () -> ActiveSupport::TimeWithZone?
+
+            def fail_after=: (ActiveSupport::TimeWithZone?) -> ActiveSupport::TimeWithZone?
+
+            def fail_after?: () -> bool
+
+            def fail_after_changed?: () -> bool
+
+            def fail_after_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+            def fail_after_will_change!: () -> void
+
+            def fail_after_was: () -> ActiveSupport::TimeWithZone?
+
+            def fail_after_previously_changed?: () -> bool
+
+            def fail_after_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def fail_after_previously_was: () -> ActiveSupport::TimeWithZone?
+
+            def fail_after_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+            def fail_after_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def fail_after_in_database: () -> ActiveSupport::TimeWithZone?
+
+            def saved_change_to_fail_after: () -> Array[ActiveSupport::TimeWithZone?]?
+
+            def saved_change_to_fail_after?: () -> bool
+
+            def will_save_change_to_fail_after?: () -> bool
+
+            def restore_fail_after!: () -> void
+
+            def clear_fail_after_change: () -> void
+
+            def processing: () -> bool
+
+            def processing=: (bool) -> bool
+
+            def processing?: () -> bool
+
+            def processing_changed?: () -> bool
+
+            def processing_change: () -> [ bool?, bool? ]
+
+            def processing_will_change!: () -> void
+
+            def processing_was: () -> bool?
+
+            def processing_previously_changed?: () -> bool
+
+            def processing_previous_change: () -> Array[bool?]?
+
+            def processing_previously_was: () -> bool?
+
+            def processing_before_last_save: () -> bool?
+
+            def processing_change_to_be_saved: () -> Array[bool?]?
+
+            def processing_in_database: () -> bool?
+
+            def saved_change_to_processing: () -> Array[bool?]?
+
+            def saved_change_to_processing?: () -> bool
+
+            def will_save_change_to_processing?: () -> bool
+
+            def restore_processing!: () -> void
+
+            def clear_processing_change: () -> void
+
+            def priority: () -> Integer?
+
+            def priority=: (Integer?) -> Integer?
+
+            def priority?: () -> bool
+
+            def priority_changed?: () -> bool
+
+            def priority_change: () -> [ Integer?, Integer? ]
+
+            def priority_will_change!: () -> void
+
+            def priority_was: () -> Integer?
+
+            def priority_previously_changed?: () -> bool
+
+            def priority_previous_change: () -> Array[Integer?]?
+
+            def priority_previously_was: () -> Integer?
+
+            def priority_before_last_save: () -> Integer?
+
+            def priority_change_to_be_saved: () -> Array[Integer?]?
+
+            def priority_in_database: () -> Integer?
+
+            def saved_change_to_priority: () -> Array[Integer?]?
+
+            def saved_change_to_priority?: () -> bool
+
+            def will_save_change_to_priority?: () -> bool
+
+            def restore_priority!: () -> void
+
+            def clear_priority_change: () -> void
+
+            def url_args: () -> String?
+
+            def url_args=: (String?) -> String?
+
+            def url_args?: () -> bool
+
+            def url_args_changed?: () -> bool
+
+            def url_args_change: () -> [ String?, String? ]
+
+            def url_args_will_change!: () -> void
+
+            def url_args_was: () -> String?
+
+            def url_args_previously_changed?: () -> bool
+
+            def url_args_previous_change: () -> Array[String?]?
+
+            def url_args_previously_was: () -> String?
+
+            def url_args_before_last_save: () -> String?
+
+            def url_args_change_to_be_saved: () -> Array[String?]?
+
+            def url_args_in_database: () -> String?
+
+            def saved_change_to_url_args: () -> Array[String?]?
+
+            def saved_change_to_url_args?: () -> bool
+
+            def will_save_change_to_url_args?: () -> bool
+
+            def restore_url_args!: () -> void
+
+            def clear_url_args_change: () -> void
+
+            def category: () -> String?
+
+            def category=: (String?) -> String?
+
+            def category?: () -> bool
+
+            def category_changed?: () -> bool
+
+            def category_change: () -> [ String?, String? ]
+
+            def category_will_change!: () -> void
+
+            def category_was: () -> String?
+
+            def category_previously_changed?: () -> bool
+
+            def category_previous_change: () -> Array[String?]?
+
+            def category_previously_was: () -> String?
+
+            def category_before_last_save: () -> String?
+
+            def category_change_to_be_saved: () -> Array[String?]?
+
+            def category_in_database: () -> String?
+
+            def saved_change_to_category: () -> Array[String?]?
+
+            def saved_change_to_category?: () -> bool
+
+            def will_save_change_to_category?: () -> bool
+
+            def restore_category!: () -> void
+
+            def clear_category_change: () -> void
+
+            def content_available: () -> bool
+
+            def content_available=: (bool) -> bool
+
+            def content_available?: () -> bool
+
+            def content_available_changed?: () -> bool
+
+            def content_available_change: () -> [ bool?, bool? ]
+
+            def content_available_will_change!: () -> void
+
+            def content_available_was: () -> bool?
+
+            def content_available_previously_changed?: () -> bool
+
+            def content_available_previous_change: () -> Array[bool?]?
+
+            def content_available_previously_was: () -> bool?
+
+            def content_available_before_last_save: () -> bool?
+
+            def content_available_change_to_be_saved: () -> Array[bool?]?
+
+            def content_available_in_database: () -> bool?
+
+            def saved_change_to_content_available: () -> Array[bool?]?
+
+            def saved_change_to_content_available?: () -> bool
+
+            def will_save_change_to_content_available?: () -> bool
+
+            def restore_content_available!: () -> void
+
+            def clear_content_available_change: () -> void
+
+            def notification: () -> String?
+
+            def notification=: (String?) -> String?
+
+            def notification?: () -> bool
+
+            def notification_changed?: () -> bool
+
+            def notification_change: () -> [ String?, String? ]
+
+            def notification_will_change!: () -> void
+
+            def notification_was: () -> String?
+
+            def notification_previously_changed?: () -> bool
+
+            def notification_previous_change: () -> Array[String?]?
+
+            def notification_previously_was: () -> String?
+
+            def notification_before_last_save: () -> String?
+
+            def notification_change_to_be_saved: () -> Array[String?]?
+
+            def notification_in_database: () -> String?
+
+            def saved_change_to_notification: () -> Array[String?]?
+
+            def saved_change_to_notification?: () -> bool
+
+            def will_save_change_to_notification?: () -> bool
+
+            def restore_notification!: () -> void
+
+            def clear_notification_change: () -> void
+
+            def mutable_content: () -> bool
+
+            def mutable_content=: (bool) -> bool
+
+            def mutable_content?: () -> bool
+
+            def mutable_content_changed?: () -> bool
+
+            def mutable_content_change: () -> [ bool?, bool? ]
+
+            def mutable_content_will_change!: () -> void
+
+            def mutable_content_was: () -> bool?
+
+            def mutable_content_previously_changed?: () -> bool
+
+            def mutable_content_previous_change: () -> Array[bool?]?
+
+            def mutable_content_previously_was: () -> bool?
+
+            def mutable_content_before_last_save: () -> bool?
+
+            def mutable_content_change_to_be_saved: () -> Array[bool?]?
+
+            def mutable_content_in_database: () -> bool?
+
+            def saved_change_to_mutable_content: () -> Array[bool?]?
+
+            def saved_change_to_mutable_content?: () -> bool
+
+            def will_save_change_to_mutable_content?: () -> bool
+
+            def restore_mutable_content!: () -> void
+
+            def clear_mutable_content_change: () -> void
+
+            def external_device_id: () -> String?
+
+            def external_device_id=: (String?) -> String?
+
+            def external_device_id?: () -> bool
+
+            def external_device_id_changed?: () -> bool
+
+            def external_device_id_change: () -> [ String?, String? ]
+
+            def external_device_id_will_change!: () -> void
+
+            def external_device_id_was: () -> String?
+
+            def external_device_id_previously_changed?: () -> bool
+
+            def external_device_id_previous_change: () -> Array[String?]?
+
+            def external_device_id_previously_was: () -> String?
+
+            def external_device_id_before_last_save: () -> String?
+
+            def external_device_id_change_to_be_saved: () -> Array[String?]?
+
+            def external_device_id_in_database: () -> String?
+
+            def saved_change_to_external_device_id: () -> Array[String?]?
+
+            def saved_change_to_external_device_id?: () -> bool
+
+            def will_save_change_to_external_device_id?: () -> bool
+
+            def restore_external_device_id!: () -> void
+
+            def clear_external_device_id_change: () -> void
+
+            def thread_id: () -> String?
+
+            def thread_id=: (String?) -> String?
+
+            def thread_id?: () -> bool
+
+            def thread_id_changed?: () -> bool
+
+            def thread_id_change: () -> [ String?, String? ]
+
+            def thread_id_will_change!: () -> void
+
+            def thread_id_was: () -> String?
+
+            def thread_id_previously_changed?: () -> bool
+
+            def thread_id_previous_change: () -> Array[String?]?
+
+            def thread_id_previously_was: () -> String?
+
+            def thread_id_before_last_save: () -> String?
+
+            def thread_id_change_to_be_saved: () -> Array[String?]?
+
+            def thread_id_in_database: () -> String?
+
+            def saved_change_to_thread_id: () -> Array[String?]?
+
+            def saved_change_to_thread_id?: () -> bool
+
+            def will_save_change_to_thread_id?: () -> bool
+
+            def restore_thread_id!: () -> void
+
+            def clear_thread_id_change: () -> void
+
+            def dry_run: () -> bool
+
+            def dry_run=: (bool) -> bool
+
+            def dry_run?: () -> bool
+
+            def dry_run_changed?: () -> bool
+
+            def dry_run_change: () -> [ bool?, bool? ]
+
+            def dry_run_will_change!: () -> void
+
+            def dry_run_was: () -> bool?
+
+            def dry_run_previously_changed?: () -> bool
+
+            def dry_run_previous_change: () -> Array[bool?]?
+
+            def dry_run_previously_was: () -> bool?
+
+            def dry_run_before_last_save: () -> bool?
+
+            def dry_run_change_to_be_saved: () -> Array[bool?]?
+
+            def dry_run_in_database: () -> bool?
+
+            def saved_change_to_dry_run: () -> Array[bool?]?
+
+            def saved_change_to_dry_run?: () -> bool
+
+            def will_save_change_to_dry_run?: () -> bool
+
+            def restore_dry_run!: () -> void
+
+            def clear_dry_run_change: () -> void
+
+            def sound_is_json: () -> bool?
+
+            def sound_is_json=: (bool?) -> bool?
+
+            def sound_is_json?: () -> bool
+
+            def sound_is_json_changed?: () -> bool
+
+            def sound_is_json_change: () -> [ bool?, bool? ]
+
+            def sound_is_json_will_change!: () -> void
+
+            def sound_is_json_was: () -> bool?
+
+            def sound_is_json_previously_changed?: () -> bool
+
+            def sound_is_json_previous_change: () -> Array[bool?]?
+
+            def sound_is_json_previously_was: () -> bool?
+
+            def sound_is_json_before_last_save: () -> bool?
+
+            def sound_is_json_change_to_be_saved: () -> Array[bool?]?
+
+            def sound_is_json_in_database: () -> bool?
+
+            def saved_change_to_sound_is_json: () -> Array[bool?]?
+
+            def saved_change_to_sound_is_json?: () -> bool
+
+            def will_save_change_to_sound_is_json?: () -> bool
+
+            def restore_sound_is_json!: () -> void
+
+            def clear_sound_is_json_change: () -> void
+          end
+          include GeneratedAttributeMethods
+
+          def app: () -> Rpush::Client::ActiveRecord::App
+          def app=: (Rpush::Client::ActiveRecord::App?) -> Rpush::Client::ActiveRecord::App?
+          def reload_app: () -> Rpush::Client::ActiveRecord::App?
+          def build_app: (untyped) -> Rpush::Client::ActiveRecord::App
+          def create_app: (untyped) -> Rpush::Client::ActiveRecord::App
+          def create_app!: (untyped) -> Rpush::Client::ActiveRecord::App
+
+          module GeneratedRelationMethods
+          end
+
+          class ActiveRecord_Relation < ::ActiveRecord::Relation
+            include GeneratedRelationMethods
+            include _ActiveRecord_Relation[Rpush::Client::ActiveRecord::Apnsp8::Notification, Integer]
+            include Enumerable[Rpush::Client::ActiveRecord::Apnsp8::Notification]
+          end
+
+          class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+            include GeneratedRelationMethods
+            include _ActiveRecord_Relation[Rpush::Client::ActiveRecord::Apnsp8::Notification, Integer]
+          end
+        end
+      end
+    end
+  end
+end

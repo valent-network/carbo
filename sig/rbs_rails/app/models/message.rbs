@@ -1,0 +1,294 @@
+class Message < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[Message, ActiveRecord_Relation, String]
+
+  module GeneratedAttributeMethods
+    def id: () -> String
+
+    def id=: (String) -> String
+
+    def id?: () -> bool
+
+    def id_changed?: () -> bool
+
+    def id_change: () -> [ String?, String? ]
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> String?
+
+    def id_previously_changed?: () -> bool
+
+    def id_previous_change: () -> Array[String?]?
+
+    def id_previously_was: () -> String?
+
+    def id_before_last_save: () -> String?
+
+    def id_change_to_be_saved: () -> Array[String?]?
+
+    def id_in_database: () -> String?
+
+    def saved_change_to_id: () -> Array[String?]?
+
+    def saved_change_to_id?: () -> bool
+
+    def will_save_change_to_id?: () -> bool
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def body: () -> String
+
+    def body=: (String) -> String
+
+    def body?: () -> bool
+
+    def body_changed?: () -> bool
+
+    def body_change: () -> [ String?, String? ]
+
+    def body_will_change!: () -> void
+
+    def body_was: () -> String?
+
+    def body_previously_changed?: () -> bool
+
+    def body_previous_change: () -> Array[String?]?
+
+    def body_previously_was: () -> String?
+
+    def body_before_last_save: () -> String?
+
+    def body_change_to_be_saved: () -> Array[String?]?
+
+    def body_in_database: () -> String?
+
+    def saved_change_to_body: () -> Array[String?]?
+
+    def saved_change_to_body?: () -> bool
+
+    def will_save_change_to_body?: () -> bool
+
+    def restore_body!: () -> void
+
+    def clear_body_change: () -> void
+
+    def system: () -> bool
+
+    def system=: (bool) -> bool
+
+    def system?: () -> bool
+
+    def system_changed?: () -> bool
+
+    def system_change: () -> [ bool?, bool? ]
+
+    def system_will_change!: () -> void
+
+    def system_was: () -> bool?
+
+    def system_previously_changed?: () -> bool
+
+    def system_previous_change: () -> Array[bool?]?
+
+    def system_previously_was: () -> bool?
+
+    def system_before_last_save: () -> bool?
+
+    def system_change_to_be_saved: () -> Array[bool?]?
+
+    def system_in_database: () -> bool?
+
+    def saved_change_to_system: () -> Array[bool?]?
+
+    def saved_change_to_system?: () -> bool
+
+    def will_save_change_to_system?: () -> bool
+
+    def restore_system!: () -> void
+
+    def clear_system_change: () -> void
+
+    def user_id: () -> Integer?
+
+    def user_id=: (Integer?) -> Integer?
+
+    def user_id?: () -> bool
+
+    def user_id_changed?: () -> bool
+
+    def user_id_change: () -> [ Integer?, Integer? ]
+
+    def user_id_will_change!: () -> void
+
+    def user_id_was: () -> Integer?
+
+    def user_id_previously_changed?: () -> bool
+
+    def user_id_previous_change: () -> Array[Integer?]?
+
+    def user_id_previously_was: () -> Integer?
+
+    def user_id_before_last_save: () -> Integer?
+
+    def user_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def user_id_in_database: () -> Integer?
+
+    def saved_change_to_user_id: () -> Array[Integer?]?
+
+    def saved_change_to_user_id?: () -> bool
+
+    def will_save_change_to_user_id?: () -> bool
+
+    def restore_user_id!: () -> void
+
+    def clear_user_id_change: () -> void
+
+    def chat_room_id: () -> Integer
+
+    def chat_room_id=: (Integer) -> Integer
+
+    def chat_room_id?: () -> bool
+
+    def chat_room_id_changed?: () -> bool
+
+    def chat_room_id_change: () -> [ Integer?, Integer? ]
+
+    def chat_room_id_will_change!: () -> void
+
+    def chat_room_id_was: () -> Integer?
+
+    def chat_room_id_previously_changed?: () -> bool
+
+    def chat_room_id_previous_change: () -> Array[Integer?]?
+
+    def chat_room_id_previously_was: () -> Integer?
+
+    def chat_room_id_before_last_save: () -> Integer?
+
+    def chat_room_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def chat_room_id_in_database: () -> Integer?
+
+    def saved_change_to_chat_room_id: () -> Array[Integer?]?
+
+    def saved_change_to_chat_room_id?: () -> bool
+
+    def will_save_change_to_chat_room_id?: () -> bool
+
+    def restore_chat_room_id!: () -> void
+
+    def clear_chat_room_id_change: () -> void
+
+    def created_at: () -> ActiveSupport::TimeWithZone
+
+    def created_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+    def created_at?: () -> bool
+
+    def created_at_changed?: () -> bool
+
+    def created_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+    def created_at_will_change!: () -> void
+
+    def created_at_was: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_previously_changed?: () -> bool
+
+    def created_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def created_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def created_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+    def saved_change_to_created_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def saved_change_to_created_at?: () -> bool
+
+    def will_save_change_to_created_at?: () -> bool
+
+    def restore_created_at!: () -> void
+
+    def clear_created_at_change: () -> void
+
+    def extra: () -> untyped?
+
+    def extra=: (untyped?) -> untyped?
+
+    def extra?: () -> bool
+
+    def extra_changed?: () -> bool
+
+    def extra_change: () -> [ untyped?, untyped? ]
+
+    def extra_will_change!: () -> void
+
+    def extra_was: () -> untyped?
+
+    def extra_previously_changed?: () -> bool
+
+    def extra_previous_change: () -> Array[untyped?]?
+
+    def extra_previously_was: () -> untyped?
+
+    def extra_before_last_save: () -> untyped?
+
+    def extra_change_to_be_saved: () -> Array[untyped?]?
+
+    def extra_in_database: () -> untyped?
+
+    def saved_change_to_extra: () -> Array[untyped?]?
+
+    def saved_change_to_extra?: () -> bool
+
+    def will_save_change_to_extra?: () -> bool
+
+    def restore_extra!: () -> void
+
+    def clear_extra_change: () -> void
+  end
+  include GeneratedAttributeMethods
+
+  def chat_room_user: () -> ChatRoomUser?
+  def chat_room_user=: (ChatRoomUser?) -> ChatRoomUser?
+  def build_chat_room_user: (untyped) -> ChatRoomUser
+  def create_chat_room_user: (untyped) -> ChatRoomUser
+  def create_chat_room_user!: (untyped) -> ChatRoomUser
+  def reload_chat_room_user: () -> ChatRoomUser?
+  def user: () -> User?
+  def user=: (User?) -> User?
+  def reload_user: () -> User?
+  def build_user: (untyped) -> User
+  def create_user: (untyped) -> User
+  def create_user!: (untyped) -> User
+  def chat_room: () -> ChatRoom
+  def chat_room=: (ChatRoom?) -> ChatRoom?
+  def reload_chat_room: () -> ChatRoom?
+  def build_chat_room: (untyped) -> ChatRoom
+  def create_chat_room: (untyped) -> ChatRoom
+  def create_chat_room!: (untyped) -> ChatRoom
+
+  def self.unread_system_messages: () -> Hash[String, Integer]
+  def self.unread_messages_for: (Integer) -> ActiveRecord_Relation
+
+  module GeneratedRelationMethods
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[Message, String]
+    include Enumerable[Message]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[Message, String]
+  end
+end

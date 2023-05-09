@@ -36,3 +36,4 @@
 /.env.production
 .DS_Store
 .structurizr
+.gem_rbs_collection/

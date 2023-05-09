@@ -1,0 +1,135 @@
+class DemoPhoneNumber < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[DemoPhoneNumber, ActiveRecord_Relation, Integer]
+
+  module GeneratedAttributeMethods
+    def id: () -> Integer
+
+    def id=: (Integer) -> Integer
+
+    def id?: () -> bool
+
+    def id_changed?: () -> bool
+
+    def id_change: () -> [ Integer?, Integer? ]
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> Integer?
+
+    def id_previously_changed?: () -> bool
+
+    def id_previous_change: () -> Array[Integer?]?
+
+    def id_previously_was: () -> Integer?
+
+    def id_before_last_save: () -> Integer?
+
+    def id_change_to_be_saved: () -> Array[Integer?]?
+
+    def id_in_database: () -> Integer?
+
+    def saved_change_to_id: () -> Array[Integer?]?
+
+    def saved_change_to_id?: () -> bool
+
+    def will_save_change_to_id?: () -> bool
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def phone_number_id: () -> Integer
+
+    def phone_number_id=: (Integer) -> Integer
+
+    def phone_number_id?: () -> bool
+
+    def phone_number_id_changed?: () -> bool
+
+    def phone_number_id_change: () -> [ Integer?, Integer? ]
+
+    def phone_number_id_will_change!: () -> void
+
+    def phone_number_id_was: () -> Integer?
+
+    def phone_number_id_previously_changed?: () -> bool
+
+    def phone_number_id_previous_change: () -> Array[Integer?]?
+
+    def phone_number_id_previously_was: () -> Integer?
+
+    def phone_number_id_before_last_save: () -> Integer?
+
+    def phone_number_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def phone_number_id_in_database: () -> Integer?
+
+    def saved_change_to_phone_number_id: () -> Array[Integer?]?
+
+    def saved_change_to_phone_number_id?: () -> bool
+
+    def will_save_change_to_phone_number_id?: () -> bool
+
+    def restore_phone_number_id!: () -> void
+
+    def clear_phone_number_id_change: () -> void
+
+    def demo_code: () -> Integer?
+
+    def demo_code=: (Integer?) -> Integer?
+
+    def demo_code?: () -> bool
+
+    def demo_code_changed?: () -> bool
+
+    def demo_code_change: () -> [ Integer?, Integer? ]
+
+    def demo_code_will_change!: () -> void
+
+    def demo_code_was: () -> Integer?
+
+    def demo_code_previously_changed?: () -> bool
+
+    def demo_code_previous_change: () -> Array[Integer?]?
+
+    def demo_code_previously_was: () -> Integer?
+
+    def demo_code_before_last_save: () -> Integer?
+
+    def demo_code_change_to_be_saved: () -> Array[Integer?]?
+
+    def demo_code_in_database: () -> Integer?
+
+    def saved_change_to_demo_code: () -> Array[Integer?]?
+
+    def saved_change_to_demo_code?: () -> bool
+
+    def will_save_change_to_demo_code?: () -> bool
+
+    def restore_demo_code!: () -> void
+
+    def clear_demo_code_change: () -> void
+  end
+  include GeneratedAttributeMethods
+
+  def phone_number: () -> PhoneNumber
+  def phone_number=: (PhoneNumber?) -> PhoneNumber?
+  def reload_phone_number: () -> PhoneNumber?
+  def build_phone_number: (untyped) -> PhoneNumber
+  def create_phone_number: (untyped) -> PhoneNumber
+  def create_phone_number!: (untyped) -> PhoneNumber
+
+  module GeneratedRelationMethods
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[DemoPhoneNumber, Integer]
+    include Enumerable[DemoPhoneNumber]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[DemoPhoneNumber, Integer]
+  end
+end

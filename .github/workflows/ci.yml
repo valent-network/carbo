@@ -54,6 +54,9 @@ jobs:
       - name: Run StandardRB
         run: bin/standardrb --fix
 
+      - name: Run Steep check
+        run: bundle exec steep check
+
       - name: Run RSpec
         env:
           RAILS_ENV: test

@@ -40,6 +40,9 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails"
   gem "spring"
+  gem "steep", require: false
+  gem "rbs", require: false
+  gem "rbs_rails", require: false
 end
 
 group :test do

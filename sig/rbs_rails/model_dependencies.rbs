@@ -1,0 +1,96 @@
+module ActiveAdmin
+end
+module Rpush::Client::ActiveRecord::Apns
+end
+module Rpush::Client::ActiveRecord
+end
+class Rpush::Client::ActiveRecord::Notification::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class ApplicationRecord < ActiveRecord::Base
+end
+class UserContact::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class PhoneNumber::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class Ad::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class Message::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class ChatRoomUser::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class User::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class AdVisit::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class AdFavorite::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class AdPrice::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class ChatRoom::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class AdImage::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class UserDevice::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class Event::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class UserConnection::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class UserBlockedPhoneNumber::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class UserVisibility::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class FilterableValue::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class City::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class FilterableValuesGroup::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+class AdOptionType::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
+end
+module Rpush::Client::ActiveRecord::Webpush
+end
+module Rpush::Client::ActiveRecord::Pushy
+end
+module Rpush::Client::ActiveRecord::Adm
+end
+module Rpush::Client::ActiveRecord::Wns
+end
+module Rpush::Client::ActiveRecord::Wpns
+end
+module Rpush::Client::ActiveRecord::Gcm
+end
+module Rpush::Client::ActiveRecord::Apnsp8
+end
+module Rpush::Client::ActiveRecord::Apns2
+end
+module Rpush
+end
+module Rpush::Client
+end
+class ActiveRecord::Associations::CollectionProxy < ActiveRecord::Relation
+end
+class ActiveRecord::Relation < Object
+end
+module ActiveRecord::Associations
+end
+class ActionCable
+end
+class ActionCable::Channel
+end
+class ActionCable::Channel::Base
+end
+module ApplicationCable
+end
+class ApplicationChannel < ActionCable::Channel::Base
+  def self.broadcast_to: (*untyped) -> void
+end
+class ActiveModel::Serializer
+end
+module ActiveModelSerializers
+  class SerializableResource
+  end
+end
+
+
+

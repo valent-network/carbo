@@ -1,0 +1,3 @@
+class SendChatMessagePushNotification
+  def call: (message: Message, chat_room_user: ChatRoomUser) -> Array[UserDevice]
+end

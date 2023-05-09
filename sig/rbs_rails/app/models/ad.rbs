@@ -1,0 +1,505 @@
+class Ad < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[Ad, ActiveRecord_Relation, Integer]
+
+  module GeneratedAttributeMethods
+    def id: () -> Integer
+
+    def id=: (Integer) -> Integer
+
+    def id?: () -> bool
+
+    def id_changed?: () -> bool
+
+    def id_change: () -> [ Integer?, Integer? ]
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> Integer?
+
+    def id_previously_changed?: () -> bool
+
+    def id_previous_change: () -> Array[Integer?]?
+
+    def id_previously_was: () -> Integer?
+
+    def id_before_last_save: () -> Integer?
+
+    def id_change_to_be_saved: () -> Array[Integer?]?
+
+    def id_in_database: () -> Integer?
+
+    def saved_change_to_id: () -> Array[Integer?]?
+
+    def saved_change_to_id?: () -> bool
+
+    def will_save_change_to_id?: () -> bool
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def phone_number_id: () -> Integer
+
+    def phone_number_id=: (Integer) -> Integer
+
+    def phone_number_id?: () -> bool
+
+    def phone_number_id_changed?: () -> bool
+
+    def phone_number_id_change: () -> [ Integer?, Integer? ]
+
+    def phone_number_id_will_change!: () -> void
+
+    def phone_number_id_was: () -> Integer?
+
+    def phone_number_id_previously_changed?: () -> bool
+
+    def phone_number_id_previous_change: () -> Array[Integer?]?
+
+    def phone_number_id_previously_was: () -> Integer?
+
+    def phone_number_id_before_last_save: () -> Integer?
+
+    def phone_number_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def phone_number_id_in_database: () -> Integer?
+
+    def saved_change_to_phone_number_id: () -> Array[Integer?]?
+
+    def saved_change_to_phone_number_id?: () -> bool
+
+    def will_save_change_to_phone_number_id?: () -> bool
+
+    def restore_phone_number_id!: () -> void
+
+    def clear_phone_number_id_change: () -> void
+
+    def ads_source_id: () -> Integer
+
+    def ads_source_id=: (Integer) -> Integer
+
+    def ads_source_id?: () -> bool
+
+    def ads_source_id_changed?: () -> bool
+
+    def ads_source_id_change: () -> [ Integer?, Integer? ]
+
+    def ads_source_id_will_change!: () -> void
+
+    def ads_source_id_was: () -> Integer?
+
+    def ads_source_id_previously_changed?: () -> bool
+
+    def ads_source_id_previous_change: () -> Array[Integer?]?
+
+    def ads_source_id_previously_was: () -> Integer?
+
+    def ads_source_id_before_last_save: () -> Integer?
+
+    def ads_source_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def ads_source_id_in_database: () -> Integer?
+
+    def saved_change_to_ads_source_id: () -> Array[Integer?]?
+
+    def saved_change_to_ads_source_id?: () -> bool
+
+    def will_save_change_to_ads_source_id?: () -> bool
+
+    def restore_ads_source_id!: () -> void
+
+    def clear_ads_source_id_change: () -> void
+
+    def price: () -> Integer
+
+    def price=: (Integer) -> Integer
+
+    def price?: () -> bool
+
+    def price_changed?: () -> bool
+
+    def price_change: () -> [ Integer?, Integer? ]
+
+    def price_will_change!: () -> void
+
+    def price_was: () -> Integer?
+
+    def price_previously_changed?: () -> bool
+
+    def price_previous_change: () -> Array[Integer?]?
+
+    def price_previously_was: () -> Integer?
+
+    def price_before_last_save: () -> Integer?
+
+    def price_change_to_be_saved: () -> Array[Integer?]?
+
+    def price_in_database: () -> Integer?
+
+    def saved_change_to_price: () -> Array[Integer?]?
+
+    def saved_change_to_price?: () -> bool
+
+    def will_save_change_to_price?: () -> bool
+
+    def restore_price!: () -> void
+
+    def clear_price_change: () -> void
+
+    def deleted: () -> bool
+
+    def deleted=: (bool) -> bool
+
+    def deleted?: () -> bool
+
+    def deleted_changed?: () -> bool
+
+    def deleted_change: () -> [ bool?, bool? ]
+
+    def deleted_will_change!: () -> void
+
+    def deleted_was: () -> bool?
+
+    def deleted_previously_changed?: () -> bool
+
+    def deleted_previous_change: () -> Array[bool?]?
+
+    def deleted_previously_was: () -> bool?
+
+    def deleted_before_last_save: () -> bool?
+
+    def deleted_change_to_be_saved: () -> Array[bool?]?
+
+    def deleted_in_database: () -> bool?
+
+    def saved_change_to_deleted: () -> Array[bool?]?
+
+    def saved_change_to_deleted?: () -> bool
+
+    def will_save_change_to_deleted?: () -> bool
+
+    def restore_deleted!: () -> void
+
+    def clear_deleted_change: () -> void
+
+    def address: () -> String
+
+    def address=: (String) -> String
+
+    def address?: () -> bool
+
+    def address_changed?: () -> bool
+
+    def address_change: () -> [ String?, String? ]
+
+    def address_will_change!: () -> void
+
+    def address_was: () -> String?
+
+    def address_previously_changed?: () -> bool
+
+    def address_previous_change: () -> Array[String?]?
+
+    def address_previously_was: () -> String?
+
+    def address_before_last_save: () -> String?
+
+    def address_change_to_be_saved: () -> Array[String?]?
+
+    def address_in_database: () -> String?
+
+    def saved_change_to_address: () -> Array[String?]?
+
+    def saved_change_to_address?: () -> bool
+
+    def will_save_change_to_address?: () -> bool
+
+    def restore_address!: () -> void
+
+    def clear_address_change: () -> void
+
+    def created_at: () -> ActiveSupport::TimeWithZone
+
+    def created_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+    def created_at?: () -> bool
+
+    def created_at_changed?: () -> bool
+
+    def created_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+    def created_at_will_change!: () -> void
+
+    def created_at_was: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_previously_changed?: () -> bool
+
+    def created_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def created_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+    def created_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def created_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+    def saved_change_to_created_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def saved_change_to_created_at?: () -> bool
+
+    def will_save_change_to_created_at?: () -> bool
+
+    def restore_created_at!: () -> void
+
+    def clear_created_at_change: () -> void
+
+    def updated_at: () -> ActiveSupport::TimeWithZone
+
+    def updated_at=: (ActiveSupport::TimeWithZone) -> ActiveSupport::TimeWithZone
+
+    def updated_at?: () -> bool
+
+    def updated_at_changed?: () -> bool
+
+    def updated_at_change: () -> [ ActiveSupport::TimeWithZone?, ActiveSupport::TimeWithZone? ]
+
+    def updated_at_will_change!: () -> void
+
+    def updated_at_was: () -> ActiveSupport::TimeWithZone?
+
+    def updated_at_previously_changed?: () -> bool
+
+    def updated_at_previous_change: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def updated_at_previously_was: () -> ActiveSupport::TimeWithZone?
+
+    def updated_at_before_last_save: () -> ActiveSupport::TimeWithZone?
+
+    def updated_at_change_to_be_saved: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def updated_at_in_database: () -> ActiveSupport::TimeWithZone?
+
+    def saved_change_to_updated_at: () -> Array[ActiveSupport::TimeWithZone?]?
+
+    def saved_change_to_updated_at?: () -> bool
+
+    def will_save_change_to_updated_at?: () -> bool
+
+    def restore_updated_at!: () -> void
+
+    def clear_updated_at_change: () -> void
+
+    def city_id: () -> Integer?
+
+    def city_id=: (Integer?) -> Integer?
+
+    def city_id?: () -> bool
+
+    def city_id_changed?: () -> bool
+
+    def city_id_change: () -> [ Integer?, Integer? ]
+
+    def city_id_will_change!: () -> void
+
+    def city_id_was: () -> Integer?
+
+    def city_id_previously_changed?: () -> bool
+
+    def city_id_previous_change: () -> Array[Integer?]?
+
+    def city_id_previously_was: () -> Integer?
+
+    def city_id_before_last_save: () -> Integer?
+
+    def city_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def city_id_in_database: () -> Integer?
+
+    def saved_change_to_city_id: () -> Array[Integer?]?
+
+    def saved_change_to_city_id?: () -> bool
+
+    def will_save_change_to_city_id?: () -> bool
+
+    def restore_city_id!: () -> void
+
+    def clear_city_id_change: () -> void
+
+    def category_id: () -> Integer
+
+    def category_id=: (Integer) -> Integer
+
+    def category_id?: () -> bool
+
+    def category_id_changed?: () -> bool
+
+    def category_id_change: () -> [ Integer?, Integer? ]
+
+    def category_id_will_change!: () -> void
+
+    def category_id_was: () -> Integer?
+
+    def category_id_previously_changed?: () -> bool
+
+    def category_id_previous_change: () -> Array[Integer?]?
+
+    def category_id_previously_was: () -> Integer?
+
+    def category_id_before_last_save: () -> Integer?
+
+    def category_id_change_to_be_saved: () -> Array[Integer?]?
+
+    def category_id_in_database: () -> Integer?
+
+    def saved_change_to_category_id: () -> Array[Integer?]?
+
+    def saved_change_to_category_id?: () -> bool
+
+    def will_save_change_to_category_id?: () -> bool
+
+    def restore_category_id!: () -> void
+
+    def clear_category_id_change: () -> void
+
+    def stats: () -> untyped?
+
+    def stats=: (untyped?) -> untyped?
+
+    def stats?: () -> bool
+
+    def stats_changed?: () -> bool
+
+    def stats_change: () -> [ untyped?, untyped? ]
+
+    def stats_will_change!: () -> void
+
+    def stats_was: () -> untyped?
+
+    def stats_previously_changed?: () -> bool
+
+    def stats_previous_change: () -> Array[untyped?]?
+
+    def stats_previously_was: () -> untyped?
+
+    def stats_before_last_save: () -> untyped?
+
+    def stats_change_to_be_saved: () -> Array[untyped?]?
+
+    def stats_in_database: () -> untyped?
+
+    def saved_change_to_stats: () -> Array[untyped?]?
+
+    def saved_change_to_stats?: () -> bool
+
+    def will_save_change_to_stats?: () -> bool
+
+    def restore_stats!: () -> void
+
+    def clear_stats_change: () -> void
+  end
+  include GeneratedAttributeMethods
+  def ad_visits: () -> AdVisit::ActiveRecord_Associations_CollectionProxy
+  def ad_visits=: (AdVisit::ActiveRecord_Associations_CollectionProxy | Array[AdVisit]) -> (AdVisit::ActiveRecord_Associations_CollectionProxy | Array[AdVisit])
+  def ad_visit_ids: () -> Array[Integer]
+  def ad_visit_ids=: (Array[Integer]) -> Array[Integer]
+  def ad_favorites: () -> AdFavorite::ActiveRecord_Associations_CollectionProxy
+  def ad_favorites=: (AdFavorite::ActiveRecord_Associations_CollectionProxy | Array[AdFavorite]) -> (AdFavorite::ActiveRecord_Associations_CollectionProxy | Array[AdFavorite])
+  def ad_favorite_ids: () -> Array[Integer]
+  def ad_favorite_ids=: (Array[Integer]) -> Array[Integer]
+  def ad_prices: () -> AdPrice::ActiveRecord_Associations_CollectionProxy
+  def ad_prices=: (AdPrice::ActiveRecord_Associations_CollectionProxy | Array[AdPrice]) -> (AdPrice::ActiveRecord_Associations_CollectionProxy | Array[AdPrice])
+  def ad_price_ids: () -> Array[Integer]
+  def ad_price_ids=: (Array[Integer]) -> Array[Integer]
+  def chat_rooms: () -> ChatRoom::ActiveRecord_Associations_CollectionProxy
+  def chat_rooms=: (ChatRoom::ActiveRecord_Associations_CollectionProxy | Array[ChatRoom]) -> (ChatRoom::ActiveRecord_Associations_CollectionProxy | Array[ChatRoom])
+  def chat_room_ids: () -> Array[Integer]
+  def chat_room_ids=: (Array[Integer]) -> Array[Integer]
+  def ad_images: () -> AdImage::ActiveRecord_Associations_CollectionProxy
+  def ad_images=: (AdImage::ActiveRecord_Associations_CollectionProxy | Array[AdImage]) -> (AdImage::ActiveRecord_Associations_CollectionProxy | Array[AdImage])
+  def ad_image_ids: () -> Array[Integer]
+  def ad_image_ids=: (Array[Integer]) -> Array[Integer]
+  def region: () -> Region?
+  def region=: (Region?) -> Region?
+  def build_region: (untyped) -> Region
+  def create_region: (untyped) -> Region
+  def create_region!: (untyped) -> Region
+  def reload_region: () -> Region?
+  def ad_description: () -> AdDescription?
+  def ad_description=: (AdDescription?) -> AdDescription?
+  def build_ad_description: (untyped) -> AdDescription
+  def create_ad_description: (untyped) -> AdDescription
+  def create_ad_description!: (untyped) -> AdDescription
+  def reload_ad_description: () -> AdDescription?
+  def ad_image_links_set: () -> AdImageLinksSet?
+  def ad_image_links_set=: (AdImageLinksSet?) -> AdImageLinksSet?
+  def build_ad_image_links_set: (untyped) -> AdImageLinksSet
+  def create_ad_image_links_set: (untyped) -> AdImageLinksSet
+  def create_ad_image_links_set!: (untyped) -> AdImageLinksSet
+  def reload_ad_image_links_set: () -> AdImageLinksSet?
+  def ad_extra: () -> AdExtra?
+  def ad_extra=: (AdExtra?) -> AdExtra?
+  def build_ad_extra: (untyped) -> AdExtra
+  def create_ad_extra: (untyped) -> AdExtra
+  def create_ad_extra!: (untyped) -> AdExtra
+  def reload_ad_extra: () -> AdExtra?
+  def ad_query: () -> AdQuery?
+  def ad_query=: (AdQuery?) -> AdQuery?
+  def build_ad_query: (untyped) -> AdQuery
+  def create_ad_query: (untyped) -> AdQuery
+  def create_ad_query!: (untyped) -> AdQuery
+  def reload_ad_query: () -> AdQuery?
+  def ads_source: () -> AdsSource
+  def ads_source=: (AdsSource?) -> AdsSource?
+  def reload_ads_source: () -> AdsSource?
+  def build_ads_source: (untyped) -> AdsSource
+  def create_ads_source: (untyped) -> AdsSource
+  def create_ads_source!: (untyped) -> AdsSource
+  def phone_number: () -> PhoneNumber
+  def phone_number=: (PhoneNumber?) -> PhoneNumber?
+  def reload_phone_number: () -> PhoneNumber?
+  def build_phone_number: (untyped) -> PhoneNumber
+  def create_phone_number: (untyped) -> PhoneNumber
+  def create_phone_number!: (untyped) -> PhoneNumber
+  def city: () -> City?
+  def city=: (City?) -> City?
+  def reload_city: () -> City?
+  def build_city: (untyped) -> City
+  def create_city: (untyped) -> City
+  def create_city!: (untyped) -> City
+  def category: () -> Category
+  def category=: (Category?) -> Category?
+  def reload_category: () -> Category?
+  def build_category: (untyped) -> Category
+  def create_category: (untyped) -> Category
+  def create_category!: (untyped) -> Category
+
+  def self.active: () -> ActiveRecord_Relation
+  def self.opts: (untyped query) -> ActiveRecord_Relation
+  def self.known: () -> ActiveRecord_Relation
+  def self.order_by_visit_for: (untyped user) -> ActiveRecord_Relation
+  def self.order_by_fav_for: (untyped user) -> ActiveRecord_Relation
+
+  module GeneratedRelationMethods
+    def active: () -> ActiveRecord_Relation
+
+    def opts: (untyped query) -> ActiveRecord_Relation
+
+    def known: () -> ActiveRecord_Relation
+
+    def order_by_visit_for: (untyped user) -> ActiveRecord_Relation
+
+    def order_by_fav_for: (untyped user) -> ActiveRecord_Relation
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[Ad, Integer]
+    include Enumerable[Ad]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[Ad, Integer]
+  end
+end

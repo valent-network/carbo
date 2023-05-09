@@ -1,0 +1,56 @@
+class NativizedProviderAd < ::ApplicationRecord
+  extend _ActiveRecord_Relation_ClassMethods[NativizedProviderAd, ActiveRecord_Relation, String]
+
+  module GeneratedAttributeMethods
+    def address: () -> String
+
+    def address=: (String) -> String
+
+    def address?: () -> bool
+
+    def address_changed?: () -> bool
+
+    def address_change: () -> [ String?, String? ]
+
+    def address_will_change!: () -> void
+
+    def address_was: () -> String?
+
+    def address_previously_changed?: () -> bool
+
+    def address_previous_change: () -> Array[String?]?
+
+    def address_previously_was: () -> String?
+
+    def address_before_last_save: () -> String?
+
+    def address_change_to_be_saved: () -> Array[String?]?
+
+    def address_in_database: () -> String?
+
+    def saved_change_to_address: () -> Array[String?]?
+
+    def saved_change_to_address?: () -> bool
+
+    def will_save_change_to_address?: () -> bool
+
+    def restore_address!: () -> void
+
+    def clear_address_change: () -> void
+  end
+  include GeneratedAttributeMethods
+
+  module GeneratedRelationMethods
+  end
+
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[NativizedProviderAd, String]
+    include Enumerable[NativizedProviderAd]
+  end
+
+  class ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+    include GeneratedRelationMethods
+    include _ActiveRecord_Relation[NativizedProviderAd, String]
+  end
+end
