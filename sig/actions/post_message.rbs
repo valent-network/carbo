@@ -1,3 +1,3 @@
 class PostMessage
-  def call: (sender: User, message: String) -> Message
+  def call: (sender: User, message: Message) -> Message
 end
