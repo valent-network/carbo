@@ -6,11 +6,7 @@ ActiveAdmin.register(FilterableValuesGroup) do
   config.batch_actions = false
   includes :values, :ad_option_type
 
-  if AdOptionType.table_exists?
-    AdOptionType.all.each do |aot|
-      scope(aot.name.titleize) { |scope| scope.where(ad_option_type: aot) }
-    end
-  end
+  filter :ad_option_type
 
   sidebar "Existing Groups" do
     FilterableValue

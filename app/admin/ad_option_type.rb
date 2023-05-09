@@ -6,12 +6,6 @@ ActiveAdmin.register(AdOptionType) do
   config.sort_order = "position_asc"
   config.batch_actions = false
 
-  if Category.table_exists?
-    Category.all.each do |category|
-      scope(category.name.titleize) { |scope| scope.where(category: category) }
-    end
-  end
-
   index do
     selectable_column
     column(:id)
@@ -50,6 +44,7 @@ ActiveAdmin.register(AdOptionType) do
   end
 
   filter :filterable
+  filter :category
   filter :input_type, as: :select, collection: AdOptionType::INPUT_TYPES
 
   collection_action :reorder, method: :post do
