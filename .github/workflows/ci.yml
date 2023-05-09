@@ -6,7 +6,7 @@ on:
       - dev
 
 jobs:
-  test:
+  build_test_and_merge_to_master:
     runs-on: ubuntu-latest
     services:
       postgres:
