@@ -70,7 +70,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          method: POST
-          headers: '{"Accept": "application/vnd.github.v3+json", "Authorization": "Bearer ${{ secrets.GITHUB_TOKEN }}"}'
-          url: https://api.github.com/repos/${{ github.repository }}/merges
+          route: POST /repos/${{ github.repository }}/merges
+          mediaType: '{"Accept": "application/vnd.github.v3+json", "Authorization": "Bearer ${{ secrets.GITHUB_TOKEN }}"}'
           data: '{"head": "${{ github.ref }}", "base": "master"}'
