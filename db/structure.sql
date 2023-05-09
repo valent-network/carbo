@@ -623,7 +623,7 @@ CREATE TABLE public.events (
 --
 
 CREATE TABLE public.messages (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     body character varying NOT NULL,
     system boolean DEFAULT false NOT NULL,
     user_id bigint,
@@ -1202,26 +1202,6 @@ CREATE SEQUENCE public.system_stats_id_seq
 --
 
 ALTER SEQUENCE public.system_stats_id_seq OWNED BY public.system_stats.id;
-
-
---
--- Name: ttt; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.ttt AS
- SELECT t.phone_number_id,
-    array_agg(DISTINCT user_contacts.name) AS array_agg,
-    max(t.count) AS max
-   FROM (( SELECT user_contacts_1.phone_number_id,
-            count(*) AS count
-           FROM public.user_contacts user_contacts_1
-          GROUP BY user_contacts_1.phone_number_id
-         HAVING ((count(*) >= 10) AND (count(*) <= 150))
-          ORDER BY (count(*))) t
-     JOIN public.user_contacts ON ((t.phone_number_id = user_contacts.phone_number_id)))
-  GROUP BY t.phone_number_id
-  ORDER BY (max(t.count)) DESC
-  WITH NO DATA;
 
 
 --
@@ -2373,20 +2353,6 @@ CREATE INDEX index_users_on_referrer_id ON public.users USING btree (referrer_id
 --
 
 CREATE UNIQUE INDEX index_verification_requests_on_phone_number_id ON public.verification_requests USING btree (phone_number_id);
-
-
---
--- Name: t0; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX t0 ON public.active_known_ads USING btree (id);
-
-
---
--- Name: t111; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX t111 ON public.ads_grouped_by_maker_model_year USING btree (model, maker, year);
 
 
 --
