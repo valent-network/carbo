@@ -52,7 +52,7 @@ class PutAd
       begin
         retries ||= 0
         if ad.save
-          Sentry.capture_message("[PutAd][AdSaved] data=#{{address: address, id: ad.id}.to_json}")
+          Sentry.capture_message("[PutAd][AdSaved] data=#{{address: address, id: ad.id}.to_json}", level: :info)
         else
           Sentry.capture_message("[PutAd][AdNotSaved] id=#{ad&.id} address=#{address} errors=#{ad.errors.to_hash.to_json}", level: :warning)
         end
