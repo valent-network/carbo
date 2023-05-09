@@ -55,7 +55,7 @@ jobs:
         run: bundle exec rbs collection install
 
       - name: Run StandardRB
-        run: bin/standardrb --fix
+        run: bin/standardrb
 
       - name: Run Steep check
         run: bundle exec steep check
