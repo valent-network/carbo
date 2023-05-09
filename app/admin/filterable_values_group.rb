@@ -6,6 +6,12 @@ ActiveAdmin.register(FilterableValuesGroup) do
   config.batch_actions = false
   includes :values, :ad_option_type
 
+  if AdOptionType.table_exists?
+    AdOptionType.all.each do |aot|
+      scope(aot.name.titleize) { |scope| scope.where(ad_option_type: aot) }
+    end
+  end
+
   sidebar "Existing Groups" do
     FilterableValue
       .joins(:ad_option_type)
@@ -32,10 +38,6 @@ ActiveAdmin.register(FilterableValuesGroup) do
       fvg.values.map { |v| "<span class='filterable-node'>#{v.raw_value}</span>" }.join(" ").html_safe
     end
     actions
-  end
-
-  AdOptionType.all.each do |aot|
-    scope(aot.name.titleize) { |scope| scope.where(ad_option_type: aot) }
   end
 
   form do |f|

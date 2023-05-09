@@ -6,8 +6,10 @@ ActiveAdmin.register(AdOptionType) do
   config.sort_order = "position_asc"
   config.batch_actions = false
 
-  Category.all.each do |category|
-    scope(category.name.titleize) { |scope| scope.where(category: category) }
+  if Category.table_exists?
+    Category.all.each do |category|
+      scope(category.name.titleize) { |scope| scope.where(category: category) }
+    end
   end
 
   index do
