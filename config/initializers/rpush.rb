@@ -37,7 +37,7 @@ Rpush.reflect do |on|
   # from the APNs that a notification has failed to be delivered.
   # Further notifications should not be sent to the device.
   on.apns_feedback do |feedback|
-    Sentry.capture_message("[apns_feedback] feeedback=#{feedback} push_token=#{feedback.device_token}")
+    Sentry.capture_message("[apns_feedback] feeedback=#{feedback} push_token=#{feedback.device_token}", level: :info)
     UserDevice.where(push_token: feedback.device_token).update_all(push_token: nil, os: "ios")
   end
 
@@ -54,7 +54,7 @@ Rpush.reflect do |on|
 
   # Called when a notification is successfully delivered.
   on.notification_delivered do |notification|
-    Sentry.capture_message("[notification_delivered] notification_id=#{notification.id}")
+    Sentry.capture_message("[notification_delivered] notification_id=#{notification.id}", level: :info)
 
     notification.destroy
   end
@@ -91,7 +91,7 @@ Rpush.reflect do |on|
   # can occur more than once for the same notification when there are multiple
   # recipients.
   on.gcm_delivered_to_recipient do |notification, registration_id|
-    Sentry.capture_message("[gcm_delivered_to_recipient] notification_id=#{notification.id} registration_id=#{registration_id}")
+    Sentry.capture_message("[gcm_delivered_to_recipient] notification_id=#{notification.id} registration_id=#{registration_id}", level: :info)
   end
 
   # Called for each recipient which fails to receive a notification. This
@@ -104,7 +104,7 @@ Rpush.reflect do |on|
   # Called when the GCM returns a canonical registration ID.
   # You will need to replace old_id with canonical_id in your records.
   on.gcm_canonical_id do |old_id, canonical_id|
-    Sentry.capture_message("[gcm_canonical_id] old_id=#{old_id} canonical_id=#{canonical_id}")
+    Sentry.capture_message("[gcm_canonical_id] old_id=#{old_id} canonical_id=#{canonical_id}", level: :info)
     UserDevice.where(push_token: old_id).update_all(push_token: canonical_id)
   end
 
@@ -123,7 +123,7 @@ Rpush.reflect do |on|
 
   # Called when an SSL certificate has been revoked.
   on.ssl_certificate_revoked do |app, error|
-    Sentry.capture_message("[ssl_certificate_revoked] app_name=#{app.name} error=#{error}")
+    Sentry.capture_message("[ssl_certificate_revoked] app_name=#{app.name} error=#{error}", level: :info)
   end
 
   # Called when an exception is raised.
