@@ -18,21 +18,21 @@ gem "clockwork"
 gem "dry-validation"
 gem "active_model_serializers"
 gem "phonelib"
+
+# S3
 gem "carrierwave"
 gem "carrierwave-base64"
 gem "fog-aws"
+gem "aws-sdk-s3"
 
 # 3-rd party gems
 gem "turbosms"
-gem "aws-sdk-s3"
 gem "sentry-ruby"
 gem "sentry-rails"
 gem "sentry-sidekiq"
 
 # Other
 gem "bootsnap", "~> 1.9", require: false
-gem "rack-cors", require: "rack/cors"
-gem "rack-attack"
 gem "lograge"
 gem "logstash-event"
 
@@ -40,14 +40,11 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails"
   gem "spring"
-  gem "steep", require: false
-  gem "rbs", require: false
-  gem "rbs_rails", require: false
+  gem "factory_bot_rails"
+  gem "ffaker"
 end
 
 group :test do
-  gem "factory_bot_rails"
-  gem "ffaker"
   gem "rspec-rails"
   gem "rspec-retry"
 end
@@ -62,6 +59,9 @@ group :development do
   gem "foreman", require: false
   gem "derailed_benchmarks"
   gem "stackprof"
+  gem "steep", require: false
+  gem "rbs", require: false
+  gem "rbs_rails", require: false
 end
 
 ### Remove candidates ###
@@ -75,6 +75,9 @@ gem "formtastic", "~> 4.0" # TODO: Ruby 3: https://github.com/formtastic/formtas
 gem "haml-rails"
 gem "chartkick"
 gem "kaminari"
+
+gem "rack-cors", require: "rack/cors"
+gem "rack-attack"
 
 ###
 
