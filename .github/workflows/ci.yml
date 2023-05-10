@@ -8,29 +8,29 @@ on:
 jobs:
   build_test_and_merge_to_master:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: recario
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      redis:
-        image: redis:6
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   postgres:
+    #     image: postgres:13
+    #     env:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #       POSTGRES_DB: recario
+    #     ports:
+    #       - 5432:5432
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+    #   redis:
+    #     image: redis:6
+    #     ports:
+    #       - 6379:6379
+    #     options: >-
+    #       --health-cmd "redis-cli ping"
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
     steps:
       - name: Checkout
@@ -78,4 +78,4 @@ jobs:
         with:
           route: POST /repos/${{ github.repository }}/merges
           mediaType: '{"Accept": "application/vnd.github.v3+json", "Authorization": "Bearer ${{ secrets.GITHUB_TOKEN }}"}'
-          data: '{"head": "${{ github.ref }}", "base": "master"}'
+          data: '{"head": "${{ github.ref }}", "base": "main"}'
