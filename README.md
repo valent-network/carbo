@@ -20,7 +20,3 @@ Standard Rails project:
 ## Installaion
 
 Refer to `.env.example` to set proper ENV variables.
-
-## System Diagramm Using Structurizr
-run `docker run -it --rm -p 8080:8080 -v $PWD:/usr/local/structurizr structurizr/lite`
-and visit [http://localhost:8080](http://localhost:8080) to see clickable system overview diagramms.
