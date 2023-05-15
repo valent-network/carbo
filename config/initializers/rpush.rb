@@ -62,7 +62,7 @@ Rpush.reflect do |on|
   # Called when notification delivery failed.
   # Call 'error_code' and 'error_description' on the notification for the cause.
   on.notification_failed do |notification|
-    Sentry.capture_message("[notification_failed] error=#{notification.error} error_description=#{notification.error_description}", level: :error)
+    Sentry.capture_message("[notification_failed] error=#{notification.errors.full_messages} error_description=#{notification.error_description}", level: :error)
   end
 
   # Called when the notification delivery failed and only the notification ID
