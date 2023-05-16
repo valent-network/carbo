@@ -47,9 +47,6 @@ end
 group :test do
   gem "rspec-rails"
   gem "rspec-retry"
-end
-
-group :test do
   gem "simplecov", require: false
 end
 
@@ -75,9 +72,6 @@ gem "formtastic", "~> 4.0" # TODO: Ruby 3: https://github.com/formtastic/formtas
 gem "haml-rails"
 gem "chartkick"
 gem "kaminari"
-
-gem "rack-cors", require: "rack/cors"
-gem "rack-attack"
 
 ###
 
