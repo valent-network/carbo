@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, raise: false
   rescue_from StandardError, with: :standard_error
   around_action :switch_locale
+  before_action :require_auth, :require_admin, only: [:dashboard]
 
   def filters
     # TODO: backward compat
@@ -17,6 +18,10 @@ class ApplicationController < ActionController::Base
     end.to_h
 
     render(json: filters.merge(hops_count: t("hops_count")))
+  end
+
+  def dashboard
+    render json: DashboardStats.last
   end
 
   protected
