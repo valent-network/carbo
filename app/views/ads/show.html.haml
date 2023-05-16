@@ -50,11 +50,11 @@
         %h1= @meta_title
         .text-center
           %a.btn.btn-open-app.btn-lg{:href => "recarioapp://visited/ads/#{@ad.id}/"}
-            %span.btn-text Открыть в приложении
+            %span.btn-text Відкрити в додатку
         - @options.values.each do |option|
           %span.option= "#{option.first}: #{option.last}"
         %hr/
-        %p Хочешь узнать подробнее об общих друзьях? Скачай приложение!
+        %p Хочеш дізнатися більше про спільних друзів? Завантажуй додаток!
 %html
   :css
     @media (min-width: 767px) {

@@ -7,11 +7,11 @@ class BudgetController < ApplicationController
     max = price.to_i * 1.2
     @grouped = AdsGroupedByMakerModelYear.by_budget(min, max)
 
-    @meta_title = "Рекарио – Какой автомобиль купить до #{price} $ ?"
-    @meta_description = "Список автомобилей в бюджете #{price} $"
-    @meta_keywords = "Автомобиль за #{price} $"
+    @meta_title = "Рекаріо – Який авто купити до #{price} $ ?"
+    @meta_description = "Список авто у бюджеті #{price} $"
+    @meta_keywords = "Авто за #{price} $"
     @meta_og_title = "Список моделей авто за #{price} $"
-    @meta_og_description = "Что купить за #{price} $ ?"
+    @meta_og_description = "Що купити за #{price} $ ?"
 
     if request.path == "/budget/#{price}" || price.to_i.zero?
       render("/budget/search_models", layout: "widgets")
@@ -25,8 +25,8 @@ class BudgetController < ApplicationController
     @models = @models.where.not(year: nil) # TODO: Defensive query
     raise ActiveRecord::RecordNotFound if @models.blank?
 
-    @meta_title = "Рекарио – стоимость #{@models.first.maker} #{@models.first.model} по годам"
-    @meta_description = "Средняя стоимость #{@models.first.maker} #{@models.first.model} разбитая по годам"
+    @meta_title = "Рекаріо – вартісь #{@models.first.maker} #{@models.first.model} по рокам"
+    @meta_description = "Середня вартість #{@models.first.maker} #{@models.first.model} по рокам"
     @meta_keywords = @models.map { |m| "#{m.maker} #{m.model} #{m.year}" }.join(",")
     @meta_og_title = @meta_title
     @meta_og_description = @meta_description
@@ -44,9 +44,9 @@ class BudgetController < ApplicationController
     cities = City.where(id: @ads_grouped_by_region.map(&:first)).joins(:region).pluck("cities.id, regions.name").to_h
     @ads_grouped_by_region = @ads_grouped_by_region.to_h.transform_keys { |city_id| cities[city_id] }.to_a
 
-    @meta_title = "Рекарио – минимальная, средняя и максимальная стоимость #{@model_year.maker} #{@model_year.model} #{@model_year.year} года"
-    @meta_description = "Все цены на #{@model_year.maker} #{@model_year.model} #{@model_year.year} года и количество объявлений по городам"
-    @meta_keywords = "Цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, минимальная цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, средняя цена #{@model_year.maker} #{@model_year.model} #{@model_year.year}, сколько стоит #{@model_year.maker} #{@model_year.model} #{@model_year.year}"
+    @meta_title = "Рекаріо – мінімальна, середня і максимальна вартість #{@model_year.maker} #{@model_year.model} #{@model_year.year} року"
+    @meta_description = "Всі ціни на #{@model_year.maker} #{@model_year.model} #{@model_year.year} року та кількість оголошень по рокам"
+    @meta_keywords = "Ціна #{@model_year.maker} #{@model_year.model} #{@model_year.year}, мінімальна ціна #{@model_year.maker} #{@model_year.model} #{@model_year.year}, середня ціна #{@model_year.maker} #{@model_year.model} #{@model_year.year}, сколько стоит #{@model_year.maker} #{@model_year.model} #{@model_year.year}"
     @meta_og_title = @meta_title
     @meta_og_description = @meta_description
 
@@ -54,11 +54,11 @@ class BudgetController < ApplicationController
   end
 
   def show_ads
-    @meta_title = "Рекарио – поиск объявлений о продаже и покупке авто через друзей и знакомых ?"
-    @meta_description = "Покупка и продажа автомобилей в Украине через друзей и знакомых"
-    @meta_keywords = "автомобили, машины, купить машину, продать машину, купить авто, продать авто"
-    @meta_og_title = "Рекарио – покупка и продажа автомобилей в Украине через друзей и знакомых"
-    @meta_og_description = "Покупка и продажа автомобилей в Украине через друзей и знакомых"
+    @meta_title = "Рекаріо – пошук оголошень про продаж чи покупку авто через друзів та знайомих"
+    @meta_description = "Покупка і продаж авто в Україні через друзів та знайомих"
+    @meta_keywords = "авто, машини, купити машину, продати машину, купити авто, продати авто"
+    @meta_og_title = "Рекаріо – покупка та продаж авто в Україні через друзів та знайомих"
+    @meta_og_description = "Покупка і продаж авто в Україні через друзів та знайомих"
 
     render("/budget/show_ads", layout: "widgets")
   end
