@@ -17,16 +17,8 @@
     %meta{:content => "#{@main_image}", :property => "og:image"}/
     %meta{:content => "reCar.io", :property => "og:site_name"}/
     %meta{:content => "Покупка и продажа автомобилей в Украине через друзей и знакомых – #{@meta_title} – #{@options.values.map { |o| [o.first, o.last].join(': ') }.join(', ')}", :property => "og:description"}/
-    %link{:href => "/icons/rik-icons/styles.css", :rel => "stylesheet"}/
-    / BOOTSTRAP CSS
     %link{:crossorigin => "anonymous", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :integrity => "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", :rel => "stylesheet"}/
-    / FONT ICONS
-    %link{:href => "/icons/rik-icons/styles.css", :rel => "stylesheet"}/
-    / COUSTOM CSS link
-    %link{:href => "/css/style.css", :rel => "stylesheet"}/
     %link{:href => "/css/responsive.css", :rel => "stylesheet"}/
-    / COLOR
-    %link#color-scheme{:href => "/css/colors/color-1.css", :rel => "stylesheet", :type => "text/css"}/
     /[if lt IE 9]
       <script src="/js/plagin-js/html5shiv.js"></script>
       <script src="/js/plagin-js/respond.min.js"></script>
