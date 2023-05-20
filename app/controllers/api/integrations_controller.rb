@@ -4,7 +4,7 @@ class Api::IntegrationsController < ApplicationController
   before_action :check_cache
 
   def show
-    render(json: {records: data, etag: @etag})
+    render(json: {records: data, etag: etag})
   end
 
   private
@@ -15,10 +15,16 @@ class Api::IntegrationsController < ApplicationController
 
   def etag
     REDIS.get("#{data_type}_data.etag")
+  rescue
+    Sentry.capture_message("ETAG missing for #{data_type} integration", level: :error)
+    nil
   end
 
   def data
     JSON.parse(REDIS.get("#{data_type}_data"))
+  rescue
+    Sentry.capture_message("Data missing for #{data_type} integration", level: :error)
+    {}
   end
 
   def data_type
