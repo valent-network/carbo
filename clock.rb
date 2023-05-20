@@ -41,6 +41,10 @@ module Clockwork
   every(1.week, "[PG] CLUSTER", at: "Tuesday 02:00", tz: "UTC") { enqueue("PgCluster") }
   every(1.week, "[PG] REINDEX DATABASE", at: "Wednesday 02:00", tz: "UTC") { enqueue("PgReindex") }
 
+  # Data producers for other services
+  every(5.minutes, "Dashboard Data Producer", tz: "UTC", skip_first_run: true) { enqueue("DashboardDataProducer") }
+  every(1.hour, "Budget Data Producer", tz: "UTC", skip_first_run: true) { enqueue("BudgetDataProducer") }
+
   # REFRESH MATERIALIZED VIEW CONCURRENCTLY
   every(5.minutes, "[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY dashboard_stats", tz: "UTC", skip_first_run: true) { enqueue("PgRefreshMview", "args" => ["dashboard_stats"]) }
   every(10.minutes, "[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY known_options", tz: "UTC", skip_first_run: true) { enqueue("PgRefreshMview", "args" => ["known_options"]) }

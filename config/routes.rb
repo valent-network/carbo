@@ -27,7 +27,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     get :filters, to: "/application#filters"
-    get :dashboard, to: "/application#dashboard"
+
+    namespace :integrations do
+      get :dashboard, action: :show
+      get :budget, action: :show
+    end
 
     namespace :v1 do
       resource :settings, only: %i[show]

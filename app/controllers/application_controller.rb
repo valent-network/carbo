@@ -20,10 +20,6 @@ class ApplicationController < ActionController::Base
     render(json: filters.merge(hops_count: t("hops_count")))
   end
 
-  def dashboard
-    render json: DashboardStats.last
-  end
-
   protected
 
   attr_reader :current_user, :current_device, :current_ads_source

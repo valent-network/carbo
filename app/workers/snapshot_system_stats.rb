@@ -6,6 +6,7 @@ class SnapshotSystemStats
   sidekiq_options queue: "system", retry: false, backtrace: false
 
   def perform
-    SystemStat.create(data: DashboardStats.first.as_json)
+    dashboard_stats = JSON.parse(REDIS.get("dashboard_data")).first
+    SystemStat.create(data: dashboard_stats)
   end
 end
