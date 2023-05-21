@@ -389,26 +389,6 @@ ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
 
 
 --
--- Name: ads_grouped_by_maker_model_year; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.ads_grouped_by_maker_model_year AS
- SELECT (ad_extras.details ->> 'maker'::text) AS maker,
-    (ad_extras.details ->> 'model'::text) AS model,
-    (ad_extras.details ->> 'year'::text) AS year,
-    min(ads.price) AS min_price,
-    (round((avg(ads.price) / (100)::numeric)) * (100)::numeric) AS avg_price,
-    max(ads.price) AS max_price
-   FROM (public.ads
-     JOIN public.ad_extras ON ((ads.id = ad_extras.ad_id)))
-  WHERE (ads.deleted = false)
-  GROUP BY (ad_extras.details ->> 'maker'::text), (ad_extras.details ->> 'model'::text), (ad_extras.details ->> 'year'::text)
- HAVING (count(ads.*) >= 5)
-  ORDER BY (ad_extras.details ->> 'maker'::text), (ad_extras.details ->> 'model'::text), (ad_extras.details ->> 'year'::text)
-  WITH NO DATA;
-
-
---
 -- Name: ads_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -623,7 +603,7 @@ CREATE TABLE public.events (
 --
 
 CREATE TABLE public.messages (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     body character varying NOT NULL,
     system boolean DEFAULT false NOT NULL,
     user_id bigint,
@@ -1998,13 +1978,6 @@ CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_us
 
 
 --
--- Name: index_ads_grouped_by_maker_model_year_on_uniq; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_ads_grouped_by_maker_model_year_on_uniq ON public.ads_grouped_by_maker_model_year USING btree (maker, model, year);
-
-
---
 -- Name: index_ads_on_address; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2868,6 +2841,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230224141725'),
 ('20230224143109'),
 ('20230303181038'),
-('20230502151814');
+('20230502151814'),
+('20230521115735');
 
 

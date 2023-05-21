@@ -48,7 +48,6 @@ module Clockwork
   # REFRESH MATERIALIZED VIEW CONCURRENCTLY
   every(5.minutes, "[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY dashboard_stats", tz: "UTC", skip_first_run: true) { enqueue("PgRefreshMview", "args" => ["dashboard_stats"]) }
   every(10.minutes, "[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY known_options", tz: "UTC", skip_first_run: true) { enqueue("PgRefreshMview", "args" => ["known_options"]) }
-  every(1.hour, "[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY ads_grouped_by_maker_model_year", tz: "UTC", skip_first_run: true) { enqueue("PgRefreshMview", "args" => ["ads_grouped_by_maker_model_year"]) }
   every(1.hour, "[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY active_known_ads", if: lambda { |t| [6, 9, 12, 15, 18, 21].include?(t.hour) && t.min == 25 }, tz: "UTC", skip_first_run: true) { enqueue("PgRefreshMview", "args" => ["active_known_ads"]) }
   every(1.hour, "[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY users_known_ads", if: lambda { |t| [6, 9, 12, 15, 18, 21].include?(t.hour) && t.min == 35 }, tz: "UTC", skip_first_run: true) { enqueue("PgRefreshMview", "args" => ["users_known_ads"]) }
   every(1.hour, "[PG] RERFRESH MATERIALIZED VIEW CONCURRENCTLY users_known_users", if: lambda { |t| [6, 9, 12, 15, 18, 21].include?(t.hour) && t.min == 45 }, tz: "UTC", skip_first_run: true) { enqueue("PgRefreshMview", "args" => ["users_known_users"]) }
