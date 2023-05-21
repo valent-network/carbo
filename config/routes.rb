@@ -2,8 +2,6 @@
 
 require "sidekiq/web"
 
-# frozen_string_literal: true
-
 git_commit = ENV.fetch("GIT_COMMIT") { `git rev-parse --short HEAD`.strip }
 
 Rails.application.routes.draw do
@@ -17,8 +15,6 @@ Rails.application.routes.draw do
   end
 
   get :health, to: ->(_env) { [200, {}, [{build: ENV.fetch("GIT_COMMIT") { git_commit }}.to_json]] }
-
-  resources :ads, only: %i[show]
 
   namespace :api do
     get :filters, to: "/application#filters"
