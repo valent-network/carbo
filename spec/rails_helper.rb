@@ -82,7 +82,6 @@ RSpec.configure do |config|
       category.ad_option_types.where(name: ad_option_type, filterable: ad_option_type.in?(%w[gear fuel carcass wheels]), input_type: "picker").first_or_create!
     end
 
-    AdsGroupedByMakerModelYear.refresh(concurrently: false)
     CachedSettings.refresh
   end
 
