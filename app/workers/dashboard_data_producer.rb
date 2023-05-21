@@ -1,4 +1,8 @@
 class DashboardDataProducer
+  include Sidekiq::Worker
+
+  sidekiq_options queue: "default", retry: true, backtrace: false
+
   QUERY = <<~SQL
     SELECT now() AS updated_at,
         ( SELECT count(users.id) AS count
