@@ -20,7 +20,7 @@ class DropBudgetAdsMview < ActiveRecord::Migration[7.0]
         ORDER BY (ad_extras.details ->> 'maker'::text), (ad_extras.details ->> 'model'::text), (ad_extras.details ->> 'year'::text)
     SQL
     execute(<<~SQL)
-      CREATE UNIQUE INDEX index_ads_grouped_by_maker_model_year_on_uniq ON public.ads_grouped_by_maker_model_year USING btree (maker, model, year);
+      CREATE UNIQUE INDEX index_ads_grouped_by_maker_model_year_on_uniq ON public.ads_grouped_by_maker_model_year USING btree (maker, model, year)
     SQL
   end
 end
