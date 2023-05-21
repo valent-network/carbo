@@ -1,4 +1,8 @@
 class BudgetDataProducer
+  include Sidekiq::Worker
+
+  sidekiq_options queue: "default", retry: true, backtrace: false
+
   QUERY = <<~SQL
     SELECT maker,
            model,
