@@ -79,6 +79,8 @@ class CachedSettings
             values = opt.filterable_values.select { |fv| fv.group.present? }.map do |f|
               {
                 name: f.group.translations[I18n.locale.to_s],
+                group_name: f.group.name,
+                raw_values: f.group.values.map { |rv| {raw_value: rv.raw_value, id: rv.id} },
                 id: f.group.id,
                 position: f.group.position
               }
