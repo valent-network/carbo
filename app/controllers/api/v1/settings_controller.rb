@@ -28,6 +28,7 @@ module Api
             end
           end
         end
+        CachedSettings.refresh
         head 200
       end
     end
