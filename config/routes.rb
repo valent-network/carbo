@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     end
 
     namespace :v1 do
-      resource :settings, only: %i[show]
+      resource :settings, only: %i[show update]
       resource :contact_book, only: %i[update destroy]
       resource :user, only: %i[show update] do
         post :set_referrer, on: :collection
