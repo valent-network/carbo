@@ -75,6 +75,7 @@ RSpec.configure do |config|
   config.before { controller.request.headers["X-User-Locale"] = "en" if defined?(controller) }
 
   config.before(:all) do
+    KnownOption.refresh(concurrently: false)
     category = Category.where(name: "vehicles", currency: "$", position: 0).first_or_create!
     Rpush::Client::ActiveRecord::Apnsp8::App.where(name: "ios", connections: 2, apn_key: "BEGINEND", apn_key_id: "ID", environment: "production", team_id: "team", bundle_id: "com.recar.io").first_or_create!
     Rpush::Client::ActiveRecord::Gcm::App.where(name: "android", connections: 2, auth_key: "INVALID").first_or_create!
