@@ -93,6 +93,7 @@ class CachedSettings
               id: opt.id,
               filterable: opt.filterable,
               values: opt.filterable ? values : [],
+              known_options: opt.known_options, # TODO: N+1
               position: opt.position
             }
           end
