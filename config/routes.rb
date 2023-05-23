@@ -24,6 +24,11 @@ Rails.application.routes.draw do
       get :budget, action: :show
     end
 
+    namespace :admin do
+      resource :settings, only: %i[update]
+      resources :filterable_values, only: %i[index create update destroy]
+    end
+
     namespace :v1 do
       resource :settings, only: %i[show update]
       resource :contact_book, only: %i[update destroy]

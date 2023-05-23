@@ -13,6 +13,7 @@ en:
     phone_number_not_mobile: Mobile phone number required
     unknown: "Unknown error happend on our side"
     ad_validation_failed: Ad is invalid
+    unknown_option: Unknown option value
   send_verification:
     sms_text: Authentication code - %{verification_code}
   views:
