@@ -21,7 +21,7 @@ module Api
           filterable_value = ad_option_type.filterable_values.new(name: params[:group_name], raw_value: params[:raw_value])
 
           if filterable_value.save
-            head(:created)
+            render(json: { id: filterable_value.id })
           else
             render(json: {errors: filterable_value.errors.full_messages}, status: :unprocessable_entity)
           end
