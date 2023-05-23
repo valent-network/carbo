@@ -13,6 +13,7 @@ uk:
     phone_number_not_mobile: Необхідно використовувати номер мобільного телефону
     unknown: "Помилка в Рекаріо"
     ad_validation_failed: Оголошення не валідне
+    unknown_option: Невідоме значення опції
   send_verification:
     sms_text: Код для входу в систему - %{verification_code}
   views:
