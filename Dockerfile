@@ -1,8 +1,8 @@
-FROM ruby:3.2.0-alpine AS Builder
+FROM ruby:3.2.2-alpine AS Builder
 
-ENV BUILD_PACKAGES="build-base postgresql-dev shared-mime-info git nodejs"
+ENV BUILD_PACKAGES="build-base postgresql-dev shared-mime-info"
 
-ENV BUNDLER_VERSION="2.4.3"
+ENV BUNDLER_VERSION="2.4.13"
 
 RUN apk add --no-cache $BUILD_PACKAGES && \
   gem install bundler:$BUNDLER_VERSION && \
@@ -21,16 +21,14 @@ RUN  bundle config --local without "development test" && \
 
 ADD . /app
 
-RUN rm -rf node_modules tmp/cache vendor/assets lib/assets spec
-
-FROM ruby:3.2.0-alpine
+FROM ruby:3.2.2-alpine
 
 ENV EFFECTIVE_PACKAGES="bash tzdata postgresql-client imagemagick"
 
 RUN apk add --no-cache $EFFECTIVE_PACKAGES
 
-ARG GIT_COMMIT
-ENV GIT_COMMIT $CAPROVER_GIT_COMMIT_SHA
+ARG CAPROVER_GIT_COMMIT_SHA=${CAPROVER_GIT_COMMIT_SHA}
+ENV GIT_COMMIT=${CAPROVER_GIT_COMMIT_SHA}
 
 WORKDIR /app
 

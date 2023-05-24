@@ -2,7 +2,7 @@
 sources:
 - type: git
   name: ruby/gem_rbs_collection
-  revision: 12631190e75c631eca0908ecc8c03bcfd78c0c99
+  revision: 163126f59d1bb765a6234fc60d3edf21cdfce255
   remote: https://github.com/ruby/gem_rbs_collection.git
   repo_dir: gems
 path: ".gem_rbs_collection"
@@ -95,14 +95,6 @@ gems:
     revision: 12631190e75c631eca0908ecc8c03bcfd78c0c99
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
-- name: bcrypt
-  version: '3.1'
-  source:
-    type: git
-    name: ruby/gem_rbs_collection
-    revision: 12631190e75c631eca0908ecc8c03bcfd78c0c99
-    remote: https://github.com/ruby/gem_rbs_collection.git
-    repo_dir: gems
 - name: cgi
   version: '0'
   source:
@@ -137,14 +129,6 @@ gems:
     repo_dir: gems
 - name: jwt
   version: '2.5'
-  source:
-    type: git
-    name: ruby/gem_rbs_collection
-    revision: 12631190e75c631eca0908ecc8c03bcfd78c0c99
-    remote: https://github.com/ruby/gem_rbs_collection.git
-    repo_dir: gems
-- name: kaminari-core
-  version: '1.2'
   source:
     type: git
     name: ruby/gem_rbs_collection
@@ -191,10 +175,6 @@ gems:
     revision: 12631190e75c631eca0908ecc8c03bcfd78c0c99
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
-- name: openssl
-  version: '0'
-  source:
-    type: stdlib
 - name: pathname
   version: '0'
   source:
@@ -264,10 +244,6 @@ gems:
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: singleton
-  version: '0'
-  source:
-    type: stdlib
-- name: socket
   version: '0'
   source:
     type: stdlib

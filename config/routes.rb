@@ -2,19 +2,10 @@
 
 require "sidekiq/web"
 
-git_commit = ENV.fetch("GIT_COMMIT") { `git rev-parse --short HEAD`.strip }
-
 Rails.application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
-
   mount ActionCable.server, at: "/cable"
 
-  authenticate :admin_user do
-    mount Sidekiq::Web, at: "sidekiq"
-  end
-
-  get :health, to: ->(_env) { [200, {}, [{build: ENV.fetch("GIT_COMMIT") { git_commit }}.to_json]] }
+  get :health, to: ->(_env) { [200, {}, [{build: ENV["GIT_COMMIT"]}].to_json] }
 
   namespace :api do
     get :filters, to: "/application#filters"

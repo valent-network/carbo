@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.0"
+ruby "3.2.2"
 
 # Main gems
 gem "pg"
@@ -60,19 +60,5 @@ group :development do
   gem "rbs", require: false
   gem "rbs_rails", require: false
 end
-
-### Remove candidates ###
-
-# Active Admin gems
-gem "activeadmin"
-gem "arctic_admin"
-gem "devise"
-gem "sassc-rails"
-gem "formtastic", "~> 4.0" # TODO: Ruby 3: https://github.com/formtastic/formtastic/issues/1325
-gem "haml-rails"
-gem "chartkick"
-gem "kaminari"
-
-###
 
 gem "mail", "~> 2.7.1" # TODO: https://github.com/mikel/mail/issues/1489
