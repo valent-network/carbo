@@ -5,7 +5,7 @@ require "sidekiq/web"
 Rails.application.routes.draw do
   mount ActionCable.server, at: "/cable"
 
-  get :health, to: ->(_env) { [200, {}, [{build: ENV["GIT_COMMIT"]}.to_json]] }
+  get :health, to: ->(_env) { [200, {}, [{build: ENV["GIT_COMMIT"].to_s.strip}.to_json]] }
 
   namespace :api do
     get :filters, to: "/application#filters"
