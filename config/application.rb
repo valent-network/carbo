@@ -40,5 +40,6 @@ module Recario
     config.i18n.default_locale = :uk
 
     config.time_zone = "Europe/Kiev"
+    config.active_record.async_query_executor = :global_thread_pool
   end
 end

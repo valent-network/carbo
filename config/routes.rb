@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     end
 
     namespace :v1 do
+      get :approximate_stats, to: "users#approximate_stats"
       resource :settings, only: %i[show update]
       resource :contact_book, only: %i[update destroy]
       resource :user, only: %i[show update] do

@@ -68,6 +68,10 @@ class User < ApplicationRecord
     user_connections.visible_ads_count.to_a&.first&.count.to_i
   end
 
+  def async_visible_ads_count
+    Ad.select(:count).from(user_connections.visible_ads_count).load_async
+  end
+
   def visible_ads_count_for_default_hops
     user_connections.visible_ads_default_count.to_a&.first&.count.to_i
   end
