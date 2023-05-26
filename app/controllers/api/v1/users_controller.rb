@@ -48,6 +48,25 @@ module Api
         end
       end
 
+      def approximate_stats
+        user_contacts = current_user.user_contacts.joins(:friend).includes(friend: :user_connections).map do |uc|
+          {
+            phone_number: uc.phone_number.to_s,
+            ads: uc.friend.ads.count,
+            visibility: uc.friend.async_visible_ads_count
+          }
+        end
+
+        payload = {
+          know_me_count: UserContact.select(:user_id).where(phone_number_id: current_user.phone_number_id).distinct.count,
+          user_contacts: user_contacts,
+          estimated_ads: Ad.where(phone_number_id: User.select(:phone_number_id).where(id: UserContact.select(:user_id).where(phone_number_id: current_user.phone_number_id))).count,
+          estimated_visibility: Ad.where(phone_number_id: UserContact.select(:phone_number_id).where(user_id: UserContact.select(:user_id).where(phone_number_id: current_user.phone_number_id))).count
+        }
+
+        render(json: payload)
+      end
+
       private
 
       def user_params
