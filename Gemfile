@@ -18,6 +18,7 @@ gem "clockwork"
 gem "dry-validation"
 gem "active_model_serializers"
 gem "phonelib"
+gem "rack-cors"
 
 # S3
 gem "carrierwave"
