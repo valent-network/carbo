@@ -49,19 +49,22 @@ module Api
       end
 
       def approximate_stats
-        user_contacts = current_user.user_contacts.joins(:friend).includes(friend: :user_connections).map do |uc|
+        user_contacts = current_user.user_contacts.joins(:friend).includes(friend: :ads).map do |uc|
           {
             phone_number: uc.phone_number.to_s,
-            ads: uc.friend.ads.count,
-            visibility: uc.friend.async_visible_ads_count
+            ads_count: uc.friend.ads.size,
+            potential_reach: uc.friend.stats["potential_reach"]
           }
         end
 
+        users_known_me = UserContact.select(:user_id).where(phone_number_id: current_user.phone_number_id).distinct
+        users_known_me_friends = UserConnection.select(:connection_id).where(user_id: users_known_me).distinct
+
         payload = {
-          know_me_count: UserContact.select(:user_id).where(phone_number_id: current_user.phone_number_id).distinct.count,
+          know_me_count: users_known_me.count,
           user_contacts: user_contacts,
-          estimated_ads: Ad.where(phone_number_id: User.select(:phone_number_id).where(id: UserContact.select(:user_id).where(phone_number_id: current_user.phone_number_id))).count,
-          estimated_visibility: Ad.where(phone_number_id: UserContact.select(:phone_number_id).where(user_id: UserContact.select(:user_id).where(phone_number_id: current_user.phone_number_id))).count
+          estimated_ads: Ad.where(phone_number_id: User.select(:phone_number_id).where(id: users_known_me)).count,
+          estimated_visibility: Ad.active.where(phone_number_id: UserContact.select(:phone_number_id).where(user_id: users_known_me_friends)).count
         }
 
         render(json: payload)

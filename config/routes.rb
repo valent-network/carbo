@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       resources :public_ads, only: %i[show]
       resources :friendly_ads, only: %i[show]
 
-      resources :user_contacts, only: %i[index]
+      resources :user_contacts, only: %i[index create]
 
       resources :favorite_ads, only: %i[index create destroy]
       resources :visited_ads, only: %i[index]
