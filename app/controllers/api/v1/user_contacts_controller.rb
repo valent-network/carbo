@@ -5,6 +5,18 @@ module Api
     class UserContactsController < ApplicationController
       before_action :require_auth
 
+      def create
+        normalized_phone = params[:phone].to_s.chars.last(9).join
+        phone_number = PhoneNumber.where(full_number: normalized_phone).first_or_create!
+        user_contact = current_user.user_contacts.where(phone_number: phone_number).first_or_initialize(name: params[:phone])
+
+        if user_contact.save
+          render(json: {message: :ok})
+        else
+          render(json: {errors: user_contact.errors.full_messages}, status: :unprocessable_entity)
+        end
+      end
+
       def index
         user_contacts = current_user.user_contacts.eager_load(phone_number: :user).limit(50).offset(params[:offset])
         user_contacts = user_contacts.where("user_contacts.name ILIKE :q", q: "%#{params[:query]}%") if params[:query].present?
