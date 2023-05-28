@@ -5,6 +5,7 @@ class Event < ApplicationRecord
     sign_up sign_in sign_out deleted_contacts uploaded_contatcts
     get_feed set_referrer invited_user visited_ad favorited_ad unfavorited_ad
     chat_room_user_added chat_room_initiated message_posted chat_room_left
+    native_ad_created ad_nativized
   ]
   belongs_to :user
   validates :name, presence: true
