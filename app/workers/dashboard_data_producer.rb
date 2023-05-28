@@ -118,6 +118,19 @@ class DashboardDataProducer
                         user_devices.os AS os_title
                        FROM public.user_devices
                       GROUP BY user_devices.os) t) AS user_devices_os_data,
+        ( SELECT json_agg(t.*) AS json_agg
+               FROM ( SELECT count(*) AS count,
+                       CONCAT(user_devices.os, ' ', build_version) AS build_code
+                      FROM public.user_devices
+                      GROUP BY user_devices.os, user_devices.build_version) t) AS user_devices_build_data,
+        ( SELECT json_agg(t.*) AS json_agg
+              FROM (#{CustomersAdsDistribution.new.call}) AS t) AS users_active_ads_distr_data,
+        ( SELECT json_agg(t.*) AS json_agg
+              FROM (#{CustomersAdsDistribution.new.call(active_ads_only: false)}) AS t) AS users_all_ads_distr_data,
+        ( SELECT json_agg(t.*) AS json_agg
+              FROM (#{CustomersAdsDistribution.new.call(active_ads_only: false, potential_customers_only: true)}) AS t) AS potential_users_ads_distr_data,
+        ( SELECT json_agg(t.*) AS json_agg
+              FROM (SELECT SUBSTR(full_number, 1, 2) AS operator, COUNT(*) FROM phone_numbers GROUP BY SUBSTR(full_number,1,2) ORDER BY COUNT(*)) AS t) AS cell_operators_distr_data,
         ( SELECT json_agg(tt.*) AS json_agg
                FROM ( SELECT users.refcode,
                         t.count
