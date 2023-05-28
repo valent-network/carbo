@@ -31,6 +31,7 @@ module Api
         ad.assign_attributes(ad_params)
 
         if ad.save
+          CreateEvent.call(:native_ad_created, user: user, data: {id: ad.id})
           ad.my_ad!
           serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: AdSerializer).as_json
           params[:ad][:tmp_images].each do |tmp_image|
@@ -49,7 +50,11 @@ module Api
         if ad.save
           ad.my_ad!
           serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: AdSerializer).as_json
-          NativizedProviderAd.where(address: ad.address).first_or_create unless ad.ads_source.native?
+          unless ad.ads_source.native?
+            nativized_ad = NativizedProviderAd.where(address: ad.address).first_or_initialize
+            CreateEvent.call(:ad_nativized, user: user, data: {id: ad.id}) if nativized_ad.new_record?
+            nativized_ad.save
+          end
           params[:ad][:tmp_images]&.each do |tmp_image|
             FinalizeAdImage.perform_async(ad.id, tmp_image[:key], tmp_image[:position])
           end
