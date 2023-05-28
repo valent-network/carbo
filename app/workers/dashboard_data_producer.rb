@@ -129,6 +129,8 @@ class DashboardDataProducer
               FROM (#{CustomersAdsDistribution.new.call(active_ads_only: false)}) AS t) AS users_all_ads_distr_data,
         ( SELECT json_agg(t.*) AS json_agg
               FROM (#{CustomersAdsDistribution.new.call(active_ads_only: false, potential_customers_only: true)}) AS t) AS potential_users_ads_distr_data,
+        ( SELECT json_agg(t.*) AS json_agg
+              FROM (SELECT SUBSTR(full_number, 1, 2) AS operator, COUNT(*) FROM phone_numbers GROUP BY SUBSTR(full_number,1,2) ORDER BY COUNT(*)) AS t) AS cell_operators_distr_data,
         ( SELECT json_agg(tt.*) AS json_agg
                FROM ( SELECT users.refcode,
                         t.count
