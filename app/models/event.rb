@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
+  # TOFO: TYPO `uploaded_contatcts`
   EVENT_TYPES = %w[
     sign_up sign_in sign_out deleted_contacts uploaded_contatcts
     get_feed set_referrer invited_user visited_ad favorited_ad unfavorited_ad
