@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   get :health, to: ->(_env) { [200, {}, [{build: ENV["GIT_COMMIT"].to_s.strip}.to_json]] }
 
+  mount Sidekiq::Web, at: "/sidekiq" if ENV["SIDEKIQ_WEB_USERNAME"].present? && ENV["SIDEKIQ_WEB_PASSWORD"].present?
+
   namespace :api do
     get :filters, to: "/application#filters"
 
