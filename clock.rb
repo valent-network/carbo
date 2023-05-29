@@ -17,7 +17,7 @@ def enqueue(worker_class, job_params = {})
 end
 
 module Clockwork
-  # every(1.day, "Snapshot User Visibility", at: "03:00", skip_first_run: true, tz: "UTC") { enqueue("SnapshotUserVisibility") }
+  every(1.day, "Snapshot User Visibility", at: "03:00", skip_first_run: true, tz: "UTC") { enqueue("SnapshotUserVisibility") }
 
   every(1.day, "Mark old ads as deleted", at: "05:00", skip_first_run: true, tz: "UTC") { enqueue("MarkOldAdsAsDeleted") }
 
