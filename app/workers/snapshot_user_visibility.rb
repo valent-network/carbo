@@ -29,16 +29,16 @@ class SnapshotUserVisibility
                'contacts_count', COALESCE(users.count, 0),
                'visible_ads_count', COALESCE(visible_ads.count, 0),
                'registered_friends_count', COALESCE(friends.count, 0),
-               'visible_friends_count', COALESCE(known.count, 0),
-               'visible_ads_count_for_default_hops', COALESCE(visible_ads_default.count, 0),
-               'visible_business_ads_count', COALESCE(business_ads.count, 0)
+               -- 'visible_friends_count', COALESCE(known.count, 0),
+               'visible_ads_count_for_default_hops', COALESCE(visible_ads_default.count, 0)
+               -- 'visible_business_ads_count', COALESCE(business_ads.count, 0)
              ) AS data,
              NOW()
       FROM (#{users_query}) AS users
       LEFT JOIN (#{visible_ads_query}) AS visible_ads ON users.id = visible_ads.user_id
       LEFT JOIN (#{visible_ads_default_query}) AS visible_ads_default ON users.id = visible_ads_default.user_id
-      LEFT JOIN (#{business_ads_query}) AS business_ads ON users.id = business_ads.user_id
-      LEFT JOIN (#{known_query}) AS known ON users.id = known.user_id
+      -- LEFT JOIN (#{business_ads_query}) AS business_ads ON users.id = business_ads.user_id
+      -- LEFT JOIN (#{known_query}) AS known ON users.id = known.user_id
       LEFT JOIN (#{friends_query}) AS friends ON users.id = friends.user_id
     SQL
   end
