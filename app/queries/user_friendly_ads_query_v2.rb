@@ -7,15 +7,14 @@ class UserFriendlyAdsQueryV2
   def call(user:, offset: 0, limit: LIMIT, filters: {})
     user_contacts_matched_phone_numbers = user.user_contacts.where("user_contacts.name ILIKE ?", "%#{filters[:query]}%").pluck(:phone_number_id) if filters[:query].present?
     effective_ads = FilteredAds.new.call(filters: filters_from_aliases_groups(filters), should_search_query: user_contacts_matched_phone_numbers.blank?)
+    blocked_users_ids = user.blocked_users_ids
 
     my_friends_ads = effective_ads.where(phone_number_id: user.user_contacts.where.not(phone_number: user.phone_number).select(:phone_number_id))
+    if blocked_users_ids.present?
+      my_friends_ads = my_friends_ads.where("ads.phone_number_id NOT IN (SELECT phone_number_id FROM user_blocked_phone_numbers WHERE user_id = ?)", user.id)
+    end
 
     hops_count = filters[:hops_count]&.first&.to_i
-
-    blocked_users_ids = user.blocked_users_ids
-    if blocked_users_ids.present?
-      effective_ads = effective_ads.where("ads.phone_number_id NOT IN (SELECT phone_number_id FROM user_blocked_phone_numbers WHERE user_id = ?)", user.id)
-    end
 
     if hops_count == 0 || filters[:contacts_mode] == "directFriends"
       effective_ads = my_friends_ads
@@ -26,6 +25,10 @@ class UserFriendlyAdsQueryV2
       effective_ads = effective_ads.where.not(ads: {phone_number_id: user.phone_number_id})
         .joins(%(JOIN user_contacts ON user_contacts.phone_number_id = ads.phone_number_id))
         .joins(%[JOIN user_connections ON user_contacts.user_id = user_connections.connection_id AND "user_connections"."user_id" = #{user.id} AND (user_connections.hops_count <= #{hops_count || DEFAULT_HOPS_COUNT})])
+    end
+
+    if blocked_users_ids.present?
+      effective_ads = effective_ads.where("ads.phone_number_id NOT IN (SELECT phone_number_id FROM user_blocked_phone_numbers WHERE user_id = ?)", user.id)
     end
 
     # TODO: How does it work when hops_count is nil ?
