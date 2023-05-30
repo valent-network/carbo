@@ -20,6 +20,7 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
   describe "#show" do
     it "hand1" do
       friend_contact = create(:user_contact, user: user, phone_number: ad.phone_number)
+      create(:user_connection, user: user, friend: user, connection: user, hops_count: 0)
       expected_friends = [
         {"id" => friend_contact.id, "name" => friend_contact.name, "idx" => 1, "avatar" => nil, "phone_number" => "#{friend_contact.phone_number}\n🤝", "user_id" => nil, "user_name" => nil}
       ]
@@ -69,10 +70,12 @@ RSpec.describe(Api::V2::FriendlyAdsController) do
       create(:user_connection, user: user, friend: friend_2, connection: friend_2, hops_count: 1)
       create(:user_connection, user: user, friend: friend_3, connection: friend_3, hops_count: 1)
       create(:user_connection, user: user, friend: friend_3, connection: friend_of_friend, hops_count: 2)
+      create(:user_connection, user: user, friend: user, connection: user, hops_count: 0)
 
-      create(:user_connection, user: friend_3, friend: friend_of_friend, connection: friend_of_friend)
+      create(:user_connection, user: friend_3, friend: friend_of_friend, connection: friend_of_friend, hops_count: 1)
 
       get :show, params: {id: ad.id}
+
       expect(response).to(be_ok)
       expect(json_body["friends"].detect { |x| x["id"] == hand1_friend.id }).to(eq({"id" => hand1_friend.id, "name" => hand1_friend.name, "idx" => 1, "avatar" => nil, "phone_number" => "#{hand1_friend.phone_number}\n🤝", "user_id" => nil, "user_name" => nil}))
       expect(json_body["friends"].detect { |x| x["id"] == hand2_friend.id }).to(eq({"id" => hand2_friend.id, "name" => hand2_friend.name, "idx" => 2, "avatar" => nil, "phone_number" => "#{hand2_friend.phone_number}\n🤝🤝", "user_id" => hand2_friend.phone_number.user.id, "user_name" => nil}))

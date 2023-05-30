@@ -10,22 +10,27 @@ class UserContact < ApplicationRecord
 
   scope :effective, -> {} # TODO
 
-  # TODO: Fix or cover with tests COALESCE function for cases where connections
-  # still don't have hops_count associated
+  # Here we return User's UserContacts who can connect with the provided Ad
+  # based on UserConnection
   def self.ad_friends_for_user(ad, user)
-    my_contacts = user.user_contacts.select("user_contacts.*, 1 AS hops_count").where(phone_number_id: ad.phone_number_id)
-    t = select("user_contacts.id, (COALESCE(MIN(user_connections.hops_count), 6) + 1) AS hops_count")
-      .where(user: user)
-      .joins("JOIN users ON users.phone_number_id = user_contacts.phone_number_id")
-      .joins("JOIN user_connections ON user_connections.friend_id = users.id")
-      .joins("JOIN user_contacts AS friends_contacts ON friends_contacts.user_id = user_connections.connection_id")
-      .where(user_connections: {user_id: user.id}, user_contacts: {user_id: user.id})
-      .where("friends_contacts.phone_number_id = ?", ad.phone_number_id)
-      .where.not("friends_contacts.phone_number_id = ? OR user_contacts.phone_number_id = ?", user.phone_number_id, user.phone_number_id)
-      .group("user_contacts.id")
-    friends_contacts = UserContact.select("user_contacts.*, t.hops_count").joins("JOIN (#{t.to_sql}) AS t ON t.id = user_contacts.id")
+    friends = UserContact.find_by_sql(<<~SQL)
+      SELECT my_contacts.*, MIN(user_connections.hops_count + 1) AS hops_count
+      FROM user_contacts AS my_contacts
+      LEFT JOIN users AS my_friends ON my_friends.phone_number_id = my_contacts.phone_number_id
+      JOIN user_connections ON user_connections.user_id = my_contacts.user_id
+      JOIN user_contacts AS known_contacts ON known_contacts.user_id = user_connections.connection_id
+      WHERE known_contacts.phone_number_id != #{user.phone_number_id}
+            AND my_contacts.phone_number_id != #{user.phone_number_id}
+            AND my_contacts.user_id = #{user.id}
+            AND known_contacts.phone_number_id = #{ad.phone_number_id}
+            AND (
+              user_connections.friend_id = my_friends.id OR (
+                user_connections.friend_id = #{user.id} AND my_contacts.phone_number_id = #{ad.phone_number_id}
+              )
+            )
+      GROUP BY my_contacts.id
+    SQL
 
-    friends = find_by_sql("#{my_contacts.to_sql} UNION #{friends_contacts.to_sql}") # TODO: duplicates with different hops
     ActiveRecord::Associations::Preloader.new(records: friends, associations: [phone_number: :user]).call
     friends
   end

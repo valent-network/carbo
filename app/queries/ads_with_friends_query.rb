@@ -15,7 +15,7 @@ class AdsWithFriendsQuery
         ads.id,
         my_contacts.id AS friend_id,
         my_contacts.name AS friend_name,
-        (COALESCE(t.hops_count, 6) + 1) AS hops_count
+        (t.hops_count + 1) AS hops_count
       FROM
       (
         SELECT
