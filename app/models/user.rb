@@ -45,7 +45,7 @@ class User < ApplicationRecord
     connections.reject! { |connection| connection[1] == id }
 
     # We need this to omit joins to find self user_contacts
-    connections.push([id, id, 1])
+    connections.push([id, id, 0])
 
     connections.reject!(&:blank?)
 
