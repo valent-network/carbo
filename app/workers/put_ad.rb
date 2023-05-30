@@ -46,12 +46,13 @@ class PutAd
       Sentry.capture_message("[PutAd][ValidationErrors] id=#{ad&.id} address=#{address} errors=#{ad_contract.errors.to_h.to_json}", level: :warning)
     else
       ad.assign_attributes(ad_params.slice(:price, :phone))
-      ad.updated_at = Time.zone.now
       PrepareAdOptions.new.call(ad, ad_params[:details].slice(*AD_DETAILS_PARAMS))
 
       begin
         retries ||= 0
         if ad.save
+          REDIS.set("actualized:#{ad.id}", 1)
+          REDIS.expire("actualized:#{ad.id}", ActualizeAd::INTERVAL)
           Sentry.capture_message("[PutAd][AdSaved] data=#{{address: address, id: ad.id}.to_json}", level: :info)
         else
           Sentry.capture_message("[PutAd][AdNotSaved] id=#{ad&.id} address=#{address} errors=#{ad.errors.to_hash.to_json}", level: :warning)
