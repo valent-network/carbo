@@ -21,7 +21,8 @@ class CreateEvent
     event = Event.new(params)
 
     if event.save
-      AMPLITUDE_CLIENT.send_event(AmplitudeEvent.new(event)) if AMPLITUDE_CLIENT.ready?
+      # AMPLITUDE_CLIENT.send_event(AmplitudeEvent.new(event)) if AMPLITUDE_CLIENT.ready?
+      COUNTLY_CLIENT.send_event(CountlyEvent.new(event)) if COUNTLY_CLIENT.ready?
       event
     else
       Sentry.capture_message("[CreateEventFailed] errors=#{event.errors.to_json}", level: :error)
