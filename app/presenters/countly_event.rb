@@ -19,7 +19,7 @@ class CountlyEvent
         key: event.name,
         count: 1,
         timestamp: event.created_at.to_i,
-        segmentation: event.data.transform_values(&:to_s)
+        segmentation: {}
       ]
     }
 
