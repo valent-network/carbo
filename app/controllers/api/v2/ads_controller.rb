@@ -31,7 +31,7 @@ module Api
         ad.assign_attributes(ad_params)
 
         if ad.save
-          CreateEvent.call(:native_ad_created, user: user, data: {id: ad.id})
+          CreateEvent.call(:native_ad_created, user: current_user, data: {id: ad.id})
           ad.my_ad!
           serialized_ad = ActiveModelSerializers::SerializableResource.new(ad, each_serializer: AdSerializer).as_json
           params[:ad][:tmp_images].each do |tmp_image|
